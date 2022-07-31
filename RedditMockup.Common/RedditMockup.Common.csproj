@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="Helpers\" />
+        <None Remove="Validations\" />
+        <None Remove="ViewModels\" />
+        <None Remove="NLog" />
+        <None Remove="AutoMapper" />
+        <None Remove="AutoMapper.Collection" />
+        <None Remove="FluentValidation" />
+        <None Remove="FluentValidation.AspNetCore" />
+        <None Remove="Profiles\" />
+        <None Remove="Microsoft.EntityFrameworkCore" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Validations\" />
+        <Folder Include="Profiles\" />
+        <Folder Include="ViewModels\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.7" />
+        <PackageReference Include="NLog" Version="5.0.1" />
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Profiles\PersonProfile.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\RedditMockup.Model\RedditMockup.Model.csproj" />
+    </ItemGroup>
+</Project>
