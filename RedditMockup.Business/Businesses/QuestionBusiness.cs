@@ -30,7 +30,7 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     }
 
-    public override async Task<SamanSalamatResponse?> CreateAsync(QuestionDto dto, HttpContext httpContext, CancellationToken cancellationToken = new())
+    public override async Task<CustomResponse?> CreateAsync(QuestionDto dto, HttpContext httpContext, CancellationToken cancellationToken = new())
     {
         var question = _mapper.Map<Question>(dto);
 
@@ -69,13 +69,13 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         return questions.Single();
     }
 
-    public override async Task<SamanSalamatResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
+    public override async Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
     {
         var question = await LoadModelByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"No question found with ID of {id}"
@@ -84,20 +84,20 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
         var response = _mapper.Map<QuestionDto>(question);
 
-        return new SamanSalamatResponse
+        return new CustomResponse
         {
             Data = response,
             IsSuccess = true
         };
     }
 
-    public async Task<SamanSalamatResponse?> LoadAnswersAsync(int id, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse?> LoadAnswersAsync(int id, CancellationToken cancellationToken = new())
     {
         var question = await LoadModelByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"No question found with ID of {id}"
@@ -108,20 +108,20 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
         var response = _mapper.Map<List<AnswerDto>>(answers);
 
-        return new SamanSalamatResponse
+        return new CustomResponse
         {
             Data = response,
             IsSuccess = true
         };
     }
 
-    public async Task<SamanSalamatResponse?> LoadVotesAsync(int id, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse?> LoadVotesAsync(int id, CancellationToken cancellationToken = new())
     {
         var question = await LoadModelByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"No question found with ID of {id}"
@@ -132,7 +132,7 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
         var response = _mapper.Map<List<VoteDto>>(votes);
 
-        return new SamanSalamatResponse
+        return new CustomResponse
         {
             Data = response,
             IsSuccess = true,
@@ -140,13 +140,13 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     }
 
-    public async Task<SamanSalamatResponse?> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse?> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new())
     {
         var question = await LoadModelByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"No question found with ID of {id}"
@@ -168,7 +168,7 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new SamanSalamatResponse
+        return new CustomResponse
         {
             IsSuccess = true,
             Message = $"{(kind ? "Up" : "Down")}vote submitted"
@@ -176,13 +176,13 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     }
 
-    public override async Task<SamanSalamatResponse?> UpdateAsync(int id, QuestionDto questionDto, CancellationToken cancellationToken = new())
+    public override async Task<CustomResponse?> UpdateAsync(int id, QuestionDto questionDto, CancellationToken cancellationToken = new())
     {
         var question = await LoadModelByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"No question found with ID of {id}"
@@ -195,13 +195,13 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     }
 
-    public override async Task<SamanSalamatResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new())
+    public override async Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new())
     {
         var question = await LoadModelByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"No question found with ID of {id}"

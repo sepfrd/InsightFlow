@@ -14,7 +14,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RedditMockup.IntegrationTest;
 
-public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
+public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program>>
 {
     #region [Field(s)]
 
@@ -28,7 +28,7 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
 
     #region [Constructor]
 
-    public AccountApiTest(WebApplicationFactory<Program> factory)
+    public AccountControllerTest(WebApplicationFactory<Program> factory)
     {
         _factory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
 
@@ -41,14 +41,14 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
 
     private async Task AuthenticateAsync()
     {
-        var _loginDto = new LoginDto()
+        var loginDto = new LoginDto()
         {
-            Username = "sepehr_frd",
-            Password = "sfr1376",
+            Username = "admin_admin",
+            Password = "adminnnn",
             RememberMe = true
         };
 
-        var serializedLoginDto = JsonConvert.SerializeObject(_loginDto, Formatting.Indented);
+        var serializedLoginDto = JsonConvert.SerializeObject(loginDto, Formatting.Indented);
 
         var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
 
@@ -60,7 +60,7 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
     #region [Theory Method(s)]
 
     [Fact]
-    public async Task GetAll_ReturnExpectedResult()
+    public async Task GetAll_ReturnCustomResponseOfListOfUserViewModel()
     {
         #region [Arrange]
 
@@ -105,7 +105,7 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
 
         var streamResponse = await response.Content.ReadAsStreamAsync();
 
-        var apiResponse = await JsonSerializer.DeserializeAsync<SamanSalamatResponse>(streamResponse);
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
 
         #endregion
 
@@ -136,7 +136,7 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
 
         var loginStreamResponse = await loginResponse.Content.ReadAsStreamAsync();
 
-        var loginApiResponse = await JsonSerializer.DeserializeAsync<SamanSalamatResponse>(loginStreamResponse);
+        var loginApiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(loginStreamResponse);
 
         #endregion
 
@@ -149,10 +149,6 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
         #region [Logout]
 
         var logoutResponse = await _client.GetAsync($"{BaseAddress}/Logout");
-
-        var logoutStreamResponse = await logoutResponse.Content.ReadAsStreamAsync();
-
-        var logoutApiResponse = await JsonSerializer.DeserializeAsync<SamanSalamatResponse>(logoutStreamResponse);
 
         #endregion
 
@@ -168,7 +164,7 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
-                logoutApiResponse?.IsSuccess.Should().BeFalse();
+                logoutResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
                 break;
 
@@ -178,10 +174,20 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                logoutApiResponse?.IsSuccess.Should().BeTrue();
+                logoutResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
                 break;
+            
+            case TestResultCode.Unauthorized:
+                
+                loginApiResponse?.IsSuccess.Should().BeTrue();
 
+                getAllResponse.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+
+                logoutResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+                
+                break;
+            
             default:
                 Assert.True(false);
                 break;
@@ -198,7 +204,12 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
     {
         yield return new object[]
         {
-            new LoginDto { Username = "sepehr_frd", Password = "sfr1376", RememberMe = false }, true
+            new LoginDto {
+                Username = "sepehr_frd",
+                Password = "sfr1376",
+                RememberMe = false 
+            },
+            true
         };
 
         yield return new object[]
@@ -223,8 +234,13 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
     {
         yield return new object[]
         {
-            new LoginDto { Username = "sepehr_frd", Password = "sfr1376", RememberMe = true },
-            TestResultCode.AllSuccessful
+            new LoginDto
+            {
+                Username = "sepehr_frd",
+                Password = "sfr1376",
+                RememberMe = true
+            },
+            TestResultCode.Unauthorized
         };
 
         yield return new object[]
@@ -251,6 +267,7 @@ public class AccountApiTest : IClassFixture<WebApplicationFactory<Program>>
     public enum TestResultCode
     {
         AllFailed,
-        AllSuccessful
+        AllSuccessful,
+        Unauthorized
     }
 }

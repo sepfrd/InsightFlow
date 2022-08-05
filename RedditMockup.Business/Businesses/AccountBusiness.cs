@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
 using RedditMockup.Common.ViewModels;
@@ -75,12 +76,12 @@ public class AccountBusiness
             .ThenInclude(x => x.Role),
             cancellationToken));
 
-    public async Task<SamanSalamatResponse> LoginAsync(LoginDto login, HttpContext httpContext,
+    public async Task<CustomResponse> LoginAsync(LoginDto login, HttpContext httpContext,
         CancellationToken cancellationToken = new())
     {
         if (IsSignedIn(httpContext))
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = "You are already signed in"
@@ -91,7 +92,7 @@ public class AccountBusiness
 
         if (!isValid)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = "Username and/or password not correct"
@@ -100,14 +101,12 @@ public class AccountBusiness
 
         var user = await LoadByUsernameAsync(login.Username!, cancellationToken);
 
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.NameIdentifier, user!.Id.ToString())
-        };
 
-        var roles = await _unitOfWork.RoleRepository!.LoadByUserIdAsync(user.Id, cancellationToken);
+        var roles = await _unitOfWork.RoleRepository!.LoadByUserIdAsync(user!.Id, cancellationToken);
 
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role!.Title!)));
+        var claims = new List<Claim>();
+        
+        claims.AddRange(roles.Select(role => new Claim(role!.Title, role!.Title!)));
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         
@@ -118,20 +117,20 @@ public class AccountBusiness
             IsPersistent = login.RememberMe
         };
 
-        await httpContext.SignInAsync(scheme: CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
+        await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
 
-        return new SamanSalamatResponse
+        return new CustomResponse
         {
             IsSuccess = true,
             Message = "Successfully logged in"
         };
     }
 
-    public static async Task<SamanSalamatResponse> LogoutAsync(HttpContext httpContext)
+    public static async Task<CustomResponse> LogoutAsync(HttpContext httpContext)
     {
         if (!IsSignedIn(httpContext))
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = "Already logged out"
@@ -140,7 +139,7 @@ public class AccountBusiness
 
         await httpContext.SignOutAsync();
 
-        return new SamanSalamatResponse
+        return new CustomResponse
         {
             IsSuccess = true,
             Message = "Successfully logged out"

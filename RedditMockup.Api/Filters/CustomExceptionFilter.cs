@@ -46,7 +46,7 @@ public class CustomExceptionFilter : ExceptionFilterAttribute
 
         _logger.Log(mongoLog.LogFullData(LogLevel.Error));
 
-        filterContext.Result = new JsonResult(new SamanSalamatResponse
+        filterContext.Result = new JsonResult(new CustomResponse
         {
             Message = "Exception",
             IsSuccess = false
@@ -75,7 +75,7 @@ public class CustomExceptionFilter : ExceptionFilterAttribute
 
         _logger.Log(mongoLog.LogFullData(LogLevel.Error));
 
-        context.Result = new JsonResult(new SamanSalamatResponse
+        context.Result = new JsonResult(new CustomResponse
         {
             Message = "Exception",
             IsSuccess = false

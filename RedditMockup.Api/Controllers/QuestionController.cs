@@ -21,17 +21,17 @@ public class QuestionController : BaseController<Question, QuestionDto>
     [HttpGet]
     [Route("Answers")]
     [AllowAnonymous]
-    public async Task<SamanSalamatResponse?> GetAnswersAsync([FromQuery] int questionId, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse?> GetAnswersAsync(int questionId, CancellationToken cancellationToken) =>
         await _questionBusiness.LoadAnswersAsync(questionId, cancellationToken);
 
     [HttpGet]
     [Route("Votes")]
     [AllowAnonymous]
-    public async Task<SamanSalamatResponse?> GetVotesAsync([FromQuery] int questionId, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse?> GetVotesAsync(int questionId, CancellationToken cancellationToken) =>
         await _questionBusiness.LoadVotesAsync(questionId, cancellationToken);
 
     [HttpPost]
     [Route("SubmitVote")]
-    public async Task<SamanSalamatResponse?> SubmitVoteAsync([FromQuery] int questionId, bool kind, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse?> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken) =>
         await _questionBusiness.SubmitVoteAsync(questionId, kind, cancellationToken);
 }

@@ -21,23 +21,23 @@ public class BaseController<T, DTO> : ControllerBase, IBaseController<DTO>
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<SamanSalamatResponse<IEnumerable<DTO>>?> GetAllAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse<IEnumerable<DTO>>?> GetAllAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken) =>
         await _business.LoadAllAsync(sieveModel, cancellationToken);
 
     [Route("id")]
     [HttpGet]
-    public async Task<SamanSalamatResponse?> GetByIdAsync([FromQuery] int id, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse?> GetByIdAsync(int id, CancellationToken cancellationToken) =>
         await _business.LoadByIdAsync(id, cancellationToken);
 
     [HttpPost]
-    public async Task<SamanSalamatResponse?> CreateAsync([FromQuery] DTO dto, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse?> CreateAsync(DTO dto, CancellationToken cancellationToken) =>
         await _business.CreateAsync(dto, HttpContext, cancellationToken);
 
     [HttpDelete]
-    public async Task<SamanSalamatResponse?> DeleteAsync([FromQuery] int id, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken) =>
         await _business.DeleteAsync(id, cancellationToken);
 
-    async Task<SamanSalamatResponse?> IBaseController<DTO>.UpdateAsync(int id, DTO dto, CancellationToken cancellationToken) =>
+    async Task<CustomResponse?> IBaseController<DTO>.UpdateAsync(int id, DTO dto, CancellationToken cancellationToken) =>
         await _business.UpdateAsync(id, dto, cancellationToken);
 
     [HttpOptions]

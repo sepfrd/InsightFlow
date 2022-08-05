@@ -24,7 +24,7 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         _mapper = mapper;
     }
 
-    public override async Task<SamanSalamatResponse?> CreateAsync(UserDto dto, HttpContext httpContext,
+    public override async Task<CustomResponse?> CreateAsync(UserDto dto, HttpContext httpContext,
         CancellationToken cancellationToken = default)
     {
         var isUsernameValid = !await UsernameExistsAsync(dto.Username!, cancellationToken);
@@ -35,7 +35,7 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
         if (!isUsernameValid)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"{dto.Username} is already used, try another one"
@@ -72,18 +72,18 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         return users.Single();
     }
 
-    public override async Task<SamanSalamatResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
+    public override async Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
     {
         var user = await LoadModelByIdAsync(id, cancellationToken);
 
         if (user is null)
         {
-            return new SamanSalamatResponse { IsSuccess = false, Message = $"No user exists with the ID of {id}" };
+            return new CustomResponse { IsSuccess = false, Message = $"No user exists with the ID of {id}" };
         }
 
         var response = _mapper.Map<UserDto>(user);
 
-        return new SamanSalamatResponse { Data = response, IsSuccess = true };
+        return new CustomResponse { Data = response, IsSuccess = true };
     }
 
     private async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = new())
@@ -95,14 +95,14 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         return users.Count > 0;
     }
 
-    public override async Task<SamanSalamatResponse?> UpdateAsync(int id, UserDto dto,
+    public override async Task<CustomResponse?> UpdateAsync(int id, UserDto dto,
         CancellationToken cancellationToken = new())
     {
         var user = await LoadModelByIdAsync(id, cancellationToken);
 
         if (user is null)
         {
-            return new SamanSalamatResponse
+            return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"No user found with ID of {id}"
@@ -114,13 +114,13 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         return await UpdateAsync(user, cancellationToken);
     }
 
-    public override async Task<SamanSalamatResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new())
+    public override async Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new())
     {
         var user = await LoadModelByIdAsync(id, cancellationToken);
 
         if (user is null)
         {
-            return new SamanSalamatResponse { IsSuccess = false, Message = $"No user found with ID of {id}" };
+            return new CustomResponse { IsSuccess = false, Message = $"No user found with ID of {id}" };
         }
 
         return await DeleteAsync(user, cancellationToken);

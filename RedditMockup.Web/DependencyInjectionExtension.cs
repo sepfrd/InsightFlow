@@ -10,6 +10,7 @@ using NLog.Web;
 using RedditMockup.Api.Contracts;
 using RedditMockup.Api.Filters;
 using RedditMockup.Business.Contracts;
+using RedditMockup.Common.Constants;
 using RedditMockup.Common.Profiles;
 using RedditMockup.Common.Validations;
 using RedditMockup.DataAccess;
@@ -78,9 +79,22 @@ internal static class DependencyInjectionExtension
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
+
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.Headers["Location"] = context.RedirectUri;
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
             })
             .Services
-            .AddAuthorization();
+            .AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyConstants.Admin,
+                    policy => policy.RequireClaim(RoleConstants.Admin));
+                options.AddPolicy(PolicyConstants.User,
+                    policy => policy.RequireClaim(RoleConstants.User));
+            });
 
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
         services.Scan(scan =>

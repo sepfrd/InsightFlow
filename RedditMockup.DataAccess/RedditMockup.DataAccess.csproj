@@ -31,6 +31,7 @@
         <ProjectReference Include="..\RedditMockup.Model\RedditMockup.Model.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Bogus" Version="34.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>

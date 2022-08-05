@@ -1,6 +1,6 @@
 ﻿namespace RedditMockup.Common.Dtos;
 
-public class SamanSalamatResponse<T>
+public class CustomResponse<T>
 {
 
     public T? Data { get; set; }
@@ -11,7 +11,7 @@ public class SamanSalamatResponse<T>
 
 }
 
-public class SamanSalamatResponse
+public class CustomResponse
 {
 
     public dynamic? Data { get; set; }

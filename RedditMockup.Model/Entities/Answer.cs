@@ -17,7 +17,7 @@ public class Answer : BaseEntity
     public int QuestionId { get; set; }
 
     [Sieve(CanFilter = true, CanSort = true)]
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
     #endregion
 

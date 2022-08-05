@@ -11,6 +11,7 @@
       <IntermediateOutputPath>obj\Release\net6.0</IntermediateOutputPath>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Bogus" Version="34.0.2" />
         <PackageReference Include="FluentAssertions" Version="6.7.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.7" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />

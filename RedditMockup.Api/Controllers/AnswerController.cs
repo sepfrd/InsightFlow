@@ -14,16 +14,15 @@ public class AnswerController : BaseController<Answer, AnswerDto>
 
     public AnswerController(IBaseBusiness<Answer, AnswerDto> business) : base(business) =>
         _answerBusiness = (AnswerBusiness)business;
-
-    [Authorize]
+    
     [HttpPost]
     [Route("SubmitVote")]
-    public async Task<SamanSalamatResponse?> SubmitVoteAsync([FromQuery] int answerId, bool kind, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse?> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken) =>
     await _answerBusiness.SubmitVoteAsync(answerId, kind, cancellationToken);
 
     [HttpGet]
     [Route("Votes")]
     [AllowAnonymous]
-    public async Task<SamanSalamatResponse?> GetVotesAsync([FromQuery] int answerId, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse?> GetVotesAsync(int answerId, CancellationToken cancellationToken) =>
         await _answerBusiness.LoadVotesAsync(answerId, cancellationToken);
 }

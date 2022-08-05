@@ -6,15 +6,15 @@ namespace RedditMockup.Api.Contracts;
 public interface IBaseController<DTO>
 
 {
-    Task<SamanSalamatResponse?> CreateAsync(DTO dto, CancellationToken cancellationToken);
+    Task<CustomResponse?> CreateAsync(DTO dto, CancellationToken cancellationToken);
 
-    Task<SamanSalamatResponse<IEnumerable<DTO>>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken);
+    Task<CustomResponse<IEnumerable<DTO>>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken);
 
-    Task<SamanSalamatResponse?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<CustomResponse?> GetByIdAsync(int id, CancellationToken cancellationToken);
 
-    Task<SamanSalamatResponse?> UpdateAsync(int id, DTO dto, CancellationToken cancellationToken);
+    Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken cancellationToken);
 
-    Task<SamanSalamatResponse?> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken);
 
     void Options();
 }
