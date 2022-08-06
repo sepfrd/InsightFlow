@@ -21,6 +21,10 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
     private const string LoginAdress = "/api/Account/Login";
 
+    private const string ValidTitle = "How to do sth";
+    
+    private const string ValidDescription = "Can anybody help me with my problem?";
+
     private readonly WebApplicationFactory<Program> _factory;
 
     private readonly HttpClient _client;
@@ -61,6 +65,37 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
     #region [Theory Method(s)]
 
+    [Theory]
+    [MemberData(nameof(GenerateCreateData))]
+    public async Task Create_ReturnExpectedResult(AnswerDto dto, TestResultCode testResultCode)
+    {
+        #region [Arrange]
+
+        var serializedLoginDto = JsonSerializer.Serialize(dto);
+
+        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
+
+        #endregion
+
+        #region [Act]
+
+        var response = await _client.PostAsync(BaseAddress, stringContent);
+
+        var streamResponse = await response.Content.ReadAsStreamAsync();
+
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+        #endregion
+
+        #region [Assert]
+
+
+
+        #endregion
+
+    }
+
+
     [Fact]
     public async Task GetAll_ReturnCustomResponseOfListOfAnswerDto()
     {
@@ -82,6 +117,61 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         apiResponse?.Data?.Should().BeOfType<List<AnswerDto>>();
 
         #endregion
+    }
+
+    [Theory]
+    [MemberData(nameof(GenerateGetByIdData))]
+    public async Task GetById_ReturnExpectedResult(int id, bool isAuthenticated, HttpStatusCode httpStatusCode)
+    {
+        if (isAuthenticated)
+        {
+            #region [Arrange]
+
+            await AuthenticateAsync();
+
+            #endregion
+
+            #region [Act]
+
+            var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
+
+            var streamResponse = await response.Content.ReadAsStreamAsync();
+
+            var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+            #endregion
+
+            #region [Assert]
+
+            response.StatusCode.Should().Be(httpStatusCode);
+
+            if (id < 10)
+            {
+                apiResponse?.IsSuccess.Should().BeTrue();
+            }
+            else
+            {
+                apiResponse?.IsSuccess.Should().BeFalse();
+            }
+
+            #endregion
+        }
+        else
+        {
+            #region [Act]
+
+            var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
+
+            #endregion
+
+            #region [Assert]
+
+            response.StatusCode.Should().Be(httpStatusCode);
+
+            #endregion
+        }
+
+
     }
 
     [Fact]
@@ -108,94 +198,186 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
     }
 
     [Theory]
-    [MemberData(nameof(GenerateGetByIdData))]
-    public async Task GetById_ReturnExpectedResult(int id, bool isAuthenticated, HttpStatusCode httpStatusCode)
+    [MemberData(nameof(GenerateSubmitVoteData))]
+    public async Task SubmitVote_ReturnExpectedResult(int answerId, bool kind, TestResultCode testResultCode)
     {
-        if (isAuthenticated)
-        {
-            #region [Arrange]
+        #region [Arrange]
 
+        if (testResultCode != TestResultCode.Unauthorized)
+        {
             await AuthenticateAsync();
-            
-            #endregion
-
-            #region [Act]
-
-            var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
-
-            var streamResponse = await response.Content.ReadAsStreamAsync();
-
-            var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
-
-            #endregion
-            
-            #region [Assert]
-
-            response.StatusCode.Should().Be(httpStatusCode);
-
-            if (id < 10)
-            {
-                apiResponse?.IsSuccess.Should().BeTrue();
-            }
-            else
-            {
-                apiResponse?.IsSuccess.Should().BeFalse();
-            }
-
-            #endregion
         }
-        else
+
+        #endregion
+
+        #region [Act]
+
+        var response = await _client.PostAsync(BaseAddress + $"/SubmitVote?answerId={answerId}&kind={kind}", null);
+
+        if (testResultCode == TestResultCode.BadRequest)
         {
-            #region [Act]
-
-            var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
-
-            #endregion
-            
-            #region [Assert]
-
-            response.StatusCode.Should().Be(httpStatusCode);
-
-            #endregion
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            return;
         }
-        
-        
+
+        if (testResultCode == TestResultCode.Unauthorized)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            return;
+        }
+
+        var streamResponse = await response.Content.ReadAsStreamAsync();
+
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+        #endregion
+
+        #region [Assert]
+
+        switch (testResultCode)
+        {
+            case TestResultCode.OK:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().Be(true);
+
+                break;
+
+            case TestResultCode.NotFound:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().Be(false);
+
+                break;
+
+        }
+
+        #endregion
     }
-    
+
     #endregion
 
     #region [Data Method(s)]
 
-    public static IEnumerable<object[]> GenerateGetByIdData()
+    public static IEnumerable<object[]> GenerateCreateData()
     {
-        yield return new object[]
+        return new List<object[]>
         {
-            1,
-            true,
-            HttpStatusCode.OK
-        };
-        
-        yield return new object[]
-        {
-            20,
-            true,
-            HttpStatusCode.OK
-        };
-        
-        yield return new object[]
-        {
-            2,
-            false,
-            HttpStatusCode.Unauthorized
-        };
-        
-        yield return new object[]
-        {
-            20,
-            false,
-            HttpStatusCode.Unauthorized
+            new object[]
+            {
+                new AnswerDto
+                {
+                    QuestionId = 5,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                HttpStatusCode.OK
+            },
+
+            new object[]
+            {
+                new AnswerDto
+                {
+                    QuestionId = 14,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                HttpStatusCode.NotFound
+            },
+
+            new object[]
+            {
+                new AnswerDto
+                {
+                    QuestionId = 5,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                HttpStatusCode.OK
+            },
+
+            new object[]
+            {
+                new AnswerDto
+                {
+                    QuestionId = 5,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                HttpStatusCode.OK
+            }
         };
     }
-    
+
+    public static IEnumerable<object[]> GenerateGetByIdData()
+    {
+        return new List<object[]>
+        {
+            new object[]
+            {
+                1,
+                true,
+                HttpStatusCode.OK
+            },
+            new object[]
+            {
+                20,
+                true,
+                HttpStatusCode.OK
+            },
+            new object[]
+            {
+                2,
+                false,
+                HttpStatusCode.Unauthorized
+            },
+            new object[]
+            {
+                20,
+                false,
+                HttpStatusCode.Unauthorized
+            }
+        };
+    }
+
+    public static IEnumerable<object[]> GenerateSubmitVoteData()
+    {
+        return new List<object[]>
+        {
+            new object[]
+            {
+                5,
+                true,
+                TestResultCode.OK
+            },
+
+            new object[]
+            {
+                5,
+                false,
+                TestResultCode.Unauthorized
+            },
+
+            new object[]
+            {
+                20,
+                true,
+                TestResultCode.NotFound
+            }
+
+        };
+    }
+
     #endregion
+
+    public enum TestResultCode
+    {
+        OK,
+        NotFound,
+        BadRequest,
+        Unauthorized,
+        Forbidden
+    }
 }
