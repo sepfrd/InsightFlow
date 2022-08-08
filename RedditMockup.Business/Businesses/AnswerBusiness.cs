@@ -118,13 +118,21 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
     public override async Task<CustomResponse?> UpdateAsync(int id, AnswerDto dto, CancellationToken cancellationToken = new())
     {
         var answer = await LoadModelByIdAsync(id, cancellationToken);
-
+        
         if (answer is null)
         {
             return new CustomResponse
             {
                 IsSuccess = false,
                 Message = $"No answer found with ID of {id}"
+            };
+        }
+        if (answer.QuestionId != dto.QuestionId)
+        {
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"No answer found with QuestionId of {dto.QuestionId}"
             };
         }
 

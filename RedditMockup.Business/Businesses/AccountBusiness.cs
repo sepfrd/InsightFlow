@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
 using RedditMockup.Common.ViewModels;
@@ -100,13 +99,12 @@ public class AccountBusiness
         }
 
         var user = await LoadByUsernameAsync(login.Username!, cancellationToken);
-
-
+        
         var roles = await _unitOfWork.RoleRepository!.LoadByUserIdAsync(user!.Id, cancellationToken);
 
-        var claims = new List<Claim>();
+        var claims = new List<Claim>() { new(ClaimTypes.NameIdentifier, user.Id.ToString()) };
         
-        claims.AddRange(roles.Select(role => new Claim(role!.Title, role!.Title!)));
+        claims.AddRange(roles.Select(role => new Claim(role?.Title!, role?.Title!)));
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         

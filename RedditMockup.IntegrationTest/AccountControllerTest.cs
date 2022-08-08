@@ -1,14 +1,14 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.ViewModels;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -16,11 +16,10 @@ namespace RedditMockup.IntegrationTest;
 
 public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program>>
 {
+
     #region [Field(s)]
 
     private const string BaseAddress = "/api/Account";
-
-    private readonly WebApplicationFactory<Program> _factory;
 
     private readonly HttpClient _client;
 
@@ -28,12 +27,8 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
     #region [Constructor]
 
-    public AccountControllerTest(WebApplicationFactory<Program> factory)
-    {
-        _factory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
-
-        _client = _factory.CreateClient();
-    }
+    public AccountControllerTest(WebApplicationFactory<Program> factory) =>
+        _client = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing")).CreateClient();
 
     #endregion
 
@@ -43,12 +38,12 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
     {
         var loginDto = new LoginDto()
         {
-            Username = "admin_admin",
-            Password = "adminnnn",
+            Username = "sepehr_frd",
+            Password = "sfr1376",
             RememberMe = true
         };
 
-        var serializedLoginDto = JsonConvert.SerializeObject(loginDto, Formatting.Indented);
+        var serializedLoginDto = JsonSerializer.Serialize(loginDto);
 
         var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
 
@@ -74,7 +69,8 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         var streamResponse = await response.Content.ReadAsStringAsync();
 
-        var apiResponse = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<List<UserViewModel>>(streamResponse));
+        var apiResponse =
+            await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<List<UserViewModel>>(streamResponse));
 
         #endregion
 
@@ -177,17 +173,17 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
                 logoutResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
                 break;
-            
+
             case TestResultCode.Unauthorized:
-                
+
                 loginApiResponse?.IsSuccess.Should().BeTrue();
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.Forbidden);
 
                 logoutResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-                
+
                 break;
-            
+
             default:
                 Assert.True(false);
                 break;
@@ -204,17 +200,18 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
     {
         yield return new object[]
         {
-            new LoginDto {
+            new LoginDto
+            {
                 Username = "sepehr_frd",
                 Password = "sfr1376",
-                RememberMe = false 
+                RememberMe = false
             },
             true
         };
 
         yield return new object[]
         {
-            new LoginDto { Username = "admin_admin", Password = "adminnnn", RememberMe = false }, true
+            new LoginDto { Username = "sepehr_frd", Password = "sfr1376", RememberMe = false }, true
         };
 
         yield return new object[]
@@ -232,33 +229,51 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
     public static IEnumerable<object[]> GenerateIntegrationData()
     {
-        yield return new object[]
+        return new List<object[]>
         {
-            new LoginDto
+            new object[]
             {
-                Username = "sepehr_frd",
-                Password = "sfr1376",
-                RememberMe = true
+                new LoginDto
+                {
+                    Username = "abbas_booazaar",
+                    Password = "abbasabbas",
+                    RememberMe = true
+                },
+                TestResultCode.Unauthorized
             },
-            TestResultCode.Unauthorized
-        };
 
-        yield return new object[]
-        {
-            new LoginDto { Username = "admin_admin", Password = "adminnnn", RememberMe = true },
-            TestResultCode.AllSuccessful
-        };
+            new object[]
+            {
+                new LoginDto
+                {
+                    Username = "sepehr_frd",
+                    Password = "sfr1376",
+                    RememberMe = true
+                },
+                TestResultCode.AllSuccessful
+            },
 
-        yield return new object[]
-        {
-            new LoginDto { Username = "sepehr_frd", Password = "sfr1231123376", RememberMe = true },
-            TestResultCode.AllFailed
-        };
+            new object[]
+            {
+                new LoginDto
+                {
+                    Username = "sepehr_frd",
+                    Password = "sfr1231123376",
+                    RememberMe = true
+                },
+                TestResultCode.AllFailed
+            },
 
-        yield return new object[]
-        {
-            new LoginDto { Username = "sepeasdfahr_frd", Password = "sfr1376", RememberMe = true },
-            TestResultCode.AllFailed
+            new object[]
+            {
+                new LoginDto
+                {
+                    Username = "sepeasdfahr_frd",
+                    Password = "sfr1376",
+                    RememberMe = true
+                },
+                TestResultCode.AllFailed
+            }
         };
     }
 

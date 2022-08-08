@@ -1,13 +1,13 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
-using RedditMockup.Common.Dtos;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
+using RedditMockup.Common.Dtos;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -15,14 +15,15 @@ namespace RedditMockup.IntegrationTest;
 
 public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>>
 {
+
     #region [Field(s)]
 
     private const string BaseAddress = "/api/Answer";
 
-    private const string LoginAdress = "/api/Account/Login";
+    private const string LoginAddress = "/api/Account/Login";
 
     private const string ValidTitle = "How to do sth";
-    
+
     private const string ValidDescription = "Can anybody help me with my problem?";
 
     private readonly WebApplicationFactory<Program> _factory;
@@ -30,6 +31,13 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
     private readonly HttpClient _client;
 
     #endregion
+
+    public enum TestResultCode
+    {
+        Ok,
+        NotFound,
+        Unauthorized
+    }
 
     #region [Constructor]
 
@@ -48,18 +56,17 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
     {
         var loginDto = new LoginDto()
         {
-            Username = "admin_admin",
-            Password = "adminnnn",
+            Username = "sepehr_frd",
+            Password = "sfr1376",
             RememberMe = true
         };
 
-        var serializedLoginDto = JsonConvert.SerializeObject(loginDto, Formatting.Indented);
-
+        var serializedLoginDto = JsonSerializer.Serialize(loginDto);
+        
         var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
 
-        await _client.PostAsync(LoginAdress, stringContent);
+        await _client.PostAsync(LoginAddress, stringContent);
     }
-
 
     #endregion
 
@@ -79,7 +86,15 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         #region [Act]
 
+        if (testResultCode != TestResultCode.Unauthorized) await AuthenticateAsync();
+
         var response = await _client.PostAsync(BaseAddress, stringContent);
+
+        if (testResultCode == TestResultCode.Unauthorized)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            return;
+        }
 
         var streamResponse = await response.Content.ReadAsStreamAsync();
 
@@ -89,13 +104,34 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         #region [Assert]
 
+        switch (testResultCode)
+        {
+            case TestResultCode.Ok:
 
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeTrue();
+
+                break;
+
+            case TestResultCode.NotFound:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeFalse();
+
+                break;
+
+            default:
+
+                Assert.Null("Error");
+
+                break;
+        }
 
         #endregion
-
     }
-
-
+    
     [Fact]
     public async Task GetAll_ReturnCustomResponseOfListOfAnswerDto()
     {
@@ -146,13 +182,9 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
             response.StatusCode.Should().Be(httpStatusCode);
 
             if (id < 10)
-            {
                 apiResponse?.IsSuccess.Should().BeTrue();
-            }
             else
-            {
                 apiResponse?.IsSuccess.Should().BeFalse();
-            }
 
             #endregion
         }
@@ -170,8 +202,6 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
             #endregion
         }
-
-
     }
 
     [Fact]
@@ -203,22 +233,13 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
     {
         #region [Arrange]
 
-        if (testResultCode != TestResultCode.Unauthorized)
-        {
-            await AuthenticateAsync();
-        }
+        if (testResultCode != TestResultCode.Unauthorized) await AuthenticateAsync();
 
         #endregion
 
         #region [Act]
 
         var response = await _client.PostAsync(BaseAddress + $"/SubmitVote?answerId={answerId}&kind={kind}", null);
-
-        if (testResultCode == TestResultCode.BadRequest)
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            return;
-        }
 
         if (testResultCode == TestResultCode.Unauthorized)
         {
@@ -236,7 +257,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         switch (testResultCode)
         {
-            case TestResultCode.OK:
+            case TestResultCode.Ok:
 
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -251,10 +272,63 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 apiResponse?.IsSuccess.Should().Be(false);
 
                 break;
-
         }
 
         #endregion
+    }
+
+    [Theory]
+    [MemberData(nameof(GenerateUpdateData))]
+    public async Task Update_ReturnExpectedResult(int id, AnswerDto dto, TestResultCode testResultCode)
+    {
+        if (testResultCode != TestResultCode.Unauthorized)
+        {
+            await AuthenticateAsync();
+        }
+
+        var serializedDto = JsonSerializer.Serialize(dto);
+
+        var stringContent = new StringContent(serializedDto, Encoding.UTF8, "application/json");
+
+        var requestString = $"?id={id}";
+
+        var response = await _client.PutAsync(BaseAddress + requestString, stringContent);
+
+        if (testResultCode == TestResultCode.Unauthorized)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+            return;
+        }
+
+        var streamResponse = await response.Content.ReadAsStreamAsync();
+
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+        switch (testResultCode)
+        {
+            case TestResultCode.Ok:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeTrue();
+
+                break;
+
+            case TestResultCode.NotFound:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeFalse();
+
+                break;
+
+            default:
+
+                Assert.Null("Error");
+
+                break;
+        }
     }
 
     #endregion
@@ -273,7 +347,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                HttpStatusCode.OK
+                TestResultCode.Ok
             },
 
             new object[]
@@ -284,7 +358,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                HttpStatusCode.NotFound
+                TestResultCode.NotFound
             },
 
             new object[]
@@ -295,18 +369,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                HttpStatusCode.OK
-            },
-
-            new object[]
-            {
-                new AnswerDto
-                {
-                    QuestionId = 5,
-                    Title = ValidTitle,
-                    Description = ValidDescription
-                },
-                HttpStatusCode.OK
+                TestResultCode.Unauthorized
             }
         };
     }
@@ -350,7 +413,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
             {
                 5,
                 true,
-                TestResultCode.OK
+                TestResultCode.Ok
             },
 
             new object[]
@@ -366,18 +429,71 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 true,
                 TestResultCode.NotFound
             }
+        };
+    }
 
+    public static IEnumerable<object[]> GenerateUpdateData()
+    {
+        return new List<object[]>
+        {
+            new object[]
+            {
+                5,
+                new AnswerDto
+                {
+                    QuestionId = 1,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                TestResultCode.Ok
+            },
+            new object[]
+            {
+                5,
+                new AnswerDto
+                {
+                    QuestionId = 1,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                TestResultCode.Unauthorized
+            },
+            new object[]
+            {
+                5,
+                new AnswerDto
+                {
+                    QuestionId = 100,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                TestResultCode.NotFound
+            },
+            new object[]
+            {
+                20,
+                new AnswerDto
+                {
+                    QuestionId = 1,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                TestResultCode.NotFound
+            },
+            new object[]
+            {
+                20,
+                new AnswerDto
+                {
+                    QuestionId = 20,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                TestResultCode.NotFound
+            }
         };
     }
 
     #endregion
 
-    public enum TestResultCode
-    {
-        OK,
-        NotFound,
-        BadRequest,
-        Unauthorized,
-        Forbidden
-    }
 }

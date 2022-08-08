@@ -62,14 +62,14 @@ public class RedditMockupContext : DbContext
     
     private static IEnumerable<Answer> GetFakeAnswers()
     {
-        int id = 1;
+        var id = 1;
         
         var answerFaker = new Faker<Answer>()
             .RuleFor(answer => answer.Id, faker => id++)
             .RuleFor(answer => answer.Title, faker => faker.Lorem.Letter(8))
             .RuleFor(answer => answer.Description, faker => faker.Lorem.Letter(30))
             .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 2))
-            .RuleFor(answer => answer.QuestionId, faker => faker.Random.Number(1, 10));
+            .RuleFor(answer => answer.QuestionId, (faker, answer) => answer.QuestionId = 1);
 
         var fakeAnswers = new List<Answer>();
 
@@ -87,13 +87,33 @@ public class RedditMockupContext : DbContext
 
         modelBuilder.Entity<Role>().HasData(new List<Role>
         {
-            new() { Id = 1, Title = RoleConstants.Admin, }, new() { Id = 2, Title = RoleConstants.User, }
+            new()
+            {
+                Id = 1,
+                Title = RoleConstants.Admin
+            }, 
+            
+            new()
+            {
+                Id = 2,
+                Title = RoleConstants.User
+            }
         });
 
         modelBuilder.Entity<Person>().HasData(new List<Person>
         {
-            new() { Id = 1, Name = "Mahyar", Family = "Hoorbakht" },
-            new() { Id = 2, Name = "Sepehr", Family = "Foroughi Rad" }
+            new()
+            {
+                Id = 1,
+                Name = "Sepehr",
+                Family = "Foroughi Rad"
+            },
+            new()
+            {
+                Id = 2,
+                Name = "Abbas",
+                Family = "BooAzaar"
+            }
         });
 
         modelBuilder.Entity<User>().HasData(new List<User>
@@ -101,27 +121,54 @@ public class RedditMockupContext : DbContext
             new()
             {
                 Id = 1,
-                Username = "admin_admin",
-                Password = "adminnnn".GetHashStringAsync().Result,
+                Username = "sepehr_frd",
+                Password = "sfr1376".GetHashStringAsync().Result,
                 PersonId = 1
             },
             new()
             {
-                Id = 2, Username = "sepehr_frd", Password = "sfr1376".GetHashStringAsync().Result, PersonId = 2
+                Id = 2,
+                Username = "abbas_booazaar",
+                Password = "abbasabbas".GetHashStringAsync().Result,
+                PersonId = 2
             }
         });
 
         modelBuilder.Entity<Profile>()
-            .HasData(new List<Profile> { new() { Id = 1, UserId = 1, }, new() { Id = 2, UserId = 2, } });
+            .HasData(new List<Profile>
+            {
+                new()
+                {
+                    Id = 1,
+                    UserId = 1
+                }, 
+                new()
+                {
+                    Id = 2,
+                    UserId = 2
+                }
+            });
 
         modelBuilder.Entity<UserRole>().HasData(new List<UserRole>
         {
-            new() { Id = 1, UserId = 1, RoleId = 1 }, new() { Id = 2, UserId = 2, RoleId = 2 }
+            new()
+            {
+                Id = 1,
+                UserId = 1,
+                RoleId = 1
+            }, 
+            new()
+            {
+                Id = 2,
+                UserId = 2,
+                RoleId = 2
+            }
         });
 
         modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
         
         modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
+        
     }
 
     #endregion

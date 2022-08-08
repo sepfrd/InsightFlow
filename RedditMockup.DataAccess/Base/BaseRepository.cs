@@ -10,6 +10,7 @@ namespace RedditMockup.DataAccess.Base;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 {
+
     #region [Fields]
 
     private readonly DbSet<T> _dbSet;
@@ -31,13 +32,13 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     #endregion
 
-
     #region [Methods]
 
     public async Task<T> CreateAsync(T t, CancellationToken cancellationToken = new()) =>
         (await _dbSet.AddAsync(t, cancellationToken)).Entity;
 
-    public async Task<List<T>> LoadAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
+    public async Task<List<T>> LoadAllAsync(SieveModel sieveModel,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
         CancellationToken cancellationToken = new())
     {
         var query = _dbSet.AsNoTracking();
@@ -48,18 +49,11 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     public async Task<T> UpdateAsync(T t, CancellationToken cancellationToken = new())
     {
-        var local = _dbSet
-            .Local
-            .FirstOrDefault(entry => entry.Id.Equals(t.Id));
-
-        if (local is not null)
-        {
-            _context.Entry(local).State = EntityState.Detached;
-        }
-
+        await _dbSet
+            .AsNoTracking()
+            .SingleAsync(entity => entity.Id.Equals(t.Id), cancellationToken);
+        
         var updatedT = (await Task.FromResult(_dbSet.Update(t))).Entity;
-
-        _context.Entry(t).State = EntityState.Modified;
 
         t.LastUpdated = DateTime.Now;
 
@@ -70,4 +64,5 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         (await Task.FromResult(_dbSet.Remove(t))).Entity;
 
     #endregion
+
 }
