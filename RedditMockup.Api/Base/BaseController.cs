@@ -39,8 +39,12 @@ public class BaseController<T, DTO> : ControllerBase, IBaseController<DTO>
     
     [HttpPut]
     public async Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken 
-    cancellationToken) =>
-        await _business.UpdateAsync(id, dto, cancellationToken);
+    cancellationToken)
+        {
+
+                var response = await _business.UpdateAsync(id, dto, cancellationToken);
+                return response;
+        }
 
     [HttpOptions]
     public void Options() =>

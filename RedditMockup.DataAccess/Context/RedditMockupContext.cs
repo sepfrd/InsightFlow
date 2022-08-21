@@ -168,7 +168,8 @@ public class RedditMockupContext : DbContext
         modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
         
         modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
-        
+
+
     }
 
     #endregion

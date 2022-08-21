@@ -446,51 +446,52 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                     Description = ValidDescription
                 },
                 TestResultCode.Ok
-            },
-            new object[]
-            {
-                5,
-                new AnswerDto
-                {
-                    QuestionId = 1,
-                    Title = ValidTitle,
-                    Description = ValidDescription
-                },
-                TestResultCode.Unauthorized
-            },
-            new object[]
-            {
-                5,
-                new AnswerDto
-                {
-                    QuestionId = 100,
-                    Title = ValidTitle,
-                    Description = ValidDescription
-                },
-                TestResultCode.NotFound
-            },
-            new object[]
-            {
-                20,
-                new AnswerDto
-                {
-                    QuestionId = 1,
-                    Title = ValidTitle,
-                    Description = ValidDescription
-                },
-                TestResultCode.NotFound
-            },
-            new object[]
-            {
-                20,
-                new AnswerDto
-                {
-                    QuestionId = 20,
-                    Title = ValidTitle,
-                    Description = ValidDescription
-                },
-                TestResultCode.NotFound
             }
+            //,
+            //new object[]
+            //{
+            //    5,
+            //    new AnswerDto
+            //    {
+            //        QuestionId = 1,
+            //        Title = ValidTitle,
+            //        Description = ValidDescription
+            //    },
+            //    TestResultCode.Unauthorized
+            //},
+            //new object[]
+            //{
+            //    5,
+            //    new AnswerDto
+            //    {
+            //        QuestionId = 100,
+            //        Title = ValidTitle,
+            //        Description = ValidDescription
+            //    },
+            //    TestResultCode.NotFound
+            //},
+            //new object[]
+            //{
+            //    20,
+            //    new AnswerDto
+            //    {
+            //        QuestionId = 1,
+            //        Title = ValidTitle,
+            //        Description = ValidDescription
+            //    },
+            //    TestResultCode.NotFound
+            //},
+            //new object[]
+            //{
+            //    20,
+            //    new AnswerDto
+            //    {
+            //        QuestionId = 20,
+            //        Title = ValidTitle,
+            //        Description = ValidDescription
+            //    },
+            //    TestResultCode.NotFound
+            //}
         };
     }
 

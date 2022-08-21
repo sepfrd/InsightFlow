@@ -49,11 +49,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     public async Task<T> UpdateAsync(T t, CancellationToken cancellationToken = new())
     {
-        await _dbSet
-            .AsNoTracking()
-            .SingleAsync(entity => entity.Id.Equals(t.Id), cancellationToken);
-        
-        var updatedT = (await Task.FromResult(_dbSet.Update(t))).Entity;
+
+                //_dbSet.AsNoTracking();
+
+                var updatedT = (await Task.FromResult(_dbSet.Update(t))).Entity;
 
         t.LastUpdated = DateTime.Now;
 
