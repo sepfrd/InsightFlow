@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Business.Base;
@@ -9,6 +8,7 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
+using System.Security.Claims;
 
 namespace RedditMockup.Business.Businesses;
 
@@ -118,7 +118,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
     public override async Task<CustomResponse?> UpdateAsync(int id, AnswerDto dto, CancellationToken cancellationToken = new())
     {
         var answer = await LoadModelByIdAsync(id, cancellationToken);
-        
+
         if (answer is null)
         {
             return new CustomResponse

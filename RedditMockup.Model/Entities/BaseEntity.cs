@@ -6,24 +6,24 @@ namespace RedditMockup.Model.Entities;
 
 public class BaseEntity
 {
-    #region [Constructor]
+        #region [Constructor]
 
-    public BaseEntity() => CreationDate = LastUpdated = DateTime.Now;
+        public BaseEntity() => CreationDate = LastUpdated = DateTime.Now;
 
-    #endregion
+        #endregion
 
-    #region [Properties]
+        #region [Properties]
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Sieve(CanFilter = true, CanSort = true)]
-    public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public int Id { get; set; }
 
-    [Sieve(CanSort = true)]
-    public DateTime CreationDate { get; set; }
+        [Sieve(CanSort = true)]
+        public DateTime CreationDate { get; set; }
 
-    [Sieve(CanSort = true)]
-    public DateTime LastUpdated { get; set; }
+        [Sieve(CanSort = true)]
+        public DateTime LastUpdated { get; set; }
 
-    #endregion
+        #endregion
 }

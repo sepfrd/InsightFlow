@@ -14,7 +14,7 @@ public class AccountController : ControllerBase
 {
     private readonly AccountBusiness _accountBusiness;
 
-    public AccountController(AccountBusiness accountBusiness) => 
+    public AccountController(AccountBusiness accountBusiness) =>
         _accountBusiness = accountBusiness;
 
     [Authorize(Policy = PolicyConstants.Admin)]
@@ -26,12 +26,12 @@ public class AccountController : ControllerBase
     [Authorize]
     [HttpGet]
     [Route("Logout")]
-    public async Task<CustomResponse> Logout() => 
+    public async Task<CustomResponse> Logout() =>
         await AccountBusiness.LogoutAsync(HttpContext);
-    
+
     [HttpPost]
     [Route("Login")]
-    public async Task<CustomResponse> LoginAsync(LoginDto login, CancellationToken cancellationToken) => 
+    public async Task<CustomResponse> LoginAsync(LoginDto login, CancellationToken cancellationToken) =>
         await _accountBusiness.LoginAsync(login, HttpContext, cancellationToken);
-    
+
 }

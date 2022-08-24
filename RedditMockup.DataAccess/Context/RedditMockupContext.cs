@@ -1,7 +1,6 @@
 ﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Common.Constants;
-using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
 using RedditMockup.Model.Entities;
 using Person = RedditMockup.Model.Entities.Person;
@@ -43,7 +42,7 @@ public class RedditMockupContext : DbContext
     private static IEnumerable<Question> GetFakeQuestions()
     {
         var id = 1;
-        
+
         var questionFaker = new Faker<Question>()
             .RuleFor(question => question.Id, faker => id++)
             .RuleFor(question => question.Title, faker => faker.Lorem.Letter(8))
@@ -59,11 +58,11 @@ public class RedditMockupContext : DbContext
 
         return fakeQuestions;
     }
-    
+
     private static IEnumerable<Answer> GetFakeAnswers()
     {
         var id = 1;
-        
+
         var answerFaker = new Faker<Answer>()
             .RuleFor(answer => answer.Id, faker => id++)
             .RuleFor(answer => answer.Title, faker => faker.Lorem.Letter(8))
@@ -80,7 +79,7 @@ public class RedditMockupContext : DbContext
 
         return fakeAnswers;
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -91,8 +90,8 @@ public class RedditMockupContext : DbContext
             {
                 Id = 1,
                 Title = RoleConstants.Admin
-            }, 
-            
+            },
+
             new()
             {
                 Id = 2,
@@ -141,7 +140,7 @@ public class RedditMockupContext : DbContext
                 {
                     Id = 1,
                     UserId = 1
-                }, 
+                },
                 new()
                 {
                     Id = 2,
@@ -156,7 +155,7 @@ public class RedditMockupContext : DbContext
                 Id = 1,
                 UserId = 1,
                 RoleId = 1
-            }, 
+            },
             new()
             {
                 Id = 2,
@@ -166,7 +165,7 @@ public class RedditMockupContext : DbContext
         });
 
         modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
-        
+
         modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
 
 

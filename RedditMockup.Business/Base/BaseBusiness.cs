@@ -13,13 +13,13 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
     where T : BaseEntity
 {
     #region [Fields]
-    
+
     private readonly IUnitOfWork _unitOfWork;
-    
+
     private readonly IBaseRepository<T> _repository;
 
     private readonly IMapper _mapper;
-    
+
     #endregion
 
     #region [Constructor]
@@ -30,11 +30,11 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
         _repository = repository;
         _mapper = mapper;
     }
-    
+
     #endregion
 
     #region [Methods]
-    
+
     public async Task<CustomResponse?> CreateAsync(T t, CancellationToken cancellationToken = new())
     {
 
@@ -93,11 +93,11 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
             IsSuccess = true
         };
     }
-    
+
     #endregion
     #region [Abstract Methods]
-    
-    public abstract Task<CustomResponse?> CreateAsync(DTO dto, HttpContext httpContext, CancellationToken 
+
+    public abstract Task<CustomResponse?> CreateAsync(DTO dto, HttpContext httpContext, CancellationToken
     cancellationToken = new());
 
     public abstract Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new());

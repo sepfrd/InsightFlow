@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using RedditMockup.Common.Dtos;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -62,7 +62,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         };
 
         var serializedLoginDto = JsonSerializer.Serialize(loginDto);
-        
+
         var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
 
         await _client.PostAsync(LoginAddress, stringContent);
@@ -131,7 +131,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         #endregion
     }
-    
+
     [Fact]
     public async Task GetAll_ReturnCustomResponseOfListOfAnswerDto()
     {
@@ -434,65 +434,83 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
     public static IEnumerable<object[]> GenerateUpdateData()
     {
-        return new List<object[]>
+        var finalList = new List<object[]>();
+
+        for (int i = 0; i < 50; i++)
         {
-            new object[]
+            finalList.Add(new object[]
             {
-                5,
-                new AnswerDto
-                {
-                    QuestionId = 1,
-                    Title = ValidTitle,
-                    Description = ValidDescription
-                },
-                TestResultCode.Ok
-            }
-            //,
-            //new object[]
-            //{
-            //    5,
-            //    new AnswerDto
-            //    {
-            //        QuestionId = 1,
-            //        Title = ValidTitle,
-            //        Description = ValidDescription
-            //    },
-            //    TestResultCode.Unauthorized
-            //},
-            //new object[]
-            //{
-            //    5,
-            //    new AnswerDto
-            //    {
-            //        QuestionId = 100,
-            //        Title = ValidTitle,
-            //        Description = ValidDescription
-            //    },
-            //    TestResultCode.NotFound
-            //},
-            //new object[]
-            //{
-            //    20,
-            //    new AnswerDto
-            //    {
-            //        QuestionId = 1,
-            //        Title = ValidTitle,
-            //        Description = ValidDescription
-            //    },
-            //    TestResultCode.NotFound
-            //},
-            //new object[]
-            //{
-            //    20,
-            //    new AnswerDto
-            //    {
-            //        QuestionId = 20,
-            //        Title = ValidTitle,
-            //        Description = ValidDescription
-            //    },
-            //    TestResultCode.NotFound
-            //}
-        };
+                                5,
+                                new AnswerDto
+                                {
+                                    QuestionId = 1,
+                                    Title = ValidTitle,
+                                    Description = ValidDescription
+                                },
+                                TestResultCode.Ok
+            });
+        }
+
+        return finalList;
+
+        //        return new List<object[]>
+        //{
+        //    new object[]
+        //    {
+        //        5,
+        //        new AnswerDto
+        //        {
+        //            QuestionId = 1,
+        //            Title = ValidTitle,
+        //            Description = ValidDescription
+        //        },
+        //        TestResultCode.Ok
+        //    }
+        //,
+        //new object[]
+        //{
+        //    5,
+        //    new AnswerDto
+        //    {
+        //        QuestionId = 1,
+        //        Title = ValidTitle,
+        //        Description = ValidDescription
+        //    },
+        //    TestResultCode.Unauthorized
+        //},
+        //new object[]
+        //{
+        //    5,
+        //    new AnswerDto
+        //    {
+        //        QuestionId = 100,
+        //        Title = ValidTitle,
+        //        Description = ValidDescription
+        //    },
+        //    TestResultCode.NotFound
+        //},
+        //new object[]
+        //{
+        //    20,
+        //    new AnswerDto
+        //    {
+        //        QuestionId = 1,
+        //        Title = ValidTitle,
+        //        Description = ValidDescription
+        //    },
+        //    TestResultCode.NotFound
+        //},
+        //new object[]
+        //{
+        //    20,
+        //    new AnswerDto
+        //    {
+        //        QuestionId = 20,
+        //        Title = ValidTitle,
+        //        Description = ValidDescription
+        //    },
+        //    TestResultCode.NotFound
+        //}
     }
 
     #endregion

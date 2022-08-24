@@ -36,15 +36,15 @@ public class BaseController<T, DTO> : ControllerBase, IBaseController<DTO>
     [HttpDelete]
     public async Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken) =>
         await _business.DeleteAsync(id, cancellationToken);
-    
-    [HttpPut]
-    public async Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken 
-    cancellationToken)
-        {
 
-                var response = await _business.UpdateAsync(id, dto, cancellationToken);
-                return response;
-        }
+    [HttpPut]
+    public async Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken
+    cancellationToken)
+    {
+
+        var response = await _business.UpdateAsync(id, dto, cancellationToken);
+        return response;
+    }
 
     [HttpOptions]
     public void Options() =>

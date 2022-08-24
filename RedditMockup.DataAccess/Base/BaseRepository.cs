@@ -50,9 +50,9 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     public async Task<T> UpdateAsync(T t, CancellationToken cancellationToken = new())
     {
 
-                //_dbSet.AsNoTracking();
+        //_dbSet.AsNoTracking();
 
-                var updatedT = (await Task.FromResult(_dbSet.Update(t))).Entity;
+        var updatedT = (await Task.FromResult(_dbSet.Update(t))).Entity;
 
         t.LastUpdated = DateTime.Now;
 

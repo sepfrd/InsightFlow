@@ -1,5 +1,4 @@
 ﻿using NLog;
-using RedditMockup.Common.ViewModels;
 
 namespace RedditMockup.Common.Helpers;
 

@@ -14,7 +14,7 @@ public class AnswerController : BaseController<Answer, AnswerDto>
 
     public AnswerController(IBaseBusiness<Answer, AnswerDto> business) : base(business) =>
         _answerBusiness = (AnswerBusiness)business;
-    
+
     [HttpPost]
     [Route("SubmitVote")]
     public async Task<CustomResponse?> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken) =>

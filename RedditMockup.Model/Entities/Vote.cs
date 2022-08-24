@@ -1,37 +1,37 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Sieve.Attributes;
+﻿using Sieve.Attributes;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RedditMockup.Model.Entities;
 
 public class AnswerVote : BaseEntity
 {
-    #region [Properties]
+        #region [Properties]
 
-    [Sieve(CanSort = true)]
-    public bool Kind { get; set; }
+        [Sieve(CanSort = true)]
+        public bool Kind { get; set; }
 
-    public int AnswerId { get; set; }
+        public int AnswerId { get; set; }
 
-    [ForeignKey("AnswerId")]
-    public virtual Answer? Answer { get; set; }
+        [ForeignKey("AnswerId")]
+        public virtual Answer? Answer { get; set; }
 
-    #endregion
+        #endregion
 
 
 }
 
 public class QuestionVote : BaseEntity
 {
-    #region [Properties]
+        #region [Properties]
 
-    [Sieve(CanSort = true)]
-    public bool Kind { get; set; }
+        [Sieve(CanSort = true)]
+        public bool Kind { get; set; }
 
-    public int QuestionId { get; set; }
+        public int QuestionId { get; set; }
 
-    [ForeignKey("QuestionId")]
-    public virtual Question? Question { get; set; }
+        [ForeignKey("QuestionId")]
+        public virtual Question? Question { get; set; }
 
-    #endregion
+        #endregion
 
 }
