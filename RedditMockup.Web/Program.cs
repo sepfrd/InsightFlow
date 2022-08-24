@@ -13,11 +13,15 @@ builder.Host.ConfigureLogging(x => x.ClearProviders().SetMinimumLevel(LogLevel.T
 
 builder.Host.UseNLog();
 
-var logger = NLogBuilder.ConfigureNLog(
-        builder.Environment.IsProduction()
-            ? "nlog.config"
-            : $"nlog.{builder.Environment.EnvironmentName}.config")
-    .GetLogger("Info");
+//var logger = NLogBuilder.ConfigureNLog(
+//        builder.Environment.IsProduction()
+//            ? "nlog.config"
+//            : $"nlog.{builder.Environment.EnvironmentName}.config")
+//    .GetLogger("Info");
+
+var logger = NLogBuilder
+        .ConfigureNLog("nlog.config")
+        .GetLogger("Info");
 
 try
 {
@@ -61,6 +65,9 @@ try
         .UseAuthentication()
         .UseAuthorization()
         .UseEndpoints(endpoints => endpoints.MapControllers());
+
+        logger.Info("Hello world!");
+
 
     await app.RunAsync();
 }

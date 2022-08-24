@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 using RedditMockup.Api.Contracts;
-using RedditMockup.Api.Filters;
+//using RedditMockup.Api.Filters;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Profiles;
@@ -24,7 +24,8 @@ internal static class DependencyInjectionExtension
 {
         internal static IServiceCollection InjectApi(this IServiceCollection services) =>
             services
-                .AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
+                //.AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
+                .AddControllers()
                 .AddJsonOptions(options =>
                 {
                         options.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -57,10 +58,8 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectNLog(this IServiceCollection services,
         IWebHostEnvironment environment)
         {
-                var factory = NLogBuilder.ConfigureNLog(
-                    environment.IsProduction()
-                        ? "nlog.config"
-                        : $"nlog.{environment.EnvironmentName}.config");
+                var factory = NLogBuilder.ConfigureNLog("nlog.config");
+
                 return services.AddSingleton(_ => factory.GetLogger("Info"))
                     .AddSingleton(_ => factory.GetLogger("Error"));
         }

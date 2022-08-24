@@ -7,6 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Content Remove="nlog.Development.config" />
+      <Content Remove="nlog.Testing.config" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Api\RedditMockup.Api.csproj">
             <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
         </ProjectReference>
@@ -40,7 +45,6 @@
         <PackageReference Include="NLog" Version="5.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.7" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="NLog.Mongo" Version="4.6.0.191" />
         <PackageReference Include="Scrutor" Version="4.2.0" />
         <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
