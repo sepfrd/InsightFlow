@@ -20,6 +20,7 @@ namespace RedditMockup.Web;
 
 internal static class DependencyInjectionExtension
 {
+<<<<<<< HEAD
     internal static IServiceCollection InjectApi(this IServiceCollection services) =>
         services
             //.AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
@@ -33,6 +34,21 @@ internal static class DependencyInjectionExtension
             .Services
             .AddHealthChecks()
             .Services;
+=======
+        internal static IServiceCollection InjectApi(this IServiceCollection services) =>
+            services
+                //.AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                })
+                .AddApplicationPart(typeof(IBaseController<>).Assembly)
+                .Services
+                .AddHealthChecks()
+                .Services;
+>>>>>>> cf447b7e6914187cef1815312c22e7524c8662b9
 
     internal static IServiceCollection InjectSwagger(this IServiceCollection services) =>
         services.AddSwaggerGen();
@@ -55,8 +71,17 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectNLog(this IServiceCollection services,
         IWebHostEnvironment environment)
+<<<<<<< HEAD
     {
         var factory = NLogBuilder.ConfigureNLog("nlog.config");
+=======
+        {
+                var factory = NLogBuilder.ConfigureNLog("nlog.config");
+
+                return services.AddSingleton(_ => factory.GetLogger("Info"))
+                    .AddSingleton(_ => factory.GetLogger("Error"));
+        }
+>>>>>>> cf447b7e6914187cef1815312c22e7524c8662b9
 
         return services.AddSingleton(_ => factory.GetLogger("Info"))
             .AddSingleton(_ => factory.GetLogger("Error"));
