@@ -4,33 +4,33 @@ namespace RedditMockup.DataAccess.Contracts;
 
 public interface IUnitOfWork
 {
-    #region [Properties]
+        #region [Properties]
 
-    AnswerRepository? AnswerRepository { get; }
+        AnswerRepository? AnswerRepository { get; }
 
-    PersonRepository? PersonRepository { get; }
+        PersonRepository? PersonRepository { get; }
 
-    ProfileRepository? ProfileRepository { get; }
+        ProfileRepository? ProfileRepository { get; }
 
-    QuestionRepository? QuestionRepository { get; }
+        QuestionRepository? QuestionRepository { get; }
 
-    RoleRepository? RoleRepository { get; }
+        RoleRepository? RoleRepository { get; }
 
-    UserRepository? UserRepository { get; }
+        UserRepository? UserRepository { get; }
 
-    UserRoleRepository? UserRoleRepository { get; }
+        UserRoleRepository? UserRoleRepository { get; }
 
-    QuestionVoteRepository? QuestionVoteRepository { get; }
+        QuestionVoteRepository? QuestionVoteRepository { get; }
 
-    AnswerVoteRepository? AnswerVoteRepository { get; }
+        AnswerVoteRepository? AnswerVoteRepository { get; }
 
-    #endregion
+        #endregion
 
-    #region [Methods]
+        #region [Methods]
 
-    int Commit();
+        int Commit();
 
-    Task<int> CommitAsync(CancellationToken cancellationToken);
+        Task<int> CommitAsync(CancellationToken cancellationToken);
 
-    #endregion
+        #endregion
 }

@@ -11,57 +11,57 @@ namespace RedditMockup.DataAccess.Base;
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 {
 
-    #region [Fields]
+        #region [Fields]
 
-    private readonly DbSet<T> _dbSet;
+        private readonly DbSet<T> _dbSet;
 
-    private readonly ISieveProcessor _processor;
+        private readonly ISieveProcessor _processor;
 
-    private readonly RedditMockupContext _context;
+        private readonly RedditMockupContext _context;
 
-    #endregion
+        #endregion
 
-    #region [Constructor]
+        #region [Constructor]
 
-    public BaseRepository(RedditMockupContext context, ISieveProcessor processor)
-    {
-        _processor = processor;
-        _dbSet = context.Set<T>();
-        _context = context;
-    }
+        public BaseRepository(RedditMockupContext context, ISieveProcessor processor)
+        {
+                _processor = processor;
+                _dbSet = context.Set<T>();
+                _context = context;
+        }
 
-    #endregion
+        #endregion
 
-    #region [Methods]
+        #region [Methods]
 
-    public async Task<T> CreateAsync(T t, CancellationToken cancellationToken = new()) =>
-        (await _dbSet.AddAsync(t, cancellationToken)).Entity;
+        public async Task<T> CreateAsync(T t, CancellationToken cancellationToken = new()) =>
+            (await _dbSet.AddAsync(t, cancellationToken)).Entity;
 
-    public async Task<List<T>> LoadAllAsync(SieveModel sieveModel,
-        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
-        CancellationToken cancellationToken = new())
-    {
-        var query = _dbSet.AsNoTracking();
-        if (include != null)
-            query = include(query);
-        return await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
-    }
+        public async Task<List<T>> LoadAllAsync(SieveModel sieveModel,
+            Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
+            CancellationToken cancellationToken = new())
+        {
+                var query = _dbSet.AsNoTracking();
+                if (include != null)
+                        query = include(query);
+                return await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
+        }
 
-    public async Task<T> UpdateAsync(T t, CancellationToken cancellationToken = new())
-    {
+        public async Task<T> UpdateAsync(T t, CancellationToken cancellationToken = new())
+        {
 
-        //_dbSet.AsNoTracking();
+                //_dbSet.AsNoTracking();
 
-        var updatedT = (await Task.FromResult(_dbSet.Update(t))).Entity;
+                var updatedT = (await Task.FromResult(_dbSet.Update(t))).Entity;
 
-        t.LastUpdated = DateTime.Now;
+                t.LastUpdated = DateTime.Now;
 
-        return updatedT;
-    }
+                return updatedT;
+        }
 
-    public async Task<T> DeleteAsync(T t, CancellationToken cancellationToken = new()) =>
-        (await Task.FromResult(_dbSet.Remove(t))).Entity;
+        public async Task<T> DeleteAsync(T t, CancellationToken cancellationToken = new()) =>
+            (await Task.FromResult(_dbSet.Remove(t))).Entity;
 
-    #endregion
+        #endregion
 
 }

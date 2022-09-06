@@ -28,63 +28,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         private readonly WebApplicationFactory<Program> _factory;
 
-<<<<<<< HEAD
-    private readonly HttpClient _client;
-
-    #endregion
-
-    public enum TestResultCode
-    {
-        Ok,
-        NotFound,
-        Unauthorized
-    }
-
-    #region [Constructor]
-
-    public AnswerControllerTest(WebApplicationFactory<Program> factory)
-    {
-        _factory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
-
-        _client = _factory.CreateClient();
-    }
-
-    #endregion
-
-    #region [Method(s)]
-
-    private async Task AuthenticateAsync()
-    {
-        var loginDto = new LoginDto()
-        {
-            Username = "sepehr_frd",
-            Password = "sfr1376",
-            RememberMe = true
-        };
-
-        var serializedLoginDto = JsonSerializer.Serialize(loginDto);
-
-        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
-
-        await _client.PostAsync(LoginAddress, stringContent);
-    }
-
-    #endregion
-
-    #region [Theory Method(s)]
-
-    [Theory]
-    [MemberData(nameof(GenerateCreateData))]
-    public async Task Create_ReturnExpectedResult(AnswerDto dto, TestResultCode testResultCode)
-    {
-        #region [Arrange]
-
-        var serializedLoginDto = JsonSerializer.Serialize(dto);
-
-        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
-=======
         private readonly HttpClient _client;
->>>>>>> cf447b7e6914187cef1815312c22e7524c8662b9
 
         #endregion
 
@@ -283,144 +227,6 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 #endregion
         }
 
-<<<<<<< HEAD
-        #endregion
-    }
-
-    [Fact]
-    public async Task GetAll_ReturnCustomResponseOfListOfAnswerDto()
-    {
-        #region [Act]
-
-        var response = await _client.GetAsync(BaseAddress);
-
-        var streamResponse = await response.Content.ReadAsStringAsync();
-
-        var apiResponse = await Task.Factory.StartNew(() =>
-            JsonConvert.DeserializeObject<CustomResponse<List<AnswerDto>>>(streamResponse));
-
-        #endregion
-
-        #region [Assert]
-
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        apiResponse?.Data?.Should().BeOfType<List<AnswerDto>>();
-
-        #endregion
-    }
-
-    [Theory]
-    [MemberData(nameof(GenerateGetByIdData))]
-    public async Task GetById_ReturnExpectedResult(int id, bool isAuthenticated, HttpStatusCode httpStatusCode)
-    {
-        if (isAuthenticated)
-=======
-        [Theory]
-        [MemberData(nameof(GenerateSubmitVoteData))]
-        public async Task SubmitVote_ReturnExpectedResult(int answerId, bool kind, TestResultCode testResultCode)
->>>>>>> cf447b7e6914187cef1815312c22e7524c8662b9
-        {
-                #region [Arrange]
-
-                if (testResultCode != TestResultCode.Unauthorized) await AuthenticateAsync();
-
-                #endregion
-
-                #region [Act]
-
-                var response = await _client.PostAsync(BaseAddress + $"/SubmitVote?answerId={answerId}&kind={kind}", null);
-
-                if (testResultCode == TestResultCode.Unauthorized)
-                {
-                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-                        return;
-                }
-
-                var streamResponse = await response.Content.ReadAsStreamAsync();
-
-                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
-
-                #endregion
-
-                #region [Assert]
-
-                switch (testResultCode)
-                {
-                        case TestResultCode.Ok:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().Be(true);
-
-                                break;
-
-                        case TestResultCode.NotFound:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().Be(false);
-
-                                break;
-                }
-
-                #endregion
-        }
-
-        [Theory]
-        [MemberData(nameof(GenerateUpdateData))]
-        public async Task Update_ReturnExpectedResult(int id, AnswerDto dto, TestResultCode testResultCode)
-        {
-                if (testResultCode != TestResultCode.Unauthorized)
-                {
-                        await AuthenticateAsync();
-                }
-
-                var serializedDto = JsonSerializer.Serialize(dto);
-
-                var stringContent = new StringContent(serializedDto, Encoding.UTF8, "application/json");
-
-                var requestString = $"?id={id}";
-
-                var response = await _client.PutAsync(BaseAddress + requestString, stringContent);
-
-                if (testResultCode == TestResultCode.Unauthorized)
-                {
-                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-
-                        return;
-                }
-
-                var streamResponse = await response.Content.ReadAsStreamAsync();
-
-                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
-
-                switch (testResultCode)
-                {
-                        case TestResultCode.Ok:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeTrue();
-
-                                break;
-
-                        case TestResultCode.NotFound:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeFalse();
-
-                                break;
-
-                        default:
-
-                                Assert.Null("Error");
-
-                                break;
-                }
-        }
-
         #endregion
 
         #region [Data Method(s)]
@@ -522,25 +328,14 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         };
         }
 
-<<<<<<< HEAD
-    public static IEnumerable<object[]> GenerateUpdateData()
-    {
-        var finalList = new List<object[]>();
-
-        for (int i = 0; i < 50; i++)
-        {
-            finalList.Add(new object[]
-            {
-=======
         public static IEnumerable<object[]> GenerateUpdateData()
         {
                 var finalList = new List<object[]>();
 
-                for (int i = 0; i < 50; i++)
+                for (int i = 0; i < 20; i++)
                 {
                         finalList.Add(new object[]
                         {
->>>>>>> cf447b7e6914187cef1815312c22e7524c8662b9
                                 5,
                                 new AnswerDto
                                 {
@@ -549,127 +344,74 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                                     Description = ValidDescription
                                 },
                                 TestResultCode.Ok
-<<<<<<< HEAD
-            });
-        }
-
-        return finalList;
-=======
                         });
-                } 
+                }
 
                 return finalList;
->>>>>>> cf447b7e6914187cef1815312c22e7524c8662b9
 
-        //        return new List<object[]>
-        //{
-        //    new object[]
-        //    {
-        //        5,
-        //        new AnswerDto
-        //        {
-        //            QuestionId = 1,
-        //            Title = ValidTitle,
-        //            Description = ValidDescription
-        //        },
-        //        TestResultCode.Ok
-        //    }
-<<<<<<< HEAD
-        //,
-        //new object[]
-        //{
-        //    5,
-        //    new AnswerDto
-        //    {
-        //        QuestionId = 1,
-        //        Title = ValidTitle,
-        //        Description = ValidDescription
-        //    },
-        //    TestResultCode.Unauthorized
-        //},
-        //new object[]
-        //{
-        //    5,
-        //    new AnswerDto
-        //    {
-        //        QuestionId = 100,
-        //        Title = ValidTitle,
-        //        Description = ValidDescription
-        //    },
-        //    TestResultCode.NotFound
-        //},
-        //new object[]
-        //{
-        //    20,
-        //    new AnswerDto
-        //    {
-        //        QuestionId = 1,
-        //        Title = ValidTitle,
-        //        Description = ValidDescription
-        //    },
-        //    TestResultCode.NotFound
-        //},
-        //new object[]
-        //{
-        //    20,
-        //    new AnswerDto
-        //    {
-        //        QuestionId = 20,
-        //        Title = ValidTitle,
-        //        Description = ValidDescription
-        //    },
-        //    TestResultCode.NotFound
-        //}
-    }
-=======
-            //,
-            //new object[]
-            //{
-            //    5,
-            //    new AnswerDto
-            //    {
-            //        QuestionId = 1,
-            //        Title = ValidTitle,
-            //        Description = ValidDescription
-            //    },
-            //    TestResultCode.Unauthorized
-            //},
-            //new object[]
-            //{
-            //    5,
-            //    new AnswerDto
-            //    {
-            //        QuestionId = 100,
-            //        Title = ValidTitle,
-            //        Description = ValidDescription
-            //    },
-            //    TestResultCode.NotFound
-            //},
-            //new object[]
-            //{
-            //    20,
-            //    new AnswerDto
-            //    {
-            //        QuestionId = 1,
-            //        Title = ValidTitle,
-            //        Description = ValidDescription
-            //    },
-            //    TestResultCode.NotFound
-            //},
-            //new object[]
-            //{
-            //    20,
-            //    new AnswerDto
-            //    {
-            //        QuestionId = 20,
-            //        Title = ValidTitle,
-            //        Description = ValidDescription
-            //    },
-            //    TestResultCode.NotFound
-            //}
+                //        return new List<object[]>
+                //{
+                //    new object[]
+                //    {
+                //        5,
+                //        new AnswerDto
+                //        {
+                //            QuestionId = 1,
+                //            Title = ValidTitle,
+                //            Description = ValidDescription
+                //        },
+                //        TestResultCode.Ok
+                //    }
+                //,
+                //new object[]
+                //{
+                //    5,
+                //    new AnswerDto
+                //    {
+                //        QuestionId = 1,
+                //        Title = ValidTitle,
+                //        Description = ValidDescription
+                //    },
+                //    TestResultCode.Unauthorized
+                //},
+                //new object[]
+                //{
+                //    5,
+                //    new AnswerDto
+                //    {
+                //        QuestionId = 100,
+                //        Title = ValidTitle,
+                //        Description = ValidDescription
+                //    },
+                //    TestResultCode.NotFound
+                //},
+                //new object[]
+                //{
+                //    20,
+                //    new AnswerDto
+                //    {
+                //        QuestionId = 1,
+                //        Title = ValidTitle,
+                //        Description = ValidDescription
+                //    },
+                //    TestResultCode.NotFound
+                //},
+                //new object[]
+                //{
+                //    20,
+                //    new AnswerDto
+                //    {
+                //        QuestionId = 20,
+                //        Title = ValidTitle,
+                //        Description = ValidDescription
+                //    },
+                //    TestResultCode.NotFound
+                //}
+
+
+
         }
->>>>>>> cf447b7e6914187cef1815312c22e7524c8662b9
 
         #endregion
-
 }
+

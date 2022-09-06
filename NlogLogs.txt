@@ -11,3 +11,23 @@ File name: 'nlog.Development.config'
 { "time": "2022-08-23T19:13:08.4924879+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
 { "time": "2022-08-24T13:51:28.1881667+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
 { "time": "2022-08-24T13:54:16.3978812+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:41:21.1881632+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:54.6399220+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:55.3632629+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:55.4189021+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:55.4471606+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:55.4958994+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:55.6643865+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:55.7108784+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:55.7414434+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:50:55.8040192+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:53.2548964+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.0258175+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.0780708+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.1162115+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.1748819+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.2231536+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.2720855+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.3214558+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.3880652+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-05T16:51:54.4335624+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }

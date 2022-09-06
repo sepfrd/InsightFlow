@@ -9,82 +9,82 @@ namespace RedditMockup.DataAccess.Context;
 
 public class RedditMockupContext : DbContext
 {
-    #region [Constructor]
+        #region [Constructor]
 
-    public RedditMockupContext(DbContextOptions options) : base(options)
-    {
-    }
-
-    #endregion
-
-    #region [Properties]
-
-    public DbSet<Answer>? Answers { get; set; }
-
-    public DbSet<Person>? Persons { get; set; }
-
-    public DbSet<Profile>? Profiles { get; set; }
-
-    public DbSet<Question>? Questions { get; set; }
-
-    public DbSet<Role>? Roles { get; set; }
-
-    public DbSet<User>? Users { get; set; }
-
-    public DbSet<UserRole>? UserRoles { get; set; }
-
-    public DbSet<AnswerVote>? Votes { get; set; }
-
-    #endregion
-
-    #region [Methods]
-
-    private static IEnumerable<Question> GetFakeQuestions()
-    {
-        var id = 1;
-
-        var questionFaker = new Faker<Question>()
-            .RuleFor(question => question.Id, faker => id++)
-            .RuleFor(question => question.Title, faker => faker.Lorem.Letter(8))
-            .RuleFor(question => question.Description, faker => faker.Lorem.Letter(30))
-            .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 2));
-
-        var fakeQuestions = new List<Question>();
-
-        for (var i = 0; i < 10; i++)
+        public RedditMockupContext(DbContextOptions options) : base(options)
         {
-            fakeQuestions.Add(questionFaker.Generate());
         }
 
-        return fakeQuestions;
-    }
+        #endregion
 
-    private static IEnumerable<Answer> GetFakeAnswers()
-    {
-        var id = 1;
+        #region [Properties]
 
-        var answerFaker = new Faker<Answer>()
-            .RuleFor(answer => answer.Id, faker => id++)
-            .RuleFor(answer => answer.Title, faker => faker.Lorem.Letter(8))
-            .RuleFor(answer => answer.Description, faker => faker.Lorem.Letter(30))
-            .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 2))
-            .RuleFor(answer => answer.QuestionId, (faker, answer) => answer.QuestionId = 1);
+        public DbSet<Answer>? Answers { get; set; }
 
-        var fakeAnswers = new List<Answer>();
+        public DbSet<Person>? Persons { get; set; }
 
-        for (var i = 0; i < 10; i++)
+        public DbSet<Profile>? Profiles { get; set; }
+
+        public DbSet<Question>? Questions { get; set; }
+
+        public DbSet<Role>? Roles { get; set; }
+
+        public DbSet<User>? Users { get; set; }
+
+        public DbSet<UserRole>? UserRoles { get; set; }
+
+        public DbSet<AnswerVote>? Votes { get; set; }
+
+        #endregion
+
+        #region [Methods]
+
+        private static IEnumerable<Question> GetFakeQuestions()
         {
-            fakeAnswers.Add(answerFaker.Generate());
+                var id = 1;
+
+                var questionFaker = new Faker<Question>()
+                    .RuleFor(question => question.Id, faker => id++)
+                    .RuleFor(question => question.Title, faker => faker.Lorem.Letter(8))
+                    .RuleFor(question => question.Description, faker => faker.Lorem.Letter(30))
+                    .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 2));
+
+                var fakeQuestions = new List<Question>();
+
+                for (var i = 0; i < 10; i++)
+                {
+                        fakeQuestions.Add(questionFaker.Generate());
+                }
+
+                return fakeQuestions;
         }
 
-        return fakeAnswers;
-    }
+        private static IEnumerable<Answer> GetFakeAnswers()
+        {
+                var id = 1;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
+                var answerFaker = new Faker<Answer>()
+                    .RuleFor(answer => answer.Id, faker => id++)
+                    .RuleFor(answer => answer.Title, faker => faker.Lorem.Letter(8))
+                    .RuleFor(answer => answer.Description, faker => faker.Lorem.Letter(30))
+                    .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 2))
+                    .RuleFor(answer => answer.QuestionId, (faker, answer) => answer.QuestionId = 1);
 
-        modelBuilder.Entity<Role>().HasData(new List<Role>
+                var fakeAnswers = new List<Answer>();
+
+                for (var i = 0; i < 10; i++)
+                {
+                        fakeAnswers.Add(answerFaker.Generate());
+                }
+
+                return fakeAnswers;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+                base.OnModelCreating(modelBuilder);
+
+                modelBuilder.Entity<Role>().HasData(new List<Role>
         {
             new()
             {
@@ -99,7 +99,7 @@ public class RedditMockupContext : DbContext
             }
         });
 
-        modelBuilder.Entity<Person>().HasData(new List<Person>
+                modelBuilder.Entity<Person>().HasData(new List<Person>
         {
             new()
             {
@@ -115,7 +115,7 @@ public class RedditMockupContext : DbContext
             }
         });
 
-        modelBuilder.Entity<User>().HasData(new List<User>
+                modelBuilder.Entity<User>().HasData(new List<User>
         {
             new()
             {
@@ -133,9 +133,9 @@ public class RedditMockupContext : DbContext
             }
         });
 
-        modelBuilder.Entity<Profile>()
-            .HasData(new List<Profile>
-            {
+                modelBuilder.Entity<Profile>()
+                    .HasData(new List<Profile>
+                    {
                 new()
                 {
                     Id = 1,
@@ -146,9 +146,9 @@ public class RedditMockupContext : DbContext
                     Id = 2,
                     UserId = 2
                 }
-            });
+                    });
 
-        modelBuilder.Entity<UserRole>().HasData(new List<UserRole>
+                modelBuilder.Entity<UserRole>().HasData(new List<UserRole>
         {
             new()
             {
@@ -164,12 +164,12 @@ public class RedditMockupContext : DbContext
             }
         });
 
-        modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
+                modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
 
-        modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
+                modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
 
 
-    }
+        }
 
-    #endregion
+        #endregion
 }

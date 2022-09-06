@@ -95,6 +95,7 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
     }
 
     #endregion
+
     #region [Abstract Methods]
 
     public abstract Task<CustomResponse?> CreateAsync(DTO dto, HttpContext httpContext, CancellationToken

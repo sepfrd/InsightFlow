@@ -6,9 +6,9 @@ namespace RedditMockup.Common.Profiles;
 
 public class QuestionProfile : Profile
 {
-    public QuestionProfile()
-    {
-        CreateMap<Question, QuestionDto>()
-            .ReverseMap();
-    }
+        public QuestionProfile()
+        {
+                CreateMap<Question, QuestionDto>()
+                    .ReverseMap();
+        }
 }

@@ -6,12 +6,12 @@ namespace RedditMockup.Common.Profiles;
 
 public class VoteProfile : Profile
 {
-    public VoteProfile()
-    {
-        CreateMap<VoteDto, AnswerVote>()
-            .ReverseMap();
+        public VoteProfile()
+        {
+                CreateMap<VoteDto, AnswerVote>()
+                    .ReverseMap();
 
-        CreateMap<VoteDto, QuestionVote>()
-            .ReverseMap();
-    }
+                CreateMap<VoteDto, QuestionVote>()
+                    .ReverseMap();
+        }
 }

@@ -5,9 +5,9 @@ namespace RedditMockup.Common.Profiles;
 
 public class ProfileProfile : Profile
 {
-    public ProfileProfile()
-    {
-        CreateMap<Model.Entities.Profile, ProfileDto>()
-        .ReverseMap();
-    }
+        public ProfileProfile()
+        {
+                CreateMap<Model.Entities.Profile, ProfileDto>()
+                .ReverseMap();
+        }
 }

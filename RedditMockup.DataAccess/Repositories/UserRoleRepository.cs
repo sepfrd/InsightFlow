@@ -7,9 +7,9 @@ namespace RedditMockup.DataAccess.Repositories;
 
 public class UserRoleRepository : BaseRepository<UserRole>
 {
-    #region [Constructor]
+        #region [Constructor]
 
-    public UserRoleRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor) { }
+        public UserRoleRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor) { }
 
-    #endregion
+        #endregion
 }
