@@ -227,6 +227,70 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 #endregion
         }
 
+        [Theory]
+        [MemberData(nameof(GenerateUpdateData))]
+        public async Task Update_ReturnExpectedResult(int answerId, AnswerDto dto, TestResultCode testResultCode)
+        {
+                #region [Arrange]
+
+                var serializedLoginDto = JsonSerializer.Serialize(dto);
+
+                var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
+
+                if (testResultCode != TestResultCode.Unauthorized)
+                {
+                        await AuthenticateAsync();
+                }
+
+                #endregion
+
+                #region [Act]
+
+                var response = await _client.PutAsync($"{BaseAddress}?id={answerId}", stringContent);
+
+                if (testResultCode == TestResultCode.Unauthorized)
+                {
+                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+                        return;
+                }
+
+                var streamResponse = await response.Content.ReadAsStreamAsync();
+
+                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+                #endregion
+
+                #region [Assert]
+
+                switch (testResultCode)
+                {
+                        case TestResultCode.Ok:
+
+                                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                                apiResponse?.IsSuccess.Should().BeTrue();
+
+                                break;
+
+                        case TestResultCode.NotFound:
+
+                                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                                apiResponse?.IsSuccess.Should().BeFalse();
+
+                                break;
+
+                        default:
+
+                                Assert.Null("Error");
+
+                                break;
+                }
+
+                #endregion
+
+        }
+
         #endregion
 
         #region [Data Method(s)]
@@ -347,71 +411,69 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                         });
                 }
 
+
+                finalList.AddRange(
+                new List<object[]>
+                {
+                    new object[]
+                    {
+                        5,
+                        new AnswerDto
+                        {
+                            QuestionId = 1,
+                            Title = ValidTitle,
+                            Description = ValidDescription
+                        },
+                        TestResultCode.Ok
+                    },
+                new object[]
+                {
+                    5,
+                    new AnswerDto
+                    {
+                        QuestionId = 1,
+                        Title = ValidTitle,
+                        Description = ValidDescription
+                    },
+                    TestResultCode.Unauthorized
+                },
+                new object[]
+                {
+                    5,
+                    new AnswerDto
+                    {
+                        QuestionId = 100,
+                        Title = ValidTitle,
+                        Description = ValidDescription
+                    },
+                    TestResultCode.NotFound
+                },
+                new object[]
+                {
+                    20,
+                    new AnswerDto
+                    {
+                        QuestionId = 1,
+                        Title = ValidTitle,
+                        Description = ValidDescription
+                    },
+                    TestResultCode.NotFound
+                },
+                new object[]
+                {
+                    20,
+                    new AnswerDto
+                    {
+                        QuestionId = 20,
+                        Title = ValidTitle,
+                        Description = ValidDescription
+                    },
+                    TestResultCode.NotFound
+                }
+                }
+                );
                 return finalList;
-
-                //        return new List<object[]>
-                //{
-                //    new object[]
-                //    {
-                //        5,
-                //        new AnswerDto
-                //        {
-                //            QuestionId = 1,
-                //            Title = ValidTitle,
-                //            Description = ValidDescription
-                //        },
-                //        TestResultCode.Ok
-                //    }
-                //,
-                //new object[]
-                //{
-                //    5,
-                //    new AnswerDto
-                //    {
-                //        QuestionId = 1,
-                //        Title = ValidTitle,
-                //        Description = ValidDescription
-                //    },
-                //    TestResultCode.Unauthorized
-                //},
-                //new object[]
-                //{
-                //    5,
-                //    new AnswerDto
-                //    {
-                //        QuestionId = 100,
-                //        Title = ValidTitle,
-                //        Description = ValidDescription
-                //    },
-                //    TestResultCode.NotFound
-                //},
-                //new object[]
-                //{
-                //    20,
-                //    new AnswerDto
-                //    {
-                //        QuestionId = 1,
-                //        Title = ValidTitle,
-                //        Description = ValidDescription
-                //    },
-                //    TestResultCode.NotFound
-                //},
-                //new object[]
-                //{
-                //    20,
-                //    new AnswerDto
-                //    {
-                //        QuestionId = 20,
-                //        Title = ValidTitle,
-                //        Description = ValidDescription
-                //    },
-                //    TestResultCode.NotFound
-                //}
-
-
-
         }
 
         #endregion
 }
-

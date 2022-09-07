@@ -31,3 +31,923 @@ File name: 'nlog.Development.config'
 { "time": "2022-09-05T16:51:54.3214558+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
 { "time": "2022-09-05T16:51:54.3880652+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
 { "time": "2022-09-05T16:51:54.4335624+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:19.3676887+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:19.3676909+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.2197932+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.2197933+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.3122557+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.3122557+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.3348275+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.3682438+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.4210593+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.4598661+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.4598661+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.5016525+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.5072430+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.5453747+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.5710803+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.6009983+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.6230750+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.6672464+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.6811531+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.6952570+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.7408803+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.7570631+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.7570631+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.8040441+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.8213512+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.8475953+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.9046387+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.9130901+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.9473164+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.9787336+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:20.9915074+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:21.0284915+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:21.0896282+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:21.1159551+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:21.2741353+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:21.3239351+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:21.3348555+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:21.3979084+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.3138334+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.4204593+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.4872817+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.5074200+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.5612267+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.5862959+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.6316527+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.6885294+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.7108222+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.7464539+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.7745722+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.8051165+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.8393950+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.8737220+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.8816243+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.9137696+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.9523276+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.9601401+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:49.9916530+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T16:14:50.0756338+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-06T17:18:59.8894563+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:48.8682845+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:48.8682845+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:49.6983565+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:49.6983565+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:49.7809171+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:49.7809171+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:49.8332667+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:49.8677068+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:49.8830974+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:49.9294211+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.0162878+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.0753911+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.0753911+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.1479830+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.1691658+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.2316710+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.2316710+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.9405638+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:50.9929426+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.0230153+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.0703750+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.1398541+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.1803847+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.2265889+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.2577074+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.3052065+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.3522848+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.3975080+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.4446599+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.5059538+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.5559222+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.5853106+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.6365866+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.6945809+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.7477565+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.7731180+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.8205244+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:40:51.8671499+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:04.0987655+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:04.9230199+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:04.9933579+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.0412530+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.0861950+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.1479211+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.1957655+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.2727511+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.3354909+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.3832951+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.4297809+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.4965431+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.5546022+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.6654077+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.7173467+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.7567114+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.8109818+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.8546695+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:05.9481614+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:06.0107627+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:10.6790079+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.4876989+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.5435840+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.6014178+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.6738654+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.7100195+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.7755163+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.8225957+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.9035808+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.9458003+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:11.9916625+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.0604891+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.1227261+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.1636886+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.2164489+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.2577121+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.3244723+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.3670524+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.4206902+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:12.4654154+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:16.2983622+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.1176650+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.1869152+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.2265700+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.3308509+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.3670612+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.4323470+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.4775154+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.5385247+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.5854382+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.6548916+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.7117789+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.7776398+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.8191728+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.8822744+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.9131640+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:17.9774982+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:18.0243083+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:18.0704866+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:41:18.1475999+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:18.7503916+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:19.6005440+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:19.6601382+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:19.6803738+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:19.7498052+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:19.8984504+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:19.9484997+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:19.9933519+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:20.3238369+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:20.3723880+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:20.4295791+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:20.4791442+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:20.5079037+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T14:50:20.5760884+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:04:00.0304349+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:04:01.2106779+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:04:01.2524459+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:04:01.3241028+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:04:01.5907420+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:07:28.8363929+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:07:29.9734812+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:07:30.0641966+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:07:30.1796969+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:07:30.4971866+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:08:22.9558894+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:08:23.9937967+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:08:24.1198282+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:08:24.2090873+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:08:24.3983883+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:09:05.3802628+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:09:07.5831050+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:09:07.6314202+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:09:07.7083469+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:09:07.9296118+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:10:59.6727896+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:11:01.5742897+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:11:04.3618816+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:11:30.0435806+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:11:40.2827381+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:12:16.2040126+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:12:17.0400643+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:12:17.0763738+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:12:17.1366283+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:12:17.2889240+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:14:22.0862782+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:14:23.5040647+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:14:23.5469193+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:14:23.6162389+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:14:23.8825854+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:15:42.8941417+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:16:22.1577946+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:16:34.2108822+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:19:33.7664667+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:21:37.2059617+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:26:01.2585458+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:26:02.1121577+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:26:02.1330241+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:26:02.2105937+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:26:02.3820949+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:51.3620839+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.1064465+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.1652522+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.1791151+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.2598046+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.3982276+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.4307860+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.5233437+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.6409401+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.7013427+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.9197295+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:52.9681151+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:53.0195693+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:27:53.0909444+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:47:48.9561472+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:47:49.7959395+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:47:49.8199075+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:47:49.8866285+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:47:49.9415004+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:47:59.6358624+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:48:00.5312479+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:48:00.5784253+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:48:00.6326511+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:48:00.6970193+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:31.9493334+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:32.7412992+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:32.7765028+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:32.8388530+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:32.8980493+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:41.0729952+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:41.8862538+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:41.9210391+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:41.9922834+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:42.0511930+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:48.5156671+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:49.3614642+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:49.3818356+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:49.4506832+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:49.4952821+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:55.8242190+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:56.6880417+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:56.7463442+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:56.8060723+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:54:56.8789841+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:55:43.0405733+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:55:43.1192351+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:55:43.2234601+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:55:43.2281750+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:55:43.3014411+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:55:43.3047467+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:55:43.3373892+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:55:43.3527884+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:55:43.3908496+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:55:43.3908496+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:58:59.6604210+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:58:59.7199640+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:58:59.8253535+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:58:59.8361397+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:58:59.9635651+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:58:59.9635651+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:00.1325143+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:00.1325143+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:00.2463301+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:00.2634141+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:00.5433695+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:00.5433695+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:00.7034533+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:00.7360790+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:00.8862858+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:00.8862858+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:00.9777463+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:00.9979199+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.1237762+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.1237762+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.1639562+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.1853539+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.2108260+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.2355784+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.2761634+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.2761634+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.3295265+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.3295265+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.3899347+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.3899347+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.4633826+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.4784176+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.5501001+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.5501001+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.6226205+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.6226205+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.7037885+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.7129336+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.7605531+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.7605531+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.8611679+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.8702721+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.9137353+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.9137353+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.9658849+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.9658849+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:01.9924049+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:01.9924049+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T15:59:02.0228805+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T15:59:02.0228805+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:23.9040287+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:23.9723535+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.1126168+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.1186769+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.2053864+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.2053864+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.2725875+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.2725875+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.3243426+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.3243426+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.3775402+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.3823005+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.4293736+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.4293736+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.4817210+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.4817210+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.5099395+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.5282277+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.5630979+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.5630979+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.6035555+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.6191194+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.6548393+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.6548393+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.6991034+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.6991034+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.7262671+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.7414806+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.7728493+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.7728493+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.8097545+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.8097545+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.8749569+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.8749569+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.9488268+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.9488268+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:24.9973122+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:24.9973122+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:25.0596750+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:25.0596750+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:25.1334310+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:25.1479604+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:25.1945601+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:25.2105342+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:25.2614113+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:25.2614113+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:25.3251822+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:25.3251822+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:17:25.3877132+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:17:25.3877132+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.1832295+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.2474681+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.3516691+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.3516691+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.4189608+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.4189608+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.4667141+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.4667141+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.4945819+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.5095769+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.5474699+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.5474699+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.5865757+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.5865757+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.6382662+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.6382662+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.6805312+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.6805312+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.7215213+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.7215213+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.7577744+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.7577744+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.8041213+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.8041213+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.8424640+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.8424640+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.8671067+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.8671067+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.9152693+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.9152693+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:20.9538201+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:20.9538201+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.0095523+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.0095523+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.0623489+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.0623489+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.1015037+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.1176877+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.1490672+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.1662588+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.2490639+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.2490639+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.3097517+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.3097517+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.3371668+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.3371668+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.4052383+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.4052383+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:21.4687543+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:21.4687543+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:42.5525832+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:42.5979200+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:42.6871285+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:42.6871285+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:42.7486153+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:42.7486153+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:42.8058009+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:42.8058009+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:42.8694221+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:42.8694221+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:42.9168050+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:42.9168050+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:42.9647549+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:42.9647549+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:42.9922026+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:42.9922026+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.0477662+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.0477662+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.0871344+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.0871344+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.1328104+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.1328104+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.1646339+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.1646339+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.2125007+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.2125007+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.2416526+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.2416526+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.2883457+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.2883457+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.3195752+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.3352360+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.3725495+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.3725495+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.4055170+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.4055170+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.4497982+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.4603487+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.5142165+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.5142165+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.5856410+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.5856410+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.6481468+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.6481468+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.6948265+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.6948265+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.7486529+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.7486529+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:27:43.7734673+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:27:43.7891014+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.0175786+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.0789081+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.1891614+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.1891614+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.2972007+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.2972007+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.3550630+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.3550630+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.3820245+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.3982396+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.4354592+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.4354592+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.4623318+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.4846521+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.5275266+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.5275266+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.5544821+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.5544821+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.6055603+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.6055603+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.6500626+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.6500626+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.6793456+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.6793456+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.7279162+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.7279162+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.7670154+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.7670154+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.8098350+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.8098350+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.8578349+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.8578349+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.9008277+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.9008277+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.9397882+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.9397882+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:30.9764823+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:30.9764823+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:31.0238196+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:31.0238196+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:31.0707124+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:31.0707124+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:31.1319348+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:31.1319348+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:31.1651791+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:31.1651791+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:31.1984944+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:31.1984944+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:31.3197428+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:31.3414865+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.2641357+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.3102953+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.3996486+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.3996486+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.4667835+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.4667835+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.5095185+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.5095185+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.5559648+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.5559648+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.5962390+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.5962390+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.6332313+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.6332313+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.6649857+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.6649857+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.7116123+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.7116123+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.7605569+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.7605569+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.8052890+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.8052890+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.8455514+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.8455514+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.8854881+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.8854881+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.9136586+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.9136586+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:54.9804687+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:54.9804687+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.0521928+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.0548515+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.0908807+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.0908807+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.1372004+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.1372004+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.1954097+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.2127916+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.2966802+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.2966802+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.3370688+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.3370688+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.3729633+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.3729633+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.4206594+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.4206594+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.4666442+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.4666442+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:34:55.4916459+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:34:55.5102281+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:15.9749877+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.0204420+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.1064364+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.1064364+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.1714851+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.1714851+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.2179622+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.2179622+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.2617790+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.2617790+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.3013228+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.3013228+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.3403978+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.3403978+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.3678690+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.3678690+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.4141172+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.4141172+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.4615409+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.4615409+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.5085949+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.5085949+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.5557535+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.5705950+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.6036697+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.6186533+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.6544616+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.6544616+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.6810210+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.6955153+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.7277993+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.7277993+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.7626956+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.7626956+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.8052274+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.8052274+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.8526533+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.8526533+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.9010780+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.9010780+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:16.9498286+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:16.9498286+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:17.0114615+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:17.0114615+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:17.0551723+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:17.0551723+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:17.0881395+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:17.0881395+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:17.1348355+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:17.1348355+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:46.9086558+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:46.9572337+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.0629219+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.0629219+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.1294202+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.1294202+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.1642472+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.1642472+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.2164944+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.2164944+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.2590336+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.2590336+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.2893829+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.2893829+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.3377738+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.3377738+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.3670472+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.3840162+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.4233018+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.4233018+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.4662913+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.4662913+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.4920726+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.4920726+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.5266217+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.5405217+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.5752837+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.5752837+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.6121397+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.6121397+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.6598385+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.6598385+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.6988630+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.6988630+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.7282774+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.7282774+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.7820920+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.7820920+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.8199793+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.8199793+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.8687742+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.8830325+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:47.9545454+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:47.9545454+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:48.0075173+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:48.0239865+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:48.0738884+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:48.0738884+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:35:48.1216562+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:35:48.1216562+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.4556554+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.5067051+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.6074525+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.6074525+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.6916732+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.6944951+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.7443678+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.7443678+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.7837691+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.7837691+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.8129321+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.8129321+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.8684349+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.8684349+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.9073894+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.9073894+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:08.9602213+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:08.9602213+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.0345058+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.0389599+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.0853328+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.1036631+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.1512375+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.1512375+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.1957788+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.1957788+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.2346706+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.2346706+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.2728956+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.2901173+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.3670591+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.3670591+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.4056394+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.4056394+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.4605842+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.4778899+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.5075079+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.5075079+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.5568631+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.5713465+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.6070041+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.6070041+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.6489034+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.6489034+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.7045068+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.7045068+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.7269778+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.7269778+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:09.7745614+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:09.7745614+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:15.8104653+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:15.8608431+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:15.9544586+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:15.9544586+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.0255549+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.0255549+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.0708474+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.0875005+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.1300089+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.1334648+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.1687449+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.1687449+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.1953805+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.1953805+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.2436756+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.2436756+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.2920569+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.2920569+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.3262542+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.3262542+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.3667483+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.3667483+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.3988038+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.4168268+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.4462778+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.4462778+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.4923658+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.4923658+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.5227399+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.5227399+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.5542551+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.5721487+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.6086197+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.6086197+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.6755182+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.6797668+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.7296892+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.7296892+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.7738939+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.7738939+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.8360395+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.8360395+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.8824013+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.8824013+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.9163221+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.9297683+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.9607479+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:16.9607479+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:36:16.9936149+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:36:17.0129759+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:12.8795902+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:12.9266479+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.0277501+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.0277501+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.0896971+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.0896971+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.1494432+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.1666633+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.1997651+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.1997651+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.2345104+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.2345104+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.2566538+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.2566538+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.3275779+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.3275779+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.3902272+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.3902272+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.4197784+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.4197784+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.4458442+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.4458442+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.4766002+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.4766002+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.5089940+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.5231270+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.5740705+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.5740705+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.6228298+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.6228298+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.6657195+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.6657195+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.7133209+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.7133209+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.7566334+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.7566334+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.8212563+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.8212563+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.8519891+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.8519891+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.8986027+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.9139389+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:13.9947102+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:13.9947102+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:14.0799793+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:14.0850545+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:14.1540564+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:14.1540564+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:14.2351831+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:14.2434610+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.2059234+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.2551309+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.3557979+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.3557979+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.4263522+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.4344683+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.4765073+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.4923706+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.5237711+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.5237711+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.5601821+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.5601821+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.5850407+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.5850407+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.6160424+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.6323318+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.6637595+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.6810454+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.6956865+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.7104954+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.7416197+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.7576240+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.7891461+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.7891461+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.8362962+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.8519973+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.8992181+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.8992181+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.9291139+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.9291139+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:29.9848242+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:29.9848242+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.0299306+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.0299306+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.0920464+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.0920464+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.1867756+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.1867756+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.2464321+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.2464321+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.3221181+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.3221181+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.3824202+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.3824202+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.4382173+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.4382173+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.4602511+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.4602511+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:30.4922759+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:30.4922759+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:47.9282377+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:47.9878717+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.0953307+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.1006244+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.1703845+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.1703845+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.2281253+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.2281253+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.2763709+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.2763709+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.3059128+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.3214274+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.3610413+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.3610413+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.4115499+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.4154898+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.4521634+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.4521634+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.4926267+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.4926267+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.5550892+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.5550892+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.6035426+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.6035426+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.6364752+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.6502694+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.6887719+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.6887719+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.7295550+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.7295550+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.7825849+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.7825849+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.8242088+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.8242088+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.8707671+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.8707671+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:48.9305456+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:48.9305456+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:49.1018960+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:49.1018960+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:49.1661242+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:49.1661242+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:49.2162908+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:49.2162908+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:49.2570749+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:49.2753650+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:49.3271873+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:49.3271873+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }
+{ "time": "2022-09-07T16:38:49.3681479+03:30", "message": "Hello world!", "logger": "Info", "level": "Info" }
+{ "time": "2022-09-07T16:38:49.3681479+03:30", "message": "Program Stopped Because of Exception !", "logger": "Info", "level": "Error" }

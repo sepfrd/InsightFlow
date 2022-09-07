@@ -21,7 +21,6 @@ internal static class DependencyInjectionExtension
 {
     internal static IServiceCollection InjectApi(this IServiceCollection services) =>
         services
-            //.AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
             .AddControllers()
             .AddJsonOptions(options =>
             {

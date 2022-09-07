@@ -12,26 +12,26 @@ namespace RedditMockup.Api.Controllers;
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
-    private readonly AccountBusiness _accountBusiness;
+        private readonly AccountBusiness _accountBusiness;
 
-    public AccountController(AccountBusiness accountBusiness) =>
-        _accountBusiness = accountBusiness;
+        public AccountController(AccountBusiness accountBusiness) =>
+            _accountBusiness = accountBusiness;
 
-    [Authorize(Policy = PolicyConstants.Admin)]
-    [HttpGet]
-    public async Task<List<UserViewModel>> GetAllUsersAsync([FromQuery] SieveModel sieveModel,
-        CancellationToken cancellationToken) =>
-        await _accountBusiness.LoadAllUsersViewModelAsync(sieveModel, cancellationToken);
+        [Authorize(Policy = PolicyConstants.Admin)]
+        [HttpGet]
+        public async Task<List<UserViewModel>> GetAllUsersAsync([FromQuery] SieveModel sieveModel,
+            CancellationToken cancellationToken) =>
+            await _accountBusiness.LoadAllUsersViewModelAsync(sieveModel, cancellationToken);
 
-    [Authorize]
-    [HttpGet]
-    [Route("Logout")]
-    public async Task<CustomResponse> Logout() =>
-        await AccountBusiness.LogoutAsync(HttpContext);
+        [Authorize]
+        [HttpGet]
+        [Route("Logout")]
+        public async Task<CustomResponse> Logout() =>
+            await AccountBusiness.LogoutAsync(HttpContext);
 
-    [HttpPost]
-    [Route("Login")]
-    public async Task<CustomResponse> LoginAsync(LoginDto login, CancellationToken cancellationToken) =>
-        await _accountBusiness.LoginAsync(login, HttpContext, cancellationToken);
+        [HttpPost]
+        [Route("Login")]
+        public async Task<CustomResponse> LoginAsync(LoginDto login, CancellationToken cancellationToken) =>
+            await _accountBusiness.LoginAsync(login, HttpContext, cancellationToken);
 
 }

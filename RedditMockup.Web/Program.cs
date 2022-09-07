@@ -13,72 +13,63 @@ builder.Host.ConfigureLogging(x => x.ClearProviders().SetMinimumLevel(LogLevel.T
 
 builder.Host.UseNLog();
 
-//var logger = NLogBuilder.ConfigureNLog(
-//        builder.Environment.IsProduction()
-//            ? "nlog.config"
-//            : $"nlog.{builder.Environment.EnvironmentName}.config")
-//    .GetLogger("Info");
-
 var logger = NLogBuilder
         .ConfigureNLog("nlog.config")
         .GetLogger("Info");
 
 try
 {
-    builder.Services
-        .InjectApi()
-        .InjectSwagger()
-        .InjectUnitOfWork()
-        .InjectSieve()
-        .InjectAuthentication()
-        .AddEndpointsApiExplorer()
-        .InjectNLog(builder.Environment)
-        .InjectContext(builder.Configuration, builder.Environment)
-        .InjectBusinesses()
-        .InjectFluentValidation()
-        .InjectAutoMapper()
-        .InjectContentCompression();
+        builder.Services
+            .InjectApi()
+            .InjectSwagger()
+            .InjectUnitOfWork()
+            .InjectSieve()
+            .InjectAuthentication()
+            .AddEndpointsApiExplorer()
+            .InjectNLog(builder.Environment)
+            .InjectContext(builder.Configuration, builder.Environment)
+            .InjectBusinesses()
+            .InjectFluentValidation()
+            .InjectAutoMapper()
+            .InjectContentCompression();
 
-    var app = builder.Build();
+        var app = builder.Build();
 
-    await using var scope = app.Services.CreateAsyncScope();
+        await using var scope = app.Services.CreateAsyncScope();
 
-    await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
+        await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
 
-    await context.Database.EnsureCreatedAsync();
+        await context.Database.EnsureCreatedAsync();
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+        if (!app.Environment.IsProduction())
+        {
+                app.UseSwagger()
+                        .UseSwaggerUI();
+                        
+        }
 
-    else
-    {
-        app.UseExceptionHandler("/Error")
+        app.UseHttpsRedirection()
+            .UseStaticFiles()
+            .UseRouting()
+            .UseExceptionHandler()
+            .UseAuthentication()
+            .UseAuthorization()
+            .UseEndpoints(endpoints => endpoints.MapControllers())
             .UseHsts();
-    }
 
-    app.UseHttpsRedirection()
-        .UseStaticFiles()
-        .UseRouting()
-        .UseAuthentication()
-        .UseAuthorization()
-        .UseEndpoints(endpoints => endpoints.MapControllers());
-
-    logger.Info("Hello world!");
+        logger.Info("Hello world!");
 
 
-    await app.RunAsync();
+        await app.RunAsync();
 }
 catch (Exception exception)
 {
-    logger.Error(exception, "Program Stopped Because of Exception !");
-    throw;
+        logger.Error(exception, "Program Stopped Because of Exception !");
+        throw;
 }
 finally
 {
-    LogManager.Shutdown();
+        LogManager.Shutdown();
 }
 
 public partial class Program
