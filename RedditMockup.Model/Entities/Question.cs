@@ -14,7 +14,7 @@ public class Question : BaseEntity
         public string? Description { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         #endregion
 

@@ -47,20 +47,15 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
                 return await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
         }
 
-        public async Task<T> UpdateAsync(T t, CancellationToken cancellationToken = new())
+        public void Update(T t)
         {
-
-                //_dbSet.AsNoTracking();
-
-                var updatedT = (await Task.FromResult(_dbSet.Update(t))).Entity;
+                _dbSet.Update(t);
 
                 t.LastUpdated = DateTime.Now;
-
-                return updatedT;
         }
 
-        public async Task<T> DeleteAsync(T t, CancellationToken cancellationToken = new()) =>
-            (await Task.FromResult(_dbSet.Remove(t))).Entity;
+        public void Delete(T t) =>
+            _dbSet.Remove(t);
 
         #endregion
 

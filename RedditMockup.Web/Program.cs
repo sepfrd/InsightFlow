@@ -39,23 +39,39 @@ try
 
         await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
 
-        await context.Database.EnsureCreatedAsync();
 
         if (!app.Environment.IsProduction())
         {
                 app.UseSwagger()
                         .UseSwaggerUI();
-                        
+
+                await context.Database.EnsureDeletedAsync();
+                
+                await context.Database.EnsureCreatedAsync();
         }
 
-        app.UseHttpsRedirection()
+
+        if (app.Environment.IsProduction())
+        {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+        }
+
+        /*.UseExceptionHandler(
+          new ExceptionHandlerOptions()
+          {
+                  AllowStatusCode404Response = true,
+                  ExceptionHandlingPath = "/Error"
+          })
+            .UseHsts()*/
+
+        app
+            .UseHttpsRedirection()
             .UseStaticFiles()
             .UseRouting()
-            .UseExceptionHandler()
             .UseAuthentication()
             .UseAuthorization()
-            .UseEndpoints(endpoints => endpoints.MapControllers())
-            .UseHsts();
+            .UseEndpoints(endpoints => endpoints.MapControllers());
 
         logger.Info("Hello world!");
 
@@ -70,6 +86,7 @@ catch (Exception exception)
 finally
 {
         LogManager.Shutdown();
+
 }
 
 public partial class Program

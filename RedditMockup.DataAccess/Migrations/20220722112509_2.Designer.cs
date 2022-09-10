@@ -389,11 +389,11 @@ namespace RedditMockup.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RedditMockup.Model.Entities.User", "AnsweringUser")
+                    b.HasOne("RedditMockup.Model.Entities.User", "User")
                         .WithMany("Answers")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("AnsweringUser");
+                    b.Navigation("User");
 
                     b.Navigation("Question");
                 });

@@ -60,7 +60,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
                 user!.Score += 1;
 
-                await _userRepository.UpdateAsync(user, cancellationToken);
+                _userRepository.Update(user);
 
                 return await CreateAsync(answer, cancellationToken);
         }
@@ -75,7 +75,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
                 var answers =
                 await _answerRepository.LoadAllAsync(sieveModel, include => include
-                                    .Include(x => x.AnsweringUser)
+                                    .Include(x => x.User)
                                     .Include(x => x.Votes)
                                     .Include(x => x.Question)
                                     .ThenInclude(x => x!.User),

@@ -56,7 +56,7 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
         public async Task<CustomResponse?> UpdateAsync(T t, CancellationToken cancellationToken = new())
         {
 
-                await _repository.UpdateAsync(t, cancellationToken);
+                _repository.Update(t);
 
                 await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -69,7 +69,7 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
 
         public async Task<CustomResponse?> DeleteAsync(T t, CancellationToken cancellationToken = new())
         {
-                await _repository.DeleteAsync(t, cancellationToken);
+                _repository.Delete(t);
 
                 await _unitOfWork.CommitAsync(cancellationToken);
 

@@ -396,7 +396,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         {
                 var finalList = new List<object[]>();
 
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 200; i++)
                 {
                         finalList.Add(new object[]
                         {
@@ -442,7 +442,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                     5,
                     new AnswerDto
                     {
-                        QuestionId = 100,
+                        QuestionId = 400,
                         Title = ValidTitle,
                         Description = ValidDescription
                     },
@@ -450,7 +450,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 },
                 new object[]
                 {
-                    20,
+                    450,
                     new AnswerDto
                     {
                         QuestionId = 1,
@@ -461,10 +461,10 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 },
                 new object[]
                 {
-                    20,
+                    450,
                     new AnswerDto
                     {
-                        QuestionId = 20,
+                        QuestionId = 450,
                         Title = ValidTitle,
                         Description = ValidDescription
                     },

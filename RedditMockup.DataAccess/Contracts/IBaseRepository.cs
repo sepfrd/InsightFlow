@@ -10,8 +10,8 @@ public interface IBaseRepository<T> where T : BaseEntity
 
         Task<List<T>> LoadAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = new());
 
-        Task<T> UpdateAsync(T t, CancellationToken cancellationToken);
+        void Update(T t);
 
-        Task<T> DeleteAsync(T t, CancellationToken cancellationToken);
+        void Delete(T t);
 
 }

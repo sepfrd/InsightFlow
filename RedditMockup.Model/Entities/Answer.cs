@@ -29,7 +29,7 @@ public class Answer : BaseEntity
         public virtual Question? Question { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User? AnsweringUser { get; set; }
+        public virtual User? User { get; set; }
 
         #endregion
 }

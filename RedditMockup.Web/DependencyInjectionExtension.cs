@@ -41,9 +41,10 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectContext(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment environment) =>
-        environment.IsDevelopment() || environment.IsEnvironment("Testing")
+        !environment.IsProduction()
             ? services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"))
-            : services.AddDbContextPool<RedditMockupContext>(options =>
+            :
+                services.AddDbContextPool<RedditMockupContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
                 options.EnableSensitiveDataLogging();
