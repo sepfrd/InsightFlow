@@ -353,6 +353,68 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
 
         }
+
+        [Theory]
+        [MemberData(nameof(GenerateDeleteData))]
+        public async Task Delete_ReturnExpectedResult(int answerId, TestResultCode testResultCode)
+        {
+
+                #region [Arrange]
+
+                if (testResultCode != TestResultCode.Unauthorized)
+                {
+                        await AuthenticateAsync();
+                }
+
+                #endregion
+
+                #region [Act]
+
+                var response = await _client.DeleteAsync($"{BaseAddress}?id={answerId}");
+
+                if (testResultCode == TestResultCode.Unauthorized)
+                {
+                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+                        return;
+                }
+
+                var streamResponse = await response.Content.ReadAsStreamAsync();
+
+                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+                #endregion
+
+                #region [Assert]
+
+                switch (testResultCode)
+                {
+                        case TestResultCode.Ok:
+
+                                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                                apiResponse?.IsSuccess.Should().BeTrue();
+
+                                break;
+
+                        case TestResultCode.NotFound:
+
+                                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                                apiResponse?.IsSuccess.Should().BeFalse();
+
+                                break;
+
+                        default:
+
+                                Assert.Null("Error");
+
+                                break;
+
+                }
+
+                #endregion
+        }
+
         #endregion
 
         #region [Data Method(s)]
@@ -535,6 +597,28 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 }
                 );
                 return finalList;
+        }
+
+        public static IEnumerable<object[]> GenerateDeleteData()
+        {
+                return new List<object[]>
+        {
+            new object[]
+            {
+                5,
+                TestResultCode.Ok
+            },
+            new object[]
+            {
+                20,
+                TestResultCode.NotFound
+            },
+            new object[]
+            {
+                5,
+                TestResultCode.Unauthorized
+            }
+        };
         }
 
         #endregion
