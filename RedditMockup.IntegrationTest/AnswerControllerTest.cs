@@ -204,29 +204,6 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 }
         }
 
-        [Fact]
-        public async Task GetVotes_ReturnCustomResponseOfListOfVoteDto()
-        {
-                #region [Act]
-
-                var response = await _client.GetAsync(BaseAddress + "/Votes");
-
-                var streamResponse = await response.Content.ReadAsStringAsync();
-
-                var apiResponse = await Task.Factory.StartNew(() =>
-                    JsonConvert.DeserializeObject<CustomResponse<List<VoteDto>>>(streamResponse));
-
-                #endregion
-
-                #region [Assert]
-
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                apiResponse?.Data?.Should().BeOfType<List<VoteDto>>();
-
-                #endregion
-        }
-
         [Theory]
         [MemberData(nameof(GenerateUpdateData))]
         public async Task Update_ReturnExpectedResult(int answerId, AnswerDto dto, TestResultCode testResultCode)
@@ -291,6 +268,91 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         }
 
+        [Fact]
+        public async Task GetVotes_ReturnCustomResponseOfListOfVoteDto()
+        {
+                #region [Act]
+
+                var response = await _client.GetAsync(BaseAddress + "/Votes");
+
+                var streamResponse = await response.Content.ReadAsStringAsync();
+
+                var apiResponse = await Task.Factory.StartNew(() =>
+                    JsonConvert.DeserializeObject<CustomResponse<List<VoteDto>>>(streamResponse));
+
+                #endregion
+
+                #region [Assert]
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.Data?.Should().BeOfType<List<VoteDto>>();
+
+                #endregion
+        }
+
+        [Theory]
+        [MemberData(nameof(GenerateSubmitVoteData))]
+        public async Task SubmitVote_ReturnExpectedResult(int answerId, bool kind, TestResultCode testResultCode)
+        {
+                #region [Arrange]
+
+
+                if (testResultCode != TestResultCode.Unauthorized)
+                {
+                        await AuthenticateAsync();
+                }
+
+                #endregion
+
+                #region [Act]
+
+                var response = await _client.PostAsync($"{BaseAddress}/SubmitVote?answerId={answerId}&kind={kind}", null);
+
+                if (testResultCode == TestResultCode.Unauthorized)
+                {
+                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+                        return;
+                }
+
+                var streamResponse = await response.Content.ReadAsStreamAsync();
+
+                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+                #endregion
+
+                #region [Assert]
+
+                switch (testResultCode)
+                {
+                        case TestResultCode.Ok:
+
+                                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                                apiResponse?.IsSuccess.Should().BeTrue();
+
+                                break;
+
+                        case TestResultCode.NotFound:
+
+                                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                                apiResponse?.IsSuccess.Should().BeFalse();
+
+                                break;
+
+                        default:
+
+                                Assert.Null("Error");
+
+                                break;
+                }
+
+
+                #endregion
+
+
+        }
         #endregion
 
         #region [Data Method(s)]

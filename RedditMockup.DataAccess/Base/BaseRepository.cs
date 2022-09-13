@@ -49,9 +49,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
         public void Update(T t)
         {
+                t.LastUpdated = DateTime.Now;
+                
                 _dbSet.Update(t);
 
-                t.LastUpdated = DateTime.Now;
         }
 
         public void Delete(T t) =>
