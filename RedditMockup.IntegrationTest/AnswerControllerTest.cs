@@ -273,7 +273,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         {
                 #region [Act]
 
-                var response = await _client.GetAsync(BaseAddress + "/Votes");
+                var response = await _client.GetAsync(BaseAddress + "/AnswerVotes");
 
                 var streamResponse = await response.Content.ReadAsStringAsync();
 

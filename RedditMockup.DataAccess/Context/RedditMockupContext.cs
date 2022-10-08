@@ -33,7 +33,9 @@ public class RedditMockupContext : DbContext
 
         public DbSet<UserRole>? UserRoles { get; set; }
 
-        public DbSet<AnswerVote>? Votes { get; set; }
+        public DbSet<AnswerVote>? AnswerVotes { get; set; }
+
+        public DbSet<QuestionVote> QuestionVotes { get; set; }
 
         #endregion
 

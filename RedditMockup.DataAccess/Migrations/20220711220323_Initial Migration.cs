@@ -189,7 +189,7 @@ namespace RedditMockup.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Votes",
+                name: "AnswerVotes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -292,7 +292,7 @@ namespace RedditMockup.DataAccess.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votes_AnswerId",
-                table: "Votes",
+                table: "AnswerVotes",
                 column: "AnswerId");
         }
 
@@ -308,7 +308,7 @@ namespace RedditMockup.DataAccess.Migrations
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "Votes");
+                name: "AnswerVotes");
 
             migrationBuilder.DropTable(
                 name: "Roles");

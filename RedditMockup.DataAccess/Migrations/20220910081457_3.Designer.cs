@@ -185,7 +185,7 @@ namespace RedditMockup.DataAccess.Migrations
 
                     b.HasIndex("AnswerId");
 
-                    b.ToTable("Votes");
+                    b.ToTable("AnswerVotes");
                 });
 
             modelBuilder.Entity("RedditMockup.Model.Entities.Person", b =>
@@ -594,7 +594,7 @@ namespace RedditMockup.DataAccess.Migrations
             modelBuilder.Entity("RedditMockup.Model.Entities.AnswerVote", b =>
                 {
                     b.HasOne("RedditMockup.Model.Entities.Answer", "Answer")
-                        .WithMany("Votes")
+                        .WithMany("AnswerVotes")
                         .HasForeignKey("AnswerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -625,7 +625,7 @@ namespace RedditMockup.DataAccess.Migrations
             modelBuilder.Entity("RedditMockup.Model.Entities.QuestionVote", b =>
                 {
                     b.HasOne("RedditMockup.Model.Entities.Question", "Question")
-                        .WithMany("Votes")
+                        .WithMany("AnswerVotes")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -665,7 +665,7 @@ namespace RedditMockup.DataAccess.Migrations
 
             modelBuilder.Entity("RedditMockup.Model.Entities.Answer", b =>
                 {
-                    b.Navigation("Votes");
+                    b.Navigation("AnswerVotes");
                 });
 
             modelBuilder.Entity("RedditMockup.Model.Entities.Person", b =>
@@ -677,7 +677,7 @@ namespace RedditMockup.DataAccess.Migrations
                 {
                     b.Navigation("Answers");
 
-                    b.Navigation("Votes");
+                    b.Navigation("AnswerVotes");
                 });
 
             modelBuilder.Entity("RedditMockup.Model.Entities.Role", b =>

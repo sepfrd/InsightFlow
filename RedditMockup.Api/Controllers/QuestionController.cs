@@ -25,7 +25,7 @@ public class QuestionController : BaseController<Question, QuestionDto>
             await _questionBusiness.LoadAnswersAsync(questionId, cancellationToken);
 
         [HttpGet]
-        [Route("Votes")]
+        [Route("AnswerVotes")]
         [AllowAnonymous]
         public async Task<CustomResponse?> GetVotesAsync(int questionId, CancellationToken cancellationToken) =>
             await _questionBusiness.LoadVotesAsync(questionId, cancellationToken);

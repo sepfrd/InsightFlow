@@ -20,13 +20,13 @@ var logger = NLogBuilder
 try
 {
         builder.Services
+            .AddEndpointsApiExplorer()
             .InjectApi()
             .InjectSwagger()
             .InjectUnitOfWork()
             .InjectSieve()
             .InjectAuthentication()
-            .AddEndpointsApiExplorer()
-            .InjectNLog(builder.Environment)
+            .InjectNLog()
             .InjectContext(builder.Configuration, builder.Environment)
             .InjectBusinesses()
             .InjectFluentValidation()
@@ -46,7 +46,7 @@ try
                         .UseSwaggerUI();
 
                 await context.Database.EnsureDeletedAsync();
-                
+
                 await context.Database.EnsureCreatedAsync();
         }
 
@@ -57,14 +57,6 @@ try
                 app.UseHsts();
         }
 
-        /*.UseExceptionHandler(
-          new ExceptionHandlerOptions()
-          {
-                  AllowStatusCode404Response = true,
-                  ExceptionHandlingPath = "/Error"
-          })
-            .UseHsts()*/
-
         app
             .UseHttpsRedirection()
             .UseStaticFiles()
@@ -72,9 +64,6 @@ try
             .UseAuthentication()
             .UseAuthorization()
             .UseEndpoints(endpoints => endpoints.MapControllers());
-
-        logger.Info("Hello world!");
-
 
         await app.RunAsync();
 }
