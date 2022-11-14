@@ -102,7 +102,10 @@ public class AccountBusiness
 
                 var roles = await _unitOfWork.RoleRepository!.LoadByUserIdAsync(user!.Id, cancellationToken);
 
-                var claims = new List<Claim>() { new(ClaimTypes.NameIdentifier, user.Id.ToString()) };
+                var claims = new List<Claim>()
+                {
+                        new (ClaimTypes.NameIdentifier, user.Id.ToString())
+                };
 
                 claims.AddRange(roles.Select(role => new Claim(role?.Title!, role?.Title!)));
 

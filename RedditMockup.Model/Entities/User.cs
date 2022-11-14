@@ -17,7 +17,6 @@ public class User : BaseEntity
 
         public int Score { get; set; } = 0;
 
-
         [ForeignKey("PersonId")]
         [Sieve(CanSort = true, CanFilter = true)]
         public virtual Person? Person { get; set; }

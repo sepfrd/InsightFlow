@@ -45,6 +45,10 @@ try
                 app.UseSwagger()
                         .UseSwaggerUI();
 
+        }
+
+        if (app.Environment.IsEnvironment("Testing"))
+        {
                 await context.Database.EnsureDeletedAsync();
 
                 await context.Database.EnsureCreatedAsync();
