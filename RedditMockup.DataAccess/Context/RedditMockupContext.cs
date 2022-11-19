@@ -87,8 +87,8 @@ public class RedditMockupContext : DbContext
         {
                 var id = 3;
 
-                var userFaker = new Faker<User>()
-                        .RuleFor(user => user.Id, _ => id++)
+                var userFaker = new Faker<User>() 
+                        .RuleFor(user => user.Id, _ => id)
                         .RuleFor(user => user.Username, faker => faker.Internet.UserName())
                         .RuleFor(user => user.Password, faker => faker.Internet.Password())
                         .RuleFor(user => user.PersonId, _ => id++)
