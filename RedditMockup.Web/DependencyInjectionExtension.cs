@@ -46,7 +46,7 @@ internal static class DependencyInjectionExtension
                 :
                     services.AddDbContextPool<RedditMockupContext>(options =>
                 {
-                        options.UseSqlServer(configuration.GetConnectionString("Default"));
+                        options.UseSqlServer(configuration.GetConnectionString("MacDefault"));
                         options.EnableSensitiveDataLogging();
                 });
 

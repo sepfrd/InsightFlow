@@ -66,9 +66,9 @@ public class RedditMockupContext : DbContext
                         new()
 
                         {
-                                    Id = 2,
-                                    Name = "Abbas",
-                                    Family = "BooAzaar"
+                                Id = 2,
+                                Name = "Abbas",
+                                Family = "BooAzaar"
                            }
                       }
                 );
@@ -127,7 +127,21 @@ public class RedditMockupContext : DbContext
         {
                 var profilesList = new List<Profile>();
 
-                for (var i = 1; i < 101; i++)
+                profilesList.AddRange(new List<Profile>
+                {
+                        new()
+                        {
+                                Id = 1,
+                                UserId = 1
+                        },
+                        new()
+                        {
+                                Id = 2,
+                                UserId = 2
+                        }
+                });
+
+                for (var i = 3; i < 103; i++)
                 {
                         profilesList.Add(
                                 new()
