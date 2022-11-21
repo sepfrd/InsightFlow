@@ -31,7 +31,8 @@ try
             .InjectBusinesses()
             .InjectFluentValidation()
             .InjectAutoMapper()
-            .InjectContentCompression();
+            .InjectContentCompression()
+            .InjectRedis(builder.Configuration);
 
         var app = builder.Build();
 

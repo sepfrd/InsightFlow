@@ -17,6 +17,10 @@
         <Folder Include="Contracts\" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="StackExchange.Redis" Version="2.6.70" />
+    </ItemGroup>
+    <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
         <ProjectReference Include="..\RedditMockup.DataAccess\RedditMockup.DataAccess.csproj" />
     </ItemGroup>

@@ -29,6 +29,7 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
                 _unitOfWork = unitOfWork;
                 _repository = repository;
                 _mapper = mapper;
+
         }
 
         #endregion
