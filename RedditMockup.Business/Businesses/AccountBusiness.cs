@@ -16,134 +16,134 @@ namespace RedditMockup.Business.Businesses;
 
 public class AccountBusiness
 {
-        private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
-        private readonly UserRepository _userRepository;
+    private readonly UserRepository _userRepository;
 
-        private readonly IMapper _mapper;
+    private readonly IMapper _mapper;
 
-        public AccountBusiness(IUnitOfWork unitOfWork, IMapper mapper)
+    public AccountBusiness(IUnitOfWork unitOfWork, IMapper mapper)
+    {
+        _unitOfWork = unitOfWork;
+        _userRepository = unitOfWork.UserRepository!;
+        _mapper = mapper;
+    }
+
+    private async Task<bool> IsUsernameAndPasswordValidAsync(LoginDto login,
+        CancellationToken cancellationToken = new())
+    {
+        SieveModel sieveModel = new() { Filters = $"Username=={login.Username!}" };
+
+        var users = await _userRepository.LoadAllAsync(sieveModel, null, cancellationToken);
+
+        if (users.Count == 0)
         {
-                _unitOfWork = unitOfWork;
-                _userRepository = unitOfWork.UserRepository!;
-                _mapper = mapper;
+            return false;
         }
 
-        private async Task<bool> IsUsernameAndPasswordValidAsync(LoginDto login,
-            CancellationToken cancellationToken = new())
+        var isPasswordValid = (await login.Password!.GetHashStringAsync()) == users.Single().Password;
+
+        return isPasswordValid;
+    }
+
+    private static bool IsSignedIn(HttpContext httpContext) =>
+        httpContext.User.Identity is not null && httpContext.User.Identity.IsAuthenticated;
+
+
+    private async Task<User?> LoadByUsernameAsync(string username, CancellationToken cancellationToken = new())
+    {
+        SieveModel sieveModel = new() { Filters = $"Username=={username}" };
+
+        var users = await _userRepository.LoadAllAsync(sieveModel,
+            include => include.Include(x => x.Person).Include(x => x.Profile).Include(x => x.Questions)
+                .Include(x => x.Answers).Include(x => x.UserRoles), cancellationToken);
+
+        if (users.Count == 0)
         {
-                SieveModel sieveModel = new() { Filters = $"Username=={login.Username!}" };
-
-                var users = await _userRepository.LoadAllAsync(sieveModel, null, cancellationToken);
-
-                if (users.Count == 0)
-                {
-                        return false;
-                }
-
-                var isPasswordValid = (await login.Password!.GetHashStringAsync()) == users.Single().Password;
-
-                return isPasswordValid;
+            return null;
         }
 
-        private static bool IsSignedIn(HttpContext httpContext) =>
-            httpContext.User.Identity is not null && httpContext.User.Identity.IsAuthenticated;
+        return users.Single();
+    }
 
+    public async Task<List<UserViewModel>>
+        LoadAllUsersViewModelAsync(SieveModel sieveModel, CancellationToken cancellationToken = new()) =>
+        _mapper.Map<List<UserViewModel>>(await _userRepository.LoadAllAsync(sieveModel,
+            include =>
+            include.Include(x => x.Person)
+            .Include(x => x.UserRoles)!
+            .ThenInclude(x => x.Role),
+            cancellationToken));
 
-        private async Task<User?> LoadByUsernameAsync(string username, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse> LoginAsync(LoginDto login, HttpContext httpContext,
+        CancellationToken cancellationToken = new())
+    {
+        if (IsSignedIn(httpContext))
         {
-                SieveModel sieveModel = new() { Filters = $"Username=={username}" };
-
-                var users = await _userRepository.LoadAllAsync(sieveModel,
-                    include => include.Include(x => x.Person).Include(x => x.Profile).Include(x => x.Questions)
-                        .Include(x => x.Answers).Include(x => x.UserRoles), cancellationToken);
-
-                if (users.Count == 0)
-                {
-                        return null;
-                }
-
-                return users.Single();
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = "You are already signed in"
+            };
         }
 
-        public async Task<List<UserViewModel>>
-            LoadAllUsersViewModelAsync(SieveModel sieveModel, CancellationToken cancellationToken = new()) =>
-            _mapper.Map<List<UserViewModel>>(await _userRepository.LoadAllAsync(sieveModel,
-                include =>
-                include.Include(x => x.Person)
-                .Include(x => x.UserRoles)!
-                .ThenInclude(x => x.Role),
-                cancellationToken));
+        var isValid = await IsUsernameAndPasswordValidAsync(login, cancellationToken);
 
-        public async Task<CustomResponse> LoginAsync(LoginDto login, HttpContext httpContext,
-            CancellationToken cancellationToken = new())
+        if (!isValid)
         {
-                if (IsSignedIn(httpContext))
-                {
-                        return new CustomResponse
-                        {
-                                IsSuccess = false,
-                                Message = "You are already signed in"
-                        };
-                }
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = "Username and/or password not correct"
+            };
+        }
 
-                var isValid = await IsUsernameAndPasswordValidAsync(login, cancellationToken);
+        var user = await LoadByUsernameAsync(login.Username!, cancellationToken);
 
-                if (!isValid)
-                {
-                        return new CustomResponse
-                        {
-                                IsSuccess = false,
-                                Message = "Username and/or password not correct"
-                        };
-                }
+        var roles = await _unitOfWork.RoleRepository!.LoadByUserIdAsync(user!.Id, cancellationToken);
 
-                var user = await LoadByUsernameAsync(login.Username!, cancellationToken);
-
-                var roles = await _unitOfWork.RoleRepository!.LoadByUserIdAsync(user!.Id, cancellationToken);
-
-                var claims = new List<Claim>()
+        var claims = new List<Claim>()
                 {
                         new (ClaimTypes.NameIdentifier, user.Id.ToString())
                 };
 
-                claims.AddRange(roles.Select(role => new Claim(role?.Title!, role?.Title!)));
+        claims.AddRange(roles.Select(role => new Claim(role?.Title!, role?.Title!)));
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var principal = new ClaimsPrincipal(identity);
+        var principal = new ClaimsPrincipal(identity);
 
-                var properties = new AuthenticationProperties
-                {
-                        IsPersistent = login.RememberMe
-                };
-
-                await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
-
-                return new CustomResponse
-                {
-                        IsSuccess = true,
-                        Message = "Successfully logged in"
-                };
-        }
-
-        public static async Task<CustomResponse> LogoutAsync(HttpContext httpContext)
+        var properties = new AuthenticationProperties
         {
-                if (!IsSignedIn(httpContext))
-                {
-                        return new CustomResponse
-                        {
-                                IsSuccess = false,
-                                Message = "Already logged out"
-                        };
-                }
+            IsPersistent = login.RememberMe
+        };
 
-                await httpContext.SignOutAsync();
+        await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
 
-                return new CustomResponse
-                {
-                        IsSuccess = true,
-                        Message = "Successfully logged out"
-                };
+        return new CustomResponse
+        {
+            IsSuccess = true,
+            Message = "Successfully logged in"
+        };
+    }
+
+    public static async Task<CustomResponse> LogoutAsync(HttpContext httpContext)
+    {
+        if (!IsSignedIn(httpContext))
+        {
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = "Already logged out"
+            };
         }
+
+        await httpContext.SignOutAsync();
+
+        return new CustomResponse
+        {
+            IsSuccess = true,
+            Message = "Successfully logged out"
+        };
+    }
 }

@@ -16,412 +16,412 @@ namespace RedditMockup.IntegrationTest;
 public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>>
 {
 
-        #region [Field(s)]
+    #region [Field(s)]
 
-        private const string BaseAddress = "/api/Answer";
+    private const string BaseAddress = "/api/Answer";
 
-        private const string LoginAddress = "/api/Account/Login";
+    private const string LoginAddress = "/api/Account/Login";
 
-        private const string ValidTitle = "How to do sth";
+    private const string ValidTitle = "How to do sth";
 
-        private const string ValidDescription = "Can anybody help me with my problem?";
+    private const string ValidDescription = "Can anybody help me with my problem?";
 
-        private readonly WebApplicationFactory<Program> _factory;
+    private readonly WebApplicationFactory<Program> _factory;
 
-        private readonly HttpClient _client;
+    private readonly HttpClient _client;
+
+    #endregion
+
+    public enum TestResultCode
+    {
+        Ok,
+        NotFound,
+        Unauthorized
+    }
+
+    #region [Constructor]
+
+    public AnswerControllerTest(WebApplicationFactory<Program> factory)
+    {
+        _factory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
+
+        _client = _factory.CreateClient();
+    }
+
+    #endregion
+
+    #region [Method(s)]
+
+    private async Task AuthenticateAsync()
+    {
+        var loginDto = new LoginDto()
+        {
+            Username = "sepehr_frd",
+            Password = "sfr1376",
+            RememberMe = true
+        };
+
+        var serializedLoginDto = JsonSerializer.Serialize(loginDto);
+
+        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
+
+        await _client.PostAsync(LoginAddress, stringContent);
+    }
+
+    #endregion
+
+    #region [Theory Method(s)]
+
+    [Theory]
+    [MemberData(nameof(GenerateCreateData))]
+    public async Task Create_ReturnExpectedResult(AnswerDto dto, TestResultCode testResultCode)
+    {
+        #region [Arrange]
+
+        var serializedLoginDto = JsonSerializer.Serialize(dto);
+
+        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
 
         #endregion
 
-        public enum TestResultCode
+        #region [Act]
+
+        if (testResultCode != TestResultCode.Unauthorized) await AuthenticateAsync();
+
+        var response = await _client.PostAsync(BaseAddress, stringContent);
+
+        if (testResultCode == TestResultCode.Unauthorized)
         {
-                Ok,
-                NotFound,
-                Unauthorized
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            return;
         }
 
-        #region [Constructor]
+        var streamResponse = await response.Content.ReadAsStreamAsync();
 
-        public AnswerControllerTest(WebApplicationFactory<Program> factory)
-        {
-                _factory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
-
-                _client = _factory.CreateClient();
-        }
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
 
         #endregion
 
-        #region [Method(s)]
+        #region [Assert]
 
-        private async Task AuthenticateAsync()
+        switch (testResultCode)
         {
-                var loginDto = new LoginDto()
-                {
-                        Username = "sepehr_frd",
-                        Password = "sfr1376",
-                        RememberMe = true
-                };
-
-                var serializedLoginDto = JsonSerializer.Serialize(loginDto);
-
-                var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
-
-                await _client.PostAsync(LoginAddress, stringContent);
-        }
-
-        #endregion
-
-        #region [Theory Method(s)]
-
-        [Theory]
-        [MemberData(nameof(GenerateCreateData))]
-        public async Task Create_ReturnExpectedResult(AnswerDto dto, TestResultCode testResultCode)
-        {
-                #region [Arrange]
-
-                var serializedLoginDto = JsonSerializer.Serialize(dto);
-
-                var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
-
-                #endregion
-
-                #region [Act]
-
-                if (testResultCode != TestResultCode.Unauthorized) await AuthenticateAsync();
-
-                var response = await _client.PostAsync(BaseAddress, stringContent);
-
-                if (testResultCode == TestResultCode.Unauthorized)
-                {
-                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-                        return;
-                }
-
-                var streamResponse = await response.Content.ReadAsStreamAsync();
-
-                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
-
-                #endregion
-
-                #region [Assert]
-
-                switch (testResultCode)
-                {
-                        case TestResultCode.Ok:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeTrue();
-
-                                break;
-
-                        case TestResultCode.NotFound:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeFalse();
-
-                                break;
-
-                        default:
-
-                                Assert.Null("Error");
-
-                                break;
-                }
-
-                #endregion
-        }
-
-        [Fact]
-        public async Task GetAll_ReturnCustomResponseOfListOfAnswerDto()
-        {
-                #region [Act]
-
-                var response = await _client.GetAsync(BaseAddress);
-
-                var streamResponse = await response.Content.ReadAsStringAsync();
-
-                var apiResponse = await Task.Factory.StartNew(() =>
-                    JsonConvert.DeserializeObject<CustomResponse<List<AnswerDto>>>(streamResponse));
-
-                #endregion
-
-                #region [Assert]
+            case TestResultCode.Ok:
 
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                apiResponse?.Data?.Should().BeOfType<List<AnswerDto>>();
+                apiResponse?.IsSuccess.Should().BeTrue();
 
-                #endregion
-        }
+                break;
 
-        [Theory]
-        [MemberData(nameof(GenerateGetByIdData))]
-        public async Task GetById_ReturnExpectedResult(int id, bool isAuthenticated, HttpStatusCode httpStatusCode)
-        {
-                if (isAuthenticated)
-                {
-                        #region [Arrange]
-
-                        await AuthenticateAsync();
-
-                        #endregion
-
-                        #region [Act]
-
-                        var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
-
-                        var streamResponse = await response.Content.ReadAsStreamAsync();
-
-                        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
-
-                        #endregion
-
-                        #region [Assert]
-
-                        response.StatusCode.Should().Be(httpStatusCode);
-
-                        if (id < 10)
-                                apiResponse?.IsSuccess.Should().BeTrue();
-                        else
-                                apiResponse?.IsSuccess.Should().BeFalse();
-
-                        #endregion
-                }
-                else
-                {
-                        #region [Act]
-
-                        var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
-
-                        #endregion
-
-                        #region [Assert]
-
-                        response.StatusCode.Should().Be(httpStatusCode);
-
-                        #endregion
-                }
-        }
-
-        [Theory]
-        [MemberData(nameof(GenerateUpdateData))]
-        public async Task Update_ReturnExpectedResult(int answerId, AnswerDto dto, TestResultCode testResultCode)
-        {
-                #region [Arrange]
-
-                var serializedLoginDto = JsonSerializer.Serialize(dto);
-
-                var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
-
-                if (testResultCode != TestResultCode.Unauthorized)
-                {
-                        await AuthenticateAsync();
-                }
-
-                #endregion
-
-                #region [Act]
-
-                var response = await _client.PutAsync($"{BaseAddress}?id={answerId}", stringContent);
-
-                if (testResultCode == TestResultCode.Unauthorized)
-                {
-                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-                        return;
-                }
-
-                var streamResponse = await response.Content.ReadAsStreamAsync();
-
-                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
-
-                #endregion
-
-                #region [Assert]
-
-                switch (testResultCode)
-                {
-                        case TestResultCode.Ok:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeTrue();
-
-                                break;
-
-                        case TestResultCode.NotFound:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeFalse();
-
-                                break;
-
-                        default:
-
-                                Assert.Null("Error");
-
-                                break;
-                }
-
-                #endregion
-
-        }
-
-        [Fact]
-        public async Task GetVotes_ReturnCustomResponseOfListOfVoteDto()
-        {
-                #region [Act]
-
-                var response = await _client.GetAsync(BaseAddress + "/AnswerVotes");
-
-                var streamResponse = await response.Content.ReadAsStringAsync();
-
-                var apiResponse = await Task.Factory.StartNew(() =>
-                    JsonConvert.DeserializeObject<CustomResponse<List<VoteDto>>>(streamResponse));
-
-                #endregion
-
-                #region [Assert]
+            case TestResultCode.NotFound:
 
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                apiResponse?.Data?.Should().BeOfType<List<VoteDto>>();
+                apiResponse?.IsSuccess.Should().BeFalse();
 
-                #endregion
+                break;
+
+            default:
+
+                Assert.Null("Error");
+
+                break;
         }
 
-        [Theory]
-        [MemberData(nameof(GenerateSubmitVoteData))]
-        public async Task SubmitVote_ReturnExpectedResult(int answerId, bool kind, TestResultCode testResultCode)
+        #endregion
+    }
+
+    [Fact]
+    public async Task GetAll_ReturnCustomResponseOfListOfAnswerDto()
+    {
+        #region [Act]
+
+        var response = await _client.GetAsync(BaseAddress);
+
+        var streamResponse = await response.Content.ReadAsStringAsync();
+
+        var apiResponse = await Task.Factory.StartNew(() =>
+            JsonConvert.DeserializeObject<CustomResponse<List<AnswerDto>>>(streamResponse));
+
+        #endregion
+
+        #region [Assert]
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        apiResponse?.Data?.Should().BeOfType<List<AnswerDto>>();
+
+        #endregion
+    }
+
+    [Theory]
+    [MemberData(nameof(GenerateGetByIdData))]
+    public async Task GetById_ReturnExpectedResult(int id, bool isAuthenticated, HttpStatusCode httpStatusCode)
+    {
+        if (isAuthenticated)
         {
-                #region [Arrange]
+            #region [Arrange]
 
+            await AuthenticateAsync();
 
-                if (testResultCode != TestResultCode.Unauthorized)
-                {
-                        await AuthenticateAsync();
-                }
+            #endregion
 
-                #endregion
+            #region [Act]
 
-                #region [Act]
+            var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
 
-                var response = await _client.PostAsync($"{BaseAddress}/SubmitVote?answerId={answerId}&kind={kind}", null);
+            var streamResponse = await response.Content.ReadAsStreamAsync();
 
-                if (testResultCode == TestResultCode.Unauthorized)
-                {
-                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-                        return;
-                }
+            var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
 
-                var streamResponse = await response.Content.ReadAsStreamAsync();
+            #endregion
 
-                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+            #region [Assert]
 
-                #endregion
+            response.StatusCode.Should().Be(httpStatusCode);
 
-                #region [Assert]
+            if (id < 10)
+                apiResponse?.IsSuccess.Should().BeTrue();
+            else
+                apiResponse?.IsSuccess.Should().BeFalse();
 
-                switch (testResultCode)
-                {
-                        case TestResultCode.Ok:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeTrue();
-
-                                break;
-
-                        case TestResultCode.NotFound:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeFalse();
-
-                                break;
-
-                        default:
-
-                                Assert.Null("Error");
-
-                                break;
-                }
-
-
-                #endregion
-
-
+            #endregion
         }
-
-        [Theory]
-        [MemberData(nameof(GenerateDeleteData))]
-        public async Task Delete_ReturnExpectedResult(int answerId, TestResultCode testResultCode)
+        else
         {
+            #region [Act]
 
-                #region [Arrange]
+            var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
 
-                if (testResultCode != TestResultCode.Unauthorized)
-                {
-                        await AuthenticateAsync();
-                }
+            #endregion
 
-                #endregion
+            #region [Assert]
 
-                #region [Act]
+            response.StatusCode.Should().Be(httpStatusCode);
 
-                var response = await _client.DeleteAsync($"{BaseAddress}?id={answerId}");
+            #endregion
+        }
+    }
 
-                if (testResultCode == TestResultCode.Unauthorized)
-                {
-                        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-                        return;
-                }
+    [Theory]
+    [MemberData(nameof(GenerateUpdateData))]
+    public async Task Update_ReturnExpectedResult(int answerId, AnswerDto dto, TestResultCode testResultCode)
+    {
+        #region [Arrange]
 
-                var streamResponse = await response.Content.ReadAsStreamAsync();
+        var serializedLoginDto = JsonSerializer.Serialize(dto);
 
-                var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
 
-                #endregion
-
-                #region [Assert]
-
-                switch (testResultCode)
-                {
-                        case TestResultCode.Ok:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeTrue();
-
-                                break;
-
-                        case TestResultCode.NotFound:
-
-                                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                                apiResponse?.IsSuccess.Should().BeFalse();
-
-                                break;
-
-                        default:
-
-                                Assert.Null("Error");
-
-                                break;
-
-                }
-
-                #endregion
+        if (testResultCode != TestResultCode.Unauthorized)
+        {
+            await AuthenticateAsync();
         }
 
         #endregion
 
-        #region [Data Method(s)]
+        #region [Act]
 
-        public static IEnumerable<object[]> GenerateCreateData()
+        var response = await _client.PutAsync($"{BaseAddress}?id={answerId}", stringContent);
+
+        if (testResultCode == TestResultCode.Unauthorized)
         {
-                return new List<object[]>
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            return;
+        }
+
+        var streamResponse = await response.Content.ReadAsStreamAsync();
+
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+        #endregion
+
+        #region [Assert]
+
+        switch (testResultCode)
+        {
+            case TestResultCode.Ok:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeTrue();
+
+                break;
+
+            case TestResultCode.NotFound:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeFalse();
+
+                break;
+
+            default:
+
+                Assert.Null("Error");
+
+                break;
+        }
+
+        #endregion
+
+    }
+
+    [Fact]
+    public async Task GetVotes_ReturnCustomResponseOfListOfVoteDto()
+    {
+        #region [Act]
+
+        var response = await _client.GetAsync(BaseAddress + "/AnswerVotes");
+
+        var streamResponse = await response.Content.ReadAsStringAsync();
+
+        var apiResponse = await Task.Factory.StartNew(() =>
+            JsonConvert.DeserializeObject<CustomResponse<List<VoteDto>>>(streamResponse));
+
+        #endregion
+
+        #region [Assert]
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        apiResponse?.Data?.Should().BeOfType<List<VoteDto>>();
+
+        #endregion
+    }
+
+    [Theory]
+    [MemberData(nameof(GenerateSubmitVoteData))]
+    public async Task SubmitVote_ReturnExpectedResult(int answerId, bool kind, TestResultCode testResultCode)
+    {
+        #region [Arrange]
+
+
+        if (testResultCode != TestResultCode.Unauthorized)
+        {
+            await AuthenticateAsync();
+        }
+
+        #endregion
+
+        #region [Act]
+
+        var response = await _client.PostAsync($"{BaseAddress}/SubmitVote?answerId={answerId}&kind={kind}", null);
+
+        if (testResultCode == TestResultCode.Unauthorized)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            return;
+        }
+
+        var streamResponse = await response.Content.ReadAsStreamAsync();
+
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+        #endregion
+
+        #region [Assert]
+
+        switch (testResultCode)
+        {
+            case TestResultCode.Ok:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeTrue();
+
+                break;
+
+            case TestResultCode.NotFound:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeFalse();
+
+                break;
+
+            default:
+
+                Assert.Null("Error");
+
+                break;
+        }
+
+
+        #endregion
+
+
+    }
+
+    [Theory]
+    [MemberData(nameof(GenerateDeleteData))]
+    public async Task Delete_ReturnExpectedResult(int answerId, TestResultCode testResultCode)
+    {
+
+        #region [Arrange]
+
+        if (testResultCode != TestResultCode.Unauthorized)
+        {
+            await AuthenticateAsync();
+        }
+
+        #endregion
+
+        #region [Act]
+
+        var response = await _client.DeleteAsync($"{BaseAddress}?id={answerId}");
+
+        if (testResultCode == TestResultCode.Unauthorized)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            return;
+        }
+
+        var streamResponse = await response.Content.ReadAsStreamAsync();
+
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+        #endregion
+
+        #region [Assert]
+
+        switch (testResultCode)
+        {
+            case TestResultCode.Ok:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeTrue();
+
+                break;
+
+            case TestResultCode.NotFound:
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                apiResponse?.IsSuccess.Should().BeFalse();
+
+                break;
+
+            default:
+
+                Assert.Null("Error");
+
+                break;
+
+        }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region [Data Method(s)]
+
+    public static IEnumerable<object[]> GenerateCreateData()
+    {
+        return new List<object[]>
         {
             new object[]
             {
@@ -456,11 +456,11 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 TestResultCode.Unauthorized
             }
         };
-        }
+    }
 
-        public static IEnumerable<object[]> GenerateGetByIdData()
-        {
-                return new List<object[]>
+    public static IEnumerable<object[]> GenerateGetByIdData()
+    {
+        return new List<object[]>
         {
             new object[]
             {
@@ -487,11 +487,11 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 HttpStatusCode.Unauthorized
             }
         };
-        }
+    }
 
-        public static IEnumerable<object[]> GenerateSubmitVoteData()
-        {
-                return new List<object[]>
+    public static IEnumerable<object[]> GenerateSubmitVoteData()
+    {
+        return new List<object[]>
         {
             new object[]
             {
@@ -514,16 +514,16 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 TestResultCode.NotFound
             }
         };
-        }
+    }
 
-        public static IEnumerable<object[]> GenerateUpdateData()
+    public static IEnumerable<object[]> GenerateUpdateData()
+    {
+        var finalList = new List<object[]>();
+
+        for (int i = 0; i < 200; i++)
         {
-                var finalList = new List<object[]>();
-
-                for (int i = 0; i < 200; i++)
-                {
-                        finalList.Add(new object[]
-                        {
+            finalList.Add(new object[]
+            {
                                 5,
                                 new AnswerDto
                                 {
@@ -532,13 +532,13 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                                     Description = ValidDescription
                                 },
                                 TestResultCode.Ok
-                        });
-                }
+            });
+        }
 
 
-                finalList.AddRange(
-                new List<object[]>
-                {
+        finalList.AddRange(
+        new List<object[]>
+        {
                     new object[]
                     {
                         5,
@@ -594,14 +594,14 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                     },
                     TestResultCode.NotFound
                 }
-                }
-                );
-                return finalList;
         }
+        );
+        return finalList;
+    }
 
-        public static IEnumerable<object[]> GenerateDeleteData()
-        {
-                return new List<object[]>
+    public static IEnumerable<object[]> GenerateDeleteData()
+    {
+        return new List<object[]>
         {
             new object[]
             {
@@ -619,7 +619,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 TestResultCode.Unauthorized
             }
         };
-        }
+    }
 
-        #endregion
+    #endregion
 }

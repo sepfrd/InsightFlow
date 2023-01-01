@@ -1,6 +1,4 @@
 ﻿using Bogus;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Helpers;
@@ -11,50 +9,50 @@ namespace RedditMockup.DataAccess.Context;
 
 public class RedditMockupContext : DbContext
 {
-        #region [Constructor]
+    #region [Constructor]
 
-        public RedditMockupContext(DbContextOptions options) : base(options)
-        {
-        }
+    public RedditMockupContext(DbContextOptions options) : base(options)
+    {
+    }
 
-        #endregion
+    #endregion
 
-        #region [Properties]
+    #region [Properties]
 
-        public DbSet<Answer>? Answers { get; set; }
+    public DbSet<Answer>? Answers { get; set; }
 
-        public DbSet<Person>? Persons { get; set; }
+    public DbSet<Person>? Persons { get; set; }
 
-        public DbSet<Profile>? Profiles { get; set; }
+    public DbSet<Profile>? Profiles { get; set; }
 
-        public DbSet<Question>? Questions { get; set; }
+    public DbSet<Question>? Questions { get; set; }
 
-        public DbSet<Role>? Roles { get; set; }
+    public DbSet<Role>? Roles { get; set; }
 
-        public DbSet<User>? Users { get; set; }
+    public DbSet<User>? Users { get; set; }
 
-        public DbSet<UserRole>? UserRoles { get; set; }
+    public DbSet<UserRole>? UserRoles { get; set; }
 
-        public DbSet<AnswerVote>? AnswerVotes { get; set; }
+    public DbSet<AnswerVote>? AnswerVotes { get; set; }
 
-        public DbSet<QuestionVote>? QuestionVotes { get; set; }
+    public DbSet<QuestionVote>? QuestionVotes { get; set; }
 
-        #endregion
+    #endregion
 
-        #region [Methods]
+    #region [Methods]
 
-        private static IEnumerable<Person> GetFakePeople()
-        {
-                var id = 3;
+    private static IEnumerable<Person> GetFakePeople()
+    {
+        var id = 3;
 
-                var personFaker = new Faker<Person>()
-                        .RuleFor(person => person.Id, _ => id++)
-                        .RuleFor(person => person.Name, faker => faker.Name.FirstName())
-                        .RuleFor(person => person.Family, faker => faker.Name.LastName());
+        var personFaker = new Faker<Person>()
+                .RuleFor(person => person.Id, _ => id++)
+                .RuleFor(person => person.Name, faker => faker.Name.FirstName())
+                .RuleFor(person => person.Family, faker => faker.Name.LastName());
 
-                var fakePeople = new List<Person>();
+        var fakePeople = new List<Person>();
 
-                fakePeople.AddRange(new List<Person>
+        fakePeople.AddRange(new List<Person>
                 {
 
                         new()
@@ -71,32 +69,32 @@ public class RedditMockupContext : DbContext
                                 Family = "BooAzaar"
                            }
                       }
-                );
+        );
 
 
-                for (var i = 0; i < 100; i++)
-                {
-                        fakePeople.Add(personFaker.Generate());
-                }
-
-                return fakePeople;
-
+        for (var i = 0; i < 100; i++)
+        {
+            fakePeople.Add(personFaker.Generate());
         }
 
-        private static IEnumerable<User> GetFakeUsers()
-        {
-                var id = 3;
+        return fakePeople;
 
-                var userFaker = new Faker<User>() 
-                        .RuleFor(user => user.Id, _ => id)
-                        .RuleFor(user => user.Username, faker => faker.Internet.UserName())
-                        .RuleFor(user => user.Password, faker => faker.Internet.Password())
-                        .RuleFor(user => user.PersonId, _ => id++)
-                        .RuleFor(user => user.Score, faker => faker.Random.Number(50));
+    }
 
-                var fakeUsers = new List<User>();
+    private static IEnumerable<User> GetFakeUsers()
+    {
+        var id = 3;
 
-                fakeUsers.AddRange(new List<User>
+        var userFaker = new Faker<User>()
+                .RuleFor(user => user.Id, _ => id)
+                .RuleFor(user => user.Username, faker => faker.Internet.UserName())
+                .RuleFor(user => user.Password, faker => faker.Internet.Password())
+                .RuleFor(user => user.PersonId, _ => id++)
+                .RuleFor(user => user.Score, faker => faker.Random.Number(50));
+
+        var fakeUsers = new List<User>();
+
+        fakeUsers.AddRange(new List<User>
                 {
                         new()
                         {
@@ -115,19 +113,19 @@ public class RedditMockupContext : DbContext
                         }
                 });
 
-                for (var i = 0; i < 100; i++)
-                {
-                        fakeUsers.Add(userFaker.Generate());
-                }
-
-                return fakeUsers;
+        for (var i = 0; i < 100; i++)
+        {
+            fakeUsers.Add(userFaker.Generate());
         }
 
-        private static IEnumerable<Profile> GetFakeProfiles()
-        {
-                var profilesList = new List<Profile>();
+        return fakeUsers;
+    }
 
-                profilesList.AddRange(new List<Profile>
+    private static IEnumerable<Profile> GetFakeProfiles()
+    {
+        var profilesList = new List<Profile>();
+
+        profilesList.AddRange(new List<Profile>
                 {
                         new()
                         {
@@ -141,24 +139,24 @@ public class RedditMockupContext : DbContext
                         }
                 });
 
-                for (var i = 3; i < 103; i++)
-                {
-                        profilesList.Add(
-                                new()
-                                {
-                                        Id = i,
-                                        UserId = i
-                                });
-                }
-
-                return profilesList;
+        for (var i = 3; i < 103; i++)
+        {
+            profilesList.Add(
+                    new()
+                    {
+                        Id = i,
+                        UserId = i
+                    });
         }
 
-        private static IEnumerable<UserRole> GetFakeUserRoles()
-        {
-                var userRolesList = new List<UserRole>();
+        return profilesList;
+    }
 
-                userRolesList.AddRange(new List<UserRole>
+    private static IEnumerable<UserRole> GetFakeUserRoles()
+    {
+        var userRolesList = new List<UserRole>();
+
+        userRolesList.AddRange(new List<UserRole>
                 {
                         new()
                         {
@@ -175,66 +173,66 @@ public class RedditMockupContext : DbContext
                 });
 
 
-                for (var i = 3; i < 102; i++)
-                {
-                        userRolesList.Add(
-                                new()
-                                {
-                                        Id = i,
-                                        UserId = i,
-                                        RoleId = 2
-                                });
-                }
-
-                return userRolesList;
+        for (var i = 3; i < 102; i++)
+        {
+            userRolesList.Add(
+                    new()
+                    {
+                        Id = i,
+                        UserId = i,
+                        RoleId = 2
+                    });
         }
 
-        private static IEnumerable<Question> GetFakeQuestions()
+        return userRolesList;
+    }
+
+    private static IEnumerable<Question> GetFakeQuestions()
+    {
+        var id = 1;
+
+        var questionFaker = new Faker<Question>()
+            .RuleFor(question => question.Id, _ => id++)
+            .RuleFor(question => question.Title, faker => faker.Lorem.Sentence(5))
+            .RuleFor(question => question.Description, faker => faker.Lorem.Paragraph())
+            .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 2));
+
+        var fakeQuestions = new List<Question>();
+
+        for (var i = 0; i < 100; i++)
         {
-                var id = 1;
-
-                var questionFaker = new Faker<Question>()
-                    .RuleFor(question => question.Id, _ => id++)
-                    .RuleFor(question => question.Title, faker => faker.Lorem.Sentence(5))
-                    .RuleFor(question => question.Description, faker => faker.Lorem.Paragraph())
-                    .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 2));
-
-                var fakeQuestions = new List<Question>();
-
-                for (var i = 0; i < 100; i++)
-                {
-                        fakeQuestions.Add(questionFaker.Generate());
-                }
-
-                return fakeQuestions;
+            fakeQuestions.Add(questionFaker.Generate());
         }
 
-        private static IEnumerable<Answer> GetFakeAnswers()
+        return fakeQuestions;
+    }
+
+    private static IEnumerable<Answer> GetFakeAnswers()
+    {
+        var id = 1;
+
+        var answerFaker = new Faker<Answer>()
+            .RuleFor(answer => answer.Id, faker => id++)
+            .RuleFor(answer => answer.Title, faker => faker.Lorem.Sentence(5))
+            .RuleFor(answer => answer.Description, faker => faker.Lorem.Paragraph())
+            .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 2))
+            .RuleFor(answer => answer.QuestionId, (faker, answer) => answer.QuestionId = 1);
+
+        var fakeAnswers = new List<Answer>();
+
+        for (var i = 0; i < 100; i++)
         {
-                var id = 1;
-
-                var answerFaker = new Faker<Answer>()
-                    .RuleFor(answer => answer.Id, faker => id++)
-                    .RuleFor(answer => answer.Title, faker => faker.Lorem.Sentence(5))
-                    .RuleFor(answer => answer.Description, faker => faker.Lorem.Paragraph())
-                    .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 2))
-                    .RuleFor(answer => answer.QuestionId, (faker, answer) => answer.QuestionId = 1);
-
-                var fakeAnswers = new List<Answer>();
-
-                for (var i = 0; i < 100; i++)
-                {
-                        fakeAnswers.Add(answerFaker.Generate());
-                }
-
-                return fakeAnswers;
+            fakeAnswers.Add(answerFaker.Generate());
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-                base.OnModelCreating(modelBuilder);
+        return fakeAnswers;
+    }
 
-                modelBuilder.Entity<Role>().HasData(new List<Role>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Role>().HasData(new List<Role>
                 {
                     new()
                     {
@@ -249,19 +247,19 @@ public class RedditMockupContext : DbContext
                     }
                 });
 
-                modelBuilder.Entity<Person>().HasData(GetFakePeople());
+        modelBuilder.Entity<Person>().HasData(GetFakePeople());
 
-                modelBuilder.Entity<User>().HasData(GetFakeUsers());
+        modelBuilder.Entity<User>().HasData(GetFakeUsers());
 
-                modelBuilder.Entity<Profile>().HasData(GetFakeProfiles());
+        modelBuilder.Entity<Profile>().HasData(GetFakeProfiles());
 
-                modelBuilder.Entity<UserRole>().HasData(GetFakeUserRoles());
+        modelBuilder.Entity<UserRole>().HasData(GetFakeUserRoles());
 
-                modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
+        modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
 
-                modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
+        modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
 
-        }
+    }
 
-        #endregion
+    #endregion
 }

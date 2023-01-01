@@ -3,19 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RedditMockup.Model.Entities
 {
-        public class QuestionVote : BaseEntity
-        {
-                #region [Properties]
+    public class QuestionVote : BaseEntity
+    {
+        #region [Properties]
 
-                [Sieve(CanSort = true)]
-                public bool Kind { get; set; }
+        [Sieve(CanSort = true)]
+        public bool Kind { get; set; }
 
-                public int QuestionId { get; set; }
+        public int QuestionId { get; set; }
 
-                [ForeignKey("QuestionId")]
-                public virtual Question? Question { get; set; }
+        [ForeignKey("QuestionId")]
+        public virtual Question? Question { get; set; }
 
-                #endregion
+        #endregion
 
-        }
+    }
 }

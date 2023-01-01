@@ -10,7 +10,7 @@ namespace RedditMockup.Api.Controllers;
 [Authorize(Policy = PolicyConstants.Admin)]
 public class UserController : BaseController<User, UserDto>
 {
-        public UserController(IBaseBusiness<User, UserDto> business) : base(business)
-        {
-        }
+    public UserController(IBaseBusiness<User, UserDto> business) : base(business)
+    {
+    }
 }

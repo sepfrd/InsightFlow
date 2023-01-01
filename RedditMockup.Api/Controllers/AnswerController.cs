@@ -10,19 +10,19 @@ namespace RedditMockup.Api.Controllers;
 
 public class AnswerController : BaseController<Answer, AnswerDto>
 {
-        private readonly AnswerBusiness _answerBusiness;
+    private readonly AnswerBusiness _answerBusiness;
 
-        public AnswerController(IBaseBusiness<Answer, AnswerDto> business) : base(business) =>
-            _answerBusiness = (AnswerBusiness)business;
+    public AnswerController(IBaseBusiness<Answer, AnswerDto> business) : base(business) =>
+        _answerBusiness = (AnswerBusiness)business;
 
-        [HttpPost]
-        [Route("SubmitVote")]
-        public async Task<CustomResponse?> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken) =>
-        await _answerBusiness.SubmitVoteAsync(answerId, kind, cancellationToken);
+    [HttpPost]
+    [Route("SubmitVote")]
+    public async Task<CustomResponse?> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken) =>
+    await _answerBusiness.SubmitVoteAsync(answerId, kind, cancellationToken);
 
-        [HttpGet]
-        [Route("AnswerVotes")]
-        [AllowAnonymous]
-        public async Task<CustomResponse?> GetVotesAsync(int answerId, CancellationToken cancellationToken) =>
-            await _answerBusiness.LoadVotesAsync(answerId, cancellationToken);
+    [HttpGet]
+    [Route("AnswerVotes")]
+    [AllowAnonymous]
+    public async Task<CustomResponse?> GetVotesAsync(int answerId, CancellationToken cancellationToken) =>
+        await _answerBusiness.LoadVotesAsync(answerId, cancellationToken);
 }

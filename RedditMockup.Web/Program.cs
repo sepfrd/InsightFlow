@@ -19,67 +19,67 @@ var logger = NLogBuilder
 
 try
 {
-        builder.Services
-            .AddEndpointsApiExplorer()
-            .InjectApi()
-            .InjectSwagger()
-            .InjectUnitOfWork()
-            .InjectSieve()
-            .InjectAuthentication()
-            .InjectNLog()
-            .InjectContext(builder.Configuration, builder.Environment)
-            .InjectBusinesses()
-            .InjectFluentValidation()
-            .InjectAutoMapper()
-            .InjectContentCompression()
-            .InjectRedis(builder.Configuration);
+    builder.Services
+        .AddEndpointsApiExplorer()
+        .InjectApi()
+        .InjectSwagger()
+        .InjectUnitOfWork()
+        .InjectSieve()
+        .InjectAuthentication()
+        .InjectNLog()
+        .InjectContext(builder.Configuration, builder.Environment)
+        .InjectBusinesses()
+        .InjectFluentValidation()
+        .InjectAutoMapper()
+        .InjectContentCompression()
+        .InjectRedis(builder.Configuration);
 
-        var app = builder.Build();
+    var app = builder.Build();
 
-        await using var scope = app.Services.CreateAsyncScope();
+    await using var scope = app.Services.CreateAsyncScope();
 
-        await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
-
-
-        if (!app.Environment.IsProduction())
-        {
-                app.UseSwagger()
-                        .UseSwaggerUI();
-
-        }
-
-        if (app.Environment.IsEnvironment("Testing"))
-        {
-                await context.Database.EnsureDeletedAsync();
-
-                await context.Database.EnsureCreatedAsync();
-        }
+    await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
 
 
-        if (app.Environment.IsProduction())
-        {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-        }
+    if (!app.Environment.IsProduction())
+    {
+        app.UseSwagger()
+                .UseSwaggerUI();
 
-        app
-            .UseHttpsRedirection()
-            .UseStaticFiles()
-            .UseRouting()
-            .UseAuthentication()
-            .UseAuthorization()
-            .UseEndpoints(endpoints => endpoints.MapControllers());
+    }
 
-        await app.RunAsync();
+    if (app.Environment.IsEnvironment("Testing"))
+    {
+        await context.Database.EnsureDeletedAsync();
+
+        await context.Database.EnsureCreatedAsync();
+    }
+
+
+    if (app.Environment.IsProduction())
+    {
+        app.UseExceptionHandler("/Error");
+        app.UseHsts();
+    }
+
+    app
+        .UseHttpsRedirection()
+        .UseStaticFiles()
+        .UseRouting()
+        .UseAuthentication()
+        .UseAuthorization()
+        .UseEndpoints(endpoints => endpoints.MapControllers());
+
+    await app.RunAsync();
 }
 catch (Exception exception)
 {
-        logger.Error(exception, "Program Stopped Because of Exception !");
-        throw;
+    logger.Error(exception, "Program Stopped Because of Exception !");
+    throw;
 }
 finally
 {
-        LogManager.Shutdown();
+    LogManager.Shutdown();
 
 }
 

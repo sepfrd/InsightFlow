@@ -4,21 +4,21 @@ namespace RedditMockup.Model.Entities;
 
 public class Person : BaseEntity
 {
-        #region [Properties]
+    #region [Properties]
 
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string? Name { get; set; }
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string? Name { get; set; }
 
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string? Family { get; set; }
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string? Family { get; set; }
 
-        public string FullName => Name + " " + Family;
+    public string FullName => Name + " " + Family;
 
-        #endregion
+    #endregion
 
-        #region [Navigation Properties]
+    #region [Navigation Properties]
 
-        public virtual User? User { get; set; }
+    public virtual User? User { get; set; }
 
-        #endregion
+    #endregion
 }

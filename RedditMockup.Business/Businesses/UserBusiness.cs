@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
@@ -16,137 +15,137 @@ namespace RedditMockup.Business.Businesses;
 
 public class UserBusiness : BaseBusiness<User, UserDto>
 {
-        private readonly UserRepository _userRepository;
+    private readonly UserRepository _userRepository;
 
-        private readonly IMapper _mapper;
+    private readonly IMapper _mapper;
 
-        private readonly IConnectionMultiplexer _connectionMultiplexer;
+    private readonly IConnectionMultiplexer _connectionMultiplexer;
 
-        private readonly IDatabase _redisDb;
+    private readonly IDatabase _redisDb;
 
-        public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper, IConnectionMultiplexer connectionMultiplexer) :
-                base(unitOfWork, unitOfWork.UserRepository!, mapper)
+    public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper, IConnectionMultiplexer connectionMultiplexer) :
+            base(unitOfWork, unitOfWork.UserRepository!, mapper)
+    {
+        _userRepository = unitOfWork.UserRepository!;
+        _mapper = mapper;
+        _connectionMultiplexer = connectionMultiplexer;
+        _redisDb = _connectionMultiplexer.GetDatabase();
+    }
+
+    public override async Task<CustomResponse?> CreateAsync(UserDto dto, HttpContext httpContext,
+        CancellationToken cancellationToken = default)
+    {
+        var isUsernameValid = !await UsernameExistsAsync(dto.Username!, cancellationToken);
+
+        var stringUserId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var userId = int.Parse(stringUserId);
+
+        if (!isUsernameValid)
         {
-                _userRepository = unitOfWork.UserRepository!;
-                _mapper = mapper;
-                _connectionMultiplexer = connectionMultiplexer;
-                _redisDb = _connectionMultiplexer.GetDatabase();
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"{dto.Username} is already used, try another one"
+            };
         }
 
-        public override async Task<CustomResponse?> CreateAsync(UserDto dto, HttpContext httpContext,
-            CancellationToken cancellationToken = default)
+        dto.Password = await dto.Password!.GetHashStringAsync();
+
+        var user = _mapper.Map<User>(dto);
+
+        user.Profile = new() { UserId = user.Id };
+
+        var userRole = new UserRole { UserId = user.Id, RoleId = 2 };
+
+        user.UserRoles!.Add(userRole);
+
+        return await CreateAsync(user, cancellationToken);
+    }
+
+
+    public async Task<User?> LoadModelByIdAsync(int id, CancellationToken cancellationToken = new())
+    {
+        SieveModel sieveModel = new()
         {
-                var isUsernameValid = !await UsernameExistsAsync(dto.Username!, cancellationToken);
+            Filters = $"Id=={id}"
+        };
 
-                var stringUserId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var users = await _userRepository.LoadAllAsync(sieveModel,
+            include => include.Include(x => x.Person).Include(x => x.Profile).Include(x => x.Questions)
+                .Include(x => x.Answers).Include(x => x.UserRoles), cancellationToken);
 
-                var userId = int.Parse(stringUserId);
-
-                if (!isUsernameValid)
-                {
-                        return new CustomResponse
-                        {
-                                IsSuccess = false,
-                                Message = $"{dto.Username} is already used, try another one"
-                        };
-                }
-
-                dto.Password = await dto.Password!.GetHashStringAsync();
-
-                var user = _mapper.Map<User>(dto);
-                
-                user.Profile = new() { UserId = user.Id };
-
-                var userRole = new UserRole { UserId = user.Id, RoleId = 2 };
-
-                user.UserRoles!.Add(userRole);
-
-                return await CreateAsync(user, cancellationToken);
+        if (users.Count == 0)
+        {
+            return null;
         }
 
+        #region [redis Section]
 
-        public async Task<User?> LoadModelByIdAsync(int id, CancellationToken cancellationToken = new())
+        var user = users.Single();
+
+        var key = $"User {user.Id}";
+
+        var value = user.Username;
+
+        await _redisDb.StringSetAsync(key, value);
+
+        #endregion
+
+        return user;
+    }
+
+    public override async Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
+    {
+        var user = await LoadModelByIdAsync(id, cancellationToken);
+
+        if (user is null)
         {
-                SieveModel sieveModel = new()
-                {
-                        Filters = $"Id=={id}"
-                };
-
-                var users = await _userRepository.LoadAllAsync(sieveModel,
-                    include => include.Include(x => x.Person).Include(x => x.Profile).Include(x => x.Questions)
-                        .Include(x => x.Answers).Include(x => x.UserRoles), cancellationToken);
-
-                if (users.Count == 0)
-                {
-                        return null;
-                }
-
-                #region [redis Section]
-
-                var user = users.Single();
-
-                var key = $"User {user.Id}";
-
-                var value = user.Username;
-
-                await _redisDb.StringSetAsync(key, value);
-
-                #endregion
-
-                return user;
+            return new CustomResponse { IsSuccess = false, Message = $"No user exists with the ID of {id}" };
         }
 
-        public override async Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
+        var response = _mapper.Map<UserDto>(user);
+
+        return new CustomResponse { Data = response, IsSuccess = true };
+    }
+
+    private async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = new())
+    {
+        SieveModel sieveModel = new() { Filters = $"Username=={username}" };
+
+        var users = await _userRepository.LoadAllAsync(sieveModel, null, cancellationToken);
+
+        return users.Count > 0;
+    }
+
+    public override async Task<CustomResponse?> UpdateAsync(int id, UserDto dto,
+        CancellationToken cancellationToken = new())
+    {
+        var user = await LoadModelByIdAsync(id, cancellationToken);
+
+        if (user is null)
         {
-                var user = await LoadModelByIdAsync(id, cancellationToken);
-
-                if (user is null)
-                {
-                        return new CustomResponse { IsSuccess = false, Message = $"No user exists with the ID of {id}" };
-                }
-
-                var response = _mapper.Map<UserDto>(user);
-
-                return new CustomResponse { Data = response, IsSuccess = true };
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"No user found with ID of {id}"
+            };
         }
 
-        private async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = new())
+        _mapper.Map(dto, user);
+
+        return await UpdateAsync(user, cancellationToken);
+    }
+
+    public override async Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new())
+    {
+        var user = await LoadModelByIdAsync(id, cancellationToken);
+
+        if (user is null)
         {
-                SieveModel sieveModel = new() { Filters = $"Username=={username}" };
-
-                var users = await _userRepository.LoadAllAsync(sieveModel, null, cancellationToken);
-
-                return users.Count > 0;
+            return new CustomResponse { IsSuccess = false, Message = $"No user found with ID of {id}" };
         }
 
-        public override async Task<CustomResponse?> UpdateAsync(int id, UserDto dto,
-            CancellationToken cancellationToken = new())
-        {
-                var user = await LoadModelByIdAsync(id, cancellationToken);
-
-                if (user is null)
-                {
-                        return new CustomResponse
-                        {
-                                IsSuccess = false,
-                                Message = $"No user found with ID of {id}"
-                        };
-                }
-
-                _mapper.Map(dto, user);
-
-                return await UpdateAsync(user, cancellationToken);
-        }
-
-        public override async Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new())
-        {
-                var user = await LoadModelByIdAsync(id, cancellationToken);
-
-                if (user is null)
-                {
-                        return new CustomResponse { IsSuccess = false, Message = $"No user found with ID of {id}" };
-                }
-
-                return await DeleteAsync(user, cancellationToken);
-        }
+        return await DeleteAsync(user, cancellationToken);
+    }
 }

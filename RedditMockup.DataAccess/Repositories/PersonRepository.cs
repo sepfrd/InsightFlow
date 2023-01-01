@@ -8,10 +8,10 @@ namespace RedditMockup.DataAccess.Repositories;
 public class PersonRepository : BaseRepository<Person>
 {
 
-        #region [Constructor]
+    #region [Constructor]
 
-        public PersonRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor) { }
+    public PersonRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor) { }
 
-        #endregion
+    #endregion
 
 }

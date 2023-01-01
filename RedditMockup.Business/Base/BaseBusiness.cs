@@ -12,102 +12,102 @@ namespace RedditMockup.Business.Base;
 public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
     where T : BaseEntity
 {
-        #region [Fields]
+    #region [Fields]
 
-        private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
-        private readonly IBaseRepository<T> _repository;
+    private readonly IBaseRepository<T> _repository;
 
-        private readonly IMapper _mapper;
+    private readonly IMapper _mapper;
 
-        #endregion
+    #endregion
 
-        #region [Constructor]
+    #region [Constructor]
 
-        protected BaseBusiness(IUnitOfWork unitOfWork, IBaseRepository<T> repository, IMapper mapper)
+    protected BaseBusiness(IUnitOfWork unitOfWork, IBaseRepository<T> repository, IMapper mapper)
+    {
+        _unitOfWork = unitOfWork;
+        _repository = repository;
+        _mapper = mapper;
+
+    }
+
+    #endregion
+
+    #region [Methods]
+
+    public async Task<CustomResponse?> CreateAsync(T t, CancellationToken cancellationToken = new())
+    {
+
+        var entity = await _repository.CreateAsync(t, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        var response = _mapper.Map<DTO>(entity);
+
+        return new CustomResponse
         {
-                _unitOfWork = unitOfWork;
-                _repository = repository;
-                _mapper = mapper;
+            Data = response,
+            IsSuccess = true,
+            Message = "Entity Saved"
+        };
 
-        }
+    }
 
-        #endregion
+    public async Task<CustomResponse?> UpdateAsync(T t, CancellationToken cancellationToken = new())
+    {
 
-        #region [Methods]
+        _repository.Update(t);
 
-        public async Task<CustomResponse?> CreateAsync(T t, CancellationToken cancellationToken = new())
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        return new CustomResponse
         {
+            IsSuccess = true,
+            Message = "Entity Updated"
+        };
+    }
 
-                var entity = await _repository.CreateAsync(t, cancellationToken);
+    public async Task<CustomResponse?> DeleteAsync(T t, CancellationToken cancellationToken = new())
+    {
+        _repository.Delete(t);
 
-                await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
 
-                var response = _mapper.Map<DTO>(entity);
-
-                return new CustomResponse
-                {
-                        Data = response,
-                        IsSuccess = true,
-                        Message = "Entity Saved"
-                };
-
-        }
-
-        public async Task<CustomResponse?> UpdateAsync(T t, CancellationToken cancellationToken = new())
+        return new CustomResponse
         {
+            IsSuccess = true,
+            Message = "Entity Deleted"
+        };
+    }
 
-                _repository.Update(t);
+    public async Task<CustomResponse<IEnumerable<DTO>>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new())
+    {
+        var data = await _repository.LoadAllAsync(sieveModel, null, cancellationToken);
 
-                await _unitOfWork.CommitAsync(cancellationToken);
+        var result = _mapper.Map<IEnumerable<DTO>>(data);
 
-                return new CustomResponse
-                {
-                        IsSuccess = true,
-                        Message = "Entity Updated"
-                };
-        }
-
-        public async Task<CustomResponse?> DeleteAsync(T t, CancellationToken cancellationToken = new())
+        return new CustomResponse<IEnumerable<DTO>>
         {
-                _repository.Delete(t);
+            Data = result,
+            Message = "Data Loaded",
+            IsSuccess = true
+        };
+    }
 
-                await _unitOfWork.CommitAsync(cancellationToken);
+    #endregion
 
-                return new CustomResponse
-                {
-                        IsSuccess = true,
-                        Message = "Entity Deleted"
-                };
-        }
+    #region [Abstract Methods]
 
-        public async Task<CustomResponse<IEnumerable<DTO>>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new())
-        {
-                var data = await _repository.LoadAllAsync(sieveModel, null, cancellationToken);
+    public abstract Task<CustomResponse?> CreateAsync(DTO dto, HttpContext httpContext, CancellationToken
+    cancellationToken = new());
 
-                var result = _mapper.Map<IEnumerable<DTO>>(data);
+    public abstract Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new());
 
-                return new CustomResponse<IEnumerable<DTO>>
-                {
-                        Data = result,
-                        Message = "Data Loaded",
-                        IsSuccess = true
-                };
-        }
+    public abstract Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken cancellationToken = new());
 
-        #endregion
+    public abstract Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new());
 
-        #region [Abstract Methods]
-
-        public abstract Task<CustomResponse?> CreateAsync(DTO dto, HttpContext httpContext, CancellationToken
-        cancellationToken = new());
-
-        public abstract Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new());
-
-        public abstract Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken cancellationToken = new());
-
-        public abstract Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new());
-
-        #endregion
+    #endregion
 
 }

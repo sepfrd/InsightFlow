@@ -4,12 +4,12 @@ namespace RedditMockup.Model.Entities;
 
 public class Role : BaseEntity
 {
-        #region [Properties]
+    #region [Properties]
 
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string? Title { get; set; }
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string? Title { get; set; }
 
-        public virtual ICollection<UserRole>? UserRoles { get; set; }
+    public virtual ICollection<UserRole>? UserRoles { get; set; }
 
-        #endregion
+    #endregion
 }

@@ -6,12 +6,12 @@ namespace RedditMockup.DataAccess.Contracts;
 
 public interface IBaseRepository<T> where T : BaseEntity
 {
-        Task<T> CreateAsync(T t, CancellationToken cancellationToken);
+    Task<T> CreateAsync(T t, CancellationToken cancellationToken);
 
-        Task<List<T>> LoadAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = new());
+    Task<List<T>> LoadAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = new());
 
-        void Update(T t);
+    void Update(T t);
 
-        void Delete(T t);
+    void Delete(T t);
 
 }
