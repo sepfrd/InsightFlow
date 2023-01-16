@@ -8,7 +8,6 @@ using Sieve.Models;
 
 namespace RedditMockup.Business.Base;
 
-
 public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
     where T : BaseEntity
 {
@@ -29,7 +28,6 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
         _unitOfWork = unitOfWork;
         _repository = repository;
         _mapper = mapper;
-
     }
 
     #endregion
@@ -38,7 +36,6 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
 
     public async Task<CustomResponse?> CreateAsync(T t, CancellationToken cancellationToken = new())
     {
-
         var entity = await _repository.CreateAsync(t, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
@@ -51,12 +48,10 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
             IsSuccess = true,
             Message = "Entity Saved"
         };
-
     }
 
     public async Task<CustomResponse?> UpdateAsync(T t, CancellationToken cancellationToken = new())
     {
-
         _repository.Update(t);
 
         await _unitOfWork.CommitAsync(cancellationToken);
@@ -109,5 +104,4 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
     public abstract Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new());
 
     #endregion
-
 }

@@ -9,6 +9,7 @@ using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
 using StackExchange.Redis;
+//using StackExchange.Redis;
 using System.Security.Claims;
 
 namespace RedditMockup.Business.Businesses;
@@ -19,11 +20,12 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
     private readonly IMapper _mapper;
 
-    private readonly IConnectionMultiplexer _connectionMultiplexer;
+    //private readonly IConnectionMultiplexer _connectionMultiplexer;
 
-    private readonly IDatabase _redisDb;
+    //private readonly IDatabase _redisDb;
 
-    public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper, IConnectionMultiplexer connectionMultiplexer) :
+    /*
+       public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper, IConnectionMultiplexer connectionMultiplexer) :
             base(unitOfWork, unitOfWork.UserRepository!, mapper)
     {
         _userRepository = unitOfWork.UserRepository!;
@@ -31,15 +33,21 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         _connectionMultiplexer = connectionMultiplexer;
         _redisDb = _connectionMultiplexer.GetDatabase();
     }
+    */
+
+    public string? SepName;
+
+    public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper) :
+            base(unitOfWork, unitOfWork.UserRepository!, mapper)
+    {
+        _userRepository = unitOfWork.UserRepository!;
+        _mapper = mapper;
+    }
 
     public override async Task<CustomResponse?> CreateAsync(UserDto dto, HttpContext httpContext,
         CancellationToken cancellationToken = default)
     {
         var isUsernameValid = !await UsernameExistsAsync(dto.Username!, cancellationToken);
-
-        var stringUserId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        var userId = int.Parse(stringUserId);
 
         if (!isUsernameValid)
         {
@@ -54,9 +62,16 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
         var user = _mapper.Map<User>(dto);
 
-        user.Profile = new() { UserId = user.Id };
+        user.Profile = new()
+        {
+            UserId = user.Id
+        };
 
-        var userRole = new UserRole { UserId = user.Id, RoleId = 2 };
+        var userRole = new UserRole
+        {
+            UserId = user.Id,
+            RoleId = 2
+        };
 
         user.UserRoles!.Add(userRole);
 
@@ -80,15 +95,15 @@ public class UserBusiness : BaseBusiness<User, UserDto>
             return null;
         }
 
-        #region [redis Section]
-
         var user = users.Single();
 
-        var key = $"User {user.Id}";
+        #region [redis Section]
 
-        var value = user.Username;
+        //var key = $"User {user.Id}";
 
-        await _redisDb.StringSetAsync(key, value);
+        //var value = user.Username;
+
+        //await _redisDb.StringSetAsync(key, value);
 
         #endregion
 

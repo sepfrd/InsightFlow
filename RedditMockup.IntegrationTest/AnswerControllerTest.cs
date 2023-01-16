@@ -181,10 +181,10 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
             response.StatusCode.Should().Be(httpStatusCode);
 
-            if (id < 10)
-                apiResponse?.IsSuccess.Should().BeTrue();
-            else
+            if (id > 150)
                 apiResponse?.IsSuccess.Should().BeFalse();
+            else
+                apiResponse?.IsSuccess.Should().BeTrue();
 
             #endregion
         }
@@ -438,7 +438,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
             {
                 new AnswerDto
                 {
-                    QuestionId = 14,
+                    QuestionId = 140,
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -509,7 +509,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
             new object[]
             {
-                20,
+                200,
                 true,
                 TestResultCode.NotFound
             }
@@ -518,85 +518,83 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
     public static IEnumerable<object[]> GenerateUpdateData()
     {
-        var finalList = new List<object[]>();
 
-        for (int i = 0; i < 200; i++)
+
+
+        return new List<object[]>
         {
-            finalList.Add(new object[]
+            new object[]
             {
-                                5,
-                                new AnswerDto
-                                {
-                                    QuestionId = 1,
-                                    Title = ValidTitle,
-                                    Description = ValidDescription
-                                },
-                                TestResultCode.Ok
-            });
-        }
+                5,
+                new AnswerDto
+                {
+                    QuestionId = 1,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                TestResultCode.Ok
+            },
 
+            new object[]
+            {
+                5,
+                new AnswerDto
+                {
+                    QuestionId = 1,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                TestResultCode.Ok
+            },
 
-        finalList.AddRange(
-        new List<object[]>
-        {
-                    new object[]
-                    {
-                        5,
-                        new AnswerDto
-                        {
-                            QuestionId = 1,
-                            Title = ValidTitle,
-                            Description = ValidDescription
-                        },
-                        TestResultCode.Ok
-                    },
-                new object[]
+            new object[]
+            {
+                5,
+                new AnswerDto
                 {
-                    5,
-                    new AnswerDto
-                    {
-                        QuestionId = 1,
-                        Title = ValidTitle,
-                        Description = ValidDescription
-                    },
-                    TestResultCode.Unauthorized
+                    QuestionId = 1,
+                    Title = ValidTitle,
+                    Description = ValidDescription
                 },
-                new object[]
+                TestResultCode.Unauthorized
+            },
+
+            new object[]
+            {
+                5,
+                new AnswerDto
                 {
-                    5,
-                    new AnswerDto
-                    {
-                        QuestionId = 400,
-                        Title = ValidTitle,
-                        Description = ValidDescription
-                    },
-                    TestResultCode.NotFound
+                    QuestionId = 400,
+                    Title = ValidTitle,
+                    Description = ValidDescription
                 },
-                new object[]
+                TestResultCode.NotFound
+            },
+
+            new object[]
+            {
+                450,
+                new AnswerDto
                 {
-                    450,
-                    new AnswerDto
-                    {
-                        QuestionId = 1,
-                        Title = ValidTitle,
-                        Description = ValidDescription
-                    },
-                    TestResultCode.NotFound
+                    QuestionId = 1,
+                    Title = ValidTitle,
+                    Description = ValidDescription
                 },
-                new object[]
+                TestResultCode.NotFound
+            },
+
+            new object[]
+            {
+                450,
+                new AnswerDto
                 {
-                    450,
-                    new AnswerDto
-                    {
-                        QuestionId = 450,
-                        Title = ValidTitle,
-                        Description = ValidDescription
-                    },
-                    TestResultCode.NotFound
-                }
-        }
-        );
-        return finalList;
+                    QuestionId = 450,
+                    Title = ValidTitle,
+                    Description = ValidDescription
+                },
+                TestResultCode.NotFound
+            }
+        };
     }
 
     public static IEnumerable<object[]> GenerateDeleteData()
@@ -608,11 +606,13 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 5,
                 TestResultCode.Ok
             },
+
             new object[]
             {
-                20,
+                200,
                 TestResultCode.NotFound
             },
+
             new object[]
             {
                 5,

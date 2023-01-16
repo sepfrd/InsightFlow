@@ -27,7 +27,6 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         _userBusiness = (UserBusiness)userBusiness;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-
     }
 
     public override async Task<CustomResponse?> CreateAsync(QuestionDto dto, HttpContext httpContext, CancellationToken cancellationToken = new())
@@ -35,6 +34,15 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         var question = _mapper.Map<Question>(dto);
 
         var stringUserId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (stringUserId is null)
+        {
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"No logged in user found."
+            };
+        }
 
         int userId = int.Parse(stringUserId);
 
@@ -137,7 +145,6 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
             Data = response,
             IsSuccess = true,
         };
-
     }
 
     public async Task<CustomResponse?> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new())
@@ -192,7 +199,6 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         _mapper.Map(questionDto, question);
 
         return await UpdateAsync(question, cancellationToken);
-
     }
 
     public override async Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new())
@@ -209,7 +215,5 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         }
 
         return await DeleteAsync(question, cancellationToken);
-
     }
-
 }

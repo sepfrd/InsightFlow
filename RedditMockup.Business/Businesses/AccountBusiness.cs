@@ -49,7 +49,6 @@ public class AccountBusiness
     private static bool IsSignedIn(HttpContext httpContext) =>
         httpContext.User.Identity is not null && httpContext.User.Identity.IsAuthenticated;
 
-
     private async Task<User?> LoadByUsernameAsync(string username, CancellationToken cancellationToken = new())
     {
         SieveModel sieveModel = new() { Filters = $"Username=={username}" };

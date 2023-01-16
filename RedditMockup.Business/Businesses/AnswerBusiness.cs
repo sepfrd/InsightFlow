@@ -41,8 +41,16 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
         var stringUserId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var userId = int.Parse(stringUserId);
 
+        if (stringUserId is null)
+        {
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"No logged in user found."
+            };
+        }
+        
         if (question is null)
         {
             return new CustomResponse
@@ -51,12 +59,16 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
                 Message = $"No question found with ID of {dto.QuestionId}"
             };
         }
+        
+        var userId = int.Parse(stringUserId);
 
         var answer = _mapper.Map<Answer>(dto);
 
-        var user = await _userBusiness.LoadModelByIdAsync(userId, cancellationToken);
+        answer.UserId = userId;
 
         answer.QuestionId = question.Id;
+        
+        var user = await _userBusiness.LoadModelByIdAsync(userId, cancellationToken);
 
         user!.Score += 1;
 
@@ -81,19 +93,16 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
                             .ThenInclude(x => x!.User),
                             cancellationToken);
 
-
         if (answers.Count == 0)
         {
             return null;
         }
 
         return answers.Single();
-
     }
 
     public override async Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
     {
-
         var answer = await LoadModelByIdAsync(id, cancellationToken);
 
         if (answer is null)
@@ -138,7 +147,6 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         _mapper.Map(dto, answer);
 
         return await UpdateAsync(answer, cancellationToken);
-
     }
 
     public override async Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new())
@@ -155,7 +163,6 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         }
 
         return await DeleteAsync(answer, cancellationToken);
-
     }
 
     public async Task<CustomResponse?> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new())
@@ -215,7 +222,5 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
             Data = response,
             IsSuccess = true,
         };
-
     }
-
 }

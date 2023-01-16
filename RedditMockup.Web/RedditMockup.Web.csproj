@@ -49,4 +49,7 @@
         <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="logs\" />
+    </ItemGroup>
 </Project>

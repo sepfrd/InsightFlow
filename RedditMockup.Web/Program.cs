@@ -6,10 +6,9 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.ConfigureAppConfiguration(config =>
-    config.SetBasePath(Directory.GetCurrentDirectory()).AddEnvironmentVariables());
+builder.Configuration.AddEnvironmentVariables();
 
-builder.Host.ConfigureLogging(x => x.ClearProviders().SetMinimumLevel(LogLevel.Trace));
+builder.Logging.SetMinimumLevel(LogLevel.Trace);
 
 builder.Host.UseNLog();
 
@@ -31,8 +30,8 @@ try
         .InjectBusinesses()
         .InjectFluentValidation()
         .InjectAutoMapper()
-        .InjectContentCompression()
-        .InjectRedis(builder.Configuration);
+        //.InjectRedis(builder.Configuration)
+        .InjectContentCompression();
 
     var app = builder.Build();
 
@@ -40,18 +39,15 @@ try
 
     await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
 
-
     if (!app.Environment.IsProduction())
     {
         app.UseSwagger()
                 .UseSwaggerUI();
-
     }
 
     if (app.Environment.IsEnvironment("Testing"))
     {
         await context.Database.EnsureDeletedAsync();
-
         await context.Database.EnsureCreatedAsync();
     }
 
@@ -80,7 +76,6 @@ catch (Exception exception)
 finally
 {
     LogManager.Shutdown();
-
 }
 
 public partial class Program

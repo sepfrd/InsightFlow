@@ -198,33 +198,61 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
     public static IEnumerable<object[]> GenerateLoginData()
     {
-        yield return new object[]
+        return new List<object[]>
         {
-            new LoginDto
+            new object[]
             {
-                Username = "sepehr_frd",
-                Password = "sfr1376",
-                RememberMe = false
+                new LoginDto
+                {
+                    Username = "sepehr_frd",
+                    Password = "sfr1376",
+                    RememberMe = false
+                },
+                true
             },
-            true
-        };
 
-        yield return new object[]
-        {
-            new LoginDto { Username = "sepehr_frd", Password = "sfr1376", RememberMe = false }, true
-        };
+            new object[]
+            {
+                new LoginDto
+                {
+                    Username = "sepehr_frd",
+                    Password = "sfr1376",
+                    RememberMe = false
+                },
+                true
+            },
 
-        yield return new object[]
-        {
-            new LoginDto { Username = "sepehr_frd", Password = "asdasdasdasd", RememberMe = false }, false
-        };
+            new object[]
+            {
+                new LoginDto {
+                    Username = "sepehr_frd",
+                    Password = "asdasdasdasd",
+                    RememberMe = false
+                },
+                false
+            },
 
-        yield return new object[]
-        {
-            new LoginDto { Username = "sepehr_d", Password = "sfr1376", RememberMe = false }, false
-        };
+            new object[]
+            {
+                new LoginDto {
+                    Username = "sepehr_d",
+                    Password = "sfr1376",
+                    RememberMe = false
+                },
+                false
+            },
 
-        yield return new object[] { new LoginDto { Username = "223", Password = "sd2", RememberMe = false }, false };
+            new object[]
+            {
+                new LoginDto
+                {
+                    Username = "223",
+                    Password = "sd2",
+                    RememberMe = false
+                },
+                false
+            }
+        };
     }
 
     public static IEnumerable<object[]> GenerateIntegrationData()

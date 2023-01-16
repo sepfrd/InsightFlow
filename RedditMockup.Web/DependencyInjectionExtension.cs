@@ -13,7 +13,7 @@ using RedditMockup.DataAccess;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.DataAccess.Contracts;
 using Sieve.Services;
-using StackExchange.Redis;
+//using StackExchange.Redis;
 using System.IO.Compression;
 using System.Text.Json.Serialization;
 
@@ -34,8 +34,10 @@ internal static class DependencyInjectionExtension
             .AddHealthChecks()
             .Services;
 
-    internal static IServiceCollection InjectRedis(this IServiceCollection services, IConfiguration configuration) =>
+    /*
+       internal static IServiceCollection InjectRedis(this IServiceCollection services, IConfiguration configuration) =>
             services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(configuration["RedisConnection"]));
+    */
 
     internal static IServiceCollection InjectSwagger(this IServiceCollection services) =>
         services.AddSwaggerGen();
