@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.ViewModels;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -19,7 +21,9 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
     #region [Field(s)]
 
-    private const string BaseAddress = "/api/Account";
+    private const string _baseAddress = "/api/Account";
+
+    private const int _defaultTimeout = 2000;
 
     private readonly HttpClient _client;
 
@@ -34,7 +38,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
     #region [Method(s)]
 
-    private async Task AuthenticateAsync()
+    private static async Task AuthenticateAsync()
     {
         var loginDto = new LoginDto()
         {
@@ -43,11 +47,22 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
             RememberMe = true
         };
 
-        var serializedLoginDto = JsonSerializer.Serialize(loginDto);
+        var client = new RestClient();
 
-        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
+        var request = new RestRequest($"{_baseAddress}/Login")
+        {
+            Timeout = _defaultTimeout
+        };
 
-        await _client.PostAsync($"{BaseAddress}/Login", stringContent);
+        request.AddJsonBody(loginDto);
+
+        await client.ExecutePostAsync(request);
+       
+        //var serializedLoginDto = JsonSerializer.Serialize(loginDto);
+
+        //var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
+
+        //await _client.PostAsync($"{BaseAddress}/Login", stringContent);
     }
 
     #endregion
@@ -65,12 +80,20 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [Act]
 
-        var response = await _client.GetAsync(BaseAddress);
+        var client = new RestClient();
 
-        var streamResponse = await response.Content.ReadAsStringAsync();
+        var request = new RestRequest(_baseAddress);
 
-        var apiResponse =
-            await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<List<UserViewModel>>(streamResponse));
+        var response = await client.ExecuteGetAsync(request);
+
+        var apiResponse = response.Content.As<List<UserViewModel>>();
+
+        //var response = await _client.GetAsync(_baseAddress);
+
+        //var streamResponse = await response.Content.ReadAsStringAsync();
+
+        //var apiResponse =
+        //    await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<List<UserViewModel>>(streamResponse));
 
         #endregion
 
@@ -97,7 +120,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [Act]
 
-        var response = await _client.PostAsync($"{BaseAddress}/Login", stringContent);
+        var response = await _client.PostAsync($"{_baseAddress}/Login", stringContent);
 
         var streamResponse = await response.Content.ReadAsStreamAsync();
 
@@ -128,7 +151,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [Login]
 
-        var loginResponse = await _client.PostAsync($"{BaseAddress}/Login", loginDtoStringContent);
+        var loginResponse = await _client.PostAsync($"{_baseAddress}/Login", loginDtoStringContent);
 
         var loginStreamResponse = await loginResponse.Content.ReadAsStreamAsync();
 
@@ -138,13 +161,13 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [GetAll]
 
-        var getAllResponse = await _client.GetAsync(BaseAddress);
+        var getAllResponse = await _client.GetAsync(_baseAddress);
 
         #endregion
 
         #region [Logout]
 
-        var logoutResponse = await _client.GetAsync($"{BaseAddress}/Logout");
+        var logoutResponse = await _client.GetAsync($"{_baseAddress}/Logout");
 
         #endregion
 
