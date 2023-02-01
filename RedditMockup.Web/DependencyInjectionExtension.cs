@@ -24,15 +24,16 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectApi(this IServiceCollection services) =>
         services
             .AddControllers()
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            })
-            .AddApplicationPart(typeof(IBaseController<>).Assembly)
-            .Services
-            .AddHealthChecks()
             .Services;
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            //})
+            //.AddApplicationPart(typeof(IBaseController<>).Assembly)
+            //.Services
+            //.AddHealthChecks()
+            //.Services;
 
     /*
        internal static IServiceCollection InjectRedis(this IServiceCollection services, IConfiguration configuration) =>

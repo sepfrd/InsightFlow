@@ -1,11 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.ViewModels;
 using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -34,11 +32,13 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
     public AccountControllerTest(WebApplicationFactory<Program> factory) =>
         _client = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing")).CreateClient();
 
+
+
     #endregion
 
     #region [Method(s)]
 
-    private static async Task AuthenticateAsync()
+    private async Task AuthenticateAsync()
     {
         var loginDto = new LoginDto()
         {
@@ -47,7 +47,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
             RememberMe = true
         };
 
-        var client = new RestClient();
+        var client = new RestClient(_client);
 
         var request = new RestRequest($"{_baseAddress}/Login")
         {
@@ -57,7 +57,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
         request.AddJsonBody(loginDto);
 
         await client.ExecutePostAsync(request);
-       
+
         //var serializedLoginDto = JsonSerializer.Serialize(loginDto);
 
         //var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
@@ -80,13 +80,13 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [Act]
 
-        var client = new RestClient();
+        var client = new RestClient(_client);
 
         var request = new RestRequest(_baseAddress);
 
-        var response = await client.ExecuteGetAsync(request);
+        var response = await client.ExecuteAsync<List<UserViewModel>>(request);
 
-        var apiResponse = response.Content.As<List<UserViewModel>>();
+        //var apiResponse = response.Content.As<List<UserViewModel>>();
 
         //var response = await _client.GetAsync(_baseAddress);
 
@@ -101,7 +101,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        apiResponse.Should().BeOfType<List<UserViewModel>>();
+        response.Data.Should().BeOfType<List<UserViewModel>>();
 
         #endregion
     }

@@ -44,7 +44,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         var query = _dbSet.AsNoTracking();
         if (include != null)
             query = include(query);
-        return await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
+
+        var observer = await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
+
+        return observer;
     }
 
     public void Update(T t)
