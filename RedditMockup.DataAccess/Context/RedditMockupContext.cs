@@ -46,31 +46,27 @@ public class RedditMockupContext : DbContext
         var id = 3;
 
         var personFaker = new Faker<Person>()
-                .RuleFor(person => person.Id, _ => id++)
-                .RuleFor(person => person.Name, faker => faker.Name.FirstName())
-                .RuleFor(person => person.Family, faker => faker.Name.LastName());
+            .RuleFor(person => person.Id, _ => id++)
+            .RuleFor(person => person.Name, faker => faker.Name.FirstName())
+            .RuleFor(person => person.Family, faker => faker.Name.LastName());
 
         var fakePeople = new List<Person>();
 
         fakePeople.AddRange(new List<Person>
-                {
-
-                        new()
-                        {
-                                Id = 1,
-                                Name = "Sepehr",
-                                Family = "Foroughi Rad"
-                        },
-                        new()
-
-                        {
-                                Id = 2,
-                                Name = "Abbas",
-                                Family = "BooAzaar"
-                           }
-                      }
-        );
-
+        {
+            new()
+            {
+                Id = 1,
+                Name = "Sepehr",
+                Family = "Foroughi Rad"
+            },
+            new()
+            {
+                Id = 2,
+                Name = "Abbas",
+                Family = "BooAzaar"
+            }
+        });
 
         for (var i = 0; i < 100; i++)
         {
@@ -86,32 +82,31 @@ public class RedditMockupContext : DbContext
         var id = 3;
 
         var userFaker = new Faker<User>()
-                .RuleFor(user => user.Id, _ => id)
-                .RuleFor(user => user.Username, faker => faker.Internet.UserName())
-                .RuleFor(user => user.Password, faker => faker.Internet.Password())
-                .RuleFor(user => user.PersonId, _ => id++)
-                .RuleFor(user => user.Score, faker => faker.Random.Number(50));
+            .RuleFor(user => user.Id, _ => id)
+            .RuleFor(user => user.Username, faker => faker.Internet.UserName())
+            .RuleFor(user => user.Password, faker => faker.Internet.Password())
+            .RuleFor(user => user.PersonId, _ => id++)
+            .RuleFor(user => user.Score, faker => faker.Random.Number(50));
 
         var fakeUsers = new List<User>();
 
         fakeUsers.AddRange(new List<User>
-                {
-                        new()
-                        {
-                        Id = 1,
-                        Username = "sepehr_frd",
-                        Password = "sfr1376".GetHashStringAsync().Result,
-                        PersonId = 1
-                        },
-
-                        new()
-                        {
-                        Id = 2,
-                        Username = "abbas_booazaar",
-                        Password = "abbasabbas".GetHashStringAsync().Result,
-                        PersonId = 2
-                        }
-                });
+        {
+            new()
+            {
+                Id = 1,
+                Username = "sepehr_frd",
+                Password = "sfr1376".GetHashStringAsync().Result,
+                PersonId = 1
+            },
+            new()
+            {
+                Id = 2,
+                Username = "abbas_booazaar",
+                Password = "abbasabbas".GetHashStringAsync().Result,
+                PersonId = 2
+            }
+        });
 
         for (var i = 0; i < 100; i++)
         {
@@ -126,27 +121,27 @@ public class RedditMockupContext : DbContext
         var profilesList = new List<Profile>();
 
         profilesList.AddRange(new List<Profile>
-                {
-                        new()
-                        {
-                                Id = 1,
-                                UserId = 1
-                        },
-                        new()
-                        {
-                                Id = 2,
-                                UserId = 2
-                        }
-                });
+        {
+            new()
+            {
+                Id = 1,
+                UserId = 1
+            },
+            new()
+            {
+                Id = 2,
+                UserId = 2
+            }
+        });
 
         for (var i = 3; i < 103; i++)
         {
             profilesList.Add(
-                    new()
-                    {
-                        Id = i,
-                        UserId = i
-                    });
+                new()
+                {
+                    Id = i,
+                    UserId = i
+                });
         }
 
         return profilesList;
@@ -157,31 +152,30 @@ public class RedditMockupContext : DbContext
         var userRolesList = new List<UserRole>();
 
         userRolesList.AddRange(new List<UserRole>
-                {
-                        new()
-                        {
-                                Id = 1,
-                                UserId = 1,
-                                RoleId = 1
-                        },
-                        new()
-                        {
-                                Id = 2,
-                                UserId = 2,
-                                RoleId = 2
-                        }
-                });
-
+        {
+            new()
+            {
+                Id = 1,
+                UserId = 1,
+                RoleId = 1
+            },
+            new()
+            {
+                Id = 2,
+                UserId = 2,
+                RoleId = 2
+            }
+        });
 
         for (var i = 3; i < 102; i++)
         {
             userRolesList.Add(
-                    new()
-                    {
-                        Id = i,
-                        UserId = i,
-                        RoleId = 2
-                    });
+                new()
+                {
+                    Id = i,
+                    UserId = i,
+                    RoleId = 2
+                });
         }
 
         return userRolesList;
@@ -233,19 +227,18 @@ public class RedditMockupContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Role>().HasData(new List<Role>
-                {
-                    new()
-                    {
-                        Id = 1,
-                        Title = RoleConstants.Admin
-                    },
-
-                    new()
-                    {
-                        Id = 2,
-                        Title = RoleConstants.User
-                    }
-                });
+        {
+            new()
+            {
+                Id = 1,
+                Title = RoleConstants.Admin
+            },
+            new()
+            {
+                Id = 2,
+                Title = RoleConstants.User
+            }
+        });
 
         modelBuilder.Entity<Person>().HasData(GetFakePeople());
 

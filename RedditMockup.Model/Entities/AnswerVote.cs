@@ -16,6 +16,4 @@ public class AnswerVote : BaseEntity
     public virtual Answer? Answer { get; set; }
 
     #endregion
-
-
 }

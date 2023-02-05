@@ -18,13 +18,3 @@ public interface IBaseController<DTO>
 
     void Options();
 }
-
-
-/*
- * GetAllAsync(sievemodel) //Admin
- * GetByIdAsync(int id) Admin
- * AddAsync(T) Admin
- * Update(T) Admin
- * Delete(int) Admin
- *
- */

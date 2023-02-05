@@ -29,9 +29,9 @@ try
         .InjectContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
-        .InjectAutoMapper()
+        .InjectAutoMapper();
         //.InjectRedis(builder.Configuration)
-        .InjectContentCompression();
+        //.InjectContentCompression()
 
     var app = builder.Build();
 
@@ -43,16 +43,12 @@ try
     {
         app.UseSwagger()
                 .UseSwaggerUI();
-    }
 
-    if (app.Environment.IsEnvironment("Testing"))
-    {
         await context.Database.EnsureDeletedAsync();
+
         await context.Database.EnsureCreatedAsync();
     }
-
-
-    if (app.Environment.IsProduction())
+    else
     {
         app.UseExceptionHandler("/Error");
         app.UseHsts();

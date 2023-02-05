@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +11,6 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
-using System.Security.Claims;
 
 namespace RedditMockup.Business.Businesses;
 
@@ -32,7 +32,10 @@ public class AccountBusiness
     private async Task<bool> IsUsernameAndPasswordValidAsync(LoginDto login,
         CancellationToken cancellationToken = new())
     {
-        SieveModel sieveModel = new() { Filters = $"Username=={login.Username!}" };
+        SieveModel sieveModel = new()
+        {
+            Filters = $"Username=={login.Username!}"
+        };
 
         var users = await _userRepository.LoadAllAsync(sieveModel, null, cancellationToken);
 
@@ -41,7 +44,10 @@ public class AccountBusiness
             return false;
         }
 
-        var isPasswordValid = (await login.Password!.GetHashStringAsync()) == users.Single().Password;
+
+        var password = await login.Password!.GetHashStringAsync();
+
+        var isPasswordValid = password == users.Single().Password;
 
         return isPasswordValid;
     }
@@ -54,8 +60,11 @@ public class AccountBusiness
         SieveModel sieveModel = new() { Filters = $"Username=={username}" };
 
         var users = await _userRepository.LoadAllAsync(sieveModel,
-            include => include.Include(x => x.Person).Include(x => x.Profile).Include(x => x.Questions)
-                .Include(x => x.Answers).Include(x => x.UserRoles), cancellationToken);
+            include => include.Include(x => x.Person)
+                .Include(x => x.Profile)
+                .Include(x => x.Questions)
+                .Include(x => x.Answers)
+                .Include(x => x.UserRoles), cancellationToken);
 
         if (users.Count == 0)
         {
@@ -102,9 +111,9 @@ public class AccountBusiness
         var roles = await _unitOfWork.RoleRepository!.LoadByUserIdAsync(user!.Id, cancellationToken);
 
         var claims = new List<Claim>()
-                {
-                        new (ClaimTypes.NameIdentifier, user.Id.ToString())
-                };
+        {
+            new (ClaimTypes.NameIdentifier, user.Id.ToString())
+        };
 
         claims.AddRange(roles.Select(role => new Claim(role?.Title!, role?.Title!)));
 

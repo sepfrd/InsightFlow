@@ -1,13 +1,13 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
-using RedditMockup.Common.Dtos;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
+using RedditMockup.Common.Dtos;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 

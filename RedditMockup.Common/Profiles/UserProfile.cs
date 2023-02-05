@@ -24,6 +24,5 @@ public class UserProfile : Profile
             .ForMember(destination => destination.Family,
             option => option.MapFrom(source => source.Person!.Family))
             .ReverseMap();
-
     }
 }

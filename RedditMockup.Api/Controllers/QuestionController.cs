@@ -13,10 +13,9 @@ public class QuestionController : BaseController<Question, QuestionDto>
     private readonly QuestionBusiness _questionBusiness;
 
 
-    public QuestionController(IBaseBusiness<Question, QuestionDto> business) : base(business)
-    {
+    public QuestionController(IBaseBusiness<Question, QuestionDto> business) : base(business) =>
         _questionBusiness = (QuestionBusiness)business;
-    }
+    
 
     [HttpGet]
     [Route("Answers")]

@@ -8,9 +8,7 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
-using StackExchange.Redis;
 //using StackExchange.Redis;
-using System.Security.Claims;
 
 namespace RedditMockup.Business.Businesses;
 
@@ -34,8 +32,6 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         _redisDb = _connectionMultiplexer.GetDatabase();
     }
     */
-
-    public string? SepName;
 
     public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper) :
             base(unitOfWork, unitOfWork.UserRepository!, mapper)
@@ -87,8 +83,12 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         };
 
         var users = await _userRepository.LoadAllAsync(sieveModel,
-            include => include.Include(x => x.Person).Include(x => x.Profile).Include(x => x.Questions)
-                .Include(x => x.Answers).Include(x => x.UserRoles), cancellationToken);
+            include => include
+                            .Include(x => x.Person)
+                            .Include(x => x.Profile)
+                            .Include(x => x.Questions)
+                            .Include(x => x.Answers)
+                            .Include(x => x.UserRoles), cancellationToken);
 
         if (users.Count == 0)
         {
@@ -116,17 +116,28 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
         if (user is null)
         {
-            return new CustomResponse { IsSuccess = false, Message = $"No user exists with the ID of {id}" };
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"No user exists with the ID of {id}"
+            };
         }
 
         var response = _mapper.Map<UserDto>(user);
 
-        return new CustomResponse { Data = response, IsSuccess = true };
+        return new CustomResponse
+        {
+            Data = response,
+            IsSuccess = true
+        };
     }
 
     private async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = new())
     {
-        SieveModel sieveModel = new() { Filters = $"Username=={username}" };
+        SieveModel sieveModel = new()
+        {
+            Filters = $"Username=={username}"
+        };
 
         var users = await _userRepository.LoadAllAsync(sieveModel, null, cancellationToken);
 
@@ -158,7 +169,11 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
         if (user is null)
         {
-            return new CustomResponse { IsSuccess = false, Message = $"No user found with ID of {id}" };
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"No user found with ID of {id}"
+            };
         }
 
         return await DeleteAsync(user, cancellationToken);

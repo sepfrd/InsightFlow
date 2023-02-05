@@ -12,5 +12,4 @@ public class UserRepository : BaseRepository<User>
     public UserRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor) { }
 
     #endregion
-
 }

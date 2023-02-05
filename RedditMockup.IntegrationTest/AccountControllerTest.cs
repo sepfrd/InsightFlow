@@ -1,16 +1,17 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.ViewModels;
 using RestSharp;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+//using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RedditMockup.IntegrationTest;
 
@@ -57,12 +58,6 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
         request.AddJsonBody(loginDto);
 
         await client.ExecutePostAsync(request);
-
-        //var serializedLoginDto = JsonSerializer.Serialize(loginDto);
-
-        //var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
-
-        //await _client.PostAsync($"{BaseAddress}/Login", stringContent);
     }
 
     #endregion
@@ -85,15 +80,6 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
         var request = new RestRequest(_baseAddress);
 
         var response = await client.ExecuteAsync<List<UserViewModel>>(request);
-
-        //var apiResponse = response.Content.As<List<UserViewModel>>();
-
-        //var response = await _client.GetAsync(_baseAddress);
-
-        //var streamResponse = await response.Content.ReadAsStringAsync();
-
-        //var apiResponse =
-        //    await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<List<UserViewModel>>(streamResponse));
 
         #endregion
 
@@ -229,7 +215,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
                 {
                     Username = "sepehr_frd",
                     Password = "sfr1376",
-                    RememberMe = false
+                    RememberMe = true
                 },
                 true
             },
@@ -242,12 +228,13 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
                     Password = "sfr1376",
                     RememberMe = false
                 },
-                true
+                false
             },
 
             new object[]
             {
-                new LoginDto {
+                new LoginDto
+                {
                     Username = "sepehr_frd",
                     Password = "asdasdasdasd",
                     RememberMe = false
@@ -257,7 +244,8 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
             new object[]
             {
-                new LoginDto {
+                new LoginDto
+                {
                     Username = "sepehr_d",
                     Password = "sfr1376",
                     RememberMe = false

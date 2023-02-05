@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Business.Base;
@@ -8,7 +9,6 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
-using System.Security.Claims;
 
 namespace RedditMockup.Business.Businesses;
 
@@ -50,7 +50,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
                 Message = $"No logged in user found."
             };
         }
-        
+
         if (question is null)
         {
             return new CustomResponse
@@ -59,7 +59,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
                 Message = $"No question found with ID of {dto.QuestionId}"
             };
         }
-        
+
         var userId = int.Parse(stringUserId);
 
         var answer = _mapper.Map<Answer>(dto);
@@ -67,7 +67,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         answer.UserId = userId;
 
         answer.QuestionId = question.Id;
-        
+
         var user = await _userBusiness.LoadModelByIdAsync(userId, cancellationToken);
 
         user!.Score += 1;

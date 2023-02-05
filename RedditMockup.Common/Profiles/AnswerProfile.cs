@@ -6,9 +6,7 @@ namespace RedditMockup.Common.Profiles;
 
 public class AnswerProfile : Profile
 {
-    public AnswerProfile()
-    {
+    public AnswerProfile() =>
         CreateMap<Answer, AnswerDto>()
-            .ReverseMap();
-    }
+        .ReverseMap();
 }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using NLog.Web;
-using RedditMockup.Api.Contracts;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Profiles;
@@ -24,16 +23,13 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectApi(this IServiceCollection services) =>
         services
             .AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            })
             .Services;
-            //.AddJsonOptions(options =>
-            //{
-            //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
-            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            //})
-            //.AddApplicationPart(typeof(IBaseController<>).Assembly)
-            //.Services
-            //.AddHealthChecks()
-            //.Services;
+    //.AddApplicationPart(typeof(IBaseController<>).Assembly)
+    //.Services
 
     /*
        internal static IServiceCollection InjectRedis(this IServiceCollection services, IConfiguration configuration) =>
@@ -48,7 +44,7 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectContext(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment environment) =>
-        environment.IsEnvironment("Testing")
+        !environment.IsProduction()
             ? services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"))
             :
                 services.AddDbContextPool<RedditMockupContext>(options =>
