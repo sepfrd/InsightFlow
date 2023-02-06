@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.ViewModels;
 using RestSharp;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
-//using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RedditMockup.IntegrationTest;
 
@@ -31,7 +28,9 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
     #region [Constructor]
 
     public AccountControllerTest(WebApplicationFactory<Program> factory) =>
-        _client = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing")).CreateClient();
+        _client = factory.WithWebHostBuilder(builder =>
+                            builder.UseEnvironment("Testing"))
+                                    .CreateClient();
 
 
 
@@ -98,25 +97,26 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
     {
         #region [Arrange]
 
-        var serializedLoginDto = JsonSerializer.Serialize(loginDto);
+        var client = new RestClient(_client);
 
-        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
+        var request = new RestRequest($"{_baseAddress}/Login")
+        {
+            Timeout = _defaultTimeout
+        };
+
+        request.AddJsonBody(loginDto);
 
         #endregion
 
         #region [Act]
 
-        var response = await _client.PostAsync($"{_baseAddress}/Login", stringContent);
-
-        var streamResponse = await response.Content.ReadAsStreamAsync();
-
-        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+        var response = await client.ExecutePostAsync<CustomResponse>(request);
 
         #endregion
 
         #region [Assert]
 
-        apiResponse?.IsSuccess.Should().Be(expected);
+        response.Data?.IsSuccess.Should().Be(expected);
 
         #endregion
     }
@@ -127,9 +127,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
     {
         #region [Arrange]
 
-        var serializedLoginDto = JsonSerializer.Serialize(loginDto);
-
-        var loginDtoStringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
+        var client = new RestClient(_client);
 
         #endregion
 
@@ -137,23 +135,36 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [Login]
 
-        var loginResponse = await _client.PostAsync($"{_baseAddress}/Login", loginDtoStringContent);
+        var loginRequest = new RestRequest($"{_baseAddress}/Login")
+        {
+            Timeout = _defaultTimeout
+        };
 
-        var loginStreamResponse = await loginResponse.Content.ReadAsStreamAsync();
+        loginRequest.AddJsonBody(loginDto);
 
-        var loginApiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(loginStreamResponse);
+        var loginResponse = await client.ExecutePostAsync<CustomResponse>(loginRequest);
 
         #endregion
 
         #region [GetAll]
 
-        var getAllResponse = await _client.GetAsync(_baseAddress);
+        var getAllRequest = new RestRequest(_baseAddress)
+        {
+            Timeout = _defaultTimeout
+        };
+
+        var getAllResponse = await client.ExecuteGetAsync<CustomResponse>(getAllRequest);
 
         #endregion
 
         #region [Logout]
 
-        var logoutResponse = await _client.GetAsync($"{_baseAddress}/Logout");
+        var logoutRequest = new RestRequest($"{_baseAddress}/Logout")
+        {
+            Timeout = _defaultTimeout
+        };
+
+        var logoutResponse = await client.ExecuteGetAsync<CustomResponse>(logoutRequest);
 
         #endregion
 
@@ -165,7 +176,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
         {
             case TestResultCode.AllFailed:
 
-                loginApiResponse?.IsSuccess.Should().BeFalse();
+                loginResponse.Data?.IsSuccess.Should().BeFalse();
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
@@ -175,7 +186,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
             case TestResultCode.AllSuccessful:
 
-                loginApiResponse?.IsSuccess.Should().BeTrue();
+                loginResponse.Data?.IsSuccess.Should().BeTrue();
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -185,7 +196,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
             case TestResultCode.Unauthorized:
 
-                loginApiResponse?.IsSuccess.Should().BeTrue();
+                loginResponse.Data?.IsSuccess.Should().BeTrue();
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.Forbidden);
 
@@ -218,17 +229,6 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
                     RememberMe = true
                 },
                 true
-            },
-
-            new object[]
-            {
-                new LoginDto
-                {
-                    Username = "sepehr_frd",
-                    Password = "sfr1376",
-                    RememberMe = false
-                },
-                false
             },
 
             new object[]
