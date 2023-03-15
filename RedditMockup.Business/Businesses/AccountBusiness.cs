@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
-using RedditMockup.Common.ViewModels;
+//using RedditMockup.Common.ViewModels;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
@@ -73,15 +73,6 @@ public class AccountBusiness
 
         return users.Single();
     }
-
-    public async Task<List<UserViewModel>>
-        LoadAllUsersViewModelAsync(SieveModel sieveModel, CancellationToken cancellationToken = new()) =>
-        _mapper.Map<List<UserViewModel>>(await _userRepository.LoadAllAsync(sieveModel,
-            include =>
-            include.Include(x => x.Person)
-            .Include(x => x.UserRoles)!
-            .ThenInclude(x => x.Role),
-            cancellationToken));
 
     public async Task<CustomResponse> LoginAsync(LoginDto login, HttpContext httpContext,
         CancellationToken cancellationToken = new())

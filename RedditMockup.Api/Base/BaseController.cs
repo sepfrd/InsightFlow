@@ -21,7 +21,7 @@ public class BaseController<T, DTO> : ControllerBase, IBaseController<DTO>
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<CustomResponse<IEnumerable<DTO>>?> GetAllAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken) =>
+    public virtual async Task<CustomResponse<IEnumerable<DTO>>?> GetAllAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken) =>
         await _business.LoadAllAsync(sieveModel, cancellationToken);
 
     [Route("id")]

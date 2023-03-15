@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
+//using RedditMockup.Common.ViewModels;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
@@ -40,6 +41,23 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         _mapper = mapper;
     }
 
+    public override async Task<CustomResponse<IEnumerable<UserDto>>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new())
+    {
+        var users = _mapper.Map<List<UserDto>>(await _userRepository.LoadAllAsync(sieveModel,
+            include =>
+            include.Include(x => x.Person)
+            .Include(x => x.UserRoles)!
+            .ThenInclude(x => x.Role),
+            cancellationToken));
+
+        return new CustomResponse<IEnumerable<UserDto>>
+        {
+            Data = users,
+            IsSuccess = true
+        };
+
+    }
+
     public override async Task<CustomResponse?> CreateAsync(UserDto dto, HttpContext httpContext,
         CancellationToken cancellationToken = default)
     {
@@ -73,7 +91,6 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
         return await CreateAsync(user, cancellationToken);
     }
-
 
     public async Task<User?> LoadModelByIdAsync(int id, CancellationToken cancellationToken = new())
     {

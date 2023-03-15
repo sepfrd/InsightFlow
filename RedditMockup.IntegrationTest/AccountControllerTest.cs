@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RedditMockup.Common.Dtos;
-using RedditMockup.Common.ViewModels;
 using RestSharp;
 using System.Collections.Generic;
 using System.Net;
@@ -63,34 +62,6 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
     #region [Theory Method(s)]
 
-    [Fact]
-    public async Task GetAll_ReturnCustomResponseOfListOfUserViewModel()
-    {
-        #region [Arrange]
-
-        await AuthenticateAsync();
-
-        #endregion
-
-        #region [Act]
-
-        var client = new RestClient(_client);
-
-        var request = new RestRequest(_baseAddress);
-
-        var response = await client.ExecuteAsync<List<UserViewModel>>(request);
-
-        #endregion
-
-        #region [Assert]
-
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        response.Data.Should().BeOfType<List<UserViewModel>>();
-
-        #endregion
-    }
-
     [Theory]
     [MemberData(nameof(GenerateLoginData))]
     public async Task Login_ReturnExpectedResult(LoginDto loginDto, bool expected)
@@ -148,7 +119,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [GetAll]
 
-        var getAllRequest = new RestRequest(_baseAddress)
+        var getAllRequest = new RestRequest("/Api/User")
         {
             Timeout = _defaultTimeout
         };

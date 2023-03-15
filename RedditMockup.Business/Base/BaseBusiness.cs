@@ -76,7 +76,7 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
         };
     }
 
-    public async Task<CustomResponse<IEnumerable<DTO>>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new())
+    public virtual async Task<CustomResponse<IEnumerable<DTO>>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new())
     {
         var data = await _repository.LoadAllAsync(sieveModel, null, cancellationToken);
 
