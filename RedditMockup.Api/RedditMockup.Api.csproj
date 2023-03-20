@@ -22,6 +22,6 @@
         <ProjectReference Include="..\RedditMockup.Business\RedditMockup.Business.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="NLog" Version="5.1.1" />
+        <PackageReference Include="NLog" Version="5.1.2" />
     </ItemGroup>
 </Project>

@@ -119,7 +119,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [GetAll]
 
-        var getAllRequest = new RestRequest("/Api/User")
+        var getAllRequest = new RestRequest("/api/User")
         {
             Timeout = _defaultTimeout
         };
@@ -135,7 +135,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
             Timeout = _defaultTimeout
         };
 
-        var logoutResponse = await client.ExecuteGetAsync<CustomResponse>(logoutRequest);
+        var logoutResponse = await client.ExecutePostAsync<CustomResponse>(logoutRequest);
 
         #endregion
 

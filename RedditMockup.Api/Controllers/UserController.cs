@@ -15,7 +15,7 @@ public class UserController : BaseController<User, UserDto>
     {
     }
 
-    [Authorize]
+    [Authorize(PolicyConstants.Admin)]
     [HttpGet]
     public override async Task<CustomResponse<IEnumerable<UserDto>>?> GetAllAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken) =>
             await base.GetAllAsync(sieveModel, cancellationToken);

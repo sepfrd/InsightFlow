@@ -15,6 +15,7 @@ public class AnswerController : BaseController<Answer, AnswerDto>
     public AnswerController(IBaseBusiness<Answer, AnswerDto> business) : base(business) =>
         _answerBusiness = (AnswerBusiness)business;
 
+    [Authorize]
     [HttpPost]
     [Route("SubmitVote")]
     public async Task<CustomResponse?> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken) =>
@@ -22,7 +23,6 @@ public class AnswerController : BaseController<Answer, AnswerDto>
 
     [HttpGet]
     [Route("AnswerVotes")]
-    [AllowAnonymous]
     public async Task<CustomResponse?> GetVotesAsync(int answerId, CancellationToken cancellationToken) =>
         await _answerBusiness.LoadVotesAsync(answerId, cancellationToken);
 }
