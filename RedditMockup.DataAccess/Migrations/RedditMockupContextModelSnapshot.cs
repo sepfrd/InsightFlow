@@ -54,7 +54,7 @@ namespace RedditMockup.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
 
                     b.HasData(
                         new
@@ -1083,7 +1083,7 @@ namespace RedditMockup.DataAccess.Migrations
 
                     b.HasIndex("AnswerId");
 
-                    b.ToTable("AnswerVotes");
+                    b.ToTable("AnswerVotes", (string)null);
                 });
 
             modelBuilder.Entity("RedditMockup.Model.Entities.Person", b =>
@@ -1108,7 +1108,7 @@ namespace RedditMockup.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("Persons", (string)null);
 
                     b.HasData(
                         new
@@ -1957,7 +1957,7 @@ namespace RedditMockup.DataAccess.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profiles", (string)null);
 
                     b.HasData(
                         new
@@ -2889,7 +2889,7 @@ namespace RedditMockup.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
 
                     b.HasData(
                         new
@@ -3818,7 +3818,7 @@ namespace RedditMockup.DataAccess.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("QuestionVotes");
+                    b.ToTable("QuestionVotes", (string)null);
                 });
 
             modelBuilder.Entity("RedditMockup.Model.Entities.Role", b =>
@@ -3840,7 +3840,7 @@ namespace RedditMockup.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -3890,7 +3890,7 @@ namespace RedditMockup.DataAccess.Migrations
                     b.HasIndex("PersonId")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
@@ -4941,7 +4941,7 @@ namespace RedditMockup.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
 
                     b.HasData(
                         new

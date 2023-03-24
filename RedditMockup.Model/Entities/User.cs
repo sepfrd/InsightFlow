@@ -17,6 +17,9 @@ public class User : BaseEntity
 
     public int Score { get; set; } = 0;
 
+    [NotMapped]
+    public List<Question> SavedQuestions { get; set; } = new();
+
     [ForeignKey("PersonId")]
     [Sieve(CanSort = true, CanFilter = true)]
     public virtual Person? Person { get; set; }

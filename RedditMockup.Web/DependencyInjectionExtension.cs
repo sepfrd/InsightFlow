@@ -43,15 +43,19 @@ internal static class DependencyInjectionExtension
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
     internal static IServiceCollection InjectContext(this IServiceCollection services,
-        IConfiguration configuration, IWebHostEnvironment environment) =>
-        !environment.IsProduction()
-            ? services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"))
-            :
-                services.AddDbContextPool<RedditMockupContext>(options =>
+        IConfiguration configuration, IWebHostEnvironment environment)
+    {
+        if (environment.IsProduction())
+        {
+            return services.AddDbContextPool<RedditMockupContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
                 options.EnableSensitiveDataLogging();
             });
+        }
+
+        return services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
+    }
 
     internal static IServiceCollection InjectNLog(this IServiceCollection services)
 
