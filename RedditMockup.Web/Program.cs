@@ -30,8 +30,7 @@ try
         .InjectBusinesses()
         .InjectFluentValidation()
         .InjectAutoMapper();
-        //.InjectRedis(builder.Configuration)
-        //.InjectContentCompression()
+    //.InjectRedis(builder.Configuration)
 
     var app = builder.Build();
 
@@ -44,19 +43,22 @@ try
         app.UseSwagger()
                 .UseSwaggerUI();
 
-        await context.Database.EnsureDeletedAsync();
+        if (app.Environment.IsEnvironment("Testing"))
+        {
+            await context.Database.EnsureDeletedAsync();
 
-        await context.Database.EnsureCreatedAsync();
+            await context.Database.EnsureCreatedAsync();
+        }
     }
+
     else
     {
-        app.UseExceptionHandler("/Error");
+        app.UseExceptionHandler();
         app.UseHsts();
     }
 
     app
         .UseHttpsRedirection()
-        .UseStaticFiles()
         .UseRouting()
         .UseAuthentication()
         .UseAuthorization()

@@ -37,6 +37,8 @@ public class RedditMockupContext : DbContext
 
     public DbSet<QuestionVote>? QuestionVotes { get; set; }
 
+    public DbSet<Bookmark>? Bookmarks { get; set; }
+
     #endregion
 
     #region [Methods]

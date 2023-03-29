@@ -24,6 +24,8 @@ public class Question : BaseEntity
 
     public virtual ICollection<QuestionVote>? Votes { get; set; }
 
+    public virtual ICollection<Bookmark>? Bookmarks { get; set; }
+
     [ForeignKey("UserId")]
     public virtual User? User { get; set; }
 

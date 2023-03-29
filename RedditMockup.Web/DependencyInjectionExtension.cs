@@ -14,7 +14,6 @@ using RedditMockup.DataAccess.Contracts;
 using Sieve.Services;
 //using StackExchange.Redis;
 using System.IO.Compression;
-using System.Text.Json.Serialization;
 
 namespace RedditMockup.Web;
 
@@ -28,13 +27,6 @@ internal static class DependencyInjectionExtension
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             })
             .Services;
-    //.AddApplicationPart(typeof(IBaseController<>).Assembly)
-    //.Services
-
-    /*
-       internal static IServiceCollection InjectRedis(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(configuration["RedisConnection"]));
-    */
 
     internal static IServiceCollection InjectSwagger(this IServiceCollection services) =>
         services.AddSwaggerGen();
@@ -45,16 +37,16 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectContext(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment environment)
     {
-        if (environment.IsProduction())
+        if (environment.IsEnvironment("Testing"))
         {
-            return services.AddDbContextPool<RedditMockupContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("Default"));
-                options.EnableSensitiveDataLogging();
-            });
+            return services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
         }
 
-        return services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
+        return services.AddDbContextPool<RedditMockupContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("Default"));
+            options.EnableSensitiveDataLogging();
+        });
     }
 
     internal static IServiceCollection InjectNLog(this IServiceCollection services)
@@ -117,11 +109,6 @@ internal static class DependencyInjectionExtension
                 .AsSelf()
                 .WithScopedLifetime());
 
-    internal static IServiceCollection InjectContentCompression(this IServiceCollection services) =>
-        services.Configure<GzipCompressionProviderOptions>
-                (options => options.Level = CompressionLevel.Fastest)
-            .AddResponseCompression(options => options.Providers.Add<GzipCompressionProvider>());
-
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>
         services
             .AddFluentValidationAutoValidation()
@@ -129,4 +116,15 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectAutoMapper(this IServiceCollection services) =>
         services.AddAutoMapper(typeof(UserProfile).Assembly);
+
+    #region [Redis Injection]
+
+    /* 
+       
+    internal static IServiceCollection InjectRedis(this IServiceCollection services, IConfiguration configuration) =>
+            services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(configuration["RedisConnection"]));
+    */
+
+    #endregion
+
 }

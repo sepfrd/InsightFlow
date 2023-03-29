@@ -26,6 +26,8 @@ public class UnitOfWork : IUnitOfWork
 
     private QuestionVoteRepository? _questionVoteRepository;
 
+    private BookmarkRepository? _bookmarkRepository;
+
     private readonly RedditMockupContext _context;
 
     private readonly ISieveProcessor _sieveProcessor;
@@ -62,6 +64,9 @@ public class UnitOfWork : IUnitOfWork
 
     public AnswerVoteRepository AnswerVoteRepository =>
         _answerVoteRepository ??= new AnswerVoteRepository(_context, _sieveProcessor);
+
+    public BookmarkRepository BookmarkRepository =>
+        _bookmarkRepository ??= new BookmarkRepository(_context, _sieveProcessor);
 
     public int Commit() =>
         _context.SaveChanges();

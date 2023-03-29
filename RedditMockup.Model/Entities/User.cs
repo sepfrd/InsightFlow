@@ -17,9 +17,6 @@ public class User : BaseEntity
 
     public int Score { get; set; } = 0;
 
-    [NotMapped]
-    public List<Question> SavedQuestions { get; set; } = new();
-
     [ForeignKey("PersonId")]
     [Sieve(CanSort = true, CanFilter = true)]
     public virtual Person? Person { get; set; }
@@ -31,6 +28,8 @@ public class User : BaseEntity
     public virtual ICollection<Answer>? Answers { get; set; }
 
     public virtual ICollection<UserRole>? UserRoles { get; set; }
+
+    public virtual ICollection<Bookmark>? Bookmarks { get; set; }
 
     #endregion
 
