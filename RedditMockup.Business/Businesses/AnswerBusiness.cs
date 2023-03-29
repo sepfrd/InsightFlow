@@ -12,7 +12,7 @@ using Sieve.Models;
 
 namespace RedditMockup.Business.Businesses;
 
-public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
+public class AnswerBusiness : BaseBusiness<Answer>
 {
     private readonly AnswerRepository _answerRepository;
     private readonly QuestionBusiness _questionBusiness;
@@ -23,7 +23,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
     private readonly IMapper _mapper;
 
 
-    public AnswerBusiness(IUnitOfWork unitOfWork, IMapper mapper, IBaseBusiness<User, UserDto> userBusiness, IBaseBusiness<Question, QuestionDto> questionBusiness) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
+    public AnswerBusiness(IUnitOfWork unitOfWork, IMapper mapper, IBaseBusiness<User> userBusiness, IBaseBusiness<Question> questionBusiness) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
     {
         _answerRepository = unitOfWork.AnswerRepository!;
         _questionBusiness = (QuestionBusiness)questionBusiness;
@@ -33,7 +33,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-
+/*
     public override async Task<CustomResponse?> CreateAsync(AnswerDto dto, HttpContext httpContext, CancellationToken
     cancellationToken = new())
     {
@@ -164,7 +164,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
         return await DeleteAsync(answer, cancellationToken);
     }
-
+*/
     public async Task<CustomResponse?> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new())
     {
         var answer = await LoadModelByIdAsync(id, cancellationToken);

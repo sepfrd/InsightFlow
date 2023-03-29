@@ -244,6 +244,8 @@ public class RedditMockupContext : DbContext
 
         modelBuilder.Entity<Person>().HasData(GetFakePeople());
 
+        modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
+
         modelBuilder.Entity<User>().HasData(GetFakeUsers());
 
         modelBuilder.Entity<Profile>().HasData(GetFakeProfiles());

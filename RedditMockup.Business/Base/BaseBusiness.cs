@@ -8,7 +8,7 @@ using Sieve.Models;
 
 namespace RedditMockup.Business.Base;
 
-public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
+public abstract class BaseBusiness<T> : IBaseBusiness<T>
     where T : BaseEntity
 {
     #region [Fields]
@@ -34,7 +34,7 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
 
     #region [Methods]
 
-    public async Task<CustomResponse?> CreateAsync(T t, CancellationToken cancellationToken = new())
+    public async Task<T?> CreateAsync(T t, CancellationToken cancellationToken = new())
     {
         var entity = await _repository.CreateAsync(t, cancellationToken);
 
@@ -50,33 +50,7 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
         };
     }
 
-    public async Task<CustomResponse?> UpdateAsync(T t, CancellationToken cancellationToken = new())
-    {
-        _repository.Update(t);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        return new CustomResponse
-        {
-            IsSuccess = true,
-            Message = "Entity Updated"
-        };
-    }
-
-    public async Task<CustomResponse?> DeleteAsync(T t, CancellationToken cancellationToken = new())
-    {
-        _repository.Delete(t);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        return new CustomResponse
-        {
-            IsSuccess = true,
-            Message = "Entity Deleted"
-        };
-    }
-
-    public virtual async Task<CustomResponse<IEnumerable<DTO>>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new())
+    public virtual async Task<IEnumerable<T>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new())
     {
         var data = await _repository.LoadAllAsync(sieveModel, null, cancellationToken);
 
@@ -90,18 +64,48 @@ public abstract class BaseBusiness<T, DTO> : IBaseBusiness<T, DTO>
         };
     }
 
+    public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken = new()) =>
+        await _repository.LoadByIdAsync(id, cancellationToken);
+
+
+    public async Task<T?> UpdateAsync(T t, CancellationToken cancellationToken = new())
+    {
+        _repository.Update(t);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        return new CustomResponse
+        {
+            IsSuccess = true,
+            Message = "Entity Updated"
+        };
+    }
+
+    public async Task<T?> DeleteAsync(T t, CancellationToken cancellationToken = new())
+    {
+        _repository.Delete(t);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        return new CustomResponse
+        {
+            IsSuccess = true,
+            Message = "Entity Deleted"
+        };
+    }
+
+
     #endregion
 
     #region [Abstract Methods]
 
-    public abstract Task<CustomResponse?> CreateAsync(DTO dto, HttpContext httpContext, CancellationToken
-    cancellationToken = new());
+    //public abstract Task<CustomResponse?> CreateAsync(DTO dto, HttpContext httpContext, CancellationToken
+    //cancellationToken = new());
 
-    public abstract Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new());
 
-    public abstract Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken cancellationToken = new());
+    //public abstract Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken cancellationToken = new());
 
-    public abstract Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new());
+    //public abstract Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new());
 
     #endregion
 }

@@ -17,8 +17,6 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     private readonly ISieveProcessor _processor;
 
-    private readonly RedditMockupContext _context;
-
     #endregion
 
     #region [Constructor]
@@ -27,7 +25,6 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         _processor = processor;
         _dbSet = context.Set<T>();
-        _context = context;
     }
 
     #endregion
@@ -45,21 +42,22 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         if (include != null)
             query = include(query);
 
-        var observer = await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
+        return await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
 
-        return observer;
     }
 
-    public void Update(T t)
+    public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken = new()) =>
+        await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+    public T Update(T t)
     {
         t.LastUpdated = DateTime.Now;
 
-        _dbSet.Update(t);
-
+        return _dbSet.Update(t).Entity;
     }
 
-    public void Delete(T t) =>
-        _dbSet.Remove(t);
+    public T Delete(T t) =>
+        _dbSet.Remove(t).Entity;
 
     #endregion
 

@@ -12,7 +12,7 @@ using Sieve.Models;
 
 namespace RedditMockup.Business.Businesses;
 
-public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
+public class QuestionBusiness : BaseBusiness<Question>
 {
     private readonly QuestionRepository _questionRepository;
     private readonly QuestionVoteRepository _questionVoteRepository;
@@ -20,7 +20,7 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public QuestionBusiness(IUnitOfWork unitOfWork, IMapper mapper, IBaseBusiness<User, UserDto> userBusiness) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
+    public QuestionBusiness(IUnitOfWork unitOfWork, IMapper mapper, IBaseBusiness<User> userBusiness) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
     {
         _questionRepository = unitOfWork.QuestionRepository!;
         _questionVoteRepository = unitOfWork.QuestionVoteRepository!;
@@ -29,33 +29,8 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         _mapper = mapper;
     }
 
-    public override async Task<CustomResponse?> CreateAsync(QuestionDto dto, HttpContext httpContext, CancellationToken cancellationToken = new())
-    {
-        var question = _mapper.Map<Question>(dto);
 
-        var stringUserId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (stringUserId is null)
-        {
-            return new CustomResponse
-            {
-                IsSuccess = false,
-                Message = $"No logged in user found."
-            };
-        }
-
-        int userId = int.Parse(stringUserId);
-
-        var user = await _userBusiness.LoadModelByIdAsync(userId, cancellationToken);
-
-        question.UserId = user!.Id;
-
-        user.Score += 1;
-
-        return await CreateAsync(question, cancellationToken);
-    }
-
-    public async Task<Question?> LoadModelByIdAsync(int id, CancellationToken cancellationToken = new())
+/*    public async Task<Question?> LoadModelByIdAsync(int id, CancellationToken cancellationToken = new())
     {
         SieveModel sieveModel = new()
         {
@@ -75,33 +50,11 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         }
 
         return questions.Single();
-    }
-
-    public override async Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
-    {
-        var question = await LoadModelByIdAsync(id, cancellationToken);
-
-        if (question is null)
-        {
-            return new CustomResponse
-            {
-                IsSuccess = false,
-                Message = $"No question found with ID of {id}"
-            };
-        }
-
-        var response = _mapper.Map<QuestionDto>(question);
-
-        return new CustomResponse
-        {
-            Data = response,
-            IsSuccess = true
-        };
-    }
+    }*/
 
     public async Task<CustomResponse?> LoadAnswersAsync(int id, CancellationToken cancellationToken = new())
     {
-        var question = await LoadModelByIdAsync(id, cancellationToken);
+        var question = await _questionRepository.LoadByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
@@ -125,7 +78,7 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     public async Task<CustomResponse?> LoadVotesAsync(int id, CancellationToken cancellationToken = new())
     {
-        var question = await LoadModelByIdAsync(id, cancellationToken);
+        var question = await _questionRepository.LoadByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
@@ -149,7 +102,7 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     public async Task<CustomResponse?> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new())
     {
-        var question = await LoadModelByIdAsync(id, cancellationToken);
+        var question = await _questionRepository.LoadByIdAsync(id, cancellationToken);
 
         if (question is null)
         {
@@ -181,6 +134,56 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
             Message = $"{(kind ? "Up" : "Down")}vote submitted"
         };
 
+    }
+    
+    /*
+    
+    public override async Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())
+    {
+        var question = await LoadModelByIdAsync(id, cancellationToken);
+
+        if (question is null)
+        {
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"No question found with ID of {id}"
+            };
+        }
+
+        var response = _mapper.Map<QuestionDto>(question);
+
+        return new CustomResponse
+        {
+            Data = response,
+            IsSuccess = true
+        };
+    }
+    
+    public override async Task<CustomResponse?> CreateAsync(QuestionDto dto, HttpContext httpContext, CancellationToken cancellationToken = new())
+    {
+        var question = _mapper.Map<Question>(dto);
+
+        var stringUserId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (stringUserId is null)
+        {
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                Message = $"No logged in user found."
+            };
+        }
+
+        int userId = int.Parse(stringUserId);
+
+        var user = await _userBusiness.LoadModelByIdAsync(userId, cancellationToken);
+
+        question.UserId = user!.Id;
+
+        user.Score += 1;
+
+        return await CreateAsync(question, cancellationToken);
     }
 
     public override async Task<CustomResponse?> UpdateAsync(int id, QuestionDto questionDto, CancellationToken cancellationToken = new())
@@ -216,4 +219,6 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
         return await DeleteAsync(question, cancellationToken);
     }
+
+*/
 }
