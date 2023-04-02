@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using RedditMockup.Business.Contracts;
-using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
@@ -17,17 +15,17 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
 
     private readonly IBaseRepository<T> _repository;
 
-    private readonly IMapper _mapper;
+    //private readonly IMapper _mapper;
 
     #endregion
 
     #region [Constructor]
 
-    protected BaseBusiness(IUnitOfWork unitOfWork, IBaseRepository<T> repository, IMapper mapper)
+    protected BaseBusiness(IUnitOfWork unitOfWork, IBaseRepository<T> repository)
     {
         _unitOfWork = unitOfWork;
         _repository = repository;
-        _mapper = mapper;
+        //_mapper = mapper;
     }
 
     #endregion
@@ -40,29 +38,11 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var response = _mapper.Map<DTO>(entity);
-
-        return new CustomResponse
-        {
-            Data = response,
-            IsSuccess = true,
-            Message = "Entity Saved"
-        };
+        return entity;
     }
 
-    public virtual async Task<IEnumerable<T>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new())
-    {
-        var data = await _repository.LoadAllAsync(sieveModel, null, cancellationToken);
-
-        var result = _mapper.Map<IEnumerable<DTO>>(data);
-
-        return new CustomResponse<IEnumerable<DTO>>
-        {
-            Data = result,
-            Message = "Data Loaded",
-            IsSuccess = true
-        };
-    }
+    public async Task<IEnumerable<T>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new()) =>
+        await _repository.LoadAllAsync(sieveModel, null, cancellationToken);
 
     public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken = new()) =>
         await _repository.LoadByIdAsync(id, cancellationToken);
@@ -70,28 +50,27 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
 
     public async Task<T?> UpdateAsync(T t, CancellationToken cancellationToken = new())
     {
-        _repository.Update(t);
+        T entity = _repository.Update(t);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new CustomResponse
-        {
-            IsSuccess = true,
-            Message = "Entity Updated"
-        };
+        return entity;
     }
 
-    public async Task<T?> DeleteAsync(T t, CancellationToken cancellationToken = new())
+    public async Task<T?> DeleteAsync(int id, CancellationToken cancellationToken = new())
     {
-        _repository.Delete(t);
+        T? entity = await _repository.LoadByIdAsync(id, cancellationToken);
+
+        if (entity == null)
+        {
+            return null;
+        }
+
+        T deletedEntity = _repository.Delete(entity);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new CustomResponse
-        {
-            IsSuccess = true,
-            Message = "Entity Deleted"
-        };
+        return deletedEntity;
     }
 
 

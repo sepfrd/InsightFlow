@@ -43,7 +43,6 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
             query = include(query);
 
         return await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
-
     }
 
     public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken = new()) =>

@@ -7,7 +7,6 @@ namespace RedditMockup.DataAccess;
 
 public class UnitOfWork : IUnitOfWork
 {
-
     private AnswerRepository? _answerRepository;
 
     private PersonRepository? _personRepository;

@@ -97,15 +97,15 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
         services.Scan(scan =>
-            scan.FromAssembliesOf(typeof(IBaseBusiness<,>))
+            scan.FromAssembliesOf(typeof(IBaseBusiness<>))
                 .AddClasses(classes =>
-                    classes.AssignableTo(typeof(IBaseBusiness<,>)))
+                    classes.AssignableTo(typeof(IBaseBusiness<>)))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime()
                 .AddClasses(classes =>
                     classes.Where(predicate =>
                         predicate.Name.EndsWith("Business") &&
-                        !predicate.IsAssignableTo(typeof(IBaseBusiness<,>))))
+                        !predicate.IsAssignableTo(typeof(IBaseBusiness<>))))
                 .AsSelf()
                 .WithScopedLifetime());
 

@@ -1,14 +1,10 @@
-﻿using System.Security.Claims;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using RedditMockup.Business.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
-using Sieve.Models;
 
 namespace RedditMockup.Business.Businesses;
 
@@ -16,64 +12,17 @@ public class QuestionBusiness : BaseBusiness<Question>
 {
     private readonly QuestionRepository _questionRepository;
     private readonly QuestionVoteRepository _questionVoteRepository;
-    private readonly UserBusiness _userBusiness;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    //private readonly UserBusiness _userBusiness;
 
-    public QuestionBusiness(IUnitOfWork unitOfWork, IMapper mapper, IBaseBusiness<User> userBusiness) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
+    public QuestionBusiness(IUnitOfWork unitOfWork, IMapper mapper, IBaseBusiness<User> userBusiness) : base(unitOfWork, unitOfWork.QuestionRepository!)
     {
         _questionRepository = unitOfWork.QuestionRepository!;
         _questionVoteRepository = unitOfWork.QuestionVoteRepository!;
-        _userBusiness = (UserBusiness)userBusiness;
+        //_userBusiness = (UserBusiness)userBusiness;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-    }
-
-
-/*    public async Task<Question?> LoadModelByIdAsync(int id, CancellationToken cancellationToken = new())
-    {
-        SieveModel sieveModel = new()
-        {
-            Filters = $"Id=={id}"
-        };
-
-        var questions = await _questionRepository.LoadAllAsync(sieveModel,
-            include => include
-            .Include(x => x.User)
-            .Include(x => x.Votes)
-            .Include(x => x.Answers),
-            cancellationToken);
-
-        if (questions.Count == 0)
-        {
-            return null;
-        }
-
-        return questions.Single();
-    }*/
-
-    public async Task<CustomResponse?> LoadAnswersAsync(int id, CancellationToken cancellationToken = new())
-    {
-        var question = await _questionRepository.LoadByIdAsync(id, cancellationToken);
-
-        if (question is null)
-        {
-            return new CustomResponse
-            {
-                IsSuccess = false,
-                Message = $"No question found with ID of {id}"
-            };
-        }
-
-        var answers = question.Answers!.ToList();
-
-        var response = _mapper.Map<List<AnswerDto>>(answers);
-
-        return new CustomResponse
-        {
-            Data = response,
-            IsSuccess = true
-        };
     }
 
     public async Task<CustomResponse?> LoadVotesAsync(int id, CancellationToken cancellationToken = new())
@@ -135,7 +84,28 @@ public class QuestionBusiness : BaseBusiness<Question>
         };
 
     }
-    
+
+    /*    public async Task<Question?> LoadModelByIdAsync(int id, CancellationToken cancellationToken = new())
+        {
+            SieveModel sieveModel = new()
+            {
+                Filters = $"Id=={id}"
+            };
+
+            var questions = await _questionRepository.LoadAllAsync(sieveModel,
+                include => include
+                .Include(x => x.User)
+                .Include(x => x.Votes)
+                .Include(x => x.Answers),
+                cancellationToken);
+
+            if (questions.Count == 0)
+            {
+                return null;
+            }
+
+            return questions.Single();
+        }*/
     /*
     
     public override async Task<CustomResponse?> LoadByIdAsync(int id, CancellationToken cancellationToken = new())

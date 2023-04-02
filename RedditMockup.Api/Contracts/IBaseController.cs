@@ -1,20 +1,18 @@
-﻿using RedditMockup.Common.Dtos;
-using Sieve.Models;
+﻿using Sieve.Models;
 
 namespace RedditMockup.Api.Contracts;
 
-public interface IBaseController<DTO>
-
+public interface IBaseController<T>
 {
-    Task<CustomResponse?> CreateAsync(DTO dto, CancellationToken cancellationToken);
+    Task<T?> CreateAsync(T t, CancellationToken cancellationToken);
 
-    Task<CustomResponse<IEnumerable<DTO>>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken);
+    Task<IEnumerable<T>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken);
 
-    Task<CustomResponse?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken);
 
-    Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken cancellationToken);
+    Task<T?> UpdateAsync(T t, CancellationToken cancellationToken);
 
-    Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<T?> DeleteAsync(int id, CancellationToken cancellationToken);
 
     void Options();
 }

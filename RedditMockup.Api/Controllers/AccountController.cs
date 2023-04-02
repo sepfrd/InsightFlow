@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Business.Businesses;
-using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 //using RedditMockup.Common.ViewModels;
-using Sieve.Models;
 
 namespace RedditMockup.Api.Controllers;
 

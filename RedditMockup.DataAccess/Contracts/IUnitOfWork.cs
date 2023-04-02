@@ -24,6 +24,8 @@ public interface IUnitOfWork
 
     AnswerVoteRepository? AnswerVoteRepository { get; }
 
+    BookmarkRepository? BookmarkRepository { get; }
+
     #endregion
 
     #region [Methods]

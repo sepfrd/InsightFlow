@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +9,7 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
+using System.Security.Claims;
 
 namespace RedditMockup.Business.Businesses;
 
@@ -20,13 +19,10 @@ public class AccountBusiness
 
     private readonly UserRepository _userRepository;
 
-    private readonly IMapper _mapper;
-
-    public AccountBusiness(IUnitOfWork unitOfWork, IMapper mapper)
+    public AccountBusiness(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
         _userRepository = unitOfWork.UserRepository!;
-        _mapper = mapper;
     }
 
     private async Task<bool> IsUsernameAndPasswordValidAsync(LoginDto login,

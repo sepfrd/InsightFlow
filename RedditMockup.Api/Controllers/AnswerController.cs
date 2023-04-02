@@ -8,12 +8,17 @@ using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.Controllers;
 
-public class AnswerController : BaseController<Answer, AnswerDto>
+public class AnswerController : BaseController<Answer>
 {
     private readonly AnswerBusiness _answerBusiness;
 
-    public AnswerController(IBaseBusiness<Answer, AnswerDto> business) : base(business) =>
+    public AnswerController(IBaseBusiness<Answer> business) : base(business) =>
         _answerBusiness = (AnswerBusiness)business;
+
+    [HttpGet]
+    [Route("AnswersByQuestionId")]
+    public async Task<CustomResponse?> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken) =>
+        await _answerBusiness.LoadAnswersByQuestionIdAsync(questionId, cancellationToken);
 
     [Authorize]
     [HttpPost]
