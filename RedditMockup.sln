@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditMockup.IntegrationTest", "RedditMockup.IntegrationTest\RedditMockup.IntegrationTest.csproj", "{4EDC313C-5954-49AE-B3E3-CA66EBE2340F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditMockup.PublicApi", "RedditMockup.PublicApi\RedditMockup.PublicApi.csproj", "{066B3D30-DB0D-4D2B-B347-0B2AF78E5A63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{4EDC313C-5954-49AE-B3E3-CA66EBE2340F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EDC313C-5954-49AE-B3E3-CA66EBE2340F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EDC313C-5954-49AE-B3E3-CA66EBE2340F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{066B3D30-DB0D-4D2B-B347-0B2AF78E5A63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{066B3D30-DB0D-4D2B-B347-0B2AF78E5A63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{066B3D30-DB0D-4D2B-B347-0B2AF78E5A63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{066B3D30-DB0D-4D2B-B347-0B2AF78E5A63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{31A3793E-3CAD-4E61-B057-6E9E7341B202} = {E3FE5F57-D70D-4973-BE2D-9C0CEE0F33A7}
 		{3A4E3860-A539-4EC1-A7DB-4C950FB0F004} = {6139C60F-ABA3-4EB5-8433-4E88A5F6C9A6}
 		{4EDC313C-5954-49AE-B3E3-CA66EBE2340F} = {3A4E3860-A539-4EC1-A7DB-4C950FB0F004}
+		{066B3D30-DB0D-4D2B-B347-0B2AF78E5A63} = {E3FE5F57-D70D-4973-BE2D-9C0CEE0F33A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49424290-6450-4DAF-B4F3-88CD63F26494}

@@ -12,7 +12,6 @@
         <None Remove="Contracts\" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Base\" />
         <Folder Include="Businesses\" />
         <Folder Include="Contracts\" />
     </ItemGroup>

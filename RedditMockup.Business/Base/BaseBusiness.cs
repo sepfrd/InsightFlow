@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using RedditMockup.Business.Contracts;
+﻿using RedditMockup.Business.Contracts;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
@@ -47,7 +46,6 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
     public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken = new()) =>
         await _repository.LoadByIdAsync(id, cancellationToken);
 
-
     public async Task<T?> UpdateAsync(T t, CancellationToken cancellationToken = new())
     {
         T entity = _repository.Update(t);
@@ -72,7 +70,6 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
 
         return deletedEntity;
     }
-
 
     #endregion
 
