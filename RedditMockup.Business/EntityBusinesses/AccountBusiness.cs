@@ -11,7 +11,7 @@ using RedditMockup.Model.Entities;
 using Sieve.Models;
 using System.Security.Claims;
 
-namespace RedditMockup.Business.Businesses;
+namespace RedditMockup.Business.EntityBusinesses;
 
 public class AccountBusiness
 {

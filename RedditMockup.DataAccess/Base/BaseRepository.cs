@@ -10,7 +10,6 @@ namespace RedditMockup.DataAccess.Base;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 {
-
     #region [Fields]
 
     private readonly DbSet<T> _dbSet;
@@ -59,5 +58,4 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         _dbSet.Remove(t).Entity;
 
     #endregion
-
 }

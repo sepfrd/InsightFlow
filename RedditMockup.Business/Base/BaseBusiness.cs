@@ -14,8 +14,6 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
 
     private readonly IBaseRepository<T> _repository;
 
-    //private readonly IMapper _mapper;
-
     #endregion
 
     #region [Constructor]
@@ -24,7 +22,6 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
     {
         _unitOfWork = unitOfWork;
         _repository = repository;
-        //_mapper = mapper;
     }
 
     #endregion
@@ -59,7 +56,7 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
     {
         T? entity = await _repository.LoadByIdAsync(id, cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             return null;
         }
@@ -70,18 +67,6 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
 
         return deletedEntity;
     }
-
-    #endregion
-
-    #region [Abstract Methods]
-
-    //public abstract Task<CustomResponse?> CreateAsync(DTO dto, HttpContext httpContext, CancellationToken
-    //cancellationToken = new());
-
-
-    //public abstract Task<CustomResponse?> UpdateAsync(int id, DTO dto, CancellationToken cancellationToken = new());
-
-    //public abstract Task<CustomResponse?> DeleteAsync(int id, CancellationToken cancellationToken = new());
 
     #endregion
 }

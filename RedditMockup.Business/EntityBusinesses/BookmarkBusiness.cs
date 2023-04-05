@@ -2,7 +2,7 @@
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 
-namespace RedditMockup.Business.Businesses;
+namespace RedditMockup.Business.EntityBusinesses;
 
 public class BookmarkBusiness : BaseBusiness<Bookmark>
 {

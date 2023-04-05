@@ -12,8 +12,7 @@
         <None Remove="Contracts\" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Businesses\" />
-        <Folder Include="Contracts\" />
+        <Folder Include="EntityBusinesses\" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
