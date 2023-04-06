@@ -1,19 +1,39 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
 using RedditMockup.Business.Base;
 using RedditMockup.Business.Contracts;
+using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Dtos;
+using RedditMockup.Common.Helpers;
+using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
-using System.Net;
 
 namespace RedditMockup.Business.DtoBusinesses;
 
 public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
 {
-    public UserDtoBusiness(IMapper mapper) : base(mapper)
+    #region [Fields]
+
+    private readonly IMapper _mapper;
+
+    private readonly UserBusiness _userBusiness;
+
+    #endregion
+
+    #region [Constructor]
+
+    public UserDtoBusiness(IUnitOfWork unitOfWork, IBaseBusiness<User> userBusiness, IMapper mapper) : base(unitOfWork, unitOfWork.UserRepository!, mapper)
     {
+        _mapper = mapper;
+
+        _userBusiness = (UserBusiness)userBusiness;
     }
+
+    #endregion
+
+    #region [Methods]
 
     private async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = new())
     {
@@ -49,7 +69,7 @@ public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
 
         dto.Password = await dto.Password!.GetHashStringAsync();
 
-        var user = Mapper.Map<User>(dto);
+        var user = _mapper.Map<User>(dto);
 
         user.Profile = new()
         {
@@ -64,8 +84,27 @@ public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
 
         user.UserRoles!.Add(userRole);
 
-        return await CreateAsync(user, cancellationToken);
+        user = await _userBusiness.CreateAsync(user, cancellationToken);
+
+        if (user is null)
+        {
+            return new()
+            {
+                IsSuccess = false,
+                HttpStatusCode = HttpStatusCode.InternalServerError
+            };
+        }
+
+        var userDto = _mapper.Map<UserDto>(user);
+
+        return new()
+        {
+            Data = userDto,
+            IsSuccess = true,
+            HttpStatusCode = HttpStatusCode.Created
+        };
+
     }
 
-
+    #endregion
 }

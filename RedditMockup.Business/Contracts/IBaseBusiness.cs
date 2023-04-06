@@ -13,5 +13,4 @@ public interface IBaseBusiness<T>
     Task<T?> UpdateAsync(T t, CancellationToken cancellationToken);
 
     Task<T?> DeleteAsync(int id, CancellationToken cancellationToken);
-
 }

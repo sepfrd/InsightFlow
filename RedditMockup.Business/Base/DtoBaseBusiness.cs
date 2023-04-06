@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
@@ -7,7 +8,7 @@ using System.Net;
 
 namespace RedditMockup.Business.Base;
 
-public class DtoBaseBusiness<TDto, TBase> : BaseBusiness<TBase>
+public class DtoBaseBusiness<TDto, TBase> : BaseBusiness<TBase>, IDtoBaseBusiness<TDto>
     where TBase : BaseEntity
     where TDto : class
 {
@@ -43,7 +44,7 @@ public class DtoBaseBusiness<TDto, TBase> : BaseBusiness<TBase>
         {
             Data = tDto,
             IsSuccess = true,
-            HttpStatusCode = HttpStatusCode.OK
+            HttpStatusCode = HttpStatusCode.Created
         };
     }
 

@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using RedditMockup.Business.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
-using System.Net;
 
 namespace RedditMockup.Business.DtoBusinesses;
 

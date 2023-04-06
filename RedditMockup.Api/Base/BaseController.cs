@@ -28,16 +28,13 @@ public class BaseController<T> : ControllerBase, IBaseController<T>
     public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken) =>
         await _business.LoadByIdAsync(id, cancellationToken);
 
-
     [HttpPost]
     public async Task<T?> CreateAsync(T t, CancellationToken cancellationToken) =>
         await _business.CreateAsync(t, cancellationToken);
 
-
     [HttpDelete]
     public async Task<T?> DeleteAsync(int id, CancellationToken cancellationToken) =>
         await _business.DeleteAsync(id, cancellationToken);
-
 
     [HttpPut]
     public async Task<T?> UpdateAsync(T t, CancellationToken
@@ -47,5 +44,4 @@ public class BaseController<T> : ControllerBase, IBaseController<T>
     [HttpOptions]
     public void Options() =>
       Response.Headers.Add("Allow", "POST,PUT,DELETE,GET");
-
 }

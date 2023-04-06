@@ -12,10 +12,12 @@
         <None Remove="Controllers\" />
         <None Remove="Filters\" />
         <None Remove="NLog" />
+        <None Remove="PublicControllers\" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Base\" />
         <Folder Include="Contracts\" />
+        <Folder Include="PublicControllers\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
