@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.IdentityModel.Tokens;
 using RedditMockup.Business.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
-using Sieve.Models;
 using System.Net;
 
 namespace RedditMockup.Business.DtoBusinesses;
@@ -15,30 +13,34 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
 {
     private readonly IMapper _mapper;
 
-    public AnswerDtoBusiness(IUnitOfWork unitOfWork, IBaseRepository<Answer> repository, IMapper mapper) : base(unitOfWork, repository, mapper)
+    private readonly AnswerBusiness _answerBusiness;
+
+    #region [Constructor]
+
+    public AnswerDtoBusiness(IUnitOfWork unitOfWork, IBaseBusiness<Answer> answerBusiness, IMapper mapper) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
     {
         _mapper = mapper;
+        _answerBusiness = (AnswerBusiness)answerBusiness;
     }
-    #region [Constructor]
 
     #endregion
 
     #region [Methods]
     public async Task<CustomResponse<IEnumerable<AnswerDto>>> LoadAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = new())
     {
-        var answers = await ((AnswerBusiness)BaseBusiness).LoadAnswersByQuestionIdAsync(questionId, cancellationToken);
+        var answersResponse = await _answerBusiness.LoadAnswersByQuestionIdAsync(questionId, cancellationToken);
 
-        if (answers.Data is null)
+        if (!answersResponse.IsSuccess)
         {
             return new()
             {
-                IsSuccess = answers.IsSuccess,
-                Message = answers.Message,
-                HttpStatusCode = answers.HttpStatusCode
+                IsSuccess = answersResponse.IsSuccess,
+                Message = answersResponse.Message,
+                HttpStatusCode = answersResponse.HttpStatusCode
             };
         }
 
-        var answerDtos = Mapper.Map<IEnumerable<AnswerDto>>(answers.Data);
+        var answerDtos = _mapper.Map<IEnumerable<AnswerDto>>(answersResponse.Data);
 
         return new()
         {
@@ -46,27 +48,25 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
             IsSuccess = true,
             HttpStatusCode = HttpStatusCode.OK
         };
-
     }
 
-    public async Task<CustomResponse?> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new()) =>
-        await ((AnswerBusiness)BaseBusiness).SubmitVoteAsync(id, kind, cancellationToken);
-
-    public async Task<CustomResponse<IEnumerable<VoteDto>>> LoadVotesAsync(int questionId, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse?> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken = new()) =>
+        await _answerBusiness.SubmitVoteAsync(answerId, kind, cancellationToken);
+    public async Task<CustomResponse<IEnumerable<VoteDto>>> LoadVotesAsync(int answerId, CancellationToken cancellationToken = new())
     {
-        var votes = await ((AnswerBusiness)BaseBusiness).LoadVotesAsync(questionId, cancellationToken);
+        var votesResponse = await _answerBusiness.LoadVotesAsync(answerId, cancellationToken);
 
-        if (votes.Data is null)
+        if (!votesResponse.IsSuccess)
         {
             return new()
             {
-                IsSuccess = votes.IsSuccess,
-                Message = votes.Message,
-                HttpStatusCode = votes.HttpStatusCode
+                IsSuccess = votesResponse.IsSuccess,
+                Message = votesResponse.Message,
+                HttpStatusCode = votesResponse.HttpStatusCode
             };
         }
 
-        var voteDtos = Mapper.Map<IEnumerable<VoteDto>>(votes.Data);
+        var voteDtos = _mapper.Map<IEnumerable<VoteDto>>(votesResponse.Data);
 
         return new()
         {
@@ -75,7 +75,6 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
             HttpStatusCode = HttpStatusCode.OK
         };
     }
-
 
     #endregion
 }

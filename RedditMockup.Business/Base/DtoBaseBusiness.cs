@@ -72,7 +72,7 @@ public class DtoBaseBusiness<TDto, TBase> : BaseBusiness<TBase>
 
     public new async Task<CustomResponse<IEnumerable<TDto>>> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken)
     {
-        var baseEntities = await LoadAllAsync(sieveModel, cancellationToken);
+        var baseEntities = await base.LoadAllAsync(sieveModel, cancellationToken);
 
         var dtos = _mapper.Map<IEnumerable<TDto>>(baseEntities);
 

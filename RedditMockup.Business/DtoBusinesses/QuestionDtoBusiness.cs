@@ -3,6 +3,7 @@ using RedditMockup.Business.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Dtos;
+using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 using System.Net;
 
@@ -10,10 +11,21 @@ namespace RedditMockup.Business.DtoBusinesses;
 
 public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
 {
+    #region [Fields]
+
+    private readonly QuestionBusiness _questionBusiness;
+
+    private readonly IMapper _mapper;
+
+    #endregion
+
     #region [Constructor]
 
-    public QuestionDtoBusiness(IMapper mapper) : base(mapper)
+    public QuestionDtoBusiness(IUnitOfWork unitOfWork, IBaseBusiness<Question> questionBusiness, IMapper mapper) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
     {
+        _questionBusiness = (QuestionBusiness)questionBusiness;
+
+        _mapper = mapper;
     }
 
     #endregion
@@ -21,24 +33,24 @@ public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
     #region [Methods]
 
     public async Task<CustomResponse> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new()) =>
-        await ((QuestionBusiness)BaseBusiness).SubmitVoteAsync(id, kind, cancellationToken);
+        await _questionBusiness.SubmitVoteAsync(id, kind, cancellationToken);
 
 
-    public async Task<CustomResponse<IEnumerable<VoteDto>>> LoadVotesAsync(int id, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<VoteDto>>> LoadVotesAsync(int questionId, CancellationToken cancellationToken = new())
     {
-        var votes = await ((QuestionBusiness)BaseBusiness).LoadVotesAsync(id, cancellationToken);
+        var votesResponse = await _questionBusiness.LoadVotesAsync(questionId, cancellationToken);
 
-        if (votes.Data is null)
+        if (!votesResponse.IsSuccess)
         {
             return new()
             {
-                IsSuccess = votes.IsSuccess,
-                Message = votes.Message,
-                HttpStatusCode = votes.HttpStatusCode
+                IsSuccess = votesResponse.IsSuccess,
+                Message = votesResponse.Message,
+                HttpStatusCode = votesResponse.HttpStatusCode
             };
         }
 
-        var voteDtos = Mapper.Map<IEnumerable<VoteDto>>(votes);
+        var voteDtos = _mapper.Map<IEnumerable<VoteDto>>(votesResponse.Data);
 
         return new()
         {
