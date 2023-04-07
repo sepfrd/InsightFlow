@@ -28,8 +28,8 @@ public class QuestionController : PublicBaseController<QuestionDto>
 
     [HttpGet]
     [Route("QuestionVotes")]
-    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesAsync(int questionId, CancellationToken cancellationToken) =>
-       await _questionDtoBusiness.LoadVotesAsync(questionId, cancellationToken);
+    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByQuestionIdAsync(int questionId, CancellationToken cancellationToken) =>
+       await _questionDtoBusiness.GetVotesByQuestionIdAsync(questionId, cancellationToken);
 
     [Authorize]
     [HttpPost]

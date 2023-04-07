@@ -1,18 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RedditMockup.Business.Base;
-//using RedditMockup.Common.ViewModels;
+﻿using RedditMockup.Business.Base;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
-using Sieve.Models;
 //using StackExchange.Redis;
 
 namespace RedditMockup.Business.EntityBusinesses;
 
 public class UserBusiness : BaseBusiness<User>
 {
-    private readonly UserRepository _userRepository;
-
     #region [Redis Section]
 
     //private readonly IConnectionMultiplexer _connectionMultiplexer;
@@ -40,9 +35,12 @@ public class UserBusiness : BaseBusiness<User>
 
     #endregion
 
+    #region [Constructor]
+
     public UserBusiness(IUnitOfWork unitOfWork) :
             base(unitOfWork, unitOfWork.UserRepository!)
     {
-        _userRepository = unitOfWork.UserRepository!;
     }
+
+    #endregion
 }

@@ -36,9 +36,9 @@ public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
         await _questionBusiness.SubmitVoteAsync(id, kind, cancellationToken);
 
 
-    public async Task<CustomResponse<IEnumerable<VoteDto>>> LoadVotesAsync(int questionId, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByQuestionIdAsync(int questionId, CancellationToken cancellationToken = new())
     {
-        var votesResponse = await _questionBusiness.LoadVotesAsync(questionId, cancellationToken);
+        var votesResponse = await _questionBusiness.GetVotesByQuestionIdAsync(questionId, cancellationToken);
 
         if (!votesResponse.IsSuccess)
         {

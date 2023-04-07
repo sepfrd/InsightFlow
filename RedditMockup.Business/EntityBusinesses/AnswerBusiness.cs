@@ -34,7 +34,7 @@ public class AnswerBusiness : BaseBusiness<Answer>
 
     #region [Methods]
 
-    public async Task<CustomResponse<IEnumerable<Answer>>> LoadAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = new())
     {
 
         SieveModel sieveModel = new()
@@ -62,16 +62,16 @@ public class AnswerBusiness : BaseBusiness<Answer>
         };
     }
 
-    public async Task<CustomResponse?> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken = new())
     {
-        var answer = await LoadByIdAsync(id, cancellationToken);
+        var answer = await LoadByIdAsync(answerId, cancellationToken);
 
         if (answer is null)
         {
             return new CustomResponse
             {
                 IsSuccess = false,
-                Message = $"No answer found with ID of {id}",
+                Message = $"No answer found with ID of {answerId}",
                 HttpStatusCode = HttpStatusCode.NotFound
             };
         }
@@ -99,16 +99,16 @@ public class AnswerBusiness : BaseBusiness<Answer>
         };
     }
 
-    public async Task<CustomResponse<IEnumerable<AnswerVote>>> LoadVotesAsync(int id, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken = new())
     {
-        var answer = await _answerRepository.LoadByIdAsync(id, cancellationToken);
+        var answer = await _answerRepository.LoadByIdAsync(answerId, cancellationToken);
 
         if (answer is null)
         {
             return new()
             {
                 IsSuccess = false,
-                Message = $"No answer found with ID of {id}",
+                Message = $"No answer found with ID of {answerId}",
                 HttpStatusCode = HttpStatusCode.NotFound
             };
         }

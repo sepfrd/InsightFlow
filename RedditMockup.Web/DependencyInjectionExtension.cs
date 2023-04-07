@@ -1,19 +1,22 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using NLog.Web;
 using RedditMockup.Business.Contracts;
+using RedditMockup.Business.DtoBusinesses;
+using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Constants;
+using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Profiles;
 using RedditMockup.Common.Validations;
 using RedditMockup.DataAccess;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.DataAccess.Contracts;
+using RedditMockup.Model.Entities;
 using Sieve.Services;
 //using StackExchange.Redis;
-using System.IO.Compression;
 
 namespace RedditMockup.Web;
 
@@ -95,6 +98,7 @@ internal static class DependencyInjectionExtension
                     policy => policy.RequireClaim(RoleConstants.User));
             });
 
+    /*
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
         services.Scan(scan =>
             scan.FromAssembliesOf(typeof(IBaseBusiness<>))
@@ -108,6 +112,19 @@ internal static class DependencyInjectionExtension
                         !predicate.IsAssignableTo(typeof(IBaseBusiness<>))))
                 .AsSelf()
                 .WithScopedLifetime());
+    */
+
+    internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
+        services.AddScoped<IBaseBusiness<User>, UserBusiness>()
+        .AddScoped<IBaseBusiness<Answer>, AnswerBusiness>()
+        .AddScoped<IBaseBusiness<Question>, QuestionBusiness>()
+        .AddScoped<IBaseBusiness<Bookmark>, BookmarkBusiness>()
+        .AddScoped<AccountBusiness>()
+        .AddScoped<IDtoBaseBusiness<UserDto>, UserDtoBusiness>()
+        .AddScoped<IDtoBaseBusiness<AnswerDto>, AnswerDtoBusiness>()
+        .AddScoped<IDtoBaseBusiness<QuestionDto>, QuestionDtoBusiness>()
+        .AddScoped<IDtoBaseBusiness<BookmarkDto>, BookmarkDtoBusiness>();
+
 
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>
         services

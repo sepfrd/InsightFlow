@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Dtos;
-//using RedditMockup.Common.ViewModels;
 
 namespace RedditMockup.Api.Controllers;
 

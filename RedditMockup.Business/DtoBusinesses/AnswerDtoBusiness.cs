@@ -27,9 +27,9 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
 
     #region [Methods]
 
-    public async Task<CustomResponse<IEnumerable<AnswerDto>>> LoadAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<AnswerDto>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = new())
     {
-        var answersResponse = await _answerBusiness.LoadAnswersByQuestionIdAsync(questionId, cancellationToken);
+        var answersResponse = await _answerBusiness.GetAnswersByQuestionIdAsync(questionId, cancellationToken);
 
         if (!answersResponse.IsSuccess)
         {
@@ -51,12 +51,12 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
         };
     }
 
-    public async Task<CustomResponse?> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken = new()) =>
+    public async Task<CustomResponse> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken = new()) =>
         await _answerBusiness.SubmitVoteAsync(answerId, kind, cancellationToken);
 
-    public async Task<CustomResponse<IEnumerable<VoteDto>>> LoadVotesAsync(int answerId, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken = new())
     {
-        var votesResponse = await _answerBusiness.LoadVotesAsync(answerId, cancellationToken);
+        var votesResponse = await _answerBusiness.GetVotesByAnswerIdAsync(answerId, cancellationToken);
 
         if (!votesResponse.IsSuccess)
         {

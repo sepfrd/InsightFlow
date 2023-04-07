@@ -30,7 +30,7 @@ public class QuestionBusiness : BaseBusiness<Question>
 
     #region [Methods]
 
-    public async Task<CustomResponse<IEnumerable<QuestionVote>>> LoadVotesAsync(int id, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int id, CancellationToken cancellationToken = new())
     {
         var question = await _questionRepository.LoadByIdAsync(id, cancellationToken);
 
@@ -54,16 +54,16 @@ public class QuestionBusiness : BaseBusiness<Question>
         };
     }
 
-    public async Task<CustomResponse> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken = new())
     {
-        var question = await LoadByIdAsync(id, cancellationToken);
+        var question = await LoadByIdAsync(questionId, cancellationToken);
 
         if (question is null)
         {
             return new CustomResponse
             {
                 IsSuccess = false,
-                Message = $"No question found with ID of {id}",
+                Message = $"No question found with ID of {questionId}",
                 HttpStatusCode = HttpStatusCode.NotFound
             };
         }

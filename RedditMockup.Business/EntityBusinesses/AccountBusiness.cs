@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Net;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
-//using RedditMockup.Common.ViewModels;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
-using System.Security.Claims;
 
 namespace RedditMockup.Business.EntityBusinesses;
 
@@ -78,7 +78,8 @@ public class AccountBusiness
             return new CustomResponse
             {
                 IsSuccess = false,
-                Message = "You are already signed in"
+                Message = "You are already signed in",
+                HttpStatusCode = HttpStatusCode.BadRequest
             };
         }
 
@@ -89,7 +90,8 @@ public class AccountBusiness
             return new CustomResponse
             {
                 IsSuccess = false,
-                Message = "Username and/or password not correct"
+                Message = "Username and/or password not correct",
+                HttpStatusCode = HttpStatusCode.BadRequest
             };
         }
 
@@ -118,7 +120,8 @@ public class AccountBusiness
         return new CustomResponse
         {
             IsSuccess = true,
-            Message = "Successfully logged in"
+            Message = "Successfully logged in",
+            HttpStatusCode = HttpStatusCode.OK
         };
     }
 
@@ -129,7 +132,8 @@ public class AccountBusiness
             return new CustomResponse
             {
                 IsSuccess = false,
-                Message = "Already logged out"
+                Message = "Already logged out",
+                HttpStatusCode = HttpStatusCode.BadRequest
             };
         }
 
@@ -138,7 +142,8 @@ public class AccountBusiness
         return new CustomResponse
         {
             IsSuccess = true,
-            Message = "Successfully logged out"
+            Message = "Successfully logged out",
+            HttpStatusCode = HttpStatusCode.OK
         };
     }
 }
