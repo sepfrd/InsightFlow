@@ -50,7 +50,7 @@ public class DtoBaseBusiness<TDto, TBase> : BaseBusiness<TBase>, IDtoBaseBusines
 
     public new async Task<CustomResponse<TDto>> DeleteAsync(int id, CancellationToken cancellationToken)
     {
-        var baseEntity = await DeleteAsync(id, cancellationToken);
+        var baseEntity = await base.DeleteAsync(id, cancellationToken);
 
         if (baseEntity is null)
         {
@@ -87,7 +87,7 @@ public class DtoBaseBusiness<TDto, TBase> : BaseBusiness<TBase>, IDtoBaseBusines
 
     public new async Task<CustomResponse<TDto>> LoadByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var baseEntity = await LoadByIdAsync(id, cancellationToken);
+        var baseEntity = await base.LoadByIdAsync(id, cancellationToken);
 
         if (baseEntity is null)
         {

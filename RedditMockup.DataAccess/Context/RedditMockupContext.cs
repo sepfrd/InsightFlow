@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Helpers;
@@ -208,7 +209,7 @@ public class RedditMockupContext : DbContext
         var id = 1;
 
         var answerFaker = new Faker<Answer>()
-            .RuleFor(answer => answer.Id, faker => id++)
+            .RuleFor(answer => answer.Id, id++)
             .RuleFor(answer => answer.Title, faker => faker.Lorem.Sentence(5))
             .RuleFor(answer => answer.Description, faker => faker.Lorem.Paragraph())
             .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 2))
@@ -223,6 +224,45 @@ public class RedditMockupContext : DbContext
 
         return fakeAnswers;
     }
+
+    private static IEnumerable<AnswerVote> GetFakeAnswerVotes()
+    {
+        var id = 1;
+
+        var answerVoteFaker = new Faker<AnswerVote>()
+            .RuleFor(answerVote => answerVote.Id, id)
+            .RuleFor(answerVote => answerVote.AnswerId, id++)
+            .RuleFor(answerVote => answerVote.Kind, true);
+
+        var fakeAnswerVotes = new List<AnswerVote>();
+
+        for (var i = 0; i < 100; i++)
+        {
+            fakeAnswerVotes.Add(answerVoteFaker.Generate());
+        }
+
+        return fakeAnswerVotes;
+    }
+
+    private static IEnumerable<QuestionVote> GetFakeQuestionVotes()
+    {
+        var id = 1;
+
+        var questionVoteFaker = new Faker<QuestionVote>()
+            .RuleFor(questionVote => questionVote.Id, id)
+            .RuleFor(questionVote => questionVote.QuestionId, id++)
+            .RuleFor(questionVote => questionVote.Kind, true);
+
+        var fakeQuestionVotes = new List<QuestionVote>();
+
+        for (var i = 0; i < 100; i++)
+        {
+            fakeQuestionVotes.Add(questionVoteFaker.Generate());
+        }
+
+        return fakeQuestionVotes;
+    }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -252,10 +292,13 @@ public class RedditMockupContext : DbContext
 
         modelBuilder.Entity<UserRole>().HasData(GetFakeUserRoles());
 
+        modelBuilder.Entity<AnswerVote>().HasData(GetFakeAnswerVotes());
+
+        modelBuilder.Entity<QuestionVote>().HasData(GetFakeQuestionVotes());
+       
         modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
-
+        
         modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
-
     }
 
     #endregion

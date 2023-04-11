@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
 using Sieve.Models;
@@ -36,14 +37,17 @@ public class PublicBaseController<TDto> : ControllerBase
     public async Task<CustomResponse<TDto>> GetByIdAsync(int id, CancellationToken cancellationToken) =>
         await _dtoBaseBusiness.LoadByIdAsync(id, cancellationToken);
 
+    [Authorize]
     [HttpPost]
     public async Task<CustomResponse<TDto>> CreateAsync(TDto dto, CancellationToken cancellationToken) =>
         await _dtoBaseBusiness.CreateAsync(dto, cancellationToken);
 
+    [Authorize]
     [HttpDelete]
     public async Task<CustomResponse<TDto>> DeleteAsync(int id, CancellationToken cancellationToken) =>
         await _dtoBaseBusiness.DeleteAsync(id, cancellationToken);
 
+    [Authorize]
     [HttpPut]
     public async Task<CustomResponse<TDto>> UpdateAsync(TDto dto, CancellationToken
     cancellationToken) =>
