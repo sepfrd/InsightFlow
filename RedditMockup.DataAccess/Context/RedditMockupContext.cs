@@ -209,11 +209,11 @@ public class RedditMockupContext : DbContext
         var id = 1;
 
         var answerFaker = new Faker<Answer>()
-            .RuleFor(answer => answer.Id, id++)
+            .RuleFor(answer => answer.Id, _ => id++)
             .RuleFor(answer => answer.Title, faker => faker.Lorem.Sentence(5))
             .RuleFor(answer => answer.Description, faker => faker.Lorem.Paragraph())
             .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 2))
-            .RuleFor(answer => answer.QuestionId, (faker, answer) => answer.QuestionId = 1);
+            .RuleFor(answer => answer.QuestionId, 1);
 
         var fakeAnswers = new List<Answer>();
 
@@ -230,8 +230,8 @@ public class RedditMockupContext : DbContext
         var id = 1;
 
         var answerVoteFaker = new Faker<AnswerVote>()
-            .RuleFor(answerVote => answerVote.Id, id)
-            .RuleFor(answerVote => answerVote.AnswerId, id++)
+            .RuleFor(answerVote => answerVote.Id, _ => id)
+            .RuleFor(answerVote => answerVote.AnswerId, _ => id++)
             .RuleFor(answerVote => answerVote.Kind, true);
 
         var fakeAnswerVotes = new List<AnswerVote>();
@@ -249,8 +249,8 @@ public class RedditMockupContext : DbContext
         var id = 1;
 
         var questionVoteFaker = new Faker<QuestionVote>()
-            .RuleFor(questionVote => questionVote.Id, id)
-            .RuleFor(questionVote => questionVote.QuestionId, id++)
+            .RuleFor(questionVote => questionVote.Id, _ => id)
+            .RuleFor(questionVote => questionVote.QuestionId, _ => id++)
             .RuleFor(questionVote => questionVote.Kind, true);
 
         var fakeQuestionVotes = new List<QuestionVote>();
@@ -262,7 +262,6 @@ public class RedditMockupContext : DbContext
 
         return fakeQuestionVotes;
     }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

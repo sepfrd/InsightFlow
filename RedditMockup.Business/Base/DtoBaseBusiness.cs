@@ -71,7 +71,7 @@ public class DtoBaseBusiness<TDto, TBase> : BaseBusiness<TBase>, IDtoBaseBusines
         };
     }
 
-    public new async Task<CustomResponse<IEnumerable<TDto>>> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken)
+    public async Task<CustomResponse<IEnumerable<TDto>>> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken)
     {
         var baseEntities = await base.LoadAllAsync(sieveModel, cancellationToken);
 
@@ -85,7 +85,7 @@ public class DtoBaseBusiness<TDto, TBase> : BaseBusiness<TBase>, IDtoBaseBusines
         };
     }
 
-    public new async Task<CustomResponse<TDto>> LoadByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<CustomResponse<TDto>> LoadByIdAsync(int id, CancellationToken cancellationToken)
     {
         var baseEntity = await base.LoadByIdAsync(id, cancellationToken);
 

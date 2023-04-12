@@ -5,17 +5,16 @@ namespace RedditMockup.Model.Entities;
 
 public class User : BaseEntity
 {
-
     #region [Properties]
 
     [Sieve(CanSort = true, CanFilter = true)]
     public string? Username { get; set; }
 
     public string? Password { get; set; }
-
+    
     public int PersonId { get; set; }
 
-    public int Score { get; set; } = 0;
+    public int Score { get; set; }
 
     [ForeignKey("PersonId")]
     [Sieve(CanSort = true, CanFilter = true)]

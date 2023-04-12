@@ -30,12 +30,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     #region [Methods]
 
-    public async Task<T> CreateAsync(T t, CancellationToken cancellationToken = new()) =>
+    public async Task<T> CreateAsync(T t, CancellationToken cancellationToken = default) =>
         (await _dbSet.AddAsync(t, cancellationToken)).Entity;
 
-    public async Task<List<T>> LoadAllAsync(SieveModel sieveModel,
-        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
-        CancellationToken cancellationToken = new())
+    public async Task<List<T>> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null)
     {
         var query = _dbSet.AsNoTracking();
         if (include != null)
@@ -44,8 +42,14 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         return await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
     }
 
-    public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken = new()) =>
-        await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken = default, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null)
+    {
+        var query = _dbSet.AsNoTracking().Where(t => t.Id == id);
+        if (include != null)
+            query = include(query);
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
 
     public T Update(T t)
     {

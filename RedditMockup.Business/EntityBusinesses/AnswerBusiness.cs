@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
@@ -34,7 +35,7 @@ public class AnswerBusiness : BaseBusiness<Answer>
 
     #region [Methods]
 
-    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default)
     {
 
         SieveModel sieveModel = new()
@@ -62,9 +63,10 @@ public class AnswerBusiness : BaseBusiness<Answer>
         };
     }
 
-    public async Task<CustomResponse> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken = default)
     {
-        var answer = await LoadByIdAsync(answerId, cancellationToken);
+        var answer = await LoadByIdAsync(answerId, cancellationToken,
+            answers => answers.Include(answer => answer.User));
 
         if (answer is null)
         {
@@ -76,9 +78,18 @@ public class AnswerBusiness : BaseBusiness<Answer>
             };
         }
 
+        if (answer.User is null)
+        {
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                HttpStatusCode = HttpStatusCode.InternalServerError
+            };
+        }
+
         if (kind)
         {
-            answer.User!.Score += 1;
+            answer.User.Score += 1;
         }
 
         var vote = new AnswerVote
@@ -99,9 +110,10 @@ public class AnswerBusiness : BaseBusiness<Answer>
         };
     }
 
-    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken = default)
     {
-        var answer = await _answerRepository.LoadByIdAsync(answerId, cancellationToken);
+        var answer = await _answerRepository.LoadByIdAsync(answerId, cancellationToken,
+            answers => answers.Include(answer => answer.Votes));
 
         if (answer is null)
         {

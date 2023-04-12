@@ -23,7 +23,7 @@ public class RoleRepository : BaseRepository<Role>
 
     #region [Methods]
 
-    public async Task<List<Role?>> LoadByUserIdAsync(int userId, CancellationToken cancellationToken = new()) =>
+    public async Task<List<Role?>> LoadByUserIdAsync(int userId, CancellationToken cancellationToken = default) =>
         await _context.UserRoles!
             .Where(x => x.UserId == userId)
             .Include(x => x.Role)

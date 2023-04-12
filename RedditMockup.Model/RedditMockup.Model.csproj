@@ -24,7 +24,7 @@
         <None Remove="Hoorbakht.RedisService" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.5" />
         <PackageReference Include="Sieve" Version="2.5.5" />
     </ItemGroup>
     <ItemGroup>

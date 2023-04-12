@@ -32,11 +32,11 @@ public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
 
     #region [Methods]
 
-    public async Task<CustomResponse> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = new()) =>
+    public async Task<CustomResponse> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = default) =>
         await _questionBusiness.SubmitVoteAsync(id, kind, cancellationToken);
 
 
-    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByQuestionIdAsync(int questionId, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default)
     {
         var votesResponse = await _questionBusiness.GetVotesByQuestionIdAsync(questionId, cancellationToken);
 

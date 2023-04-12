@@ -26,14 +26,14 @@ public class AccountBusiness
     }
 
     private async Task<bool> IsUsernameAndPasswordValidAsync(LoginDto login,
-        CancellationToken cancellationToken = new())
+        CancellationToken cancellationToken = default)
     {
         SieveModel sieveModel = new()
         {
             Filters = $"Username=={login.Username!}"
         };
 
-        var users = await _userRepository.LoadAllAsync(sieveModel, null, cancellationToken);
+        var users = await _userRepository.LoadAllAsync(sieveModel, cancellationToken);
 
         if (users.Count == 0)
         {
@@ -51,16 +51,16 @@ public class AccountBusiness
     private static bool IsSignedIn(HttpContext httpContext) =>
         httpContext.User.Identity is not null && httpContext.User.Identity.IsAuthenticated;
 
-    private async Task<User?> LoadByUsernameAsync(string username, CancellationToken cancellationToken = new())
+    private async Task<User?> LoadByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
         SieveModel sieveModel = new() { Filters = $"Username=={username}" };
 
-        var users = await _userRepository.LoadAllAsync(sieveModel,
-            include => include.Include(x => x.Person)
+        var users = await _userRepository.LoadAllAsync(sieveModel, cancellationToken,
+            users => users.Include(x => x.Person)
                 .Include(x => x.Profile)
                 .Include(x => x.Questions)
                 .Include(x => x.Answers)
-                .Include(x => x.UserRoles), cancellationToken);
+                .Include(x => x.UserRoles));
 
         if (users.Count == 0)
         {
@@ -71,7 +71,7 @@ public class AccountBusiness
     }
 
     public async Task<CustomResponse> LoginAsync(LoginDto login, HttpContext httpContext,
-        CancellationToken cancellationToken = new())
+        CancellationToken cancellationToken = default)
     {
         if (IsSignedIn(httpContext))
         {

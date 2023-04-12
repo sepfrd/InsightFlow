@@ -1,4 +1,5 @@
-﻿using RedditMockup.Business.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
@@ -30,9 +31,12 @@ public class QuestionBusiness : BaseBusiness<Question>
 
     #region [Methods]
 
-    public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int id, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        var question = await _questionRepository.LoadByIdAsync(id, cancellationToken);
+        var question = await _questionRepository.LoadByIdAsync(id, cancellationToken,
+            questions => questions
+            .Include(question => question.Votes)
+            .Include(question => question.Answers));
 
         if (question is null)
         {
@@ -54,9 +58,11 @@ public class QuestionBusiness : BaseBusiness<Question>
         };
     }
 
-    public async Task<CustomResponse> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken = new())
+    public async Task<CustomResponse> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken = default)
     {
-        var question = await LoadByIdAsync(questionId, cancellationToken);
+        var question = await LoadByIdAsync(questionId, cancellationToken,
+            questions => questions.Include(question => question.User)
+            );
 
         if (question is null)
         {
@@ -68,9 +74,18 @@ public class QuestionBusiness : BaseBusiness<Question>
             };
         }
 
+        if (question.User is null)
+        {
+            return new CustomResponse
+            {
+                IsSuccess = false,
+                HttpStatusCode = HttpStatusCode.InternalServerError
+            };
+        }
+
         if (kind)
         {
-            question.User!.Score += 1;
+            question.User.Score += 1;
         }
 
         var vote = new QuestionVote

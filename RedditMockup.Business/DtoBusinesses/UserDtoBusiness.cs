@@ -35,7 +35,7 @@ public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
 
     #region [Methods]
 
-    private async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = new())
+    private async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = default)
     {
         SieveModel sieveModel = new()
         {

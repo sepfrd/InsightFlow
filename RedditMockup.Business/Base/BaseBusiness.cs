@@ -1,4 +1,5 @@
-﻿using RedditMockup.Business.Contracts;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using RedditMockup.Business.Contracts;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
@@ -28,7 +29,7 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
 
     #region [Methods]
 
-    public async Task<T?> CreateAsync(T t, CancellationToken cancellationToken = new())
+    public async Task<T?> CreateAsync(T t, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.CreateAsync(t, cancellationToken);
 
@@ -37,13 +38,13 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
         return entity;
     }
 
-    public async Task<IEnumerable<T>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = new()) =>
-        await _repository.LoadAllAsync(sieveModel, null, cancellationToken);
+    public async Task<IEnumerable<T>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null) =>
+        await _repository.LoadAllAsync(sieveModel, cancellationToken, include);
 
-    public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken = new()) =>
-        await _repository.LoadByIdAsync(id, cancellationToken);
+    public async Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null) =>
+        await _repository.LoadByIdAsync(id, cancellationToken, include);
 
-    public async Task<T?> UpdateAsync(T t, CancellationToken cancellationToken = new())
+    public async Task<T?> UpdateAsync(T t, CancellationToken cancellationToken = default)
     {
         T entity = _repository.Update(t);
 
@@ -52,7 +53,7 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
         return entity;
     }
 
-    public async Task<T?> DeleteAsync(int id, CancellationToken cancellationToken = new())
+    public async Task<T?> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         T? entity = await _repository.LoadByIdAsync(id, cancellationToken);
 

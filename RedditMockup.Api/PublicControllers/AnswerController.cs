@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.DtoBusinesses;
@@ -35,6 +36,7 @@ public class AnswerController : PublicBaseController<AnswerDto>
     public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken) =>
         await _answerDtoBusiness.GetVotesByAnswerIdAsync(answerId, cancellationToken);
 
+    [Authorize]
     [HttpPost]
     [Route("SubmitVote")]
     public async Task<CustomResponse> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken) =>
