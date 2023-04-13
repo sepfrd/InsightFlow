@@ -2,6 +2,8 @@
 
 public class AnswerDto
 {
+    public int Id { get; init; }
+
     public int UserId { get; set; }
     
     public int QuestionId { get; set; }
