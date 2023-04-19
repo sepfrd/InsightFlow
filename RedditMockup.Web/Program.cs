@@ -29,7 +29,8 @@ try
         .InjectContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
-        .InjectAutoMapper();
+        .InjectAutoMapper()
+        .AddHealthChecks();
     //.InjectRedis(builder.Configuration)
 
     var app = builder.Build();
@@ -43,12 +44,9 @@ try
         app.UseSwagger()
                 .UseSwaggerUI();
 
-        //if (app.Environment.IsEnvironment("Testing"))
-        //{
-            await context.Database.EnsureDeletedAsync();
+        await context.Database.EnsureDeletedAsync();
 
-            await context.Database.EnsureCreatedAsync();
-        //}
+        await context.Database.EnsureCreatedAsync();
     }
 
     else
@@ -62,7 +60,11 @@ try
         .UseRouting()
         .UseAuthentication()
         .UseAuthorization()
-        .UseEndpoints(endpoints => endpoints.MapControllers());
+        .UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapHealthChecks("/healthcheck");
+        });
 
     await app.RunAsync();
 }
