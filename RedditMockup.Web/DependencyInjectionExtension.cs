@@ -47,7 +47,7 @@ internal static class DependencyInjectionExtension
 
         return services.AddDbContextPool<RedditMockupContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("Default"));
+            options.UseSqlServer(configuration.GetConnectionString("DockerDefault"));
             options.EnableSensitiveDataLogging();
         });
     }

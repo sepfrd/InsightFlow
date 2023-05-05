@@ -3,10 +3,10 @@
     "RedditMockup.IntegrationTests": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:2194;http://localhost:2195",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:2194;http://localhost:2195"
+      }
     }
   }
 }
