@@ -14,7 +14,7 @@ RUN dotnet publish "./RedditMockup.Web/RedditMockup.Web.csproj" -o /app --no-res
 
 # Serve
 
-FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/aspnet:7.0
+FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/aspnet:latest
 
 WORKDIR /app
 
