@@ -39,11 +39,11 @@ try
 
     await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
 
-    if (!app.Environment.IsProduction())
-    {
-        app.UseSwagger()
-                .UseSwaggerUI();
+    app.UseSwagger()
+        .UseSwaggerUI();
 
+    if (app.Environment.IsEnvironment("Testing"))
+    {
         await context.Database.EnsureDeletedAsync();
 
         await context.Database.EnsureCreatedAsync();
@@ -51,7 +51,7 @@ try
 
     else
     {
-        app.UseExceptionHandler();
+        //app.UseExceptionHandler();
         app.UseHsts();
     }
 

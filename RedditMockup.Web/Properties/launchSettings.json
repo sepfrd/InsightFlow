@@ -8,13 +8,22 @@
     }
   },
   "profiles": {
-    "RedditMockup.Web": {
+    "RedditMockup.Web.Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7000;http://localhost:6000",
+      "applicationUrl": "https://localhost:6001;http://localhost:6000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "RedditMockup.Web.Production": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:6001;http://localhost:6000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     },
     "IIS Express": {
@@ -30,7 +39,7 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "http://localhost:5000;https://localhost:5001"
+        "ASPNETCORE_URLS": "http://localhost:6000;https://localhost:6001"
       }
     }
   }

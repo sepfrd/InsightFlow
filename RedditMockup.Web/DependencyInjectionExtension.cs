@@ -40,7 +40,7 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectContext(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment environment)
     {
-        if (environment.IsEnvironment("Testing") || environment.IsDevelopment())
+        if (environment.IsEnvironment("Testing"))
         {
             return services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
         }
