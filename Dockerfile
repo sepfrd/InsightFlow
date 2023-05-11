@@ -1,6 +1,6 @@
 # Build
 
-FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/sdk:latest AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0.203 AS build
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 
@@ -14,10 +14,10 @@ RUN dotnet publish "./RedditMockup.Web/RedditMockup.Web.csproj" -o /app --no-res
 
 # Serve
 
-FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/aspnet:latest
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.5
 
 WORKDIR /app
 
-COPY --from=build /app ./
+COPY --from=build /app .
 
 ENTRYPOINT ["dotnet", "RedditMockup.Web.dll"]

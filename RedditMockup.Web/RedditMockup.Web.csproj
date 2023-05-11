@@ -8,6 +8,8 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Development' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Production' " />
     <ItemGroup>
       <Compile Remove="Pages\**" />
       <Content Remove="Pages\**" />
@@ -52,7 +54,7 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
-        <PackageReference Include="NLog" Version="5.1.3" />
+        <PackageReference Include="NLog" Version="5.1.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="Scrutor" Version="4.2.2" />
