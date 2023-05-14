@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Microsoft.EntityFrameworkCore;
+using NLog;
 using NLog.Web;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Web;
@@ -51,6 +52,7 @@ try
 
     else
     {
+        await context.Database.MigrateAsync();
         //app.UseExceptionHandler();
         app.UseHsts();
     }
