@@ -21,5 +21,6 @@
     <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
         <ProjectReference Include="..\RedditMockup.DataAccess\RedditMockup.DataAccess.csproj" />
+        <ProjectReference Include="..\RedditMockup.ExternalServices\RedditMockup.ExternalService.csproj" />
     </ItemGroup>
 </Project>

@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using NLog;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
+using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using System.Net;
 
@@ -15,21 +18,39 @@ public class QuestionBusiness : BaseBusiness<Question>
     private readonly QuestionRepository _questionRepository;
     private readonly QuestionVoteRepository _questionVoteRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMessageBusClient _messageBusClient;
+    private readonly IMapper _mapper;
 
     #endregion
 
     #region [Constructor]
 
-    public QuestionBusiness(IUnitOfWork unitOfWork) : base(unitOfWork, unitOfWork.QuestionRepository!)
+    public QuestionBusiness(IUnitOfWork unitOfWork, IMessageBusClient messageBusClient, IMapper mapper) : base(unitOfWork, unitOfWork.QuestionRepository!)
     {
         _questionRepository = unitOfWork.QuestionRepository!;
         _questionVoteRepository = unitOfWork.QuestionVoteRepository!;
         _unitOfWork = unitOfWork;
+        _messageBusClient = messageBusClient;
+        _mapper = mapper;
     }
 
     #endregion
 
     #region [Methods]
+
+    public new async Task<Question?> CreateAsync(Question question, CancellationToken cancellationToken = default)
+    {
+        var createdQuestion = await base.CreateAsync(question, cancellationToken);
+
+        var questionDto = _mapper.Map<QuestionDto>(createdQuestion);
+
+        var questionPublishedDto = new QuestionPublishedDto(questionDto, "A new question was created.");
+
+        _messageBusClient.PublishNewQuestion(questionPublishedDto);
+
+        return createdQuestion;
+        
+    }
 
     public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int id, CancellationToken cancellationToken = default)
     {

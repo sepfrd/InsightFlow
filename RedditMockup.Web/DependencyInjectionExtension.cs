@@ -13,6 +13,7 @@ using RedditMockup.Common.Validations;
 using RedditMockup.DataAccess;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.DataAccess.Contracts;
+using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using Sieve.Services;
 //using StackExchange.Redis;
@@ -46,18 +47,17 @@ internal static class DependencyInjectionExtension
 
         return services.AddDbContextPool<RedditMockupContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("Kubernetes"));
+            options.UseSqlServer(configuration.GetConnectionString("SqlServer"));
             options.EnableSensitiveDataLogging();
         });
     }
 
-    internal static IServiceCollection InjectNLog(this IServiceCollection services)
+    internal static IServiceCollection InjectNLog(this IServiceCollection services, IWebHostEnvironment environment)
 
     {
         var factory = NLogBuilder.ConfigureNLog("nlog.config");
 
-        return services.AddSingleton(_ => factory.GetLogger("Info"))
-            .AddSingleton(_ => factory.GetLogger("Error"));
+        return services.AddSingleton(_ => factory.GetLogger(environment.EnvironmentName));
     }
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>
@@ -132,6 +132,9 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectAutoMapper(this IServiceCollection services) =>
         services.AddAutoMapper(typeof(UserProfile).Assembly);
+
+    internal static IServiceCollection InjectRabbitMq(this IServiceCollection services) =>
+        services.AddScoped<IMessageBusClient, IMessageBusClient>();
 
     #region [Redis Injection]
 

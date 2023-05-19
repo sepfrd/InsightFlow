@@ -10,21 +10,21 @@
 
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Development' " />
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Production' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Testing' " />
     <ItemGroup>
       <Compile Remove="Pages\**" />
       <Content Remove="Pages\**" />
       <EmbeddedResource Remove="Pages\**" />
       <None Remove="Pages\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Remove="nlog.Development.config" />
-      <Content Remove="nlog.Testing.config" />
+      <Content Remove="Properties\appsettings.Testing.json" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Api\RedditMockup.Api.csproj">
             <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+        </ProjectReference>
+        <ProjectReference Include="..\RedditMockup.ExternalServices\RedditMockup.ExternalService.csproj">
+          <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
         </ProjectReference>
     </ItemGroup>
 
@@ -63,5 +63,8 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="logs\" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="RedditMockup.Web.csproj" />
     </ItemGroup>
 </Project>

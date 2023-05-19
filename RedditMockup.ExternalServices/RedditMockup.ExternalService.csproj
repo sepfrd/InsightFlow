@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="RabbitMQService\" />
+    <None Remove="RabbitMQService\Contracts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="RabbitMQService\" />
+    <Folder Include="RabbitMQService\Contracts\" />
+  </ItemGroup>
+</Project>

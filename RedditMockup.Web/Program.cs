@@ -3,19 +3,16 @@ using NLog;
 using NLog.Web;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Web;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
-builder.Logging.SetMinimumLevel(LogLevel.Trace);
-
 builder.Host.UseNLog();
 
 var logger = NLogBuilder
         .ConfigureNLog("nlog.config")
-        .GetLogger("Info");
+        .GetLogger("Default");
 
 try
 {
@@ -26,7 +23,7 @@ try
         .InjectUnitOfWork()
         .InjectSieve()
         .InjectAuthentication()
-        .InjectNLog()
+        .InjectNLog(builder.Environment)
         .InjectContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
@@ -72,7 +69,7 @@ try
 }
 catch (Exception exception)
 {
-    logger.Error(exception, "Program Stopped Because of Exception !");
+    logger.Error(exception, $"Program stopped due to a {exception.GetType()} exception.");
     throw;
 }
 finally

@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using RedditMockup.Business.Contracts;
 using RedditMockup.DataAccess.Contracts;
+using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
 
 namespace RedditMockup.Business.Base;
 
-public abstract class BaseBusiness<T> : IBaseBusiness<T>
+public class BaseBusiness<T> : IBaseBusiness<T>
     where T : BaseEntity
 {
     #region [Fields]
@@ -14,6 +15,7 @@ public abstract class BaseBusiness<T> : IBaseBusiness<T>
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly IBaseRepository<T> _repository;
+
 
     #endregion
 
