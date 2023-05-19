@@ -2,11 +2,11 @@
 
 public class QuestionPublishedDto
 {
-    public QuestionPublishedDto(QuestionDto questionDto, string publishEvent)
+    public QuestionPublishedDto(QuestionDto questionDto, string eventType)
     {
         QuestionDto = questionDto;
 
-        Event = publishEvent;
+        Event = eventType;
     }
 
     public QuestionPublishedDto()

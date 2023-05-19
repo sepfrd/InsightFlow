@@ -44,7 +44,7 @@ public class QuestionBusiness : BaseBusiness<Question>
 
         var questionDto = _mapper.Map<QuestionDto>(createdQuestion);
 
-        var questionPublishedDto = new QuestionPublishedDto(questionDto, "A new question was created.");
+        var questionPublishedDto = new QuestionPublishedDto(questionDto, "Question_Published");
 
         _messageBusClient.PublishNewQuestion(questionPublishedDto);
 
