@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using NLog;
 using RabbitMQ.Client;
 using RedditMockup.Common.Dtos;
 using RedditMockup.ExternalService.RabbitMQService.Contracts;
@@ -42,11 +42,11 @@ public class MessageBusClient : IMessageBusClient, IDisposable
 
             _connection.ConnectionShutdown += RabbitMQConnectionShutdownEventHandler;
 
-            _logger.LogInformation("Connected to the Message Bus");
+            _logger.Info("Connected to the Message Bus");
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Exception thrown while trying to connect to the Message Bus.");
+            _logger.Error(exception, "Exception thrown while trying to connect to the Message Bus.");
             throw;
         }
     }
@@ -61,7 +61,7 @@ public class MessageBusClient : IMessageBusClient, IDisposable
         }
         else
         {
-            _logger.LogError("Message not sent due to message bus connection being closed.");
+            _logger.Error("Message not sent due to message bus connection being closed.");
         }
     }
 
@@ -74,12 +74,12 @@ public class MessageBusClient : IMessageBusClient, IDisposable
             basicProperties: null,
             body: body);
 
-        _logger.LogInformation($"{message} was sent over {_triggerExchange} exchange");
+        _logger.Info($"{message} was sent over {_triggerExchange} exchange");
     }
 
     private void RabbitMQConnectionShutdownEventHandler(object? sender, ShutdownEventArgs shutdownEventArgs)
     {
-        _logger.LogInformation($"RabbitMQ connection was shutdown by {sender}", shutdownEventArgs);
+        _logger.Info($"RabbitMQ connection was shutdown by {sender}", shutdownEventArgs);
     }
 
     public void Dispose()
@@ -90,7 +90,7 @@ public class MessageBusClient : IMessageBusClient, IDisposable
             _connection.Close();
         }
 
-        _logger.LogInformation("Message Bus Disposed");
+        _logger.Info("Message Bus Disposed");
     }
 }
 

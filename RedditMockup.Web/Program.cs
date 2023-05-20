@@ -27,6 +27,7 @@ try
         .InjectContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
+        .InjectRabbitMq()
         .InjectAutoMapper()
         .AddHealthChecks();
     //.InjectRedis(builder.Configuration)

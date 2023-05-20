@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using NLog;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
@@ -36,21 +35,7 @@ public class QuestionBusiness : BaseBusiness<Question>
 
     #endregion
 
-    #region [Methods]
-
-    public new async Task<Question?> CreateAsync(Question question, CancellationToken cancellationToken = default)
-    {
-        var createdQuestion = await base.CreateAsync(question, cancellationToken);
-
-        var questionDto = _mapper.Map<QuestionDto>(createdQuestion);
-
-        var questionPublishedDto = new QuestionPublishedDto(questionDto, "Question_Published");
-
-        _messageBusClient.PublishNewQuestion(questionPublishedDto);
-
-        return createdQuestion;
-        
-    }
+    #region [Methods]    
 
     public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int id, CancellationToken cancellationToken = default)
     {

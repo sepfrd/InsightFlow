@@ -2,19 +2,10 @@
 
 public class QuestionPublishedDto
 {
-    public QuestionPublishedDto(QuestionDto questionDto, string eventType)
-    {
-        QuestionDto = questionDto;
+    public string? Title { get; set; }
 
-        Event = eventType;
-    }
-
-    public QuestionPublishedDto()
-    {
-    }
+    public string? Description { get; set; }
     
-    public QuestionDto? QuestionDto { get; set; }
-
     public string? Event { get; set; }
 }
 

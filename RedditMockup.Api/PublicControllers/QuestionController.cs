@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.DtoBusinesses;
-using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Dtos;
+using RedditMockup.ExternalService.RabbitMQService.Contracts;
 
 namespace RedditMockup.Api.PublicControllers;
 
@@ -15,13 +14,17 @@ public class QuestionController : PublicBaseController<QuestionDto>
 
     private readonly QuestionDtoBusiness _questionDtoBusiness;
 
+    private readonly IMessageBusClient _messageBusClient;
+
     #endregion
 
     #region [Constructor]
 
-    public QuestionController(IDtoBaseBusiness<QuestionDto> questionDtoBaseBusiness) : base(questionDtoBaseBusiness)
+    public QuestionController(IDtoBaseBusiness<QuestionDto> questionDtoBaseBusiness, IMessageBusClient messageBusClient) : base(questionDtoBaseBusiness)
     {
         _questionDtoBusiness = (QuestionDtoBusiness)questionDtoBaseBusiness;
+
+        _messageBusClient = messageBusClient;
     }
 
     #endregion
@@ -36,5 +39,30 @@ public class QuestionController : PublicBaseController<QuestionDto>
     [Route("SubmitVote")]
     public async Task<CustomResponse?> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken) =>
         await _questionDtoBusiness.SubmitVoteAsync(questionId, kind, cancellationToken);
+
+
+    // ------------------------------------------------------------------------>
+
+    [HttpPost]
+    [Route("[action]")]
+    public async Task CreateAndPublishAsync(QuestionDto questionDto, CancellationToken cancellationToken)
+    {
+        var createdQuestion = await CreateAsync(questionDto, cancellationToken);
+
+        var questionPublishedDto = new QuestionPublishedDto
+        {
+            Title = questionDto.Title,
+            Description = questionDto.Description,
+            Event = "Question_Published"
+        };
+
+        _messageBusClient.PublishNewQuestion(questionPublishedDto);
+
+    }
+
+
+
+    // <-----------------------------------------------------------------------
+
 }
 

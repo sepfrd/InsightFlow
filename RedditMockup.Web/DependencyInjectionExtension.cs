@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using NLog.Web;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.DtoBusinesses;
@@ -13,9 +14,11 @@ using RedditMockup.Common.Validations;
 using RedditMockup.DataAccess;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.DataAccess.Contracts;
+using RedditMockup.ExternalService.RabbitMQService;
 using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using Sieve.Services;
+using ILogger = NLog.ILogger;
 //using StackExchange.Redis;
 
 namespace RedditMockup.Web;
@@ -57,7 +60,7 @@ internal static class DependencyInjectionExtension
     {
         var factory = NLogBuilder.ConfigureNLog("nlog.config");
 
-        return services.AddSingleton(_ => factory.GetLogger(environment.EnvironmentName));
+        return services.AddSingleton<ILogger>(_ => factory.GetLogger(environment.EnvironmentName));
     }
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>
@@ -124,7 +127,6 @@ internal static class DependencyInjectionExtension
         .AddScoped<IDtoBaseBusiness<QuestionDto>, QuestionDtoBusiness>()
         .AddScoped<IDtoBaseBusiness<BookmarkDto>, BookmarkDtoBusiness>();
 
-
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>
         services
             .AddFluentValidationAutoValidation()
@@ -134,7 +136,7 @@ internal static class DependencyInjectionExtension
         services.AddAutoMapper(typeof(UserProfile).Assembly);
 
     internal static IServiceCollection InjectRabbitMq(this IServiceCollection services) =>
-        services.AddScoped<IMessageBusClient, IMessageBusClient>();
+        services.AddScoped<IMessageBusClient, MessageBusClient>();
 
     #region [Redis Injection]
 
