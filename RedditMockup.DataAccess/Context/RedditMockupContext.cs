@@ -263,6 +263,26 @@ public class RedditMockupContext : DbContext
         return fakeQuestionVotes;
     }
 
+    private static IEnumerable<Bookmark> GetFakeBookmarks()
+    {
+        var id = 1;
+
+        var bookmarkFaker = new Faker<Bookmark>()
+            .RuleFor(bookmark => bookmark.Id, _ => id)
+            .RuleFor(bookmark => bookmark.UserId, _ => id)
+            .RuleFor(bookmark => bookmark.QuestionId, _ => id++)
+            .RuleFor(bookmark => bookmark.IsBookmarked, true);
+
+        var fakeBookmarks = new List<Bookmark>();
+
+        for (var i = 0; i < 50; i++)
+        {
+            fakeBookmarks.Add(bookmarkFaker.Generate());
+        }
+
+        return fakeBookmarks;
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -294,10 +314,12 @@ public class RedditMockupContext : DbContext
         modelBuilder.Entity<AnswerVote>().HasData(GetFakeAnswerVotes());
 
         modelBuilder.Entity<QuestionVote>().HasData(GetFakeQuestionVotes());
-       
+
         modelBuilder.Entity<Question>().HasData(GetFakeQuestions());
-        
+
         modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
+
+        modelBuilder.Entity<Bookmark>().HasData(GetFakeBookmarks());
     }
 
     #endregion

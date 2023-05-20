@@ -3,10 +3,13 @@ using NLog;
 using NLog.Web;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Web;
-
+// TODO: Use logging across the app
+// TODO: Use redis
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
+
+builder.Logging.ClearProviders();
 
 builder.Host.UseNLog();
 
@@ -36,7 +39,7 @@ try
 
     await using var scope = app.Services.CreateAsyncScope();
 
-    await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
+    using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
 
     app.UseSwagger()
         .UseSwaggerUI();
@@ -44,14 +47,16 @@ try
     if (app.Environment.IsEnvironment("Testing"))
     {
         await context.Database.EnsureDeletedAsync();
+    }
 
+    if (!app.Environment.IsProduction())
+    {
         await context.Database.EnsureCreatedAsync();
     }
 
     else
     {
         await context.Database.MigrateAsync();
-        //app.UseExceptionHandler();
         app.UseHsts();
     }
 

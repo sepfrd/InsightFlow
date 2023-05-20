@@ -22,5 +22,4 @@ public class Bookmark : BaseEntity
     public virtual Question? Question { get; set; }
 
     #endregion
-
 }

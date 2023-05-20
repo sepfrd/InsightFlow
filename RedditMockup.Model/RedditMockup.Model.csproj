@@ -31,10 +31,9 @@
         <Compile Remove="Views\UserRolesView.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Content Update="Properties\launchSettings.json">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
+      <Content Update="Properties\launchSettings.json">
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
     <ProjectExtensions>
       <MonoDevelop>
