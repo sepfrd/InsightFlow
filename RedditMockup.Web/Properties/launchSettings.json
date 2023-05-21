@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "RedditMockup.Web.Development": {
+    "RedditMockup.Web(Development)": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -9,7 +9,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "RedditMockup.Web.Production": {
+    "RedditMockup.Web(Production)": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -26,7 +26,7 @@
         "ASPNETCORE_URLS": "https://localhost:443;http://localhost:80"
       }
     },
-    "RedditMockup.Web.Testing": {
+    "RedditMockup.Web(Testing)": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

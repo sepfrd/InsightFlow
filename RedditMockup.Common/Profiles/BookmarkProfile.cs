@@ -6,10 +6,9 @@ namespace RedditMockup.Common.Profiles;
 
 public class BookmarkProfile : Profile
 {
-    public BookmarkProfile()
-    {
+    public BookmarkProfile() =>
         CreateMap<Bookmark, BookmarkDto>()
             .ReverseMap();
-    }
+
 }
 

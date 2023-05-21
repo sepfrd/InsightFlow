@@ -34,6 +34,6 @@
         <Compile Remove="Profiles\PersonProfile.cs" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\RedditMockup.Model\RedditMockup.Model.csproj" />
+      <ProjectReference Include="..\RedditMockup.Model\RedditMockup.Model.csproj" />
     </ItemGroup>
 </Project>

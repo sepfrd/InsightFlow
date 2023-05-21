@@ -12,11 +12,11 @@
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Production' " />
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Testing' " />
     <ItemGroup>
-      <Compile Remove="Pages\**" />
-      <Content Remove="Pages\**" />
-      <EmbeddedResource Remove="Pages\**" />
-      <None Remove="Pages\**" />
-      <Content Remove="Properties\appsettings.Testing.json" />
+        <Compile Remove="Pages\**" />
+        <Content Remove="Pages\**" />
+        <EmbeddedResource Remove="Pages\**" />
+        <None Remove="Pages\**" />
+        <Content Remove="Properties\appsettings.Testing.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,8 +24,9 @@
             <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
         </ProjectReference>
         <ProjectReference Include="..\RedditMockup.ExternalServices\RedditMockup.ExternalService.csproj">
-          <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+            <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
         </ProjectReference>
+        <ProjectReference Include="..\RedditMockup.Service\RedditMockup.Service.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -62,9 +63,6 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="logs\" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Include="RedditMockup.Web.csproj" />
+        <Folder Include="logs\" />
     </ItemGroup>
 </Project>

@@ -59,7 +59,7 @@ internal static class DependencyInjectionExtension
     {
         var factory = NLogBuilder.ConfigureNLog("nlog.config");
 
-        return services.AddSingleton<ILogger>(_ => factory.GetLogger(environment.EnvironmentName));
+        return services.AddSingleton<ILogger>(_ => factory.GetLogger(environment.EnvironmentName.ToLower()));
     }
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>
@@ -136,6 +136,10 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectRabbitMq(this IServiceCollection services) =>
         services.AddScoped<IMessageBusClient, MessageBusClient>();
+
+
+    internal static IServiceCollection InjectGrpc(this IServiceCollection services) =>
+        services.AddGrpc().Services;
 
     #region [Redis Injection]
 

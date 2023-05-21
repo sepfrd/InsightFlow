@@ -1,12 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
-    <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
-    </PropertyGroup>
-
-    <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
-    </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
@@ -15,33 +7,19 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
     <ItemGroup>
-        <None Remove="Sieve" />
-        <None Remove="Entities\" />
-        <None Remove="Hoorbakht.RedisService" />
-    </ItemGroup>
-    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.53.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.5" />
         <PackageReference Include="Sieve" Version="2.5.5" />
     </ItemGroup>
+
     <ItemGroup>
-        <Compile Remove="Views\UserRolesView.cs" />
+      <None Update="Protos\redditmockup.proto">
+        <GrpcServices>Server</GrpcServices>
+      </None>
     </ItemGroup>
+
     <ItemGroup>
-      <Content Update="Properties\launchSettings.json">
-        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-      </Content>
+        <Protobuf Include="Protos/redditmockup.proto" GrpcServices="Server" />
     </ItemGroup>
-    <ProjectExtensions>
-      <MonoDevelop>
-        <Properties>
-          <Policies>
-            <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="MSBuild" />
-          </Policies>
-        </Properties>
-      </MonoDevelop>
-    </ProjectExtensions>
 </Project>

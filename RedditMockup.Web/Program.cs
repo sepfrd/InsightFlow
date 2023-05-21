@@ -2,6 +2,7 @@
 using NLog;
 using NLog.Web;
 using RedditMockup.DataAccess.Context;
+using RedditMockup.Service.Grpc;
 using RedditMockup.Web;
 // TODO: Use logging across the app
 // TODO: Use redis
@@ -32,6 +33,7 @@ try
         .InjectFluentValidation()
         .InjectRabbitMq()
         .InjectAutoMapper()
+        .InjectGrpc()
         .AddHealthChecks();
     //.InjectRedis(builder.Configuration)
 
@@ -69,6 +71,11 @@ try
         {
             endpoints.MapControllers();
             endpoints.MapHealthChecks("/healthcheck");
+            endpoints.MapGrpcService<GrpcService>();
+            endpoints.MapGet("/protos/redditmockup.proto", async context =>
+            {
+                await context.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
+            });
         });
 
     await app.RunAsync();
