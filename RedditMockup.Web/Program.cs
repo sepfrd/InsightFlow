@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using RedditMockup.DataAccess.Context;
@@ -36,6 +38,13 @@ try
         .InjectGrpc()
         .AddHealthChecks();
     //.InjectRedis(builder.Configuration)
+
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        // Setup a HTTP/2 endpoint without TLS.
+        options.ListenLocalhost(6001, o => o.Protocols = HttpProtocols.Http1);
+        options.ListenLocalhost(6000, o => o.Protocols = HttpProtocols.Http2);
+    });
 
     var app = builder.Build();
 

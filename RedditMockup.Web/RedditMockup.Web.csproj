@@ -8,9 +8,9 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Development' " />
-    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Production' " />
-    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web.Testing' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web(Development)' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web(Production)' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web(Testing)' " />
     <ItemGroup>
         <Compile Remove="Pages\**" />
         <Content Remove="Pages\**" />

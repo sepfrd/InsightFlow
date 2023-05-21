@@ -137,7 +137,6 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectRabbitMq(this IServiceCollection services) =>
         services.AddScoped<IMessageBusClient, MessageBusClient>();
 
-
     internal static IServiceCollection InjectGrpc(this IServiceCollection services) =>
         services.AddGrpc().Services;
 
