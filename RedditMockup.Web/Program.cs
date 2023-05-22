@@ -9,6 +9,14 @@ using RedditMockup.Web;
 // TODO: Use redis
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    // Setup a HTTP/2 endpoint without TLS.
+
+    options.ListenLocalhost(6000, o => o.Protocols =
+        HttpProtocols.Http2);
+});
+
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Logging.ClearProviders();
@@ -38,16 +46,6 @@ try
         .AddHealthChecks();
 
     //.InjectRedis(builder.Configuration)
-
-    builder
-        .WebHost
-        .ConfigureKestrel(options =>
-        {
-            options.ListenLocalhost(6000, o => o.Protocols = HttpProtocols.Http2);
-            options.ListenLocalhost(6001, o => o.Protocols = HttpProtocols.Http1AndHttp2);
-        });
-        
-
 
     var app = builder.Build();
 

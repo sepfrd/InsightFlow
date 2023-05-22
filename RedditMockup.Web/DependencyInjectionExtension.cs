@@ -138,7 +138,10 @@ internal static class DependencyInjectionExtension
         services.AddScoped<IMessageBusClient, MessageBusClient>();
 
     internal static IServiceCollection InjectGrpc(this IServiceCollection services) =>
-        services.AddGrpc().Services;
+        services.AddGrpc(configure =>
+        {
+            configure.EnableDetailedErrors = true;
+        }).Services;
 
     #region [Redis Injection]
 
