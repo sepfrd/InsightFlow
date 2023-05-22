@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+﻿using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
@@ -37,14 +36,18 @@ try
         .InjectAutoMapper()
         .InjectGrpc()
         .AddHealthChecks();
+
     //.InjectRedis(builder.Configuration)
 
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        // Setup a HTTP/2 endpoint without TLS.
-        options.ListenLocalhost(6001, o => o.Protocols = HttpProtocols.Http1);
-        options.ListenLocalhost(6000, o => o.Protocols = HttpProtocols.Http2);
-    });
+    builder
+        .WebHost
+        .ConfigureKestrel(options =>
+        {
+            options.ListenLocalhost(6000, o => o.Protocols = HttpProtocols.Http2);
+            options.ListenLocalhost(6001, o => o.Protocols = HttpProtocols.Http1AndHttp2);
+        });
+        
+
 
     var app = builder.Build();
 
@@ -68,11 +71,11 @@ try
     else
     {
         await context.Database.MigrateAsync();
-        app.UseHsts();
+        //app.UseHsts();
     }
 
     app
-        .UseHttpsRedirection()
+        //.UseHttpsRedirection()
         .UseRouting()
         .UseAuthentication()
         .UseAuthorization()
