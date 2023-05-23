@@ -1,21 +1,31 @@
-﻿using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Service.Grpc;
 using RedditMockup.Web;
+
 // TODO: Use logging across the app
+
 // TODO: Use redis
+
 var builder = WebApplication.CreateBuilder(args);
+
+#region [macOS Configuration for gRPC over HTTP 2.0 Without TLS]
+
+/*
 
 builder.WebHost.ConfigureKestrel(options =>
 {
     // Setup a HTTP/2 endpoint without TLS.
 
     options.ListenLocalhost(6000, o => o.Protocols =
-        HttpProtocols.Http2);
+    HttpProtocols.Http2);
 });
+
+*/
+
+#endregion
 
 builder.Configuration.AddEnvironmentVariables();
 
