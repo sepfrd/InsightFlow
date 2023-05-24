@@ -135,7 +135,7 @@ internal static class DependencyInjectionExtension
         services.AddAutoMapper(typeof(UserProfile).Assembly);
 
     internal static IServiceCollection InjectRabbitMq(this IServiceCollection services) =>
-        services.AddScoped<IMessageBusClient, MessageBusClient>();
+        services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
     internal static IServiceCollection InjectGrpc(this IServiceCollection services) =>
         services.AddGrpc(configure =>

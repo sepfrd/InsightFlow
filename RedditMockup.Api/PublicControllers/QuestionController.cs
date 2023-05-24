@@ -47,7 +47,7 @@ public class QuestionController : PublicBaseController<QuestionDto>
     [Route("[action]")]
     public async Task CreateAndPublishAsync(QuestionDto questionDto, CancellationToken cancellationToken)
     {
-        var createdQuestion = await CreateAsync(questionDto, cancellationToken);
+        await CreateAsync(questionDto, cancellationToken);
 
         var questionPublishedDto = new QuestionPublishedDto
         {
