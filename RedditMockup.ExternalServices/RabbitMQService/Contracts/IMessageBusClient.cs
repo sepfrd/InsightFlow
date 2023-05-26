@@ -2,7 +2,7 @@
 
 namespace RedditMockup.ExternalService.RabbitMQService.Contracts;
 
-public interface IMessageBusClient
+public interface IMessageBusClient : IDisposable
 {
     void PublishNewQuestion(QuestionPublishedDto questionPublishedDto);
 }

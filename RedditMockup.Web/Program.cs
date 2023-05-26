@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NLog;
-using NLog.Web;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Service.Grpc;
 using RedditMockup.Web;
+using Serilog;
 
 // TODO: Use logging across the app
 
@@ -31,11 +30,8 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Logging.ClearProviders();
 
-builder.Host.UseNLog();
-
-var logger = NLogBuilder
-        .ConfigureNLog("nlog.config")
-        .GetLogger("Default");
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration.GetSection("InternalSerilog")));
 
 try
 {
@@ -46,7 +42,7 @@ try
         .InjectUnitOfWork()
         .InjectSieve()
         .InjectAuthentication()
-        .InjectNLog(builder.Environment)
+        .InjectSerilog(builder.Configuration)
         .InjectContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
@@ -102,12 +98,12 @@ try
 }
 catch (Exception exception)
 {
-    logger.Error(exception, $"Program stopped due to a {exception.GetType()} exception.");
+    Log.Error(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
     throw;
 }
 finally
 {
-    LogManager.Shutdown();
+    Log.CloseAndFlush();
 }
 
 public partial class Program

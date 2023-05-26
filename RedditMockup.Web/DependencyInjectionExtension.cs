@@ -2,7 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using NLog.Web;
+using RedditMockup.Api.Filters;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.DtoBusinesses;
 using RedditMockup.Business.EntityBusinesses;
@@ -16,8 +16,9 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.ExternalService.RabbitMQService;
 using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
+using Serilog;
 using Sieve.Services;
-using ILogger = NLog.ILogger;
+using ILogger = Serilog.ILogger;
 //using StackExchange.Redis;
 
 namespace RedditMockup.Web;
@@ -26,7 +27,7 @@ internal static class DependencyInjectionExtension
 {
     internal static IServiceCollection InjectApi(this IServiceCollection services) =>
         services
-            .AddControllers()
+            .AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -54,12 +55,14 @@ internal static class DependencyInjectionExtension
         });
     }
 
-    internal static IServiceCollection InjectNLog(this IServiceCollection services, IWebHostEnvironment environment)
-
+    internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration)
     {
-        var factory = NLogBuilder.ConfigureNLog("nlog.config");
+        var logger = new LoggerConfiguration()
+            .ReadFrom
+            .Configuration(configuration.GetSection("Serilog"))
+            .CreateLogger();
 
-        return services.AddSingleton<ILogger>(_ => factory.GetLogger(environment.EnvironmentName.ToLower()));
+        return services.AddSingleton<ILogger>(logger);
     }
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>

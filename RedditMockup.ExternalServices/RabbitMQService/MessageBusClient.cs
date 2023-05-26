@@ -1,14 +1,14 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using NLog;
 using RabbitMQ.Client;
 using RedditMockup.Common.Dtos;
 using RedditMockup.ExternalService.RabbitMQService.Contracts;
+using ILogger = Serilog.ILogger;
 
 namespace RedditMockup.ExternalService.RabbitMQService;
 
-public class MessageBusClient : IMessageBusClient, IDisposable
+public class MessageBusClient : IMessageBusClient
 {
     private readonly IConfiguration _configuration;
 
@@ -42,7 +42,7 @@ public class MessageBusClient : IMessageBusClient, IDisposable
 
             _connection.ConnectionShutdown += RabbitMQConnectionShutdownEventHandler;
 
-            _logger.Info("Connected to the Message Bus");
+            _logger.Information("Connected to the Message Bus");
         }
         catch (Exception exception)
         {
@@ -74,12 +74,12 @@ public class MessageBusClient : IMessageBusClient, IDisposable
             basicProperties: null,
             body: body);
 
-        _logger.Info($"{message} was sent over {_triggerExchange} exchange");
+        _logger.Information("{Message} was sent over {ExchangeName} exchange", message, _triggerExchange);
     }
 
     private void RabbitMQConnectionShutdownEventHandler(object? sender, ShutdownEventArgs shutdownEventArgs)
     {
-        _logger.Info($"RabbitMQ connection was shutdown by {sender}", shutdownEventArgs);
+        _logger.Information("RabbitMQ connection was shutdown by {Sender}", sender);
     }
 
     public void Dispose()
@@ -90,7 +90,7 @@ public class MessageBusClient : IMessageBusClient, IDisposable
             _connection.Close();
         }
 
-        _logger.Info("Message Bus Disposed");
+        _logger.Information("Message Bus Disposed");
     }
 }
 

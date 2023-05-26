@@ -18,12 +18,10 @@
         <Folder Include="Base\" />
         <Folder Include="Contracts\" />
         <Folder Include="PublicControllers\" />
+        <Folder Include="Filters\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
         <ProjectReference Include="..\RedditMockup.Business\RedditMockup.Business.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="NLog" Version="5.1.4" />
     </ItemGroup>
 </Project>
