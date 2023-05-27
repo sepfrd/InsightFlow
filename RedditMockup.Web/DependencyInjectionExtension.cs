@@ -2,7 +2,6 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using RedditMockup.Api.Filters;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.DtoBusinesses;
 using RedditMockup.Business.EntityBusinesses;
@@ -17,9 +16,7 @@ using RedditMockup.ExternalService.RabbitMQService;
 using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using Serilog;
-using Serilog.Extensions.Logging;
 using Sieve.Services;
-using ILogger = Serilog.ILogger;
 //using StackExchange.Redis;
 
 namespace RedditMockup.Web;
@@ -57,24 +54,8 @@ internal static class DependencyInjectionExtension
         });
     }
 
-    internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration)
-    {
-        //var logger = new LoggerConfiguration()
-        //    .ReadFrom
-        //    .Configuration(configuration, new ConfigurationReaderOptions
-        //    {
-        //        SectionName = "Serilog"
-        //    })
-        //    .CreateLogger();
-
-        //logger.Warning("Testing Serilog");
-
-        //return services.AddSingleton<ILogger>(logger);
-
+    internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration) =>
         services.AddSerilog(x => x.ReadFrom.Configuration(configuration));
-
-        return services;
-    }
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>
         services.AddScoped<ISieveProcessor, SieveProcessor>();
