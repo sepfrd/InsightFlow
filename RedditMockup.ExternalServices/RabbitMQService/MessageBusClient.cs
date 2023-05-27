@@ -26,6 +26,8 @@ public class MessageBusClient : IMessageBusClient
 
         _logger = logger;
 
+        _logger.Warning("Test form RabbitMQ class");
+
         var connectionFactory = new ConnectionFactory()
         {
             HostName = _configuration.GetSection("RabbitMQ").GetValue<string>("RabbitMQHost"),

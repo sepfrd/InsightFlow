@@ -17,6 +17,7 @@ using RedditMockup.ExternalService.RabbitMQService;
 using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using Serilog;
+using Serilog.Extensions.Logging;
 using Sieve.Services;
 using ILogger = Serilog.ILogger;
 //using StackExchange.Redis;
@@ -27,7 +28,8 @@ internal static class DependencyInjectionExtension
 {
     internal static IServiceCollection InjectApi(this IServiceCollection services) =>
         services
-            .AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
+            //.AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
+            .AddControllers()
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -57,12 +59,21 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration)
     {
-        var logger = new LoggerConfiguration()
-            .ReadFrom
-            .Configuration(configuration.GetSection("Serilog"))
-            .CreateLogger();
+        //var logger = new LoggerConfiguration()
+        //    .ReadFrom
+        //    .Configuration(configuration, new ConfigurationReaderOptions
+        //    {
+        //        SectionName = "Serilog"
+        //    })
+        //    .CreateLogger();
 
-        return services.AddSingleton<ILogger>(logger);
+        //logger.Warning("Testing Serilog");
+
+        //return services.AddSingleton<ILogger>(logger);
+
+        services.AddSerilog(x => x.ReadFrom.Configuration(configuration));
+
+        return services;
     }
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>

@@ -14,10 +14,6 @@
     <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="RabbitMQService\" />
-    <None Remove="RabbitMQService\Contracts\" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="RabbitMQService\" />
     <Folder Include="RabbitMQService\Contracts\" />
   </ItemGroup>

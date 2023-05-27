@@ -3,12 +3,14 @@ using RedditMockup.DataAccess.Context;
 using RedditMockup.Service.Grpc;
 using RedditMockup.Web;
 using Serilog;
+using Serilog.Settings.Configuration;
 
 // TODO: Use logging across the app
 
 // TODO: Use redis
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 #region [macOS Configuration for gRPC over HTTP 2.0 Without TLS]
 
@@ -30,8 +32,12 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Logging.ClearProviders();
 
+//Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
+
+
 builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration.GetSection("InternalSerilog")));
+    configuration.ReadFrom
+            .Configuration(context.Configuration));
 
 try
 {
@@ -42,13 +48,13 @@ try
         .InjectUnitOfWork()
         .InjectSieve()
         .InjectAuthentication()
-        .InjectSerilog(builder.Configuration)
         .InjectContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
         .InjectRabbitMq()
         .InjectAutoMapper()
         .InjectGrpc()
+        .InjectSerilog(builder.Configuration)
         .AddHealthChecks();
 
     //.InjectRedis(builder.Configuration)
@@ -98,7 +104,7 @@ try
 }
 catch (Exception exception)
 {
-    Log.Error(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
+   Log.Error(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
     throw;
 }
 finally

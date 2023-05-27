@@ -8,18 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
-        <None Remove="Microsoft.EntityFrameworkCore" />
-        <None Remove="Base\" />
-        <None Remove="Context\" />
-        <None Remove="Contracts\" />
-        <None Remove="Repositories\" />
-        <None Remove=".DS_Store" />
-        <None Remove="Microsoft.NETCore.App" />
-        <None Remove="Microsoft.EntityFrameworkCore.Tools" />
-        <None Remove="Migrations\" />
-    </ItemGroup>
-    <ItemGroup>
         <Folder Include="Base\" />
         <Folder Include="Context\" />
         <Folder Include="Contracts\" />
