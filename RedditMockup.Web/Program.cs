@@ -3,10 +3,11 @@ using RedditMockup.DataAccess.Context;
 using RedditMockup.Service.Grpc;
 using RedditMockup.Web;
 using Serilog;
-using Serilog.Events;
 using Serilog.Settings.Configuration;
 
 // TODO: Use logging across the app
+
+// TODO: Setup the JSON format
 
 // TODO: Use redis
 
@@ -39,6 +40,8 @@ Log.Logger = new LoggerConfiguration()
         SectionName = "InternalSerilog"
     })
     .CreateBootstrapLogger();
+
+Log.Information("Hello world!!!");
 
 try
 {
@@ -105,7 +108,7 @@ try
 }
 catch (Exception exception)
 {
-   Log.Error(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
+    Log.Error(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
     throw;
 }
 finally
