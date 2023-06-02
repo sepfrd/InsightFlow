@@ -50,7 +50,7 @@ public class AnswerBusiness : BaseBusiness<Answer>
             return new()
             {
                 IsSuccess = false,
-                Message = $"No question found with ID of {questionId}",
+                Message = $"No answer found with question id of {questionId}",
                 HttpStatusCode = HttpStatusCode.NotFound
             };
         }
