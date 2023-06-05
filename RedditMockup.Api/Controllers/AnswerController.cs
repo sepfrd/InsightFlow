@@ -7,7 +7,7 @@ using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.Controllers;
 
-public class AnswerController : BaseController<Answer>
+public class AnswerController : BaseController<Answer, AnswerDto>
 {
     #region [Fields]
 
@@ -17,10 +17,8 @@ public class AnswerController : BaseController<Answer>
 
     #region [Constructor]
 
-    public AnswerController(IBaseBusiness<Answer> business) : base(business)
-    {
+    public AnswerController(IBaseBusiness<Answer, AnswerDto> business) : base(business) =>
         _business = (AnswerBusiness)business;
-    }
 
     #endregion
 
@@ -28,18 +26,18 @@ public class AnswerController : BaseController<Answer>
 
     [HttpGet]
     [Route("AnswersByQuestionId")]
-    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken) =>
-        await _business.GetAnswersByQuestionGuidAsync(questionId, cancellationToken);
+    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken) =>
+        await _business.GetAnswersByQuestionGuidAsync(questionGuid, cancellationToken);
 
     [HttpGet]
     [Route("Votes")]
-    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken) =>
-        await _business.GetVotesByAnswerIdAsync(answerId, cancellationToken);
+    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken) =>
+        await _business.GetVotesByAnswerGuidAsync(answerGuid, cancellationToken);
 
     [HttpPost]
     [Route("SubmitVote")]
-    public async Task<CustomResponse> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken) =>
-        await _business.SubmitVoteAsync(answerId, kind, cancellationToken);
+    public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken) =>
+        await _business.SubmitVoteAsync(answerGuid, kind, cancellationToken);
 
     #endregion
 }

@@ -1,11 +1,13 @@
-﻿using RedditMockup.Business.Base;
+﻿using AutoMapper;
+using RedditMockup.Business.Base;
+using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 //using StackExchange.Redis;
 
 namespace RedditMockup.Business.EntityBusinesses;
 
-public class UserBusiness : BaseBusiness<User>
+public class UserBusiness : BaseBusiness<User, UserDto>
 {
     #region [Redis Section]
 
@@ -36,8 +38,8 @@ public class UserBusiness : BaseBusiness<User>
 
     #region [Constructor]
 
-    public UserBusiness(IUnitOfWork unitOfWork) :
-            base(unitOfWork, unitOfWork.UserRepository!)
+    public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper) :
+            base(unitOfWork, unitOfWork.UserRepository!, mapper)
     {
     }
 

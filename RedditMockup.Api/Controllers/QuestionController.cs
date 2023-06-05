@@ -7,23 +7,23 @@ using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.Controllers;
 
-public class QuestionController : BaseController<Question>
+public class QuestionController : BaseController<Question, QuestionDto>
 {
     private readonly QuestionBusiness _business;
 
-    public QuestionController(IBaseBusiness<Question> business) : base(business)
+    public QuestionController(IBaseBusiness<Question, QuestionDto> business) : base(business)
     {
         _business = (QuestionBusiness)business;
     }
 
     [HttpGet]
     [Route("Votes")]
-    public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int questionId, CancellationToken cancellationToken) =>
-         await _business.GetVotesByQuestionIdAsync(questionId, cancellationToken);
+    public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken) =>
+         await _business.GetVotesByQuestionGuidAsync(questionGuid, cancellationToken);
 
 
     [HttpPost]
     [Route("SubmitVote")]
-    public async Task<CustomResponse> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken) =>
-        await _business.SubmitVoteAsync(questionId, kind, cancellationToken);
+    public async Task<CustomResponse> SubmitVoteAsync(Guid questionGuid, bool kind, CancellationToken cancellationToken) =>
+        await _business.SubmitVoteAsync(questionGuid, kind, cancellationToken);
 }

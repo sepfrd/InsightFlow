@@ -11,7 +11,7 @@ using System.Net;
 
 namespace RedditMockup.Business.EntityBusinesses;
 
-public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
+public class  AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 {
     #region [Fields]
 
@@ -23,7 +23,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
     #region [Constructor]
 
-    protected AnswerBusiness(IUnitOfWork unitOfWork, IBaseRepository<Answer> repository, IMapper mapper) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
+    public AnswerBusiness(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
     {
         _answerRepository = unitOfWork.AnswerRepository!;
         _unitOfWork = unitOfWork;
@@ -36,7 +36,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
     public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
 
-        var question = await _unitOfWork.QuestionRepository?.GetByGuidAsync(questionGuid, null, cancellationToken);
+        var question = await _unitOfWork.QuestionRepository!.GetByGuidAsync(questionGuid, null, cancellationToken);
 
         if (question is null)
         {
@@ -71,7 +71,8 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
     public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken = default)
     {
         var answer = await _answerRepository.GetByGuidAsync(answerGuid, 
-            answers => answers.Include(answer => answer.User), 
+            answers => answers.Include(answer => answer.User)
+                .Include(answer => answer.Votes), 
             cancellationToken);
 
         if (answer is null)
@@ -104,7 +105,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
             AnswerId = answer.Id
         };
 
-        await _answerVoteRepository.CreateAsync(vote, cancellationToken);
+        await _answerRepository.SubmitVoteAsync(vote, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -116,19 +117,14 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         };
     }
 
-    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken = default)
     {
-        var answer = await _answerRepository.GetByIdAsync(answerId,
+        var answer = await _answerRepository.GetByGuidAsync(answerGuid,
             answers => answers.Include(answer => answer.Votes), cancellationToken);
 
         if (answer is null)
         {
-            return new CustomResponse<IEnumerable<AnswerVote>>
-            {
-                IsSuccess = false,
-                Message = $"No answer found with ID of {answerId}",
-                HttpStatusCode = HttpStatusCode.NotFound
-            };
+            return CustomResponse<IEnumerable<AnswerVote>>.CustomNotFoundResponse;
         }
 
         var votes = answer.Votes!.ToList();

@@ -1,15 +1,14 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using RedditMockup.Business.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Dtos;
-using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
+using System.Net;
 
 namespace RedditMockup.Business.DtoBusinesses;
 
-public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
+public class QuestionDtoBusiness : DtoBaseBusiness<Question, QuestionDto>
 {
     #region [Fields]
 
@@ -21,7 +20,7 @@ public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
 
     #region [Constructor]
 
-    public QuestionDtoBusiness(IUnitOfWork unitOfWork, IBaseBusiness<Question> questionBusiness, IMapper mapper) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
+    public QuestionDtoBusiness(IBaseBusiness<Question, QuestionDto> questionBusiness, IMapper mapper) : base(questionBusiness, mapper)
     {
         _questionBusiness = (QuestionBusiness)questionBusiness;
 
@@ -31,14 +30,10 @@ public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
     #endregion
 
     #region [Methods]
-
-    public async Task<CustomResponse> SubmitVoteAsync(int id, bool kind, CancellationToken cancellationToken = default) =>
-        await _questionBusiness.SubmitVoteAsync(id, kind, cancellationToken);
-
-
-    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default)
+    
+    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
-        var votesResponse = await _questionBusiness.GetVotesByQuestionIdAsync(questionId, cancellationToken);
+        var votesResponse = await _questionBusiness.GetVotesByQuestionGuidAsync(questionGuid, cancellationToken);
 
         if (!votesResponse.IsSuccess)
         {

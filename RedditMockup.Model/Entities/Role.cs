@@ -13,7 +13,6 @@ public class Role : BaseEntityWithGuid
     #region [Navigation Properties]
 
     public ICollection<UserRole>? UserRoles { get; set; }
-    
 
     #endregion
 }

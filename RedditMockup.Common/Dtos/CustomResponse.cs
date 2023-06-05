@@ -12,7 +12,7 @@ public class CustomResponse<T>
 
     public HttpStatusCode HttpStatusCode { get; init; }
 
-    public static CustomResponse<T> CustomNotFoundResponse = new CustomResponse<T>
+    public readonly static CustomResponse<T> CustomNotFoundResponse = new CustomResponse<T>
     {
         IsSuccess = false,
         HttpStatusCode = HttpStatusCode.NotFound

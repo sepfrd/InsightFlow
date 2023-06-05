@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -10,42 +8,44 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
+using System.Net;
+using System.Security.Claims;
 
 namespace RedditMockup.Business.EntityBusinesses;
 
 public class AccountBusiness
 {
-    private readonly IUnitOfWork _unitOfWork;
+    #region [Fields]
 
     private readonly UserRepository _userRepository;
 
-    public AccountBusiness(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-        _userRepository = unitOfWork.UserRepository!;
-    }
+    #endregion
 
-    private async Task<bool> IsUsernameAndPasswordValidAsync(LoginDto login,
+    #region [Constructor]
+
+    public AccountBusiness(IUnitOfWork unitOfWork) =>
+        _userRepository = unitOfWork.UserRepository!;
+
+    #endregion
+    
+    #region [Private Methods]
+
+    private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto,
         CancellationToken cancellationToken = default)
     {
-        SieveModel sieveModel = new()
-        {
-            Filters = $"Username=={login.Username!}"
-        };
+        var user = await LoadByUsernameAsync(loginDto.Username!, cancellationToken);
 
-        var users = await _userRepository.GetAllAsync(sieveModel, cancellationToken);
-
-        if (users.Count == 0)
+        if (user is null)
         {
-            return false;
+            return null;
         }
 
+        var password = await loginDto.Password!.GetHashStringAsync();
 
-        var password = await login.Password!.GetHashStringAsync();
+        var isPasswordValid = password == user.Password;
 
-        var isPasswordValid = password == users.Single().Password;
+        return !isPasswordValid ? null : user;
 
-        return isPasswordValid;
     }
 
     private static bool IsSignedIn(HttpContext httpContext) =>
@@ -53,23 +53,26 @@ public class AccountBusiness
 
     private async Task<User?> LoadByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
-        SieveModel sieveModel = new() { Filters = $"Username=={username}" };
+        SieveModel sieveModel = new()
+        {
+            Filters = $"Username=={username}"
+        };
 
         var users = await _userRepository.GetAllAsync(sieveModel,
             users => users.Include(x => x.Person)
                 .Include(x => x.Profile)
                 .Include(x => x.Questions)
                 .Include(x => x.Answers)
-                .Include(x => x.UserRoles), cancellationToken);
+                .Include(x => x.UserRoles)!
+                .ThenInclude(x => x.Role), cancellationToken);
 
-        if (users.Count == 0)
-        {
-            return null;
-        }
-
-        return users.Single();
+        return users.Count == 0 ? null : users.Single();
     }
 
+    #endregion
+    
+    #region [Public Methods]
+    
     public async Task<CustomResponse> LoginAsync(LoginDto login, HttpContext httpContext,
         CancellationToken cancellationToken = default)
     {
@@ -83,9 +86,9 @@ public class AccountBusiness
             };
         }
 
-        var isValid = await IsUsernameAndPasswordValidAsync(login, cancellationToken);
+        var user = await ValidateAndGetUserByCredentialsAsync(login, cancellationToken);
 
-        if (!isValid)
+        if (user is null)
         {
             return new CustomResponse
             {
@@ -95,13 +98,11 @@ public class AccountBusiness
             };
         }
 
-        var user = await LoadByUsernameAsync(login.Username!, cancellationToken);
-
-        var roles = await _unitOfWork.RoleRepository!.GetByUserIdAsync(user!.Id, cancellationToken);
+        var roles = user.UserRoles!.Select(userRole => userRole.Role).ToList();
 
         var claims = new List<Claim>()
         {
-            new (ClaimTypes.NameIdentifier, user.Id.ToString())
+            new(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 
         claims.AddRange(roles.Select(role => new Claim(role?.Title!, role?.Title!)));
@@ -146,4 +147,6 @@ public class AccountBusiness
             HttpStatusCode = HttpStatusCode.OK
         };
     }
+
+    #endregion
 }

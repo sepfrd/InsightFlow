@@ -3,7 +3,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Business.Contracts;
-using RedditMockup.Business.DtoBusinesses;
 using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
@@ -111,15 +110,15 @@ internal static class DependencyInjectionExtension
     */
 
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
-        services.AddScoped<IBaseBusiness<User>, UserBusiness>()
-        .AddScoped<IBaseBusiness<Answer>, AnswerBusiness>()
-        .AddScoped<IBaseBusiness<Question>, QuestionBusiness>()
-        .AddScoped<IBaseBusiness<Bookmark>, BookmarkBusiness>()
-        .AddScoped<AccountBusiness>()
-        .AddScoped<IDtoBaseBusiness<UserDto>, UserDtoBusiness>()
-        .AddScoped<IDtoBaseBusiness<AnswerDto>, AnswerDtoBusiness>()
-        .AddScoped<IDtoBaseBusiness<QuestionDto>, QuestionDtoBusiness>()
-        .AddScoped<IDtoBaseBusiness<BookmarkDto>, BookmarkDtoBusiness>();
+        services.AddScoped<IBaseBusiness<User, UserDto>, UserBusiness>()
+            .AddScoped<IBaseBusiness<Answer, AnswerDto>, AnswerBusiness>()
+            .AddScoped<IBaseBusiness<Question, QuestionDto>, QuestionBusiness>()
+            // .AddScoped<IBaseBusiness<Bookmark>, BookmarkBusiness>()
+            .AddScoped<AccountBusiness>();
+    // .AddScoped<IDtoBaseBusiness<UserDto>, UserDtoBusiness>()
+    // .AddScoped<IDtoBaseBusiness<AnswerDto>, AnswerDtoBusiness>()
+    // .AddScoped<IDtoBaseBusiness<QuestionDto>, QuestionDtoBusiness>()
+    // .AddScoped<IDtoBaseBusiness<BookmarkDto>, BookmarkDtoBusiness>();
 
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>
         services

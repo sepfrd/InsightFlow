@@ -15,7 +15,6 @@ public class AnswerVote : BaseEntity
     #region [Navigation Properties]
 
     public int AnswerId { get; set; }
-
     public Answer? Answer { get; set; }
 
     #endregion

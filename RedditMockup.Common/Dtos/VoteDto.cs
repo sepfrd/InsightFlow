@@ -1,6 +1,6 @@
 ﻿namespace RedditMockup.Common.Dtos;
 
-public class VoteDto
+public class VoteDto : BaseDto
 {
     public bool Kind { get; set; }
 }

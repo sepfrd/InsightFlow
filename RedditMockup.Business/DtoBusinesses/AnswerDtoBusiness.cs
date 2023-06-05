@@ -3,25 +3,24 @@ using RedditMockup.Business.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.EntityBusinesses;
 using RedditMockup.Common.Dtos;
-using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 using System.Net;
 
 namespace RedditMockup.Business.DtoBusinesses;
 
-public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
+public class AnswerDtoBusiness : DtoBaseBusiness<Answer, AnswerDto>
 {
     #region [Fields]
 
     private readonly IMapper _mapper;
 
     private readonly AnswerBusiness _answerBusiness;
-    
+
     #endregion
-    
+
     #region [Constructor]
 
-    public AnswerDtoBusiness(IUnitOfWork unitOfWork, IBaseBusiness<Answer> answerBusiness, IMapper mapper) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
+    public AnswerDtoBusiness(IBaseBusiness<Answer, AnswerDto> answerBusiness, IMapper mapper) : base(answerBusiness, mapper)
     {
         _mapper = mapper;
         _answerBusiness = (AnswerBusiness)answerBusiness;
@@ -31,9 +30,9 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
 
     #region [Methods]
 
-    public async Task<CustomResponse<IEnumerable<AnswerDto>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<IEnumerable<AnswerDto>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
-        var answersResponse = await _answerBusiness.GetAnswersByQuestionGuidAsync(questionId, cancellationToken);
+        var answersResponse = await _answerBusiness.GetAnswersByQuestionGuidAsync(questionGuid, cancellationToken);
 
         if (!answersResponse.IsSuccess)
         {
@@ -55,12 +54,9 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
         };
     }
 
-    public async Task<CustomResponse> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken = default) =>
-        await _answerBusiness.SubmitVoteAsync(answerId, kind, cancellationToken);
-
-    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<IEnumerable<VoteDto>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken = default)
     {
-        var votesResponse = await _answerBusiness.GetVotesByAnswerIdAsync(answerId, cancellationToken);
+        var votesResponse = await _answerBusiness.GetVotesByAnswerGuidAsync(answerGuid, cancellationToken);
 
         if (!votesResponse.IsSuccess)
         {

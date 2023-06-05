@@ -2,17 +2,19 @@
 
 namespace RedditMockup.Api.Contracts;
 
-public interface IBaseController<T>
+public interface IBaseController<TEntity, in TDto>
 {
-    Task<T?> CreateAsync(T t, CancellationToken cancellationToken);
+    Task<TEntity?> CreateAsync(TDto dto, CancellationToken cancellationToken);
 
-    Task<IEnumerable<T>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken);
+    Task<List<TEntity>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken);
 
-    Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    
+    Task<TEntity?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken);
 
-    Task<T?> UpdateAsync(T t, CancellationToken cancellationToken);
+    Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken);
 
-    Task<T?> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<TEntity?> DeleteByIdAsync(int id, CancellationToken cancellationToken);
 
-    void Options();
+    Task<TEntity?> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken);
 }

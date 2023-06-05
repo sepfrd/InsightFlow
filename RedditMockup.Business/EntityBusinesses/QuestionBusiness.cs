@@ -4,42 +4,36 @@ using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
-using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using System.Net;
 
 namespace RedditMockup.Business.EntityBusinesses;
 
-public class QuestionBusiness : BaseBusiness<Question>
+public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 {
     #region [Fields]
 
     private readonly QuestionRepository _questionRepository;
-    private readonly QuestionVoteRepository _questionVoteRepository;
+    
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMessageBusClient _messageBusClient;
-    private readonly IMapper _mapper;
 
     #endregion
 
     #region [Constructor]
 
-    public QuestionBusiness(IUnitOfWork unitOfWork, IMessageBusClient messageBusClient, IMapper mapper) : base(unitOfWork, unitOfWork.QuestionRepository!)
+    public QuestionBusiness(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
     {
         _questionRepository = unitOfWork.QuestionRepository!;
-        _questionVoteRepository = unitOfWork.QuestionVoteRepository!;
         _unitOfWork = unitOfWork;
-        _messageBusClient = messageBusClient;
-        _mapper = mapper;
     }
 
     #endregion
 
     #region [Methods]    
 
-    public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
-        var question = await _questionRepository.GetByIdAsync(id,
+        var question = await _questionRepository.GetByGuidAsync(questionGuid,
             questions => questions
                 .Include(question => question.Votes)
                 .Include(question => question.Answers), cancellationToken);
@@ -49,7 +43,7 @@ public class QuestionBusiness : BaseBusiness<Question>
             return new CustomResponse<IEnumerable<QuestionVote>>
             {
                 IsSuccess = false,
-                Message = $"No question found with ID of {id}",
+                Message = $"No question found with guid of {questionGuid}",
                 HttpStatusCode = HttpStatusCode.NotFound
             };
         }
@@ -64,18 +58,19 @@ public class QuestionBusiness : BaseBusiness<Question>
         };
     }
 
-    public async Task<CustomResponse> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse> SubmitVoteAsync(Guid questionGuid, bool kind, CancellationToken cancellationToken = default)
     {
-        var question = await GetByIdAsync(questionId, cancellationToken,
+        var question = await _questionRepository.GetByGuidAsync(questionGuid, 
             questions => questions.Include(question => question.User)
-            );
+                .Include(question => question.Votes), 
+            cancellationToken);
 
         if (question is null)
         {
             return new CustomResponse
             {
                 IsSuccess = false,
-                Message = $"No question found with ID of {questionId}",
+                Message = $"No question found with guid of {questionGuid}",
                 HttpStatusCode = HttpStatusCode.NotFound
             };
         }
@@ -100,7 +95,7 @@ public class QuestionBusiness : BaseBusiness<Question>
             QuestionId = question.Id
         };
 
-        await _questionVoteRepository.CreateAsync(vote, cancellationToken);
+        await _questionRepository.SubmitVoteAsync(vote, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
