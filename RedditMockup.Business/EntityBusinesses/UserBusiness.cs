@@ -1,6 +1,5 @@
 ﻿using RedditMockup.Business.Base;
 using RedditMockup.DataAccess.Contracts;
-using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 //using StackExchange.Redis;
 

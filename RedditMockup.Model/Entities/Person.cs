@@ -1,8 +1,9 @@
-﻿using Sieve.Attributes;
+﻿using RedditMockup.Model.BaseEntities;
+using Sieve.Attributes;
 
 namespace RedditMockup.Model.Entities;
 
-public class Person : BaseEntity
+public class Person : BaseEntityWithGuid
 {
     #region [Properties]
 
@@ -18,7 +19,7 @@ public class Person : BaseEntity
 
     #region [Navigation Properties]
 
-    public virtual User? User { get; set; }
+    public User? User { get; set; }
 
     #endregion
 }

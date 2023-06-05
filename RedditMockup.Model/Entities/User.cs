@@ -1,9 +1,9 @@
-﻿using Sieve.Attributes;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using RedditMockup.Model.BaseEntities;
+using Sieve.Attributes;
 
 namespace RedditMockup.Model.Entities;
 
-public class User : BaseEntity
+public class User : BaseEntityWithGuid
 {
     #region [Properties]
 
@@ -11,25 +11,27 @@ public class User : BaseEntity
     public string? Username { get; set; }
 
     public string? Password { get; set; }
-    
-    public int PersonId { get; set; }
 
     public int Score { get; set; }
 
-    [ForeignKey("PersonId")]
-    [Sieve(CanSort = true, CanFilter = true)]
-    public virtual Person? Person { get; set; }
-
-    public virtual Profile? Profile { get; set; }
-
-    public virtual ICollection<Question>? Questions { get; set; }
-
-    public virtual ICollection<Answer>? Answers { get; set; }
-
-    public virtual ICollection<UserRole>? UserRoles { get; set; }
-
-    public virtual ICollection<Bookmark>? Bookmarks { get; set; }
-
     #endregion
 
+    #region [Navigation Properties]
+
+    [Sieve(CanFilter = true)]
+    public int PersonId { get; set; }
+
+    public Person? Person { get; set; }
+
+    public Profile? Profile { get; set; }
+
+    public ICollection<Question>? Questions { get; set; }
+
+    public ICollection<Answer>? Answers { get; set; }
+
+    public ICollection<UserRole>? UserRoles { get; set; }
+
+    public ICollection<Bookmark>? Bookmarks { get; set; }
+
+    #endregion
 }

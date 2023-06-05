@@ -9,6 +9,7 @@ using RedditMockup.Common.Helpers;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
+using Profile = RedditMockup.Model.Entities.Profile;
 
 namespace RedditMockup.Business.DtoBusinesses;
 
@@ -42,7 +43,7 @@ public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
             Filters = $"Username=={username}"
         };
 
-        var usersResponse = await LoadAllAsync(sieveModel, cancellationToken);
+        var usersResponse = await PublicGetAllAsync(sieveModel, cancellationToken);
 
         if (usersResponse.Data.IsNullOrEmpty())
         {
@@ -52,14 +53,14 @@ public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
         return true;
     }
 
-    public override async Task<CustomResponse<UserDto>> CreateAsync(UserDto dto,
+    public override async Task<CustomResponse<UserDto>> PublicCreateAsync(UserDto dto,
         CancellationToken cancellationToken = default)
     {
         var isUsernameValid = !await UsernameExistsAsync(dto.Username!, cancellationToken);
 
         if (!isUsernameValid)
         {
-            return new()
+            return new CustomResponse<UserDto>
             {
                 IsSuccess = false,
                 Message = $"{dto.Username} is already used, try another one",
@@ -71,7 +72,7 @@ public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
 
         var user = _mapper.Map<User>(dto);
 
-        user.Profile = new()
+        user.Profile = new Profile
         {
             UserId = user.Id
         };
@@ -88,7 +89,7 @@ public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
 
         if (user is null)
         {
-            return new()
+            return new CustomResponse<UserDto>
             {
                 IsSuccess = false,
                 HttpStatusCode = HttpStatusCode.InternalServerError
@@ -97,7 +98,7 @@ public class UserDtoBusiness : DtoBaseBusiness<UserDto, User>
 
         var userDto = _mapper.Map<UserDto>(user);
 
-        return new()
+        return new CustomResponse<UserDto>
         {
             Data = userDto,
             IsSuccess = true,

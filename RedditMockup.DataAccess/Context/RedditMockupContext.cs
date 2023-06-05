@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Helpers;
+using RedditMockup.Model.BaseEntities;
 using RedditMockup.Model.Entities;
 using Person = RedditMockup.Model.Entities.Person;
 
@@ -47,7 +48,7 @@ public class RedditMockupContext : DbContext
     {
         var id = 3;
 
-        var personFaker = new Faker<Person>()
+        var personFaker = new Bogus.Faker<Person>()
             .RuleFor(person => person.Id, _ => id++)
             .RuleFor(person => person.Name, faker => faker.Name.FirstName())
             .RuleFor(person => person.Family, faker => faker.Name.LastName());
@@ -139,7 +140,7 @@ public class RedditMockupContext : DbContext
         for (var i = 3; i < 103; i++)
         {
             profilesList.Add(
-                new()
+                new Profile
                 {
                     Id = i,
                     UserId = i
@@ -172,7 +173,7 @@ public class RedditMockupContext : DbContext
         for (var i = 3; i < 102; i++)
         {
             userRolesList.Add(
-                new()
+                new UserRole
                 {
                     Id = i,
                     UserId = i,
@@ -285,6 +286,93 @@ public class RedditMockupContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
+        #region [Index Configuration]
+
+        modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
+
+        #endregion
+        
+        #region [Relationship Configuration]
+
+        #region [Person Relationships]
+
+        modelBuilder.Entity<User>()
+            .HasOne<Person>(user => user.Person)
+            .WithOne(person => person.User)
+            .HasForeignKey<User>(user => user.PersonId);
+
+        #endregion
+        
+        #region [User Relationships]
+
+        modelBuilder.Entity<Profile>()
+            .HasOne<User>(profile => profile.User)
+            .WithOne(user => user.Profile)
+            .HasForeignKey<Profile>(profile => profile.UserId);
+
+        modelBuilder.Entity<Question>()
+            .HasOne<User>(question => question.User)
+            .WithMany(user => user.Questions)
+            .HasForeignKey(question => question.UserId);
+
+        modelBuilder.Entity<Answer>()
+            .HasOne<User>(answer => answer.User)
+            .WithMany(user => user.Answers)
+            .HasForeignKey(answer => answer.UserId);
+
+        modelBuilder.Entity<UserRole>()
+            .HasOne<User>(userRole => userRole.User)
+            .WithMany(user => user.UserRoles)
+            .HasForeignKey(userRole => userRole.UserId);
+        
+        modelBuilder.Entity<Bookmark>()
+            .HasOne<User>(bookmark => bookmark.User)
+            .WithMany(user => user.Bookmarks)
+            .HasForeignKey(bookmark => bookmark.UserId);
+
+        #endregion
+        
+        #region [Question Relationships]
+
+        modelBuilder.Entity<Bookmark>()
+            .HasOne<Question>(bookmark => bookmark.Question)
+            .WithMany(question => question.Bookmarks)
+            .HasForeignKey(bookmark => bookmark.QuestionId);
+
+        modelBuilder.Entity<Answer>()
+            .HasOne<Question>(answer => answer.Question)
+            .WithMany(question => question.Answers)
+            .HasForeignKey(answer => answer.QuestionId);
+
+        modelBuilder.Entity<QuestionVote>()
+            .HasOne<Question>(vote => vote.Question)
+            .WithMany(question => question.Votes)
+            .HasForeignKey(vote => vote.QuestionId);
+
+        #endregion
+        
+        #region [Answer Relationships]
+
+        modelBuilder.Entity<AnswerVote>()
+            .HasOne<Answer>(vote => vote.Answer)
+            .WithMany(answer => answer.Votes)
+            .HasForeignKey(vote => vote.AnswerId);
+
+        #endregion
+        
+        #region [Role Relationships]
+
+        modelBuilder.Entity<UserRole>()
+            .HasOne<Role>(userRole => userRole.Role)
+            .WithMany(role => role.UserRoles)
+            .HasForeignKey(userRole => userRole.RoleId);
+
+        #endregion
+        
+        #endregion
+
+        #region [Seed Data]
 
         modelBuilder.Entity<Role>().HasData(new List<Role>
         {
@@ -301,9 +389,7 @@ public class RedditMockupContext : DbContext
         });
 
         modelBuilder.Entity<Person>().HasData(GetFakePeople());
-
-        modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
-
+        
         modelBuilder.Entity<User>().HasData(GetFakeUsers());
 
         modelBuilder.Entity<Profile>().HasData(GetFakeProfiles());
@@ -319,6 +405,8 @@ public class RedditMockupContext : DbContext
         modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
 
         modelBuilder.Entity<Bookmark>().HasData(GetFakeBookmarks());
+        
+        #endregion
     }
 
     #endregion

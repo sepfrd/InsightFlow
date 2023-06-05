@@ -33,7 +33,7 @@ public class AccountBusiness
             Filters = $"Username=={login.Username!}"
         };
 
-        var users = await _userRepository.LoadAllAsync(sieveModel, cancellationToken);
+        var users = await _userRepository.GetAllAsync(sieveModel, cancellationToken);
 
         if (users.Count == 0)
         {
@@ -55,12 +55,12 @@ public class AccountBusiness
     {
         SieveModel sieveModel = new() { Filters = $"Username=={username}" };
 
-        var users = await _userRepository.LoadAllAsync(sieveModel, cancellationToken,
+        var users = await _userRepository.GetAllAsync(sieveModel,
             users => users.Include(x => x.Person)
                 .Include(x => x.Profile)
                 .Include(x => x.Questions)
                 .Include(x => x.Answers)
-                .Include(x => x.UserRoles));
+                .Include(x => x.UserRoles), cancellationToken);
 
         if (users.Count == 0)
         {
@@ -97,7 +97,7 @@ public class AccountBusiness
 
         var user = await LoadByUsernameAsync(login.Username!, cancellationToken);
 
-        var roles = await _unitOfWork.RoleRepository!.LoadByUserIdAsync(user!.Id, cancellationToken);
+        var roles = await _unitOfWork.RoleRepository!.GetByUserIdAsync(user!.Id, cancellationToken);
 
         var claims = new List<Claim>()
         {

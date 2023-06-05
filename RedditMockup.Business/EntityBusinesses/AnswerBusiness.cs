@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
@@ -10,11 +11,9 @@ using System.Net;
 
 namespace RedditMockup.Business.EntityBusinesses;
 
-public class AnswerBusiness : BaseBusiness<Answer>
+public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 {
     #region [Fields]
-
-    private readonly AnswerVoteRepository _answerVoteRepository;
 
     private readonly AnswerRepository _answerRepository;
 
@@ -24,38 +23,44 @@ public class AnswerBusiness : BaseBusiness<Answer>
 
     #region [Constructor]
 
-    public AnswerBusiness(IUnitOfWork unitOfWork) : base(unitOfWork, unitOfWork.AnswerRepository!)
+    protected AnswerBusiness(IUnitOfWork unitOfWork, IBaseRepository<Answer> repository, IMapper mapper) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
     {
-        _unitOfWork = unitOfWork;
         _answerRepository = unitOfWork.AnswerRepository!;
-        _answerVoteRepository = unitOfWork.AnswerVoteRepository!;
+        _unitOfWork = unitOfWork;
     }
 
     #endregion
 
     #region [Methods]
 
-    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
+
+        var question = await _unitOfWork.QuestionRepository?.GetByGuidAsync(questionGuid, null, cancellationToken);
+
+        if (question is null)
+        {
+            return CustomResponse<IEnumerable<Answer>>.CustomNotFoundResponse;
+        }
 
         SieveModel sieveModel = new()
         {
-            Filters = $"QuestionId=={questionId}"
+            Filters = $"QuestionId=={question.Id}"
         };
 
-        var answers = await LoadAllAsync(sieveModel, cancellationToken);
+        var answers = await _answerRepository.GetAllAsync(sieveModel, null, cancellationToken);
 
         if (answers.IsNullOrEmpty())
         {
-            return new()
+            return new CustomResponse<IEnumerable<Answer>>
             {
                 IsSuccess = false,
-                Message = $"No answer found with question id of {questionId}",
+                Message = $"No answer found with question guid of {questionGuid}",
                 HttpStatusCode = HttpStatusCode.NotFound
             };
         }
 
-        return new()
+        return new CustomResponse<IEnumerable<Answer>>
         {
             Data = answers,
             IsSuccess = true,
@@ -63,17 +68,18 @@ public class AnswerBusiness : BaseBusiness<Answer>
         };
     }
 
-    public async Task<CustomResponse> SubmitVoteAsync(int answerId, bool kind, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken = default)
     {
-        var answer = await LoadByIdAsync(answerId, cancellationToken,
-            answers => answers.Include(answer => answer.User));
+        var answer = await _answerRepository.GetByGuidAsync(answerGuid, 
+            answers => answers.Include(answer => answer.User), 
+            cancellationToken);
 
         if (answer is null)
         {
             return new CustomResponse
             {
                 IsSuccess = false,
-                Message = $"No answer found with ID of {answerId}",
+                Message = $"No answer found with guid of {answerGuid}",
                 HttpStatusCode = HttpStatusCode.NotFound
             };
         }
@@ -112,12 +118,12 @@ public class AnswerBusiness : BaseBusiness<Answer>
 
     public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerIdAsync(int answerId, CancellationToken cancellationToken = default)
     {
-        var answer = await _answerRepository.LoadByIdAsync(answerId, cancellationToken,
-            answers => answers.Include(answer => answer.Votes));
+        var answer = await _answerRepository.GetByIdAsync(answerId,
+            answers => answers.Include(answer => answer.Votes), cancellationToken);
 
         if (answer is null)
         {
-            return new()
+            return new CustomResponse<IEnumerable<AnswerVote>>
             {
                 IsSuccess = false,
                 Message = $"No answer found with ID of {answerId}",
@@ -127,7 +133,7 @@ public class AnswerBusiness : BaseBusiness<Answer>
 
         var votes = answer.Votes!.ToList();
 
-        return new()
+        return new CustomResponse<IEnumerable<AnswerVote>>
         {
             Data = votes,
             IsSuccess = true,

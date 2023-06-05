@@ -29,7 +29,7 @@ public class AnswerController : BaseController<Answer>
     [HttpGet]
     [Route("AnswersByQuestionId")]
     public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken) =>
-        await _business.GetAnswersByQuestionIdAsync(questionId, cancellationToken);
+        await _business.GetAnswersByQuestionGuidAsync(questionId, cancellationToken);
 
     [HttpGet]
     [Route("Votes")]

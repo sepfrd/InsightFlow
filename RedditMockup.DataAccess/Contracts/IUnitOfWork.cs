@@ -10,7 +10,7 @@ public interface IUnitOfWork
 
     PersonRepository? PersonRepository { get; }
 
-    ProfileRepository? ProfileRepository { get; }
+    // ProfileRepository? ProfileRepository { get; }
 
     QuestionRepository? QuestionRepository { get; }
 
@@ -18,13 +18,13 @@ public interface IUnitOfWork
 
     UserRepository? UserRepository { get; }
 
-    UserRoleRepository? UserRoleRepository { get; }
+    // UserRoleRepository? UserRoleRepository { get; }
 
-    QuestionVoteRepository? QuestionVoteRepository { get; }
+    // QuestionVoteRepository? QuestionVoteRepository { get; }
 
-    AnswerVoteRepository? AnswerVoteRepository { get; }
+    // AnswerVoteRepository? AnswerVoteRepository { get; }
 
-    BookmarkRepository? BookmarkRepository { get; }
+    // BookmarkRepository? BookmarkRepository { get; }
 
     #endregion
 

@@ -1,4 +1,5 @@
-﻿using Sieve.Attributes;
+﻿using RedditMockup.Model.BaseEntities;
+using Sieve.Attributes;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RedditMockup.Model.Entities;
@@ -11,15 +12,14 @@ public class Profile : BaseEntity
 
     [Sieve(CanFilter = true, CanSort = true)]
     public string? Email { get; set; } = string.Empty;
-
-    public int UserId { get; set; }
-
+    
     #endregion
 
     #region [Navigation Properties]
-
-    [ForeignKey("UserId")]
-    public virtual User? User { get; set; }
+    
+    public int UserId { get; set; }
+    
+    public User? User { get; set; }
 
     #endregion
 }

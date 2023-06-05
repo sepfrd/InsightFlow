@@ -1,33 +1,33 @@
-﻿using Sieve.Attributes;
+﻿using RedditMockup.Model.BaseEntities;
+using Sieve.Attributes;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RedditMockup.Model.Entities;
 
-public class Question : BaseEntity
+public class Question : BaseEntityWithGuid
 {
     #region [Properties]
 
     [Sieve(CanFilter = true, CanSort = true)]
     public string? Title { get; set; }
 
-    [Sieve(CanFilter = true, CanSort = true)]
+    [Sieve(CanFilter = true)]
     public string? Description { get; set; }
-
-    [Sieve(CanFilter = true, CanSort = true)]
-    public int? UserId { get; set; }
 
     #endregion
 
     #region [Navigation Properties]
 
-    public virtual ICollection<Answer>? Answers { get; set; }
+    public ICollection<Answer>? Answers { get; set; }
 
-    public virtual ICollection<QuestionVote>? Votes { get; set; }
+    public ICollection<QuestionVote>? Votes { get; set; }
 
-    public virtual ICollection<Bookmark>? Bookmarks { get; set; }
-
-    [ForeignKey("UserId")]
-    public virtual User? User { get; set; }
+    public ICollection<Bookmark>? Bookmarks { get; set; }
+    
+    [Sieve(CanFilter = true)]
+    public int UserId { get; set; }
+    
+    public User? User { get; set; }
 
     #endregion
 }

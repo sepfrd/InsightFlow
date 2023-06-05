@@ -1,12 +1,7 @@
 ﻿namespace RedditMockup.Common.Dtos;
 
-public class AnswerDto
+public class AnswerDto : BaseDto
 {
-    // TODO: Remove Id
-    public int Id { get; init; }
-
-    public int UserId { get; set; }
-    
     public int QuestionId { get; set; }
 
     public string? Title { get; set; }

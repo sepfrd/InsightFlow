@@ -2,11 +2,10 @@
 
 public class LoginDto
 {
+    public string? Username { get; init; }
 
-    public string? Username { get; set; }
+    public string? Password { get; init; }
 
-    public string? Password { get; set; }
-
-    public bool RememberMe { get; set; }
+    public bool RememberMe { get; init; }
 
 }

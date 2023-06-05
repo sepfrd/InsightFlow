@@ -5,14 +5,14 @@ namespace RedditMockup.Business.Contracts;
 
 public interface IDtoBaseBusiness<TDto>
 {
-    Task<CustomResponse<TDto>> CreateAsync(TDto t, CancellationToken cancellationToken);
+    Task<CustomResponse<TDto>> PublicCreateAsync(TDto dto, CancellationToken cancellationToken = default);
 
-    Task<CustomResponse<TDto>> LoadByIdAsync(int id, CancellationToken cancellationToken);
+    Task<CustomResponse<TDto>> PublicGetByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 
-    Task<CustomResponse<IEnumerable<TDto>>> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken);
+    Task<CustomResponse<List<TDto>>> PublicGetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
 
-    Task<CustomResponse<TDto>> UpdateAsync(TDto t, CancellationToken cancellationToken);
-
-    Task<CustomResponse<TDto>> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<CustomResponse<TDto>> PublicUpdateAsync(TDto dto, CancellationToken cancellationToken = default);
+    
+    Task<CustomResponse<TDto>> PublicDeleteByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 }
 

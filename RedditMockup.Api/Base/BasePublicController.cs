@@ -30,12 +30,12 @@ public class PublicBaseController<TDto> : ControllerBase
 
     [HttpGet]
     public async Task<CustomResponse<IEnumerable<TDto>>> GetAllAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken) =>
-        await _dtoBaseBusiness.LoadAllAsync(sieveModel, cancellationToken);
+        await _dtoBaseBusiness.PublicGetAllAsync(sieveModel, cancellationToken);
 
     [Route("id")]
     [HttpGet]
     public async Task<CustomResponse<TDto>> GetByIdAsync(int id, CancellationToken cancellationToken) =>
-        await _dtoBaseBusiness.LoadByIdAsync(id, cancellationToken);
+        await _dtoBaseBusiness.PublicGetByGuidAsync(id, cancellationToken);
 
     [Authorize]
     [HttpPost]

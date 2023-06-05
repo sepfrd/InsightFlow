@@ -39,14 +39,14 @@ public class QuestionBusiness : BaseBusiness<Question>
 
     public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        var question = await _questionRepository.LoadByIdAsync(id, cancellationToken,
+        var question = await _questionRepository.GetByIdAsync(id,
             questions => questions
-            .Include(question => question.Votes)
-            .Include(question => question.Answers));
+                .Include(question => question.Votes)
+                .Include(question => question.Answers), cancellationToken);
 
         if (question is null)
         {
-            return new()
+            return new CustomResponse<IEnumerable<QuestionVote>>
             {
                 IsSuccess = false,
                 Message = $"No question found with ID of {id}",
@@ -56,7 +56,7 @@ public class QuestionBusiness : BaseBusiness<Question>
 
         var votes = question.Votes!.ToList();
 
-        return new()
+        return new CustomResponse<IEnumerable<QuestionVote>>
         {
             Data = votes,
             IsSuccess = true,
@@ -66,7 +66,7 @@ public class QuestionBusiness : BaseBusiness<Question>
 
     public async Task<CustomResponse> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken = default)
     {
-        var question = await LoadByIdAsync(questionId, cancellationToken,
+        var question = await GetByIdAsync(questionId, cancellationToken,
             questions => questions.Include(question => question.User)
             );
 

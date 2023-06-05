@@ -42,7 +42,7 @@ public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
 
         if (!votesResponse.IsSuccess)
         {
-            return new()
+            return new CustomResponse<IEnumerable<VoteDto>>
             {
                 IsSuccess = votesResponse.IsSuccess,
                 Message = votesResponse.Message,
@@ -52,7 +52,7 @@ public class QuestionDtoBusiness : DtoBaseBusiness<QuestionDto, Question>
 
         var voteDtos = _mapper.Map<IEnumerable<VoteDto>>(votesResponse.Data);
 
-        return new()
+        return new CustomResponse<IEnumerable<VoteDto>>
         {
             Data = voteDtos,
             IsSuccess = true,

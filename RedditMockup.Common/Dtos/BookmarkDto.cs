@@ -1,6 +1,6 @@
 ﻿namespace RedditMockup.Common.Dtos;
 
-public class BookmarkDto
+public class BookmarkDto : BaseDto
 {
     public bool IsBookmarked { get; set; }
 

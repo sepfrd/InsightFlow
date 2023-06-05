@@ -11,10 +11,14 @@ namespace RedditMockup.Business.DtoBusinesses;
 
 public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
 {
+    #region [Fields]
+
     private readonly IMapper _mapper;
 
     private readonly AnswerBusiness _answerBusiness;
-
+    
+    #endregion
+    
     #region [Constructor]
 
     public AnswerDtoBusiness(IUnitOfWork unitOfWork, IBaseBusiness<Answer> answerBusiness, IMapper mapper) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
@@ -29,11 +33,11 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
 
     public async Task<CustomResponse<IEnumerable<AnswerDto>>> GetAnswersByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default)
     {
-        var answersResponse = await _answerBusiness.GetAnswersByQuestionIdAsync(questionId, cancellationToken);
+        var answersResponse = await _answerBusiness.GetAnswersByQuestionGuidAsync(questionId, cancellationToken);
 
         if (!answersResponse.IsSuccess)
         {
-            return new()
+            return new CustomResponse<IEnumerable<AnswerDto>>
             {
                 IsSuccess = answersResponse.IsSuccess,
                 Message = answersResponse.Message,
@@ -43,7 +47,7 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
 
         var answerDtos = _mapper.Map<IEnumerable<AnswerDto>>(answersResponse.Data);
 
-        return new()
+        return new CustomResponse<IEnumerable<AnswerDto>>
         {
             Data = answerDtos,
             IsSuccess = true,
@@ -60,7 +64,7 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
 
         if (!votesResponse.IsSuccess)
         {
-            return new()
+            return new CustomResponse<IEnumerable<VoteDto>>
             {
                 IsSuccess = votesResponse.IsSuccess,
                 Message = votesResponse.Message,
@@ -70,7 +74,7 @@ public class AnswerDtoBusiness : DtoBaseBusiness<AnswerDto, Answer>
 
         var voteDtos = _mapper.Map<IEnumerable<VoteDto>>(votesResponse.Data);
 
-        return new()
+        return new CustomResponse<IEnumerable<VoteDto>>
         {
             Data = voteDtos,
             IsSuccess = true,

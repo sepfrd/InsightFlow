@@ -1,25 +1,25 @@
-﻿using Sieve.Attributes;
+﻿using RedditMockup.Model.BaseEntities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RedditMockup.Model.Entities;
 
 public class Bookmark : BaseEntity
 {
+    #region [Properties]
     public bool IsBookmarked { get; set; }
 
-    [Sieve(CanFilter = true, CanSort = true)]
-    public int UserId { get; set; }
-
-    [Sieve(CanFilter = true, CanSort = true)]
-    public int QuestionId { get; set; }
+    #endregion
 
     #region [Navigation Properties]
 
-    [ForeignKey("UserId")]
-    public virtual User? User { get; set; }
+    public int UserId { get; set; }
 
-    [ForeignKey("QuestionId")]
-    public virtual Question? Question { get; set; }
+    public User? User { get; set; }
+
+    public int QuestionId { get; set; }
+
+    public Question? Question { get; set; }
 
     #endregion
 }
