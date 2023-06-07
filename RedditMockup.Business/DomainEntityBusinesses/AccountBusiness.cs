@@ -11,7 +11,7 @@ using Sieve.Models;
 using System.Net;
 using System.Security.Claims;
 
-namespace RedditMockup.Business.EntityBusinesses;
+namespace RedditMockup.Business.DomainEntityBusinesses;
 
 public class AccountBusiness
 {
@@ -27,7 +27,7 @@ public class AccountBusiness
         _userRepository = unitOfWork.UserRepository!;
 
     #endregion
-    
+
     #region [Private Methods]
 
     private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto,
@@ -70,32 +70,22 @@ public class AccountBusiness
     }
 
     #endregion
-    
+
     #region [Public Methods]
-    
+
     public async Task<CustomResponse> LoginAsync(LoginDto login, HttpContext httpContext,
         CancellationToken cancellationToken = default)
     {
         if (IsSignedIn(httpContext))
         {
-            return new CustomResponse
-            {
-                IsSuccess = false,
-                Message = "You are already signed in",
-                HttpStatusCode = HttpStatusCode.BadRequest
-            };
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, "You are already signed in.");
         }
 
         var user = await ValidateAndGetUserByCredentialsAsync(login, cancellationToken);
 
         if (user is null)
         {
-            return new CustomResponse
-            {
-                IsSuccess = false,
-                Message = "Username and/or password not correct",
-                HttpStatusCode = HttpStatusCode.BadRequest
-            };
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, "Username and/or password not correct.");
         }
 
         var roles = user.UserRoles!.Select(userRole => userRole.Role).ToList();
@@ -118,34 +108,19 @@ public class AccountBusiness
 
         await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
 
-        return new CustomResponse
-        {
-            IsSuccess = true,
-            Message = "Successfully logged in",
-            HttpStatusCode = HttpStatusCode.OK
-        };
+        return CustomResponse.CreateSuccessfulResponse("Successfully logged in.");
     }
 
     public static async Task<CustomResponse> LogoutAsync(HttpContext httpContext)
     {
         if (!IsSignedIn(httpContext))
         {
-            return new CustomResponse
-            {
-                IsSuccess = false,
-                Message = "Already logged out",
-                HttpStatusCode = HttpStatusCode.BadRequest
-            };
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, "You are not signed in.");
         }
 
         await httpContext.SignOutAsync();
 
-        return new CustomResponse
-        {
-            IsSuccess = true,
-            Message = "Successfully logged out",
-            HttpStatusCode = HttpStatusCode.OK
-        };
+        return CustomResponse.CreateSuccessfulResponse("Successfully logged out.");
     }
 
     #endregion

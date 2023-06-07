@@ -3,7 +3,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Business.Contracts;
-using RedditMockup.Business.EntityBusinesses;
+using RedditMockup.Business.DomainEntityBusinesses;
+using RedditMockup.Business.PublicBusinesses;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Profiles;
@@ -16,7 +17,6 @@ using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using Serilog;
 using Sieve.Services;
-//using StackExchange.Redis;
 
 namespace RedditMockup.Web;
 
@@ -93,32 +93,13 @@ internal static class DependencyInjectionExtension
                     policy => policy.RequireClaim(RoleConstants.User));
             });
 
-    /*
-    internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
-        services.Scan(scan =>
-            scan.FromAssembliesOf(typeof(IBaseBusiness<>))
-                .AddClasses(classes =>
-                    classes.AssignableTo(typeof(IBaseBusiness<>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-                .AddClasses(classes =>
-                    classes.Where(predicate =>
-                        predicate.Name.EndsWith("Business") &&
-                        !predicate.IsAssignableTo(typeof(IBaseBusiness<>))))
-                .AsSelf()
-                .WithScopedLifetime());
-    */
-
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
         services.AddScoped<IBaseBusiness<User, UserDto>, UserBusiness>()
             .AddScoped<IBaseBusiness<Answer, AnswerDto>, AnswerBusiness>()
             .AddScoped<IBaseBusiness<Question, QuestionDto>, QuestionBusiness>()
-            // .AddScoped<IBaseBusiness<Bookmark>, BookmarkBusiness>()
+            .AddScoped<IPublicBaseBusiness<AnswerDto>, PublicAnswerBusiness>()
+            .AddScoped<IPublicBaseBusiness<QuestionDto>, PublicQuestionBusiness>()
             .AddScoped<AccountBusiness>();
-    // .AddScoped<IDtoBaseBusiness<UserDto>, UserDtoBusiness>()
-    // .AddScoped<IDtoBaseBusiness<AnswerDto>, AnswerDtoBusiness>()
-    // .AddScoped<IDtoBaseBusiness<QuestionDto>, QuestionDtoBusiness>()
-    // .AddScoped<IDtoBaseBusiness<BookmarkDto>, BookmarkDtoBusiness>();
 
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>
         services

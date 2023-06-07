@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
-using RedditMockup.Business.EntityBusinesses;
+using RedditMockup.Business.DomainEntityBusinesses;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Model.Entities;
 
@@ -26,16 +26,15 @@ public class AnswerController : BaseController<Answer, AnswerDto>
 
     [HttpGet]
     [Route("AnswersByQuestionId")]
-    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken) =>
         await _business.GetAnswersByQuestionGuidAsync(questionGuid, cancellationToken);
 
     [HttpGet]
     [Route("Votes")]
-    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken) =>
+    public async Task<CustomResponse<List<AnswerVote>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken) =>
         await _business.GetVotesByAnswerGuidAsync(answerGuid, cancellationToken);
 
     [HttpPost]
-    [Route("SubmitVote")]
     public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken) =>
         await _business.SubmitVoteAsync(answerGuid, kind, cancellationToken);
 

@@ -7,7 +7,6 @@
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Base\" />
-        <Folder Include="Contracts\" />
         <Folder Include="PublicControllers\" />
         <Folder Include="Filters\" />
     </ItemGroup>

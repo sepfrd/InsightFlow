@@ -15,7 +15,6 @@ namespace RedditMockup.IntegrationTest;
 
 public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>>
 {
-
     #region [Field(s)]
 
     private const string BaseAddress = "/api/Answer";
@@ -25,8 +24,6 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
     private const string ValidTitle = "How to do sth";
 
     private const string ValidDescription = "Can anybody help me with my problem?";
-
-    private readonly WebApplicationFactory<Program> _factory;
 
     private readonly HttpClient _client;
 
@@ -43,9 +40,9 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
     public AnswerControllerTest(WebApplicationFactory<Program> factory)
     {
-        _factory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
+        using var customFactory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
 
-        _client = _factory.CreateClient();
+        _client = customFactory.CreateClient();
     }
 
     #endregion

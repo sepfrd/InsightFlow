@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Helpers;
-using RedditMockup.Model.BaseEntities;
 using RedditMockup.Model.Entities;
 using Person = RedditMockup.Model.Entities.Person;
 
@@ -286,13 +285,13 @@ public class RedditMockupContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
+
         #region [Index Configuration]
 
         modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
 
         #endregion
-        
+
         #region [Relationship Configuration]
 
         #region [Person Relationships]
@@ -303,7 +302,7 @@ public class RedditMockupContext : DbContext
             .HasForeignKey<User>(user => user.PersonId);
 
         #endregion
-        
+
         #region [User Relationships]
 
         modelBuilder.Entity<Profile>()
@@ -325,14 +324,14 @@ public class RedditMockupContext : DbContext
             .HasOne<User>(userRole => userRole.User)
             .WithMany(user => user.UserRoles)
             .HasForeignKey(userRole => userRole.UserId);
-        
+
         modelBuilder.Entity<Bookmark>()
             .HasOne<User>(bookmark => bookmark.User)
             .WithMany(user => user.Bookmarks)
             .HasForeignKey(bookmark => bookmark.UserId);
 
         #endregion
-        
+
         #region [Question Relationships]
 
         modelBuilder.Entity<Bookmark>()
@@ -351,7 +350,7 @@ public class RedditMockupContext : DbContext
             .HasForeignKey(vote => vote.QuestionId);
 
         #endregion
-        
+
         #region [Answer Relationships]
 
         modelBuilder.Entity<AnswerVote>()
@@ -360,7 +359,7 @@ public class RedditMockupContext : DbContext
             .HasForeignKey(vote => vote.AnswerId);
 
         #endregion
-        
+
         #region [Role Relationships]
 
         modelBuilder.Entity<UserRole>()
@@ -369,7 +368,7 @@ public class RedditMockupContext : DbContext
             .HasForeignKey(userRole => userRole.RoleId);
 
         #endregion
-        
+
         #endregion
 
         #region [Seed Data]
@@ -389,7 +388,7 @@ public class RedditMockupContext : DbContext
         });
 
         modelBuilder.Entity<Person>().HasData(GetFakePeople());
-        
+
         modelBuilder.Entity<User>().HasData(GetFakeUsers());
 
         modelBuilder.Entity<Profile>().HasData(GetFakeProfiles());
@@ -405,7 +404,7 @@ public class RedditMockupContext : DbContext
         modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
 
         modelBuilder.Entity<Bookmark>().HasData(GetFakeBookmarks());
-        
+
         #endregion
     }
 

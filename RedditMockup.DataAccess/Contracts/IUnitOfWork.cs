@@ -30,8 +30,6 @@ public interface IUnitOfWork
 
     #region [Methods]
 
-    int Commit();
-
     Task<int> CommitAsync(CancellationToken cancellationToken);
 
     #endregion

@@ -3,9 +3,8 @@ using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
-//using StackExchange.Redis;
 
-namespace RedditMockup.Business.EntityBusinesses;
+namespace RedditMockup.Business.DomainEntityBusinesses;
 
 public class UserBusiness : BaseBusiness<User, UserDto>
 {

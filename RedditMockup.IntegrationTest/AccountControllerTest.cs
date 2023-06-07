@@ -16,9 +16,9 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
     #region [Field(s)]
 
-    private const string _baseAddress = "/api/Account";
+    private const string BaseAddress = "/api/Account";
 
-    private const int _defaultTimeout = 2000;
+    private const int DefaultTimeout = 2000;
 
     private readonly HttpClient _client;
 
@@ -48,9 +48,9 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         var client = new RestClient(_client);
 
-        var request = new RestRequest($"{_baseAddress}/Login")
+        var request = new RestRequest($"{BaseAddress}/Login")
         {
-            Timeout = _defaultTimeout
+            Timeout = DefaultTimeout
         };
 
         request.AddJsonBody(loginDto);
@@ -70,9 +70,9 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         var client = new RestClient(_client);
 
-        var request = new RestRequest($"{_baseAddress}/Login")
+        var request = new RestRequest($"{BaseAddress}/Login")
         {
-            Timeout = _defaultTimeout
+            Timeout = DefaultTimeout
         };
 
         request.AddJsonBody(loginDto);
@@ -106,9 +106,9 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [Login]
 
-        var loginRequest = new RestRequest($"{_baseAddress}/Login")
+        var loginRequest = new RestRequest($"{BaseAddress}/Login")
         {
-            Timeout = _defaultTimeout
+            Timeout = DefaultTimeout
         };
 
         loginRequest.AddJsonBody(loginDto);
@@ -121,7 +121,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         var getAllRequest = new RestRequest("/api/User")
         {
-            Timeout = _defaultTimeout
+            Timeout = DefaultTimeout
         };
 
         var getAllResponse = await client.ExecuteGetAsync<CustomResponse>(getAllRequest);
@@ -130,9 +130,9 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         #region [Logout]
 
-        var logoutRequest = new RestRequest($"{_baseAddress}/Logout")
+        var logoutRequest = new RestRequest($"{BaseAddress}/Logout")
         {
-            Timeout = _defaultTimeout
+            Timeout = DefaultTimeout
         };
 
         var logoutResponse = await client.ExecutePostAsync<CustomResponse>(logoutRequest);

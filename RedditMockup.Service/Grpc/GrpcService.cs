@@ -33,7 +33,7 @@ public class GrpcService : RedditMockupGrpc.RedditMockupGrpcBase
 
         var questions = await _questionRepository.GetAllAsync(new SieveModel());
 
-        var questionDtos = _mapper.Map<IEnumerable<GrpcQuestionModel>>(questions);
+        var questionDtos = _mapper.Map<List<GrpcQuestionModel>>(questions);
 
         response.Question.AddRange(questionDtos);
 

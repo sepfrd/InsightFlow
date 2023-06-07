@@ -67,7 +67,7 @@ try
 
     await using var scope = app.Services.CreateAsyncScope();
 
-    using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
+    await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
 
     app.UseSwagger()
         .UseSwaggerUI();
@@ -98,9 +98,9 @@ try
             endpoints.MapControllers();
             endpoints.MapHealthChecks("/healthcheck");
             endpoints.MapGrpcService<GrpcService>();
-            endpoints.MapGet("/protos/redditmockup.proto", async context =>
+            endpoints.MapGet("/protos/redditmockup.proto", async httpContext =>
             {
-                await context.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
+                await httpContext.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
             });
         });
 

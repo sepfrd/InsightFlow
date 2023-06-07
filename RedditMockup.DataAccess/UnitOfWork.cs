@@ -11,21 +11,11 @@ public class UnitOfWork : IUnitOfWork
 
     private PersonRepository? _personRepository;
 
-    // private ProfileRepository? _profileRepository;
-
     private QuestionRepository? _questionRepository;
 
     private RoleRepository? _roleRepository;
 
     private UserRepository? _userRepository;
-
-    // private UserRoleRepository? _userRoleRepository;
-
-    // private AnswerVoteRepository? _answerVoteRepository;
-
-    // private QuestionVoteRepository? _questionVoteRepository;
-
-    // private BookmarkRepository? _bookmarkRepository;
 
     private readonly RedditMockupContext _context;
 
@@ -43,8 +33,6 @@ public class UnitOfWork : IUnitOfWork
     public PersonRepository PersonRepository =>
         _personRepository ??= new PersonRepository(_context, _sieveProcessor);
 
-    // public ProfileRepository ProfileRepository =>
-    //     _profileRepository ??= new ProfileRepository(_context, _sieveProcessor);
 
     public QuestionRepository QuestionRepository =>
         _questionRepository ??= new QuestionRepository(_context, _sieveProcessor);
@@ -54,21 +42,6 @@ public class UnitOfWork : IUnitOfWork
 
     public UserRepository UserRepository =>
         _userRepository ??= new UserRepository(_context, _sieveProcessor);
-
-    // public UserRoleRepository UserRoleRepository =>
-    //     _userRoleRepository ??= new UserRoleRepository(_context, _sieveProcessor);
-
-    // public QuestionVoteRepository QuestionVoteRepository =>
-    //     _questionVoteRepository ??= new QuestionVoteRepository(_context, _sieveProcessor);
-
-    // public AnswerVoteRepository AnswerVoteRepository =>
-    //     _answerVoteRepository ??= new AnswerVoteRepository(_context, _sieveProcessor);
-
-    // public BookmarkRepository BookmarkRepository =>
-    //     _bookmarkRepository ??= new BookmarkRepository(_context, _sieveProcessor);
-
-    public int Commit() =>
-        _context.SaveChanges();
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken) =>
         await _context.SaveChangesAsync(cancellationToken);

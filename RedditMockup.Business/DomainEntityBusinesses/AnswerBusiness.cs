@@ -9,9 +9,9 @@ using RedditMockup.Model.Entities;
 using Sieve.Models;
 using System.Net;
 
-namespace RedditMockup.Business.EntityBusinesses;
+namespace RedditMockup.Business.DomainEntityBusinesses;
 
-public class  AnswerBusiness : BaseBusiness<Answer, AnswerDto>
+public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 {
     #region [Fields]
 
@@ -33,14 +33,14 @@ public class  AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
     #region [Methods]
 
-    public async Task<CustomResponse<IEnumerable<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
 
         var question = await _unitOfWork.QuestionRepository!.GetByGuidAsync(questionGuid, null, cancellationToken);
 
         if (question is null)
         {
-            return CustomResponse<IEnumerable<Answer>>.CustomNotFoundResponse;
+            return CustomResponse<List<Answer>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
         }
 
         SieveModel sieveModel = new()
@@ -52,46 +52,27 @@ public class  AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
         if (answers.IsNullOrEmpty())
         {
-            return new CustomResponse<IEnumerable<Answer>>
-            {
-                IsSuccess = false,
-                Message = $"No answer found with question guid of {questionGuid}",
-                HttpStatusCode = HttpStatusCode.NotFound
-            };
+            return CustomResponse<List<Answer>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, $"No answer found with question guid of {questionGuid}");
         }
 
-        return new CustomResponse<IEnumerable<Answer>>
-        {
-            Data = answers,
-            IsSuccess = true,
-            HttpStatusCode = HttpStatusCode.OK
-        };
+        return CustomResponse<List<Answer>>.CreateSuccessfulResponse(answers);
     }
 
     public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken = default)
     {
-        var answer = await _answerRepository.GetByGuidAsync(answerGuid, 
+        var answer = await _answerRepository.GetByGuidAsync(answerGuid,
             answers => answers.Include(answer => answer.User)
-                .Include(answer => answer.Votes), 
+                .Include(answer => answer.Votes),
             cancellationToken);
 
         if (answer is null)
         {
-            return new CustomResponse
-            {
-                IsSuccess = false,
-                Message = $"No answer found with guid of {answerGuid}",
-                HttpStatusCode = HttpStatusCode.NotFound
-            };
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, $"No answer found with guid of {answerGuid}");
         }
 
         if (answer.User is null)
         {
-            return new CustomResponse
-            {
-                IsSuccess = false,
-                HttpStatusCode = HttpStatusCode.InternalServerError
-            };
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.InternalServerError);
         }
 
         if (kind)
@@ -109,32 +90,23 @@ public class  AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new CustomResponse
-        {
-            IsSuccess = true,
-            Message = $"{(kind ? "Up" : "Down")}vote submitted",
-            HttpStatusCode = HttpStatusCode.OK
-        };
+        return CustomResponse.CreateSuccessfulResponse($"{(kind ? "Up" : "Down")}vote submitted");
     }
 
-    public async Task<CustomResponse<IEnumerable<AnswerVote>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<List<AnswerVote>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken = default)
     {
         var answer = await _answerRepository.GetByGuidAsync(answerGuid,
             answers => answers.Include(answer => answer.Votes), cancellationToken);
 
         if (answer is null)
         {
-            return CustomResponse<IEnumerable<AnswerVote>>.CustomNotFoundResponse;
+            return CustomResponse<List<AnswerVote>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
         }
 
         var votes = answer.Votes!.ToList();
 
-        return new CustomResponse<IEnumerable<AnswerVote>>
-        {
-            Data = votes,
-            IsSuccess = true,
-            HttpStatusCode = HttpStatusCode.OK
-        };
+        return CustomResponse<List<AnswerVote>>.CreateSuccessfulResponse(votes);
+
     }
 
     #endregion
