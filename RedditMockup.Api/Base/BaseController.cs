@@ -23,23 +23,23 @@ public class BaseController<TEntity, TDto> : ControllerBase
     [HttpPost]
     public async Task<TEntity?> CreateAsync([FromBody] TDto dto, CancellationToken cancellationToken) =>
         await _business.CreateAsync(dto, cancellationToken);
-    
+
     [HttpGet]
     public async Task<List<TEntity>?> GetAllAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken) =>
-        await _business.GetAllAsync(sieveModel, null, cancellationToken);
-    
+        await _business.GetAllAsync(sieveModel, cancellationToken);
+
     [HttpGet]
     public async Task<TEntity?> GetByIdAsync([FromQuery] int id, CancellationToken cancellationToken) =>
-        await _business.GetByIdAsync(id, null, cancellationToken);
-    
+        await _business.GetByIdAsync(id, cancellationToken);
+
     [HttpGet]
     public async Task<TEntity?> GetByGuidAsync([FromQuery] Guid guid, CancellationToken cancellationToken) =>
-        await _business.GetByGuidAsync(guid, null, cancellationToken);
-    
+        await _business.GetByGuidAsync(guid, cancellationToken);
+
     [HttpDelete]
     public async Task<TEntity?> DeleteByIdAsync([FromQuery] int id, CancellationToken cancellationToken) =>
         await _business.DeleteByIdAsync(id, cancellationToken);
-    
+
     [HttpDelete]
     public async Task<TEntity?> DeleteByGuidAsync([FromQuery] Guid guid, CancellationToken cancellationToken) =>
         await _business.DeleteByGuidAsync(guid, cancellationToken);

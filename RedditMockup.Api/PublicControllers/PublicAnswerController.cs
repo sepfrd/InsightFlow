@@ -4,10 +4,11 @@ using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.PublicBusinesses;
 using RedditMockup.Common.Dtos;
+using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.PublicControllers;
 
-public class PublicAnswerController : PublicBaseController<AnswerDto>
+public class PublicAnswerController : PublicBaseController<Answer, AnswerDto>
 {
     #region [Fields]
 
@@ -17,7 +18,7 @@ public class PublicAnswerController : PublicBaseController<AnswerDto>
 
     #region [Constructor]
 
-    public PublicAnswerController(IPublicBaseBusiness<AnswerDto> publicBaseBusiness) : base(publicBaseBusiness) =>
+    public PublicAnswerController(IPublicBaseBusiness<Answer, AnswerDto> publicBaseBusiness) : base(publicBaseBusiness) =>
         _publicAnswerBusiness = (PublicAnswerBusiness)publicBaseBusiness;
 
     #endregion

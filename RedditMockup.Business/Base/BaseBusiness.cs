@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Query;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
@@ -48,20 +47,15 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
         return createdEntity;
     }
     
-    public async Task<TEntity?> GetByIdAsync(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null, CancellationToken cancellationToken = default) =>
-        await _repository.GetByIdAsync(id, include, cancellationToken);
+    public abstract Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
-    public async Task<TEntity?> GetByGuidAsync(Guid guid, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null, CancellationToken cancellationToken =
-        default) =>
-        await _repository.GetByGuidAsync(guid, include, cancellationToken);
+    public abstract Task<TEntity?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 
-    public async Task<List<TEntity>?> GetAllAsync(SieveModel sieveModel, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null, CancellationToken
-        cancellationToken = default) =>
-        await _repository.GetAllAsync(sieveModel, include, cancellationToken);
+    public abstract Task<List<TEntity>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
 
     public async Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken = default)
     {
-        TEntity? t = await GetByGuidAsync(dto.Guid, null, cancellationToken);
+        TEntity? t = await GetByGuidAsync(dto.Guid, cancellationToken);
 
         if (t is null)
         {
@@ -95,7 +89,7 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
 
     public async Task<TEntity?> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
     {
-        TEntity? entity = await GetByGuidAsync(guid, null, cancellationToken);
+        TEntity? entity = await GetByGuidAsync(guid, cancellationToken);
 
         return entity is null ? null : _repository.Delete(entity);
     }

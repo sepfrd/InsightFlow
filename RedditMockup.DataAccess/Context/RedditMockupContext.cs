@@ -337,6 +337,9 @@ public class RedditMockupContext : DbContext
 
         #region [Person Relationships]
 
+        modelBuilder.Entity<Person>()
+            .Ignore(person => person.User);
+        
         modelBuilder.Entity<User>()
             .HasOne<Person>(user => user.Person)
             .WithOne(person => person.User)

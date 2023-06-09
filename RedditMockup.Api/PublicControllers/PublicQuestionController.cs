@@ -5,10 +5,11 @@ using RedditMockup.Business.Contracts;
 using RedditMockup.Business.PublicBusinesses;
 using RedditMockup.Common.Dtos;
 using RedditMockup.ExternalService.RabbitMQService.Contracts;
+using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.PublicControllers;
 
-public class PublicQuestionController : PublicBaseController<QuestionDto>
+public class PublicQuestionController : PublicBaseController<Question, QuestionDto>
 {
     #region [Fields]
 
@@ -20,7 +21,7 @@ public class PublicQuestionController : PublicBaseController<QuestionDto>
 
     #region [Constructor]
 
-    public PublicQuestionController(IPublicBaseBusiness<QuestionDto> questionDtoBaseBusiness, IMessageBusClient messageBusClient) : base(questionDtoBaseBusiness)
+    public PublicQuestionController(IPublicBaseBusiness<Question, QuestionDto> questionDtoBaseBusiness, IMessageBusClient messageBusClient) : base(questionDtoBaseBusiness)
     {
         _publicQuestionBusiness = (PublicQuestionBusiness)questionDtoBaseBusiness;
 

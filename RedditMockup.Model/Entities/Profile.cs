@@ -1,6 +1,5 @@
 ﻿using RedditMockup.Model.BaseEntities;
 using Sieve.Attributes;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RedditMockup.Model.Entities;
 

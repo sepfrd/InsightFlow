@@ -1,9 +1,10 @@
-﻿using RedditMockup.Common.Dtos;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using RedditMockup.Common.Dtos;
 using Sieve.Models;
 
 namespace RedditMockup.Business.Contracts;
 
-public interface IPublicBaseBusiness<TDto>
+public interface IPublicBaseBusiness<TEntity, TDto>
 {
     Task<CustomResponse<TDto>> PublicCreateAsync(TDto dto, CancellationToken cancellationToken = default);
 

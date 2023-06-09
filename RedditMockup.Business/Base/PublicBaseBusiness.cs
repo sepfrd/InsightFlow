@@ -7,7 +7,7 @@ using System.Net;
 
 namespace RedditMockup.Business.Base;
 
-public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
+public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TEntity, TDto>
     where TDto : BaseDto
     where TEntity : BaseEntityWithGuid
 {
@@ -26,7 +26,7 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
         _mapper = mapper;
     }
 
-    public virtual async Task<CustomResponse<TDto>> PublicCreateAsync(TDto dto, CancellationToken cancellationToken)
+    public async Task<CustomResponse<TDto>> PublicCreateAsync(TDto dto, CancellationToken cancellationToken = default)
     {
         TEntity? entity = await _baseBusiness.CreateAsync(dto, cancellationToken);
 
@@ -40,9 +40,9 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
         return CustomResponse<TDto>.CreateSuccessfulResponse(entityDto, httpStatusCode: HttpStatusCode.Created);
     }
 
-    public async Task<CustomResponse<TDto>> PublicGetByGuidAsync(Guid guid, CancellationToken cancellationToken)
+    public async Task<CustomResponse<TDto>> PublicGetByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
     {
-        TEntity? entity = await _baseBusiness.GetByGuidAsync(guid, null, cancellationToken);
+        TEntity? entity = await _baseBusiness.GetByGuidAsync(guid, cancellationToken);
 
         if (entity is null)
         {
@@ -54,9 +54,9 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
         return CustomResponse<TDto>.CreateSuccessfulResponse(entityDto);
     }
 
-    public async Task<CustomResponse<List<TDto>>> PublicGetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken)
+    public async Task<CustomResponse<List<TDto>>> PublicGetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default)
     {
-        var entities = await _baseBusiness.GetAllAsync(sieveModel, null, cancellationToken);
+        var entities = await _baseBusiness.GetAllAsync(sieveModel, cancellationToken);
 
         var dtos = _mapper.Map<List<TDto>>(entities);
 

@@ -2,24 +2,26 @@
 using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
+using RedditMockup.Model.BaseEntities;
 using Sieve.Models;
 
 namespace RedditMockup.Api.Base;
 
 [ApiController]
 [Route("public/api/[controller]/[action]")]
-public class PublicBaseController<TDto> : ControllerBase
+public class PublicBaseController<TEntity, TDto> : ControllerBase
     where TDto : BaseDto
+    where TEntity : BaseEntityWithGuid
 {
     #region [Fields]
 
-    private readonly IPublicBaseBusiness<TDto> _publicBaseBusiness;
+    private readonly IPublicBaseBusiness<TEntity, TDto> _publicBaseBusiness;
 
     #endregion
 
     #region [Constructor]
 
-    public PublicBaseController(IPublicBaseBusiness<TDto> publicBaseBusiness) =>
+    public PublicBaseController(IPublicBaseBusiness<TEntity, TDto> publicBaseBusiness) =>
         _publicBaseBusiness = publicBaseBusiness;
 
     #endregion

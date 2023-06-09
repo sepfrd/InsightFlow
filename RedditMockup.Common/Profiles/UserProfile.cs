@@ -9,10 +9,10 @@ public class UserProfile : Profile
     public UserProfile()
     {
         CreateMap<User, UserDto>()
-            .ForMember(destination => destination.FirstName,
-                option => option.MapFrom(source => source.Person!.FirstName))
-            .ForMember(destination => destination.LastName,
-                option => option.MapFrom(source => source.Person!.LastName));
+            .ForMember(userDto => userDto.FirstName,
+                option => option.MapFrom(user => user.Person!.FirstName))
+            .ForMember(userDto => userDto.LastName,
+                option => option.MapFrom(user => user.Person!.LastName));
 
         CreateMap<UserDto, User>();
     }

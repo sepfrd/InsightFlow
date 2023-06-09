@@ -46,21 +46,39 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         {
             return null;
         }
-        
+
         var questionId = await _unitOfWork.QuestionRepository!.GetIdByGuidAsync(questionDto.QuestionGuid, cancellationToken);
 
         if (questionId is null)
         {
             return null;
         }
-        
+
         answer.UserId = (int)userId;
 
         answer.QuestionId = (int)questionId;
 
         return await CreateAsync(answer, cancellationToken);
     }
-    
+
+    public override async Task<Answer?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
+        await _answerRepository.GetByIdAsync(id,
+            answers => answers.Include(answer => answer.User)
+                .Include(answer => answer.Question),
+            cancellationToken);
+
+    public override async Task<Answer?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
+        await _answerRepository.GetByGuidAsync(guid,
+            answers => answers.Include(answer => answer.User)
+                .Include(answer => answer.Question),
+            cancellationToken);
+
+    public override async Task<List<Answer>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
+        await _answerRepository.GetAllAsync(sieveModel,
+            answers => answers.Include(answer => answer.User)
+                .Include(answer => answer.Question),
+            cancellationToken);
+
     public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
 
