@@ -17,6 +17,7 @@ using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using Serilog;
 using Sieve.Services;
+using System.Text.Json.Serialization;
 
 namespace RedditMockup.Web;
 
@@ -29,6 +30,8 @@ internal static class DependencyInjectionExtension
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
+
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             })
             .Services;
 
@@ -55,7 +58,7 @@ internal static class DependencyInjectionExtension
 
     public static IServiceCollection InjectMongoDbSettings(this IServiceCollection services, IConfiguration configuration) =>
         services.Configure<MongoDbSettings>(configuration.GetSection("MongoDb"));
-    
+
     internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration) =>
         services.AddSerilog(x => x.ReadFrom.Configuration(configuration));
 

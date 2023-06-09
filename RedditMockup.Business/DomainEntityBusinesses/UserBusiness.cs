@@ -83,17 +83,20 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
     public override async Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
         await _userRepository.GetByIdAsync(id,
-            users => users.Include(user => user.Person),
+            users => users.Include(user => user.Person)
+                .Include(user => user.Profile),
             cancellationToken);
 
     public override async Task<User?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
         await _userRepository.GetByGuidAsync(guid,
-            users => users.Include(user => user.Person),
+            users => users.Include(user => user.Person)
+                .Include(user => user.Profile),
             cancellationToken);
 
     public override async Task<List<User>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
         await _userRepository.GetAllAsync(sieveModel,
-            users => users.Include(user => user.Person),
+            users => users.Include(user => user.Person)
+                .Include(user => user.Profile),
             cancellationToken);
 
     #endregion
