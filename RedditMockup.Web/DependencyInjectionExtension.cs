@@ -43,16 +43,19 @@ internal static class DependencyInjectionExtension
     {
         if (!environment.IsProduction())
         {
-            return services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
+            return services.AddDbContext<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
         }
 
-        return services.AddDbContextPool<RedditMockupContext>(options =>
+        return services.AddDbContext<RedditMockupContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("SqlServer"));
             options.EnableSensitiveDataLogging();
         });
     }
 
+    public static IServiceCollection InjectMongoDbSettings(this IServiceCollection services, IConfiguration configuration) =>
+        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDb"));
+    
     internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration) =>
         services.AddSerilog(x => x.ReadFrom.Configuration(configuration));
 
@@ -107,7 +110,7 @@ internal static class DependencyInjectionExtension
             .AddValidatorsFromAssemblyContaining<RoleValidator>();
 
     internal static IServiceCollection InjectAutoMapper(this IServiceCollection services) =>
-        services.AddAutoMapper(typeof(UserProfile).Assembly);
+        services.AddAutoMapper(typeof(AnswerProfile).Assembly);
 
     internal static IServiceCollection InjectRabbitMq(this IServiceCollection services) =>
         services.AddSingleton<IMessageBusClient, MessageBusClient>();

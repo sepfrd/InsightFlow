@@ -8,7 +8,7 @@ using Sieve.Models;
 
 namespace RedditMockup.Business.Base;
 
-public class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
+public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
     where TEntity : BaseEntityWithGuid
     where TDto : BaseDto
 {
@@ -37,17 +37,17 @@ public class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
 
     #region [Methods]
 
-    public async Task<TEntity?> CreateAsync(TDto dto, CancellationToken cancellationToken)
-    {
-        var t = _mapper.Map<TEntity>(dto);
+    public abstract Task<TEntity?> CreateAsync(TDto questionDto, CancellationToken cancellationToken = default);
 
+    protected async Task<TEntity?> CreateAsync(TEntity t, CancellationToken cancellationToken = default)
+    {
         TEntity createdEntity = await _repository.CreateAsync(t, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return createdEntity;
     }
-
+    
     public async Task<TEntity?> GetByIdAsync(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null, CancellationToken cancellationToken = default) =>
         await _repository.GetByIdAsync(id, include, cancellationToken);
 
@@ -59,7 +59,7 @@ public class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
         cancellationToken = default) =>
         await _repository.GetAllAsync(sieveModel, include, cancellationToken);
 
-    public async Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken)
+    public async Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken = default)
     {
         TEntity? t = await GetByGuidAsync(dto.Guid, null, cancellationToken);
 
@@ -77,7 +77,7 @@ public class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
         return updatedEntity;
     }
 
-    public async Task<TEntity?> DeleteByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<TEntity?> DeleteByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id, null, cancellationToken);
 

@@ -1,6 +1,6 @@
 ﻿namespace RedditMockup.Common.Dtos;
 
-public class ProfileDto : BaseDto
+public class ProfileDto
 {
     public string? Bio { get; set; }
 

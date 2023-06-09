@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Options;
+using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Base;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Model.Entities;
@@ -10,7 +11,8 @@ public class RoleRepository : BaseRepository<Role>
 {
     #region [Constructor]
 
-    public RoleRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor)
+    public RoleRepository(RedditMockupContext context, ISieveProcessor sieveProcessor, IOptions<MongoDbSettings> mongoDbSettings) :
+        base(context, sieveProcessor, mongoDbSettings)
     {
     }
 

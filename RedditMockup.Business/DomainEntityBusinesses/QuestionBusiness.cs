@@ -17,6 +17,8 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly IMapper _mapper;
+
     #endregion
 
     #region [Constructor]
@@ -24,13 +26,32 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
     public QuestionBusiness(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
     {
         _questionRepository = unitOfWork.QuestionRepository!;
+        
         _unitOfWork = unitOfWork;
+
+        _mapper = mapper;
     }
 
     #endregion
 
     #region [Methods]
 
+    public override async Task<Question?> CreateAsync(QuestionDto questionDto, CancellationToken cancellationToken = default)
+    {
+        var question = _mapper.Map<Question>(questionDto);
+
+        var userId = await _unitOfWork.UserRepository!.GetIdByGuidAsync(questionDto.UserGuid, cancellationToken);
+
+        if (userId is null)
+        {
+            return null;
+        }
+
+        question.UserId = (int)userId;
+
+        return await CreateAsync(question, cancellationToken);
+    }
+    
     public async Task<CustomResponse<List<QuestionVote>>> GetVotesByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
         var question = await _questionRepository.GetByGuidAsync(questionGuid,

@@ -1,4 +1,6 @@
-﻿using RedditMockup.DataAccess.Base;
+﻿using Microsoft.Extensions.Options;
+using RedditMockup.Common.Dtos;
+using RedditMockup.DataAccess.Base;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Model.Entities;
 using Sieve.Services;
@@ -15,11 +17,12 @@ public class AnswerRepository : BaseRepository<Answer>
 
     #region [Constructor]
 
-    public AnswerRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor) =>
+    public AnswerRepository(RedditMockupContext context, ISieveProcessor sieveProcessor, IOptions<MongoDbSettings> mongoDbSettings) :
+        base(context, sieveProcessor, mongoDbSettings) =>
         _context = context;
 
     #endregion
-    
+
     #region [Methods]
 
     public async Task<AnswerVote?> SubmitVoteAsync(AnswerVote answerVote, CancellationToken cancellationToken = default)

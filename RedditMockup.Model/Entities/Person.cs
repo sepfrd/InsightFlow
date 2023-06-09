@@ -8,12 +8,12 @@ public class Person : BaseEntityWithGuid
     #region [Properties]
 
     [Sieve(CanFilter = true, CanSort = true)]
-    public string? Name { get; set; }
+    public string? FirstName { get; set; }
 
     [Sieve(CanFilter = true, CanSort = true)]
-    public string? Family { get; set; }
+    public string? LastName { get; set; }
 
-    public string FullName => Name + " " + Family;
+    public string FullName => FirstName + " " + LastName;
 
     #endregion
 

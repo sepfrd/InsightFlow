@@ -49,7 +49,7 @@ public class PublicQuestionController : PublicBaseController<QuestionDto>
         {
             Title = questionDto.Title,
             Description = questionDto.Description,
-            Event = "Question_Published"
+            Event = "New Question Created"
         };
 
         _messageBusClient.PublishNewQuestion(questionPublishedDto);

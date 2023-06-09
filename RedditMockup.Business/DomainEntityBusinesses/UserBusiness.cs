@@ -35,11 +35,43 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
     #endregion
 
+    #region [Fields]
+
+    private readonly IUnitOfWork _unitOfWork;
+
+    private readonly IMapper _mapper;
+
+    #endregion
+    
     #region [Constructor]
 
     public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper) :
             base(unitOfWork, unitOfWork.UserRepository!, mapper)
     {
+        _unitOfWork = unitOfWork;
+
+        _mapper = mapper;
+    }
+
+    #endregion
+
+    #region [Methods]
+
+    public override async Task<User?> CreateAsync(UserDto userDto, CancellationToken cancellationToken = default)
+    {
+        var person = new Person
+        {
+            FirstName = userDto.FirstName,
+            LastName = userDto.LastName
+        };
+
+        var createdPerson = await _unitOfWork.PersonRepository!.CreateAsync(person, cancellationToken);
+
+        var user = _mapper.Map<User>(userDto);
+
+        user.PersonId = person.Id;
+
+        return await CreateAsync(user, cancellationToken);
     }
 
     #endregion

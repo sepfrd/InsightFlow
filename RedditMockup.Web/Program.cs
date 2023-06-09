@@ -53,6 +53,7 @@ try
         .InjectSieve()
         .InjectSerilog(builder.Configuration)
         .InjectAuthentication()
+        .InjectMongoDbSettings(builder.Configuration)
         .InjectContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()

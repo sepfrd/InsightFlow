@@ -216,7 +216,7 @@ namespace RedditMockup.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Persons",
-                columns: new[] { "Id", "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "Id", "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[,]
                 {
                     { 1, new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9367), "Foroughi Rad", new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9367), "Sepehr" },

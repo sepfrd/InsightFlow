@@ -19,6 +19,8 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly IMapper _mapper;
+
     #endregion
 
     #region [Constructor]
@@ -27,12 +29,38 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
     {
         _answerRepository = unitOfWork.AnswerRepository!;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     #endregion
 
     #region [Methods]
 
+    public override async Task<Answer?> CreateAsync(AnswerDto questionDto, CancellationToken cancellationToken = default)
+    {
+        var answer = _mapper.Map<Answer>(questionDto);
+
+        var userId = await _unitOfWork.UserRepository!.GetIdByGuidAsync(questionDto.UserGuid, cancellationToken);
+
+        if (userId is null)
+        {
+            return null;
+        }
+        
+        var questionId = await _unitOfWork.QuestionRepository!.GetIdByGuidAsync(questionDto.QuestionGuid, cancellationToken);
+
+        if (questionId is null)
+        {
+            return null;
+        }
+        
+        answer.UserId = (int)userId;
+
+        answer.QuestionId = (int)questionId;
+
+        return await CreateAsync(answer, cancellationToken);
+    }
+    
     public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
 

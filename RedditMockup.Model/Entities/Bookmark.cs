@@ -1,6 +1,4 @@
 ﻿using RedditMockup.Model.BaseEntities;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RedditMockup.Model.Entities;
 

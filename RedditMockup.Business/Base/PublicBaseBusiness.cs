@@ -26,7 +26,7 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
         _mapper = mapper;
     }
 
-    public async Task<CustomResponse<TDto>> PublicCreateAsync(TDto dto, CancellationToken cancellationToken)
+    public virtual async Task<CustomResponse<TDto>> PublicCreateAsync(TDto dto, CancellationToken cancellationToken)
     {
         TEntity? entity = await _baseBusiness.CreateAsync(dto, cancellationToken);
 

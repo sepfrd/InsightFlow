@@ -1,6 +1,9 @@
 ﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using RedditMockup.Common.Constants;
+using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
 using RedditMockup.Model.Entities;
 using Person = RedditMockup.Model.Entities.Person;
@@ -9,10 +12,21 @@ namespace RedditMockup.DataAccess.Context;
 
 public class RedditMockupContext : DbContext
 {
+    #region [Fields]
+
+    private readonly IMongoCollection<MongoGuidId> _mongoDbCollection;
+
+    #endregion
+
     #region [Constructor]
 
-    public RedditMockupContext(DbContextOptions options) : base(options)
+    public RedditMockupContext(DbContextOptions options, IOptions<MongoDbSettings> mongoDbSettings) : base(options)
     {
+        var mongoClient = new MongoClient(mongoDbSettings.Value.ConnectionString);
+
+        var mongoDatabase = mongoClient.GetDatabase(mongoDbSettings.Value.DatabaseName);
+
+        _mongoDbCollection = mongoDatabase.GetCollection<MongoGuidId>(mongoDbSettings.Value.CollectionName);
     }
 
     #endregion
@@ -43,14 +57,14 @@ public class RedditMockupContext : DbContext
 
     #region [Methods]
 
-    private static IEnumerable<Person> GetFakePeople()
+    private IEnumerable<Person> GetFakePeople()
     {
         var id = 3;
 
-        var personFaker = new Bogus.Faker<Person>()
+        var personFaker = new Faker<Person>()
             .RuleFor(person => person.Id, _ => id++)
-            .RuleFor(person => person.Name, faker => faker.Name.FirstName())
-            .RuleFor(person => person.Family, faker => faker.Name.LastName());
+            .RuleFor(person => person.FirstName, faker => faker.Name.FirstName())
+            .RuleFor(person => person.LastName, faker => faker.Name.LastName());
 
         var fakePeople = new List<Person>();
 
@@ -59,14 +73,14 @@ public class RedditMockupContext : DbContext
             new()
             {
                 Id = 1,
-                Name = "Sepehr",
-                Family = "Foroughi Rad"
+                FirstName = "Sepehr",
+                LastName = "Foroughi Rad"
             },
             new()
             {
                 Id = 2,
-                Name = "Abbas",
-                Family = "BooAzaar"
+                FirstName = "Abbas",
+                LastName = "BooAzaar"
             }
         });
 
@@ -75,11 +89,17 @@ public class RedditMockupContext : DbContext
             fakePeople.Add(personFaker.Generate());
         }
 
-        return fakePeople;
+        foreach (var person in fakePeople)
+        {
+            var guidId = new MongoGuidId(person.Guid, person.Id);
 
+            _mongoDbCollection.InsertOne(guidId);
+        }
+
+        return fakePeople;
     }
 
-    private static IEnumerable<User> GetFakeUsers()
+    private IEnumerable<User> GetFakeUsers()
     {
         var id = 3;
 
@@ -113,6 +133,13 @@ public class RedditMockupContext : DbContext
         for (var i = 0; i < 100; i++)
         {
             fakeUsers.Add(userFaker.Generate());
+        }
+
+        foreach (var user in fakeUsers)
+        {
+            var guidId = new MongoGuidId(user.Guid, user.Id);
+
+            _mongoDbCollection.InsertOne(guidId);
         }
 
         return fakeUsers;
@@ -183,7 +210,7 @@ public class RedditMockupContext : DbContext
         return userRolesList;
     }
 
-    private static IEnumerable<Question> GetFakeQuestions()
+    private IEnumerable<Question> GetFakeQuestions()
     {
         var id = 1;
 
@@ -200,10 +227,17 @@ public class RedditMockupContext : DbContext
             fakeQuestions.Add(questionFaker.Generate());
         }
 
+        foreach (var question in fakeQuestions)
+        {
+            var guidId = new MongoGuidId(question.Guid, question.Id);
+
+            _mongoDbCollection.InsertOne(guidId);
+        }
+
         return fakeQuestions;
     }
 
-    private static IEnumerable<Answer> GetFakeAnswers()
+    private IEnumerable<Answer> GetFakeAnswers()
     {
         var id = 1;
 
@@ -219,6 +253,13 @@ public class RedditMockupContext : DbContext
         for (var i = 0; i < 100; i++)
         {
             fakeAnswers.Add(answerFaker.Generate());
+        }
+
+        foreach (var answer in fakeAnswers)
+        {
+            var guidId = new MongoGuidId(answer.Guid, answer.Id);
+
+            _mongoDbCollection.InsertOne(guidId);
         }
 
         return fakeAnswers;

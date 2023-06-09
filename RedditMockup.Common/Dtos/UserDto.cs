@@ -2,16 +2,15 @@
 
 public class UserDto : BaseDto
 {
-
-    public string? Name { get; set; }
-
-    public string? Family { get; set; }
-
     public string? Username { get; set; }
 
     public string? Password { get; set; }
 
-    public ProfileDto? Profile { get; set; }
+    public int Score { get; set; }
+    
+    public string? FirstName { get; set; }
+    
+    public string? LastName { get; set; }
 
-    public ICollection<string>? Roles { get; set; }
+    public ProfileDto? Profile { get; set; }
 }

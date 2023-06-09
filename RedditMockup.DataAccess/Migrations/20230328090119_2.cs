@@ -760,700 +760,700 @@ namespace RedditMockup.DataAccess.Migrations
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 3,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(7623), "Skiles", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(7623), "Reymundo" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 4,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8174), "Koss", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8174), "Wilmer" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 5,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8198), "Beahan", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8198), "Halle" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 6,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8221), "Douglas", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8221), "Kenyatta" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 7,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8238), "Walsh", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8238), "Westley" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 8,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8253), "Hudson", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8253), "Michael" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 9,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8270), "Jaskolski", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8270), "Denis" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 10,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8287), "McCullough", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8287), "Jailyn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 11,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8304), "Williamson", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8304), "Astrid" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 12,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8393), "Fahey", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8393), "Eliza" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 13,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8413), "Wunsch", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8413), "Norma" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 14,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8427), "Romaguera", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8427), "Ludwig" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 15,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8443), "Wintheiser", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8443), "Hillary" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 16,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8455), "Pacocha", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8455), "Eloisa" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 17,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8470), "Deckow", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8470), "Rickie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 18,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8485), "Rippin", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8485), "Tania" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 19,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8499), "Paucek", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8499), "Rodolfo" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 20,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8511), "Glover", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8511), "Willy" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 21,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8524), "Stehr", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8524), "Erik" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 22,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8537), "Kihn", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8537), "Fabiola" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 23,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8550), "Dooley", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8550), "Madilyn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 24,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8564), "Quitzon", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8564), "Ernestina" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 25,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8577), "Kertzmann", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8577), "Albert" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 26,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8591), "Herzog", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8591), "Van" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 27,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8605), "Denesik", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8605), "Vaughn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 28,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8617), "Connelly", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8617), "Joseph" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 29,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8631), "Carter", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8631), "Halle" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 30,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8643), "Ernser", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8643), "Katelynn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 31,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8656), "Franecki", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8656), "Chelsie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 32,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8671), "Koch", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8671), "Korbin" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 33,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8684), "Dare", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8684), "Cloyd" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 34,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8698), "Parker", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8698), "Serena" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 35,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8712), "Cremin", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8712), "Mylene" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 36,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8725), "Turcotte", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8725), "Jamie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 37,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8738), "Veum", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8738), "Diego" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 38,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8750), "Fritsch", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8750), "Lillian" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 39,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8762), "Reinger", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8762), "Callie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 40,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8778), "Keeling", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8778), "Paolo" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 41,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8791), "Larkin", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8791), "Adrianna" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 42,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8806), "Koch", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8806), "Guadalupe" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 43,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8819), "Toy", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8819), "Ciara" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 44,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8833), "Feil", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8833), "Gunner" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 45,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8845), "Maggio", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8845), "Milford" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 46,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8858), "Kulas", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8858), "Favian" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 47,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8870), "Stehr", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8870), "Gerald" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 48,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8882), "McDermott", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8882), "Deven" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 49,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8895), "Baumbach", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8895), "Malcolm" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 50,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8907), "Hammes", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8907), "Sigrid" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 51,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8920), "Heaney", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8920), "Mitchell" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 52,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8933), "Bahringer", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8933), "Marshall" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 53,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8946), "Bogan", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8946), "Samson" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 54,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8959), "Shanahan", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8959), "Kory" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 55,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8970), "Donnelly", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8970), "Irma" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 56,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8983), "Barton", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(8983), "Delia" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 57,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9031), "Hintz", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9031), "Connie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 58,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9046), "Bradtke", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9046), "Nikki" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 59,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9058), "Emmerich", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9058), "Cullen" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 60,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9070), "Littel", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9070), "Donato" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 61,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9082), "Connelly", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9082), "Laury" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 62,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9093), "Hoppe", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9093), "Alivia" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 63,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9106), "Rowe", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9106), "Hazel" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 64,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9265), "Crooks", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9265), "Margarita" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 65,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9277), "Parisian", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9277), "Wyatt" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 66,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9290), "Deckow", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9290), "Cheyenne" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 67,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9301), "McLaughlin", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9301), "Nelle" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 68,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9314), "Cronin", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9314), "Austyn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 69,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9330), "Howe", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9330), "Annabel" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 70,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9342), "Hagenes", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9342), "Natalia" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 71,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9354), "Kuhic", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9354), "Wilson" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 72,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9366), "Legros", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9366), "Curt" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 73,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9377), "Ferry", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9377), "Frankie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 74,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9389), "Balistreri", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9389), "Brennon" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 75,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9401), "Gutmann", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9401), "Jamar" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 76,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9413), "Quigley", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9413), "Lila" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 77,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9425), "Cole", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9425), "Elnora" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 78,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9437), "Wunsch", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9437), "Lue" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 79,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9447), "Armstrong", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9447), "Mark" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 80,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9460), "Dach", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9460), "Mae" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 81,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9472), "McGlynn", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9472), "Libby" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 82,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9483), "Kassulke", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9483), "Tyrel" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 83,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9496), "Rice", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9496), "Ned" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 84,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9507), "Paucek", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9507), "Cletus" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 85,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9519), "Funk", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9519), "Derick" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 86,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9530), "Stiedemann", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9530), "Nichole" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 87,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9542), "Tremblay", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9542), "Kennith" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 88,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9554), "Fisher", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9554), "Briana" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 89,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9566), "Langworth", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9566), "Kale" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 90,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9582), "Johns", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9582), "Isaiah" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 91,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9593), "Casper", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9593), "Juliet" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 92,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9606), "Gleason", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9606), "Annette" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 93,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9619), "Zieme", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9619), "Jaime" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 94,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9629), "Bradtke", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9629), "Stanton" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 95,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9641), "Daugherty", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9641), "Lynn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 96,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9656), "King", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9656), "Katelyn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 97,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9667), "Stehr", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9667), "Veda" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 98,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9678), "Kiehn", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9678), "Mollie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 99,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9690), "Leffler", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9690), "Una" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 100,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9701), "Schimmel", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9701), "Lisandro" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 101,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9750), "Waters", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9750), "Lori" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 102,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9766), "Douglas", new DateTime(2023, 3, 28, 13, 31, 18, 797, DateTimeKind.Local).AddTicks(9766), "Gustave" });
 
             migrationBuilder.UpdateData(
@@ -5045,700 +5045,700 @@ namespace RedditMockup.DataAccess.Migrations
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 3,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9445), "Dach", new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9445), "Krystal" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 4,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9906), "Daniel", new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9906), "Orie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 5,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9932), "Gutmann", new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9932), "Bryana" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 6,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9952), "Carter", new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9952), "Jeremie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 7,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9966), "Kshlerin", new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9966), "Sarah" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 8,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9979), "Hartmann", new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9979), "Lelia" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 9,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9993), "Huel", new DateTime(2022, 11, 19, 13, 11, 29, 834, DateTimeKind.Local).AddTicks(9993), "Haylie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 10,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(7), "Paucek", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(7), "Horace" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 11,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(21), "Hackett", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(21), "Devante" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 12,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(33), "Funk", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(33), "Hans" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 13,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(48), "Spencer", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(48), "Derek" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 14,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(60), "Tillman", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(60), "Alyson" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 15,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(72), "Blanda", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(72), "Elsa" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 16,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(146), "Bogan", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(146), "Reginald" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 17,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(159), "Hettinger", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(159), "Gillian" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 18,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(174), "Hartmann", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(174), "Icie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 19,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(185), "Huel", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(185), "Lydia" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 20,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(198), "Dare", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(198), "Emelia" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 21,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(209), "Monahan", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(209), "Corbin" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 22,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(223), "Botsford", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(223), "Kristofer" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 23,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(235), "Pouros", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(235), "Serenity" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 24,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(248), "Yost", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(248), "Lia" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 25,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(261), "Gutmann", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(261), "Estelle" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 26,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(272), "Howe", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(272), "Mozell" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 27,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(284), "Bayer", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(284), "Junior" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 28,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(296), "Harber", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(296), "Julie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 29,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(307), "Kautzer", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(307), "Vella" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 30,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(320), "Funk", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(320), "Gaetano" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 31,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(332), "Johnston", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(332), "Keon" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 32,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(343), "Towne", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(343), "Reymundo" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 33,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(354), "Erdman", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(354), "Clement" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 34,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(368), "Johnson", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(368), "Julien" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 35,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(379), "Steuber", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(379), "Megane" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 36,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(390), "Kunde", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(390), "Brian" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 37,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(403), "Abbott", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(403), "Mose" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 38,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(414), "Weissnat", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(414), "Laron" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 39,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(426), "Kreiger", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(426), "Osbaldo" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 40,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(442), "Dietrich", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(442), "Maybell" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 41,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(454), "Sawayn", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(454), "Raymundo" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 42,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(507), "Prohaska", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(507), "Keshaun" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 43,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(519), "Kessler", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(519), "Wilson" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 44,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(531), "Considine", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(531), "Noble" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 45,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(544), "Graham", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(544), "Scot" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 46,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(557), "Vandervort", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(557), "Charley" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 47,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(570), "MacGyver", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(570), "Shyann" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 48,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(582), "Kunze", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(582), "Ava" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 49,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(598), "Abshire", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(598), "Vicky" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 50,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(610), "Roberts", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(610), "Danielle" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 51,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(623), "Boyle", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(623), "Perry" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 52,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(635), "Orn", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(635), "Hazel" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 53,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(646), "Bruen", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(646), "Kathlyn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 54,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(659), "McCullough", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(659), "Anais" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 55,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(670), "Borer", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(670), "Dejah" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 56,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(682), "Gerlach", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(682), "Unique" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 57,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(694), "Tillman", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(694), "Christa" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 58,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(705), "Haley", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(705), "Heather" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 59,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(717), "Hoeger", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(717), "Winifred" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 60,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(729), "Lesch", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(729), "Lottie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 61,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(787), "Reichel", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(787), "Raymond" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 62,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(800), "Price", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(800), "Olin" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 63,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(812), "Zemlak", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(812), "Mckenna" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 64,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(823), "Moore", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(823), "Ocie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 65,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(834), "Murphy", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(834), "Jana" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 66,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(849), "West", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(849), "Marshall" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 67,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(860), "Jerde", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(860), "Bria" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 68,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(873), "Padberg", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(873), "Zion" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 69,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(885), "Weber", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(885), "Willie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 70,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(897), "Botsford", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(897), "Ally" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 71,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(911), "Wintheiser", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(911), "Elisha" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 72,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(924), "Brekke", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(924), "Louie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 73,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(934), "Fahey", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(934), "Gerry" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 74,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(945), "Smitham", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(945), "Marianne" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 75,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(958), "Boyer", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(958), "Kayli" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 76,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(969), "Volkman", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(969), "Kyra" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 77,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(980), "Wilkinson", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(980), "Ansel" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 78,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(992), "Crist", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(992), "Dedrick" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 79,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1002), "Gaylord", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1002), "Geraldine" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 80,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1014), "Lueilwitz", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1014), "Anastasia" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 81,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1025), "Gleichner", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1025), "Mariah" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 82,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1036), "Murazik", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1036), "Raoul" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 83,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1047), "Huels", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1047), "Willard" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 84,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1058), "Stoltenberg", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1058), "Faye" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 85,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1070), "Watsica", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1070), "Jade" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 86,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1081), "Hettinger", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1081), "Shawn" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 87,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1092), "Bode", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1092), "Colt" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 88,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1104), "Kris", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1104), "Talon" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 89,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1115), "Bahringer", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1115), "Raymundo" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 90,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1126), "DuBuque", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1126), "Billie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 91,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1138), "Kreiger", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1138), "Trever" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 92,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1151), "Miller", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1151), "Craig" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 93,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1163), "Jacobi", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1163), "Delores" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 94,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1173), "Watsica", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1173), "Julianne" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 95,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1184), "Lubowitz", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1184), "Sunny" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 96,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1196), "Harris", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1196), "Retha" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 97,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1207), "Pouros", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1207), "Bella" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 98,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1218), "Cremin", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1218), "Garry" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 99,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1229), "Powlowski", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1229), "Ruthie" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 100,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1264), "Altenwerth", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1264), "Darrin" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 101,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1288), "Kutch", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1288), "Stanley" });
 
             migrationBuilder.UpdateData(
                 table: "Persons",
                 keyColumn: "Id",
                 keyValue: 102,
-                columns: new[] { "CreationDate", "Family", "LastUpdated", "Name" },
+                columns: new[] { "CreationDate", "LastName", "LastUpdated", "FirstName" },
                 values: new object[] { new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1301), "Feeney", new DateTime(2022, 11, 19, 13, 11, 29, 835, DateTimeKind.Local).AddTicks(1301), "Esta" });
 
             migrationBuilder.UpdateData(

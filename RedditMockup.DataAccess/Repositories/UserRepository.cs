@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Base;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Model.Entities;
@@ -18,7 +20,8 @@ public class UserRepository : BaseRepository<User>
 
     #region [Constructor]
 
-    public UserRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor)
+    public UserRepository(RedditMockupContext context, ISieveProcessor sieveProcessor, IOptions<MongoDbSettings> mongoDbSettings) :
+        base(context, sieveProcessor, mongoDbSettings)
     {
         _userRoles = context.Set<UserRole>();
 
@@ -56,13 +59,13 @@ public class UserRepository : BaseRepository<User>
 
         return entityEntry?.Entity is not null;
     }
-    
+
     public async Task<List<Role?>> GetRolesAsync(int userId, CancellationToken cancellationToken = default) =>
         await _userRoles
             .Where(x => x.UserId == userId)
             .Include(x => x.Role)
             .Select(x => x.Role)
             .ToListAsync(cancellationToken);
-    
+
     #endregion
 }
