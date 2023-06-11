@@ -6,7 +6,7 @@ using RedditMockup.Common.Dtos;
 namespace RedditMockup.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/auth")]
 public class AccountController : ControllerBase
 {
     private readonly AccountBusiness _accountBusiness;
@@ -16,12 +16,12 @@ public class AccountController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    [Route("Logout")]
+    [Route("logout")]
     public async Task<CustomResponse> Logout() =>
         await AccountBusiness.LogoutAsync(HttpContext);
 
     [HttpPost]
-    [Route("Login")]
+    [Route("login")]
     public async Task<CustomResponse> LoginAsync(LoginDto login, CancellationToken cancellationToken) =>
         await _accountBusiness.LoginAsync(login, HttpContext, cancellationToken);
 

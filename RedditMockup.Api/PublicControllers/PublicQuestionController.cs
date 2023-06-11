@@ -9,6 +9,7 @@ using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.PublicControllers;
 
+[Route("public/questions")]
 public class PublicQuestionController : PublicBaseController<Question, QuestionDto>
 {
     #region [Fields]
@@ -31,18 +32,26 @@ public class PublicQuestionController : PublicBaseController<Question, QuestionD
     #endregion
 
     [HttpGet]
-    public async Task<CustomResponse<List<VoteDto>>> GetVotesByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken) =>
-        await _publicQuestionBusiness.GetVotesByQuestionGuidAsync(questionGuid, cancellationToken);
+    [Route("guid/{guid}/answers")]
+    public async Task<CustomResponse<List<AnswerDto>>> GetAnswersByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
+        await _publicQuestionBusiness.GetAnswersByQuestionGuidAsync(guid, cancellationToken);
+
+    [HttpGet]
+    [Route("guid/{guid}/votes")]
+    public async Task<CustomResponse<List<VoteDto>>> GetVotesByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
+        await _publicQuestionBusiness.GetVotesByQuestionGuidAsync(guid, cancellationToken);
 
     [Authorize]
     [HttpPost]
-    public async Task<CustomResponse> SubmitVoteAsync(Guid questionGuid, bool kind, CancellationToken cancellationToken) =>
-        await _publicQuestionBusiness.SubmitVoteAsync(questionGuid, kind, cancellationToken);
+    [Route("guid/{guid}/votes")]
+    public async Task<CustomResponse> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken) =>
+        await _publicQuestionBusiness.SubmitVoteAsync(guid, kind, cancellationToken);
     
     // ------------------------------------------------------------------------>
 
     [HttpPost]
-    public async Task CreateAndPublishAsync(QuestionDto questionDto, CancellationToken cancellationToken)
+    [Route("test-rabbitmq")]
+    public async Task CreateAndPublishAsync([FromBody] QuestionDto questionDto, CancellationToken cancellationToken)
     {
         await CreateAsync(questionDto, cancellationToken);
 

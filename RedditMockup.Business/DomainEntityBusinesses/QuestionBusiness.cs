@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
@@ -67,6 +68,32 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         await _questionRepository.GetAllAsync(sieveModel,
             questions => questions.Include(question => question.User),
             cancellationToken);
+
+    public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
+    {
+        //TODO: Use MongoDB to get Id from Guid
+
+        var question = await _unitOfWork.QuestionRepository!.GetByGuidAsync(questionGuid, null, cancellationToken);
+
+        if (question is null)
+        {
+            return CustomResponse<List<Answer>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
+        }
+
+        SieveModel sieveModel = new()
+        {
+            Filters = $"QuestionId=={question.Id}"
+        };
+
+        var answers = await _unitOfWork.AnswerRepository!.GetAllAsync(sieveModel, null, cancellationToken);
+
+        if (answers.IsNullOrEmpty())
+        {
+            return CustomResponse<List<Answer>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, $"No answer found with question guid of {questionGuid}");
+        }
+
+        return CustomResponse<List<Answer>>.CreateSuccessfulResponse(answers);
+    }
 
     public async Task<CustomResponse<List<QuestionVote>>> GetVotesByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {

@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using RedditMockup.Business.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.DomainEntityBusinesses;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Model.Entities;
-using Sieve.Models;
 
 namespace RedditMockup.Business.PublicBusinesses;
 
@@ -31,20 +28,6 @@ public class PublicAnswerBusiness : PublicBaseBusiness<Answer, AnswerDto>
     #endregion
 
     #region [Methods]
-
-    public async Task<CustomResponse<List<AnswerDto>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
-    {
-        var answersResponse = await _answerBusiness.GetAnswersByQuestionGuidAsync(questionGuid, cancellationToken);
-
-        if (!answersResponse.IsSuccess)
-        {
-            return CustomResponse<List<AnswerDto>>.CreateUnsuccessfulResponse(answersResponse.HttpStatusCode, answersResponse.Message);
-        }
-
-        var answerDtos = _mapper.Map<List<AnswerDto>>(answersResponse.Data);
-
-        return CustomResponse<List<AnswerDto>>.CreateSuccessfulResponse(answerDtos);
-    }
 
     public async Task<CustomResponse<List<VoteDto>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken = default)
     {

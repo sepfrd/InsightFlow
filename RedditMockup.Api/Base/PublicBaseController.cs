@@ -8,7 +8,7 @@ using Sieve.Models;
 namespace RedditMockup.Api.Base;
 
 [ApiController]
-[Route("public/api/[controller]/[action]")]
+[Route("public/api")]
 public class PublicBaseController<TEntity, TDto> : ControllerBase
     where TDto : BaseDto
     where TEntity : BaseEntityWithGuid
@@ -38,12 +38,14 @@ public class PublicBaseController<TEntity, TDto> : ControllerBase
         await _publicBaseBusiness.PublicGetAllAsync(sieveModel, cancellationToken);
 
     [HttpGet]
-    public async Task<CustomResponse<TDto>> GetByGuidAsync([FromQuery] Guid guid, CancellationToken cancellationToken) =>
+    [Route("guid/{guid}")]
+    public async Task<CustomResponse<TDto>> GetByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
         await _publicBaseBusiness.PublicGetByGuidAsync(guid, cancellationToken);
 
     [Authorize]
     [HttpDelete]
-    public async Task<CustomResponse<TDto>> DeleteByGuidAsync([FromQuery] Guid guid, CancellationToken cancellationToken) =>
+    [Route("guid/{guid}")]
+    public async Task<CustomResponse<TDto>> DeleteByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
         await _publicBaseBusiness.PublicDeleteByGuidAsync(guid, cancellationToken);
 
     [Authorize]

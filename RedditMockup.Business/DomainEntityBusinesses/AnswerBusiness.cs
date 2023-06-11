@@ -79,30 +79,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
                 .Include(answer => answer.Question),
             cancellationToken);
 
-    public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
-    {
-
-        var question = await _unitOfWork.QuestionRepository!.GetByGuidAsync(questionGuid, null, cancellationToken);
-
-        if (question is null)
-        {
-            return CustomResponse<List<Answer>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
-        }
-
-        SieveModel sieveModel = new()
-        {
-            Filters = $"QuestionId=={question.Id}"
-        };
-
-        var answers = await _answerRepository.GetAllAsync(sieveModel, null, cancellationToken);
-
-        if (answers.IsNullOrEmpty())
-        {
-            return CustomResponse<List<Answer>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, $"No answer found with question guid of {questionGuid}");
-        }
-
-        return CustomResponse<List<Answer>>.CreateSuccessfulResponse(answers);
-    }
+    
 
     public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken = default)
     {

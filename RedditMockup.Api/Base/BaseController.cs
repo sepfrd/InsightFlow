@@ -10,7 +10,7 @@ namespace RedditMockup.Api.Base;
 
 [Authorize(PolicyConstants.Admin)]
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api")]
 public class BaseController<TEntity, TDto> : ControllerBase
     where TEntity : BaseEntity
     where TDto : BaseDto
@@ -29,21 +29,24 @@ public class BaseController<TEntity, TDto> : ControllerBase
         await _business.GetAllAsync(sieveModel, cancellationToken);
 
     [HttpGet]
-    public async Task<TEntity?> GetByIdAsync([FromQuery] int id, CancellationToken cancellationToken) =>
+    [Route("id/{id}")]
+    public async Task<TEntity?> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken) =>
         await _business.GetByIdAsync(id, cancellationToken);
 
     [HttpGet]
-    public async Task<TEntity?> GetByGuidAsync([FromQuery] Guid guid, CancellationToken cancellationToken) =>
+    [Route("guid/{guid}")]
+    public async Task<TEntity?> GetByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
         await _business.GetByGuidAsync(guid, cancellationToken);
 
     [HttpDelete]
-    public async Task<TEntity?> DeleteByIdAsync([FromQuery] int id, CancellationToken cancellationToken) =>
+    [Route("id/{id}")]
+    public async Task<TEntity?> DeleteByIdAsync([FromRoute] int id, CancellationToken cancellationToken) =>
         await _business.DeleteByIdAsync(id, cancellationToken);
 
     [HttpDelete]
-    public async Task<TEntity?> DeleteByGuidAsync([FromQuery] Guid guid, CancellationToken cancellationToken) =>
+    [Route("guid/{guid}")]
+    public async Task<TEntity?> DeleteByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
         await _business.DeleteByGuidAsync(guid, cancellationToken);
-
 
     [HttpPut]
     public async Task<TEntity?> UpdateAsync([FromBody] TDto dto, CancellationToken

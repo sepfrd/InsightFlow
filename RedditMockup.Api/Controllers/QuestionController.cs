@@ -7,6 +7,7 @@ using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.Controllers;
 
+[Route("questions")]
 public class QuestionController : BaseController<Question, QuestionDto>
 {
     private readonly QuestionBusiness _business;
@@ -17,11 +18,19 @@ public class QuestionController : BaseController<Question, QuestionDto>
     }
 
     [HttpGet]
-    public async Task<CustomResponse<List<QuestionVote>>> GetVotesByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken) =>
-        await _business.GetVotesByQuestionGuidAsync(questionGuid, cancellationToken);
+    [Route("{guid}/answers")]
+    public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
+        await _business.GetAnswersByQuestionGuidAsync(guid, cancellationToken);
+
+
+    [HttpGet]
+    [Route("{guid}/votes")]
+    public async Task<CustomResponse<List<QuestionVote>>> GetVotesByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
+        await _business.GetVotesByQuestionGuidAsync(guid, cancellationToken);
 
 
     [HttpPost]
-    public async Task<CustomResponse> SubmitVoteAsync(Guid questionGuid, bool kind, CancellationToken cancellationToken) =>
-        await _business.SubmitVoteAsync(questionGuid, kind, cancellationToken);
+    [Route("{guid}/votes")]
+    public async Task<CustomResponse> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken) =>
+        await _business.SubmitVoteAsync(guid, kind, cancellationToken);
 }
