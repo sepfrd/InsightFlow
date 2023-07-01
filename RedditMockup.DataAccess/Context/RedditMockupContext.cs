@@ -354,12 +354,14 @@ public class RedditMockupContext : DbContext
         modelBuilder.Entity<Question>()
             .HasOne<User>(question => question.User)
             .WithMany(user => user.Questions)
-            .HasForeignKey(question => question.UserId);
+            .HasForeignKey(question => question.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Answer>()
             .HasOne<User>(answer => answer.User)
             .WithMany(user => user.Answers)
-            .HasForeignKey(answer => answer.UserId);
+            .HasForeignKey(answer => answer.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<UserRole>()
             .HasOne<User>(userRole => userRole.User)
