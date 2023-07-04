@@ -46,8 +46,9 @@ Log.Information("Hello world!!!");
 try
 {
     builder.Services
-        .AddEndpointsApiExplorer() 
+        .AddEndpointsApiExplorer()
         .InjectApi()
+        .InjectCors()
         .InjectSwagger()
         .InjectUnitOfWork()
         .InjectSieve()
@@ -87,6 +88,7 @@ try
 
     app
         //.UseHttpsRedirection()
+        .UseCors("AllowAnyOrigin")
         .UseRouting()
         .UseAuthentication()
         .UseAuthorization()
@@ -100,7 +102,6 @@ try
                 await httpContext.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
             });
         });
-
     await app.RunAsync();
 }
 catch (Exception exception)

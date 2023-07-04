@@ -35,6 +35,17 @@ internal static class DependencyInjectionExtension
             })
             .Services;
 
+    internal static IServiceCollection InjectCors(this IServiceCollection services) =>
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAnyOrigin", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
+
     internal static IServiceCollection InjectSwagger(this IServiceCollection services) =>
         services.AddSwaggerGen();
 
