@@ -46,7 +46,7 @@ Log.Information("Hello world!!!");
 try
 {
     builder.Services
-        .AddEndpointsApiExplorer()
+        .AddEndpointsApiExplorer() 
         .InjectApi()
         .InjectSwagger()
         .InjectUnitOfWork()
@@ -76,10 +76,6 @@ try
     if (app.Environment.IsEnvironment("Testing"))
     {
         await context.Database.EnsureDeletedAsync();
-    }
-
-    if (!app.Environment.IsProduction())
-    {
         await context.Database.EnsureCreatedAsync();
     }
 
