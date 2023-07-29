@@ -22,11 +22,14 @@ public class RedditMockupContext : DbContext
 
     public RedditMockupContext(DbContextOptions options, IOptions<MongoDbSettings> mongoDbSettings) : base(options)
     {
-        var mongoClient = new MongoClient(mongoDbSettings.Value.ConnectionString);
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "NoK8S")
+        {
+            var mongoClient = new MongoClient(mongoDbSettings.Value.ConnectionString);
 
-        var mongoDatabase = mongoClient.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            var mongoDatabase = mongoClient.GetDatabase(mongoDbSettings.Value.DatabaseName);
 
-        _mongoDbCollection = mongoDatabase.GetCollection<MongoGuidId>(mongoDbSettings.Value.CollectionName);
+            _mongoDbCollection = mongoDatabase.GetCollection<MongoGuidId>(mongoDbSettings.Value.CollectionName);
+        }
     }
 
     #endregion
@@ -89,11 +92,14 @@ public class RedditMockupContext : DbContext
             fakePeople.Add(personFaker.Generate());
         }
 
-        foreach (var person in fakePeople)
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "NoK8S")
         {
-            var guidId = new MongoGuidId(person.Guid, person.Id);
+            foreach (var person in fakePeople)
+            {
+                var guidId = new MongoGuidId(person.Guid, person.Id);
 
-            _mongoDbCollection.InsertOne(guidId);
+                _mongoDbCollection.InsertOne(guidId);
+            }
         }
 
         return fakePeople;
@@ -135,11 +141,14 @@ public class RedditMockupContext : DbContext
             fakeUsers.Add(userFaker.Generate());
         }
 
-        foreach (var user in fakeUsers)
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "NoK8S")
         {
-            var guidId = new MongoGuidId(user.Guid, user.Id);
+            foreach (var user in fakeUsers)
+            {
+                var guidId = new MongoGuidId(user.Guid, user.Id);
 
-            _mongoDbCollection.InsertOne(guidId);
+                _mongoDbCollection.InsertOne(guidId);
+            }
         }
 
         return fakeUsers;
@@ -227,11 +236,14 @@ public class RedditMockupContext : DbContext
             fakeQuestions.Add(questionFaker.Generate());
         }
 
-        foreach (var question in fakeQuestions)
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "NoK8S")
         {
-            var guidId = new MongoGuidId(question.Guid, question.Id);
+            foreach (var question in fakeQuestions)
+            {
+                var guidId = new MongoGuidId(question.Guid, question.Id);
 
-            _mongoDbCollection.InsertOne(guidId);
+                _mongoDbCollection.InsertOne(guidId);
+            }
         }
 
         return fakeQuestions;
@@ -255,11 +267,14 @@ public class RedditMockupContext : DbContext
             fakeAnswers.Add(answerFaker.Generate());
         }
 
-        foreach (var answer in fakeAnswers)
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "NoK8S")
         {
-            var guidId = new MongoGuidId(answer.Guid, answer.Id);
+            foreach (var answer in fakeAnswers)
+            {
+                var guidId = new MongoGuidId(answer.Guid, answer.Id);
 
-            _mongoDbCollection.InsertOne(guidId);
+                _mongoDbCollection.InsertOne(guidId);
+            }
         }
 
         return fakeAnswers;

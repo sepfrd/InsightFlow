@@ -29,14 +29,16 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
     protected BaseRepository(RedditMockupContext context, ISieveProcessor processor, IOptions<MongoDbSettings> mongoDbSettings)
     {
         _processor = processor;
-        
+
         _dbSet = context.Set<T>();
-        
-        var mongoClient = new MongoClient(mongoDbSettings.Value.ConnectionString);
 
-        var mongoDatabase = mongoClient.GetDatabase(mongoDbSettings.Value.DatabaseName);
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "NoK8S")
+        {
+            var mongoClient = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var mongoDatabase = mongoClient.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _mongoDbCollection = mongoDatabase.GetCollection<MongoGuidId>(mongoDbSettings.Value.CollectionName);
+        }
 
-        _mongoDbCollection = mongoDatabase.GetCollection<MongoGuidId>(mongoDbSettings.Value.CollectionName);
     }
 
     #endregion
@@ -47,9 +49,11 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
     {
         var createdEntity = (await _dbSet.AddAsync(t, cancellationToken)).Entity;
 
-        var guidId = new MongoGuidId(createdEntity.Guid, createdEntity.Id);
-
-        await _mongoDbCollection.InsertOneAsync(guidId, cancellationToken: cancellationToken);
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "NoK8S")
+        {
+            var guidId = new MongoGuidId(createdEntity.Guid, createdEntity.Id);
+            await _mongoDbCollection.InsertOneAsync(guidId, cancellationToken: cancellationToken);
+        }
 
         return createdEntity;
     }
@@ -100,7 +104,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
 
         return guidId.Id;
     }
-    
+
     public T Update(T t)
     {
         t.LastUpdated = DateTime.Now;
@@ -113,7 +117,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
         var deletedEntity = _dbSet.Remove(t).Entity;
 
         _mongoDbCollection.DeleteOne(x => x.Guid == deletedEntity.Guid);
-        
+
         return deletedEntity;
     }
 
