@@ -13,6 +13,9 @@
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web(Development)' " />
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web(Production)' " />
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'RedditMockup.Web(Testing)' " />
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="appsettings.NoK8S.json" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Api\RedditMockup.Api.csproj">

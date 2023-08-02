@@ -45,25 +45,46 @@ Log.Information("Hello world!!!");
 
 try
 {
-    builder.Services
-        .AddEndpointsApiExplorer()
-        .InjectApi()
-        .InjectCors()
-        .InjectSwagger()
-        .InjectUnitOfWork()
-        .InjectSieve()
-        .InjectSerilog(builder.Configuration)
-        .InjectAuthentication()
-        .InjectMongoDbSettings(builder.Configuration)
-        .InjectContext(builder.Configuration, builder.Environment)
-        .InjectBusinesses()
-        .InjectFluentValidation()
-        .InjectRabbitMq()
-        .InjectAutoMapper()
-        .InjectGrpc()
-        .AddHealthChecks();
+    if (!builder.Environment.IsEnvironment("NoK8S"))
+    {
+        builder.Services
+            .AddEndpointsApiExplorer()
+            .InjectApi()
+            .InjectCors()
+            .InjectSwagger()
+            .InjectUnitOfWork()
+            .InjectSieve()
+            .InjectSerilog(builder.Configuration)
+            .InjectAuthentication()
+            .InjectMongoDbSettings(builder.Configuration)
+            .InjectContext(builder.Configuration, builder.Environment)
+            .InjectBusinesses()
+            .InjectFluentValidation()
+            .InjectRabbitMq()
+            .InjectAutoMapper()
+            .InjectGrpc()
+            .AddHealthChecks();
 
-    //.InjectRedis(builder.Configuration)
+        //.InjectRedis(builder.Configuration)
+    }
+    else
+    {
+        builder.Services
+            .AddEndpointsApiExplorer()
+            .InjectApi()
+            .InjectCors()
+            .InjectSwagger()
+            .InjectUnitOfWork()
+            .InjectSieve()
+            .InjectSerilog(builder.Configuration)
+            .InjectAuthentication()
+            .InjectContext(builder.Configuration, builder.Environment)
+            .InjectBusinesses()
+            .InjectFluentValidation()
+            .InjectAutoMapper()
+            .AddHealthChecks();
+    }
+
 
     var app = builder.Build();
 
@@ -74,7 +95,7 @@ try
     app.UseSwagger()
         .UseSwaggerUI();
 
-    if (app.Environment.IsEnvironment("Testing"))
+    if (app.Environment.IsEnvironment("Testing") || app.Environment.IsEnvironment("NoK8S"))
     {
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
@@ -96,11 +117,15 @@ try
         {
             endpoints.MapControllers();
             endpoints.MapHealthChecks("/healthcheck");
-            endpoints.MapGrpcService<GrpcService>();
-            endpoints.MapGet("/protos/redditmockup.proto", async httpContext =>
+
+            if (!app.Environment.IsEnvironment("NoK8S"))
             {
-                await httpContext.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
-            });
+                endpoints.MapGrpcService<GrpcService>();
+                endpoints.MapGet("/protos/redditmockup.proto", async httpContext =>
+                {
+                    await httpContext.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
+                });
+            }
         });
     await app.RunAsync();
 }
