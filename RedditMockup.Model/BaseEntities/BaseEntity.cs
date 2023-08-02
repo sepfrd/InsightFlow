@@ -2,13 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RedditMockup.Model.Entities;
+namespace RedditMockup.Model.BaseEntities;
 
 public class BaseEntity
 {
     #region [Constructor]
 
-    public BaseEntity() => CreationDate = LastUpdated = DateTime.Now;
+    protected BaseEntity() => CreationDate = LastUpdated = DateTime.Now;
 
     #endregion
 
@@ -16,11 +16,11 @@ public class BaseEntity
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Sieve(CanFilter = true, CanSort = true)]
-    public int Id { get; set; }
+    [Sieve(CanSort = true)]
+    public int Id { get; init; }
 
     [Sieve(CanSort = true)]
-    public DateTime CreationDate { get; set; }
+    public DateTime CreationDate { get; }
 
     [Sieve(CanSort = true)]
     public DateTime LastUpdated { get; set; }

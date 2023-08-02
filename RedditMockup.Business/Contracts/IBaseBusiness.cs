@@ -3,15 +3,20 @@ using Sieve.Models;
 
 namespace RedditMockup.Business.Contracts;
 
-public interface IBaseBusiness<T>
+public interface IBaseBusiness<TEntity, in TDto>
 {
-    Task<T?> CreateAsync(T t, CancellationToken cancellationToken);
+    Task<TEntity?> CreateAsync(TDto questionDto, CancellationToken cancellationToken = default);
+    
+    Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    
+    Task<TEntity?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 
-    Task<T?> LoadByIdAsync(int id, CancellationToken cancellationToken, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null);
+    Task<List<TEntity>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<T>?> LoadAllAsync(SieveModel sieveModel, CancellationToken cancellationToken, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null);
+    Task<TEntity?> DeleteByIdAsync(int id, CancellationToken cancellationToken = default);
 
-    Task<T?> UpdateAsync(T t, CancellationToken cancellationToken);
+    Task<TEntity?> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 
-    Task<T?> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken = default);
+    
 }

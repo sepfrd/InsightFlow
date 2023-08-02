@@ -1,5 +1,4 @@
 ﻿using RedditMockup.Common.Dtos;
-//using RedditMockup.Common.ViewModels;
 using RedditMockup.Model.Entities;
 using Profile = AutoMapper.Profile;
 
@@ -10,13 +9,11 @@ public class UserProfile : Profile
     public UserProfile()
     {
         CreateMap<User, UserDto>()
-            .ForMember(destination => destination.Name,
-            option => option.MapFrom(source => source.Person!.Name))
-            .ForMember(destination => destination.Family,
-            option => option.MapFrom(source => source.Person!.Family))
-            .ForMember(destination => destination.Roles,
-                option =>
-                    option.MapFrom(source => source.UserRoles!.Select(x => x.Role!.Title)))
-            .ReverseMap();
+            .ForMember(userDto => userDto.FirstName,
+                option => option.MapFrom(user => user.Person!.FirstName))
+            .ForMember(userDto => userDto.LastName,
+                option => option.MapFrom(user => user.Person!.LastName));
+
+        CreateMap<UserDto, User>();
     }
 }

@@ -5,25 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
-    <ItemGroup>
-        <None Remove="Base\" />
-        <None Remove="Contracts\" />
-        <None Remove="Controllers\" />
-        <None Remove="Filters\" />
-        <None Remove="NLog" />
-        <None Remove="PublicControllers\" />
-    </ItemGroup>
     <ItemGroup>
         <Folder Include="Base\" />
-        <Folder Include="Contracts\" />
         <Folder Include="PublicControllers\" />
+        <Folder Include="Filters\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
         <ProjectReference Include="..\RedditMockup.Business\RedditMockup.Business.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="NLog" Version="5.1.4" />
     </ItemGroup>
 </Project>

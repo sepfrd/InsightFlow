@@ -1,8 +1,8 @@
 ﻿namespace RedditMockup.Common.Dtos;
 
-public class QuestionDto
+public class QuestionDto : BaseDto
 {
-    public int Id { get; init; }
+    public Guid UserGuid { get; set; }
 
     public string? Title { get; set; }
 

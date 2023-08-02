@@ -1,29 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
-using RedditMockup.Business.EntityBusinesses;
+using RedditMockup.Business.DomainEntityBusinesses;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.Controllers;
 
-public class QuestionController : BaseController<Question>
+[Route("questions")]
+public class QuestionController : BaseController<Question, QuestionDto>
 {
     private readonly QuestionBusiness _business;
 
-    public QuestionController(IBaseBusiness<Question> business) : base(business)
+    public QuestionController(IBaseBusiness<Question, QuestionDto> business) : base(business)
     {
         _business = (QuestionBusiness)business;
     }
 
     [HttpGet]
-    [Route("Votes")]
-    public async Task<CustomResponse<IEnumerable<QuestionVote>>> GetVotesByQuestionIdAsync(int questionId, CancellationToken cancellationToken) =>
-         await _business.GetVotesByQuestionIdAsync(questionId, cancellationToken);
+    [Route("{guid}/answers")]
+    public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
+        await _business.GetAnswersByQuestionGuidAsync(guid, cancellationToken);
+
+
+    [HttpGet]
+    [Route("{guid}/votes")]
+    public async Task<CustomResponse<List<QuestionVote>>> GetVotesByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
+        await _business.GetVotesByQuestionGuidAsync(guid, cancellationToken);
 
 
     [HttpPost]
-    [Route("SubmitVote")]
-    public async Task<CustomResponse> SubmitVoteAsync(int questionId, bool kind, CancellationToken cancellationToken) =>
-        await _business.SubmitVoteAsync(questionId, kind, cancellationToken);
+    [Route("{guid}/votes")]
+    public async Task<CustomResponse> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken) =>
+        await _business.SubmitVoteAsync(guid, kind, cancellationToken);
 }

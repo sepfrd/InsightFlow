@@ -8,13 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="RabbitMQService\" />
-    <None Remove="RabbitMQService\Contracts\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="RabbitMQService\" />

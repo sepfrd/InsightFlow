@@ -1,5 +1,5 @@
-﻿using Sieve.Attributes;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using RedditMockup.Model.BaseEntities;
+using Sieve.Attributes;
 
 namespace RedditMockup.Model.Entities;
 
@@ -10,10 +10,12 @@ public class AnswerVote : BaseEntity
     [Sieve(CanSort = true)]
     public bool Kind { get; set; }
 
-    public int AnswerId { get; set; }
+    #endregion
 
-    [ForeignKey("AnswerId")]
-    public virtual Answer? Answer { get; set; }
+    #region [Navigation Properties]
+
+    public int AnswerId { get; set; }
+    public Answer? Answer { get; set; }
 
     #endregion
 }

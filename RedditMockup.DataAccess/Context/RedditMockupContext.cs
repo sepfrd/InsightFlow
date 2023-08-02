@@ -1,6 +1,9 @@
 ﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using RedditMockup.Common.Constants;
+using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
 using RedditMockup.Model.Entities;
 using Person = RedditMockup.Model.Entities.Person;
@@ -9,10 +12,21 @@ namespace RedditMockup.DataAccess.Context;
 
 public class RedditMockupContext : DbContext
 {
+    #region [Fields]
+
+    private readonly IMongoCollection<MongoGuidId> _mongoDbCollection;
+
+    #endregion
+
     #region [Constructor]
 
-    public RedditMockupContext(DbContextOptions options) : base(options)
+    public RedditMockupContext(DbContextOptions options, IOptions<MongoDbSettings> mongoDbSettings) : base(options)
     {
+        var mongoClient = new MongoClient(mongoDbSettings.Value.ConnectionString);
+
+        var mongoDatabase = mongoClient.GetDatabase(mongoDbSettings.Value.DatabaseName);
+
+        _mongoDbCollection = mongoDatabase.GetCollection<MongoGuidId>(mongoDbSettings.Value.CollectionName);
     }
 
     #endregion
@@ -43,14 +57,14 @@ public class RedditMockupContext : DbContext
 
     #region [Methods]
 
-    private static IEnumerable<Person> GetFakePeople()
+    private IEnumerable<Person> GetFakePeople()
     {
         var id = 3;
 
         var personFaker = new Faker<Person>()
             .RuleFor(person => person.Id, _ => id++)
-            .RuleFor(person => person.Name, faker => faker.Name.FirstName())
-            .RuleFor(person => person.Family, faker => faker.Name.LastName());
+            .RuleFor(person => person.FirstName, faker => faker.Name.FirstName())
+            .RuleFor(person => person.LastName, faker => faker.Name.LastName());
 
         var fakePeople = new List<Person>();
 
@@ -59,14 +73,14 @@ public class RedditMockupContext : DbContext
             new()
             {
                 Id = 1,
-                Name = "Sepehr",
-                Family = "Foroughi Rad"
+                FirstName = "Sepehr",
+                LastName = "Foroughi Rad"
             },
             new()
             {
                 Id = 2,
-                Name = "Abbas",
-                Family = "BooAzaar"
+                FirstName = "Abbas",
+                LastName = "BooAzaar"
             }
         });
 
@@ -75,11 +89,17 @@ public class RedditMockupContext : DbContext
             fakePeople.Add(personFaker.Generate());
         }
 
-        return fakePeople;
+        foreach (var person in fakePeople)
+        {
+            var guidId = new MongoGuidId(person.Guid, person.Id);
 
+            _mongoDbCollection.InsertOne(guidId);
+        }
+
+        return fakePeople;
     }
 
-    private static IEnumerable<User> GetFakeUsers()
+    private IEnumerable<User> GetFakeUsers()
     {
         var id = 3;
 
@@ -115,6 +135,13 @@ public class RedditMockupContext : DbContext
             fakeUsers.Add(userFaker.Generate());
         }
 
+        foreach (var user in fakeUsers)
+        {
+            var guidId = new MongoGuidId(user.Guid, user.Id);
+
+            _mongoDbCollection.InsertOne(guidId);
+        }
+
         return fakeUsers;
     }
 
@@ -139,7 +166,7 @@ public class RedditMockupContext : DbContext
         for (var i = 3; i < 103; i++)
         {
             profilesList.Add(
-                new()
+                new Profile
                 {
                     Id = i,
                     UserId = i
@@ -172,7 +199,7 @@ public class RedditMockupContext : DbContext
         for (var i = 3; i < 102; i++)
         {
             userRolesList.Add(
-                new()
+                new UserRole
                 {
                     Id = i,
                     UserId = i,
@@ -183,7 +210,7 @@ public class RedditMockupContext : DbContext
         return userRolesList;
     }
 
-    private static IEnumerable<Question> GetFakeQuestions()
+    private IEnumerable<Question> GetFakeQuestions()
     {
         var id = 1;
 
@@ -200,10 +227,17 @@ public class RedditMockupContext : DbContext
             fakeQuestions.Add(questionFaker.Generate());
         }
 
+        foreach (var question in fakeQuestions)
+        {
+            var guidId = new MongoGuidId(question.Guid, question.Id);
+
+            _mongoDbCollection.InsertOne(guidId);
+        }
+
         return fakeQuestions;
     }
 
-    private static IEnumerable<Answer> GetFakeAnswers()
+    private IEnumerable<Answer> GetFakeAnswers()
     {
         var id = 1;
 
@@ -219,6 +253,13 @@ public class RedditMockupContext : DbContext
         for (var i = 0; i < 100; i++)
         {
             fakeAnswers.Add(answerFaker.Generate());
+        }
+
+        foreach (var answer in fakeAnswers)
+        {
+            var guidId = new MongoGuidId(answer.Guid, answer.Id);
+
+            _mongoDbCollection.InsertOne(guidId);
         }
 
         return fakeAnswers;
@@ -286,6 +327,95 @@ public class RedditMockupContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        #region [Index Configuration]
+
+        modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
+
+        #endregion
+
+        #region [Relationship Configuration]
+
+        #region [Person Relationships]
+
+        modelBuilder.Entity<User>()
+            .HasOne<Person>(user => user.Person)
+            .WithOne(person => person.User)
+            .HasForeignKey<User>(user => user.PersonId);
+
+        #endregion
+
+        #region [User Relationships]
+
+        modelBuilder.Entity<Profile>()
+            .HasOne<User>(profile => profile.User)
+            .WithOne(user => user.Profile)
+            .HasForeignKey<Profile>(profile => profile.UserId);
+
+        modelBuilder.Entity<Question>()
+            .HasOne<User>(question => question.User)
+            .WithMany(user => user.Questions)
+            .HasForeignKey(question => question.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Answer>()
+            .HasOne<User>(answer => answer.User)
+            .WithMany(user => user.Answers)
+            .HasForeignKey(answer => answer.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<UserRole>()
+            .HasOne<User>(userRole => userRole.User)
+            .WithMany(user => user.UserRoles)
+            .HasForeignKey(userRole => userRole.UserId);
+
+        modelBuilder.Entity<Bookmark>()
+            .HasOne<User>(bookmark => bookmark.User)
+            .WithMany(user => user.Bookmarks)
+            .HasForeignKey(bookmark => bookmark.UserId);
+
+        #endregion
+
+        #region [Question Relationships]
+
+        modelBuilder.Entity<Bookmark>()
+            .HasOne<Question>(bookmark => bookmark.Question)
+            .WithMany(question => question.Bookmarks)
+            .HasForeignKey(bookmark => bookmark.QuestionId);
+
+        modelBuilder.Entity<Answer>()
+            .HasOne<Question>(answer => answer.Question)
+            .WithMany(question => question.Answers)
+            .HasForeignKey(answer => answer.QuestionId);
+
+        modelBuilder.Entity<QuestionVote>()
+            .HasOne<Question>(vote => vote.Question)
+            .WithMany(question => question.Votes)
+            .HasForeignKey(vote => vote.QuestionId);
+
+        #endregion
+
+        #region [Answer Relationships]
+
+        modelBuilder.Entity<AnswerVote>()
+            .HasOne<Answer>(vote => vote.Answer)
+            .WithMany(answer => answer.Votes)
+            .HasForeignKey(vote => vote.AnswerId);
+
+        #endregion
+
+        #region [Role Relationships]
+
+        modelBuilder.Entity<UserRole>()
+            .HasOne<Role>(userRole => userRole.Role)
+            .WithMany(role => role.UserRoles)
+            .HasForeignKey(userRole => userRole.RoleId);
+
+        #endregion
+
+        #endregion
+
+        #region [Seed Data]
+
         modelBuilder.Entity<Role>().HasData(new List<Role>
         {
             new()
@@ -302,8 +432,6 @@ public class RedditMockupContext : DbContext
 
         modelBuilder.Entity<Person>().HasData(GetFakePeople());
 
-        modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
-
         modelBuilder.Entity<User>().HasData(GetFakeUsers());
 
         modelBuilder.Entity<Profile>().HasData(GetFakeProfiles());
@@ -319,6 +447,8 @@ public class RedditMockupContext : DbContext
         modelBuilder.Entity<Answer>().HasData(GetFakeAnswers());
 
         modelBuilder.Entity<Bookmark>().HasData(GetFakeBookmarks());
+
+        #endregion
     }
 
     #endregion

@@ -1,21 +1,23 @@
-﻿using Sieve.Attributes;
+﻿using RedditMockup.Model.BaseEntities;
+using Sieve.Attributes;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RedditMockup.Model.Entities
+namespace RedditMockup.Model.Entities;
+
+public class QuestionVote : BaseEntity
 {
-    public class QuestionVote : BaseEntity
-    {
-        #region [Properties]
+    #region [Properties]
 
-        [Sieve(CanSort = true)]
-        public bool Kind { get; set; }
+    [Sieve(CanSort = true)]
+    public bool Kind { get; set; }
 
-        public int QuestionId { get; set; }
+    #endregion
 
-        [ForeignKey("QuestionId")]
-        public virtual Question? Question { get; set; }
+    #region [Navigation Properties]
 
-        #endregion
+    public int QuestionId { get; set; }
+    
+    public Question? Question { get; set; }
 
-    }
+    #endregion
 }

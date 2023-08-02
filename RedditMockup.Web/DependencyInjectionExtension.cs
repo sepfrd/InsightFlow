@@ -2,10 +2,9 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using NLog.Web;
 using RedditMockup.Business.Contracts;
-using RedditMockup.Business.DtoBusinesses;
-using RedditMockup.Business.EntityBusinesses;
+using RedditMockup.Business.DomainEntityBusinesses;
+using RedditMockup.Business.PublicBusinesses;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Profiles;
@@ -16,9 +15,9 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.ExternalService.RabbitMQService;
 using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
+using Serilog;
 using Sieve.Services;
-using ILogger = NLog.ILogger;
-//using StackExchange.Redis;
+using System.Text.Json.Serialization;
 
 namespace RedditMockup.Web;
 
@@ -26,12 +25,26 @@ internal static class DependencyInjectionExtension
 {
     internal static IServiceCollection InjectApi(this IServiceCollection services) =>
         services
+            //.AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
             .AddControllers()
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
+
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             })
             .Services;
+
+    internal static IServiceCollection InjectCors(this IServiceCollection services) =>
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAnyOrigin", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
 
     internal static IServiceCollection InjectSwagger(this IServiceCollection services) =>
         services.AddSwaggerGen();
@@ -42,25 +55,23 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectContext(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment environment)
     {
-        if (!environment.IsProduction())
+        if (environment.IsEnvironment("Testing"))
         {
-            return services.AddDbContextPool<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
+            return services.AddDbContext<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
         }
 
-        return services.AddDbContextPool<RedditMockupContext>(options =>
+        return services.AddDbContext<RedditMockupContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("SqlServer"));
             options.EnableSensitiveDataLogging();
         });
     }
 
-    internal static IServiceCollection InjectNLog(this IServiceCollection services, IWebHostEnvironment environment)
+    public static IServiceCollection InjectMongoDbSettings(this IServiceCollection services, IConfiguration configuration) =>
+        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDb"));
 
-    {
-        var factory = NLogBuilder.ConfigureNLog("nlog.config");
-
-        return services.AddSingleton<ILogger>(_ => factory.GetLogger(environment.EnvironmentName.ToLower()));
-    }
+    internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration) =>
+        services.AddSerilog(x => x.ReadFrom.Configuration(configuration));
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>
         services.AddScoped<ISieveProcessor, SieveProcessor>();
@@ -99,32 +110,13 @@ internal static class DependencyInjectionExtension
                     policy => policy.RequireClaim(RoleConstants.User));
             });
 
-    /*
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
-        services.Scan(scan =>
-            scan.FromAssembliesOf(typeof(IBaseBusiness<>))
-                .AddClasses(classes =>
-                    classes.AssignableTo(typeof(IBaseBusiness<>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-                .AddClasses(classes =>
-                    classes.Where(predicate =>
-                        predicate.Name.EndsWith("Business") &&
-                        !predicate.IsAssignableTo(typeof(IBaseBusiness<>))))
-                .AsSelf()
-                .WithScopedLifetime());
-    */
-
-    internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
-        services.AddScoped<IBaseBusiness<User>, UserBusiness>()
-        .AddScoped<IBaseBusiness<Answer>, AnswerBusiness>()
-        .AddScoped<IBaseBusiness<Question>, QuestionBusiness>()
-        .AddScoped<IBaseBusiness<Bookmark>, BookmarkBusiness>()
-        .AddScoped<AccountBusiness>()
-        .AddScoped<IDtoBaseBusiness<UserDto>, UserDtoBusiness>()
-        .AddScoped<IDtoBaseBusiness<AnswerDto>, AnswerDtoBusiness>()
-        .AddScoped<IDtoBaseBusiness<QuestionDto>, QuestionDtoBusiness>()
-        .AddScoped<IDtoBaseBusiness<BookmarkDto>, BookmarkDtoBusiness>();
+        services.AddScoped<IBaseBusiness<User, UserDto>, UserBusiness>()
+            .AddScoped<IBaseBusiness<Answer, AnswerDto>, AnswerBusiness>()
+            .AddScoped<IBaseBusiness<Question, QuestionDto>, QuestionBusiness>()
+            .AddScoped<IPublicBaseBusiness<Answer, AnswerDto>, PublicAnswerBusiness>()
+            .AddScoped<IPublicBaseBusiness<Question, QuestionDto>, PublicQuestionBusiness>()
+            .AddScoped<AccountBusiness>();
 
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>
         services
@@ -132,7 +124,7 @@ internal static class DependencyInjectionExtension
             .AddValidatorsFromAssemblyContaining<RoleValidator>();
 
     internal static IServiceCollection InjectAutoMapper(this IServiceCollection services) =>
-        services.AddAutoMapper(typeof(UserProfile).Assembly);
+        services.AddAutoMapper(typeof(AnswerProfile).Assembly);
 
     internal static IServiceCollection InjectRabbitMq(this IServiceCollection services) =>
         services.AddSingleton<IMessageBusClient, MessageBusClient>();

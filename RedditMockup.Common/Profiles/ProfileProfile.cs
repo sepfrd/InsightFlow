@@ -7,6 +7,6 @@ public class ProfileProfile : Profile
 {
     public ProfileProfile() =>
         CreateMap<Model.Entities.Profile, ProfileDto>()
-        .ReverseMap();
+            .ReverseMap();
 
 }

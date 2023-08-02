@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using RedditMockup.Common.Dtos;
+using System;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -15,7 +16,6 @@ namespace RedditMockup.IntegrationTest;
 
 public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>>
 {
-
     #region [Field(s)]
 
     private const string BaseAddress = "/api/Answer";
@@ -25,8 +25,6 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
     private const string ValidTitle = "How to do sth";
 
     private const string ValidDescription = "Can anybody help me with my problem?";
-
-    private readonly WebApplicationFactory<Program> _factory;
 
     private readonly HttpClient _client;
 
@@ -43,9 +41,9 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
     public AnswerControllerTest(WebApplicationFactory<Program> factory)
     {
-        _factory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
+        using var customFactory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
 
-        _client = _factory.CreateClient();
+        _client = customFactory.CreateClient();
     }
 
     #endregion
@@ -427,7 +425,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
             {
                 new AnswerDto
                 {
-                    QuestionId = 5,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -438,7 +436,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
             {
                 new AnswerDto
                 {
-                    QuestionId = 140,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -449,7 +447,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
             {
                 new AnswerDto
                 {
-                    QuestionId = 5,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -528,7 +526,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 5,
                 new AnswerDto
                 {
-                    QuestionId = 1,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -540,7 +538,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 5,
                 new AnswerDto
                 {
-                    QuestionId = 1,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -552,7 +550,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 5,
                 new AnswerDto
                 {
-                    QuestionId = 1,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -564,7 +562,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 5,
                 new AnswerDto
                 {
-                    QuestionId = 400,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -576,7 +574,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 450,
                 new AnswerDto
                 {
-                    QuestionId = 1,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
@@ -588,7 +586,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
                 450,
                 new AnswerDto
                 {
-                    QuestionId = 450,
+                    QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },

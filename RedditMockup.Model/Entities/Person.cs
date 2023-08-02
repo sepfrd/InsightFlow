@@ -1,24 +1,25 @@
-﻿using Sieve.Attributes;
+﻿using RedditMockup.Model.BaseEntities;
+using Sieve.Attributes;
 
 namespace RedditMockup.Model.Entities;
 
-public class Person : BaseEntity
+public class Person : BaseEntityWithGuid
 {
     #region [Properties]
 
     [Sieve(CanFilter = true, CanSort = true)]
-    public string? Name { get; set; }
+    public string? FirstName { get; set; }
 
     [Sieve(CanFilter = true, CanSort = true)]
-    public string? Family { get; set; }
+    public string? LastName { get; set; }
 
-    public string FullName => Name + " " + Family;
+    public string FullName => FirstName + " " + LastName;
 
     #endregion
 
     #region [Navigation Properties]
 
-    public virtual User? User { get; set; }
+    public User? User { get; set; }
 
     #endregion
 }

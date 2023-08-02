@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Options;
+using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Base;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Model.Entities;
@@ -8,27 +9,12 @@ namespace RedditMockup.DataAccess.Repositories;
 
 public class RoleRepository : BaseRepository<Role>
 {
-    #region [Fields]
-
-    private readonly RedditMockupContext _context;
-
-    #endregion
-
     #region [Constructor]
 
-    public RoleRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor) =>
-        _context = context;
-
-    #endregion
-
-    #region [Methods]
-
-    public async Task<List<Role?>> LoadByUserIdAsync(int userId, CancellationToken cancellationToken = default) =>
-        await _context.UserRoles!
-            .Where(x => x.UserId == userId)
-            .Include(x => x.Role)
-            .Select(x => x.Role)
-            .ToListAsync(cancellationToken);
+    public RoleRepository(RedditMockupContext context, ISieveProcessor sieveProcessor, IOptions<MongoDbSettings> mongoDbSettings) :
+        base(context, sieveProcessor, mongoDbSettings)
+    {
+    }
 
     #endregion
 }

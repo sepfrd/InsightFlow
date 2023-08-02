@@ -7,8 +7,10 @@ public class PersonValidator : AbstractValidator<Person>
 {
     public PersonValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(20);
+        RuleFor(x => x.Guid).MustBeGuid();
+        
+        RuleFor(x => x.FirstName).NotEmpty().MaximumLength(20);
 
-        RuleFor(x => x.Family).NotEmpty().MaximumLength(20);
+        RuleFor(x => x.LastName).NotEmpty().MaximumLength(20);
     }
 }

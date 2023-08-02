@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NLog;
-using NLog.Web;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Service.Grpc;
 using RedditMockup.Web;
+using Serilog;
+using Serilog.Settings.Configuration;
 
 // TODO: Use logging across the app
+
+// TODO: Setup the JSON format
 
 // TODO: Use redis
 
@@ -31,22 +33,28 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Logging.ClearProviders();
 
-builder.Host.UseNLog();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom
+    .Configuration(builder.Configuration, new ConfigurationReaderOptions
+    {
+        SectionName = "InternalSerilog"
+    })
+    .CreateBootstrapLogger();
 
-var logger = NLogBuilder
-        .ConfigureNLog("nlog.config")
-        .GetLogger("Default");
+Log.Information("Hello world!!!");
 
 try
 {
     builder.Services
         .AddEndpointsApiExplorer()
         .InjectApi()
+        .InjectCors()
         .InjectSwagger()
         .InjectUnitOfWork()
         .InjectSieve()
+        .InjectSerilog(builder.Configuration)
         .InjectAuthentication()
-        .InjectNLog(builder.Environment)
+        .InjectMongoDbSettings(builder.Configuration)
         .InjectContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
@@ -61,7 +69,7 @@ try
 
     await using var scope = app.Services.CreateAsyncScope();
 
-    using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
+    await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
 
     app.UseSwagger()
         .UseSwaggerUI();
@@ -69,10 +77,6 @@ try
     if (app.Environment.IsEnvironment("Testing"))
     {
         await context.Database.EnsureDeletedAsync();
-    }
-
-    if (!app.Environment.IsProduction())
-    {
         await context.Database.EnsureCreatedAsync();
     }
 
@@ -84,6 +88,7 @@ try
 
     app
         //.UseHttpsRedirection()
+        .UseCors("AllowAnyOrigin")
         .UseRouting()
         .UseAuthentication()
         .UseAuthorization()
@@ -92,22 +97,21 @@ try
             endpoints.MapControllers();
             endpoints.MapHealthChecks("/healthcheck");
             endpoints.MapGrpcService<GrpcService>();
-            endpoints.MapGet("/protos/redditmockup.proto", async context =>
+            endpoints.MapGet("/protos/redditmockup.proto", async httpContext =>
             {
-                await context.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
+                await httpContext.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
             });
         });
-
     await app.RunAsync();
 }
 catch (Exception exception)
 {
-    logger.Error(exception, $"Program stopped due to a {exception.GetType()} exception.");
+    Log.Error(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
     throw;
 }
 finally
 {
-    LogManager.Shutdown();
+    Log.CloseAndFlush();
 }
 
 public partial class Program
