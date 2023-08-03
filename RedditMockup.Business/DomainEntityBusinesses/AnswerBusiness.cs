@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Contracts;
@@ -40,23 +39,23 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
     {
         var answer = _mapper.Map<Answer>(questionDto);
 
-        var userId = await _unitOfWork.UserRepository!.GetIdByGuidAsync(questionDto.UserGuid, cancellationToken);
+        var user = await _unitOfWork.UserRepository!.GetByGuidAsync(questionDto.UserGuid, null, cancellationToken);
 
-        if (userId is null)
+        if (user is null)
         {
             return null;
         }
 
-        var questionId = await _unitOfWork.QuestionRepository!.GetIdByGuidAsync(questionDto.QuestionGuid, cancellationToken);
+        var question = await _unitOfWork.QuestionRepository!.GetByGuidAsync(questionDto.QuestionGuid, null, cancellationToken);
 
-        if (questionId is null)
+        if (question is null)
         {
             return null;
         }
 
-        answer.UserId = (int)userId;
+        answer.UserId = user.Id;
 
-        answer.QuestionId = (int)questionId;
+        answer.QuestionId = question.Id;
 
         return await CreateAsync(answer, cancellationToken);
     }
@@ -79,7 +78,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
                 .Include(answer => answer.Question),
             cancellationToken);
 
-    
+
 
     public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken = default)
     {

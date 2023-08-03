@@ -1,6 +1,5 @@
 ﻿using RedditMockup.Model.BaseEntities;
 using Sieve.Attributes;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RedditMockup.Model.Entities;
 
@@ -23,10 +22,10 @@ public class Question : BaseEntityWithGuid
     public ICollection<QuestionVote>? Votes { get; set; }
 
     public ICollection<Bookmark>? Bookmarks { get; set; }
-    
+
     [Sieve(CanFilter = true)]
     public int UserId { get; set; }
-    
+
     public User? User { get; set; }
 
     #endregion

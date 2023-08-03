@@ -1,48 +1,30 @@
 {
-    "profiles": {
-        "RedditMockup.Web(No K8S Dependencies)": {
-            "commandName": "Project",
-            "launchBrowser": true,
-            "launchUrl": "swagger",
-            "applicationUrl": "https://localhost:8001;http://localhost:8000",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "NoK8S"
-            }
-        },
-        "RedditMockup.Web(Development)": {
-            "commandName": "Project",
-            "launchBrowser": true,
-            "launchUrl": "swagger",
-            "applicationUrl": "https://localhost:6001;http://localhost:6000",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
-        },
-        "RedditMockup.Web(Production)": {
-            "commandName": "Project",
-            "launchBrowser": true,
-            "launchUrl": "swagger",
-            "applicationUrl": "https://localhost:443;http://localhost:80",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Production"
-            }
-        },
-        "RedditMockup.Web(Testing)": {
-            "commandName": "Project",
-            "launchBrowser": true,
-            "launchUrl": "swagger",
-            "applicationUrl": "https://localhost:6001;http://localhost:6000",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Testing"
-            }
-        },
-        "Docker": {
-            "commandName": "Docker",
-            "launchBrowser": true,
-            "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-            "environmentVariables": {
-                "ASPNETCORE_URLS": "https://localhost:443;http://localhost:80"
-            }
-        }
+  "profiles": {
+    "RedditMockup.Web(Development)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:6001;http://localhost:6000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "RedditMockup.Web(Testing)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:6001;http://localhost:6000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Testing"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "https://localhost:443;http://localhost:80"
+      }
     }
+  }
 }

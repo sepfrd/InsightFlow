@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using RedditMockup.Common.Dtos;
-using RedditMockup.DataAccess.Context;
+﻿using RedditMockup.DataAccess.Context;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using Sieve.Services;
@@ -23,32 +21,27 @@ public class UnitOfWork : IUnitOfWork
 
     private readonly ISieveProcessor _sieveProcessor;
 
-    private readonly IOptions<MongoDbSettings> _mongoDbSettings;
-
-    public UnitOfWork(RedditMockupContext context, ISieveProcessor sieveProcessor, IOptions<MongoDbSettings> mongoDbSettings)
+    public UnitOfWork(RedditMockupContext context, ISieveProcessor sieveProcessor)
     {
         _context = context;
-        
         _sieveProcessor = sieveProcessor;
-
-        _mongoDbSettings = mongoDbSettings;
     }
 
     public AnswerRepository AnswerRepository =>
-        _answerRepository ??= new AnswerRepository(_context, _sieveProcessor, _mongoDbSettings);
+        _answerRepository ??= new AnswerRepository(_context, _sieveProcessor);
 
     public PersonRepository PersonRepository =>
-        _personRepository ??= new PersonRepository(_context, _sieveProcessor, _mongoDbSettings);
+        _personRepository ??= new PersonRepository(_context, _sieveProcessor);
 
 
     public QuestionRepository QuestionRepository =>
-        _questionRepository ??= new QuestionRepository(_context, _sieveProcessor, _mongoDbSettings);
+        _questionRepository ??= new QuestionRepository(_context, _sieveProcessor);
 
     public RoleRepository RoleRepository =>
-        _roleRepository ??= new RoleRepository(_context, _sieveProcessor, _mongoDbSettings);
+        _roleRepository ??= new RoleRepository(_context, _sieveProcessor);
 
     public UserRepository UserRepository =>
-        _userRepository ??= new UserRepository(_context, _sieveProcessor, _mongoDbSettings);
+        _userRepository ??= new UserRepository(_context, _sieveProcessor);
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken) =>
         await _context.SaveChangesAsync(cancellationToken);

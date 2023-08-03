@@ -16,11 +16,9 @@
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-      <PackageReference Include="StackExchange.Redis" Version="2.6.111" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
         <ProjectReference Include="..\RedditMockup.DataAccess\RedditMockup.DataAccess.csproj" />
-        <ProjectReference Include="..\RedditMockup.ExternalServices\RedditMockup.ExternalService.csproj" />
     </ItemGroup>
 </Project>

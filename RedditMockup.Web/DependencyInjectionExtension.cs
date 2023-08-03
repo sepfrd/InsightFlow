@@ -12,8 +12,6 @@ using RedditMockup.Common.Validations;
 using RedditMockup.DataAccess;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.DataAccess.Contracts;
-using RedditMockup.ExternalService.RabbitMQService;
-using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 using Serilog;
 using Sieve.Services;
@@ -30,7 +28,6 @@ internal static class DependencyInjectionExtension
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
-
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             })
             .Services;
@@ -41,8 +38,8 @@ internal static class DependencyInjectionExtension
             options.AddPolicy("AllowAnyOrigin", builder =>
             {
                 builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
             });
         });
 
@@ -55,7 +52,7 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectContext(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment environment)
     {
-        if (environment.IsEnvironment("Testing") || environment.IsEnvironment("NoK8S"))
+        if (environment.IsEnvironment("Testing"))
         {
             return services.AddDbContext<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
         }
@@ -66,9 +63,6 @@ internal static class DependencyInjectionExtension
             options.EnableSensitiveDataLogging();
         });
     }
-
-    public static IServiceCollection InjectMongoDbSettings(this IServiceCollection services, IConfiguration configuration) =>
-        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDb"));
 
     internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration) =>
         services.AddSerilog(x => x.ReadFrom.Configuration(configuration));
@@ -83,7 +77,6 @@ internal static class DependencyInjectionExtension
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
             })
             .AddCookie(options =>
             {
@@ -125,23 +118,4 @@ internal static class DependencyInjectionExtension
 
     internal static IServiceCollection InjectAutoMapper(this IServiceCollection services) =>
         services.AddAutoMapper(typeof(AnswerProfile).Assembly);
-
-    internal static IServiceCollection InjectRabbitMq(this IServiceCollection services) =>
-        services.AddSingleton<IMessageBusClient, MessageBusClient>();
-
-    internal static IServiceCollection InjectGrpc(this IServiceCollection services) =>
-        services.AddGrpc(configure =>
-        {
-            configure.EnableDetailedErrors = true;
-        }).Services;
-
-    #region [Redis Injection]
-
-    /* 
-       
-    internal static IServiceCollection InjectRedis(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(configuration["RedisConnection"]));
-    */
-
-    #endregion
 }

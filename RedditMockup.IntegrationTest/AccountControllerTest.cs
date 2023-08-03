@@ -28,35 +28,8 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
     public AccountControllerTest(WebApplicationFactory<Program> factory) =>
         _client = factory.WithWebHostBuilder(builder =>
-                            builder.UseEnvironment("Testing"))
-                                    .CreateClient();
-
-
-
-    #endregion
-
-    #region [Method(s)]
-
-    private async Task AuthenticateAsync()
-    {
-        var loginDto = new LoginDto()
-        {
-            Username = "sepehr_frd",
-            Password = "sfr1376",
-            RememberMe = true
-        };
-
-        var client = new RestClient(_client);
-
-        var request = new RestRequest($"{BaseAddress}/Login")
-        {
-            Timeout = DefaultTimeout
-        };
-
-        request.AddJsonBody(loginDto);
-
-        await client.ExecutePostAsync(request);
-    }
+                builder.UseEnvironment("Testing"))
+            .CreateClient();
 
     #endregion
 

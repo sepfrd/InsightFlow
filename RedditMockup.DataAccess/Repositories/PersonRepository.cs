@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using RedditMockup.Common.Dtos;
-using RedditMockup.DataAccess.Base;
+﻿using RedditMockup.DataAccess.Base;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Model.Entities;
 using Sieve.Services;
@@ -11,8 +9,8 @@ public class PersonRepository : BaseRepository<Person>
 {
     #region [Constructor]
 
-    public PersonRepository(RedditMockupContext context, ISieveProcessor sieveProcessor, IOptions<MongoDbSettings> mongoDbSettings) :
-        base(context, sieveProcessor, mongoDbSettings)
+    public PersonRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) :
+        base(context, sieveProcessor)
     {
     }
 

@@ -8,7 +8,6 @@
     <ItemGroup>
         <Folder Include="Base\" />
         <Folder Include="PublicControllers\" />
-        <Folder Include="Filters\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />

@@ -1,33 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RedditMockup.DataAccess.Context;
-using RedditMockup.Service.Grpc;
 using RedditMockup.Web;
 using Serilog;
 using Serilog.Settings.Configuration;
 
 // TODO: Use logging across the app
 
-// TODO: Setup the JSON format
-
-// TODO: Use redis
-
 var builder = WebApplication.CreateBuilder(args);
-
-#region [macOS Configuration for gRPC over HTTP 2.0 Without TLS]
-
-/*
-
-builder.WebHost.ConfigureKestrel(options =>
-{
-    // Setup a HTTP/2 endpoint without TLS.
-
-    options.ListenLocalhost(6000, o => o.Protocols =
-    HttpProtocols.Http2);
-});
-
-*/
-
-#endregion
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -41,50 +20,24 @@ Log.Logger = new LoggerConfiguration()
     })
     .CreateBootstrapLogger();
 
-Log.Information("Hello world!!!");
+Log.Information("Application setup started.");
 
 try
 {
-    if (!builder.Environment.IsEnvironment("NoK8S"))
-    {
-        builder.Services
-            .AddEndpointsApiExplorer()
-            .InjectApi()
-            .InjectCors()
-            .InjectSwagger()
-            .InjectUnitOfWork()
-            .InjectSieve()
-            .InjectSerilog(builder.Configuration)
-            .InjectAuthentication()
-            .InjectMongoDbSettings(builder.Configuration)
-            .InjectContext(builder.Configuration, builder.Environment)
-            .InjectBusinesses()
-            .InjectFluentValidation()
-            .InjectRabbitMq()
-            .InjectAutoMapper()
-            .InjectGrpc()
-            .AddHealthChecks();
-
-        //.InjectRedis(builder.Configuration)
-    }
-    else
-    {
-        builder.Services
-            .AddEndpointsApiExplorer()
-            .InjectApi()
-            .InjectCors()
-            .InjectSwagger()
-            .InjectUnitOfWork()
-            .InjectSieve()
-            .InjectSerilog(builder.Configuration)
-            .InjectAuthentication()
-            .InjectContext(builder.Configuration, builder.Environment)
-            .InjectBusinesses()
-            .InjectFluentValidation()
-            .InjectAutoMapper()
-            .AddHealthChecks();
-    }
-
+    builder.Services
+        .AddEndpointsApiExplorer()
+        .InjectApi()
+        .InjectCors()
+        .InjectSwagger()
+        .InjectUnitOfWork()
+        .InjectSieve()
+        .InjectSerilog(builder.Configuration)
+        .InjectAuthentication()
+        .InjectContext(builder.Configuration, builder.Environment)
+        .InjectBusinesses()
+        .InjectFluentValidation()
+        .InjectAutoMapper()
+        .AddHealthChecks();
 
     var app = builder.Build();
 
@@ -95,7 +48,7 @@ try
     app.UseSwagger()
         .UseSwaggerUI();
 
-    if (app.Environment.IsEnvironment("Testing") || app.Environment.IsEnvironment("NoK8S"))
+    if (app.Environment.IsEnvironment("Testing"))
     {
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
@@ -117,15 +70,6 @@ try
         {
             endpoints.MapControllers();
             endpoints.MapHealthChecks("/healthcheck");
-
-            if (!app.Environment.IsEnvironment("NoK8S"))
-            {
-                endpoints.MapGrpcService<GrpcService>();
-                endpoints.MapGet("/protos/redditmockup.proto", async httpContext =>
-                {
-                    await httpContext.Response.WriteAsync(File.ReadAllText("../RedditMockup.Model/Protos/redditmockup.proto"));
-                });
-            }
         });
     await app.RunAsync();
 }

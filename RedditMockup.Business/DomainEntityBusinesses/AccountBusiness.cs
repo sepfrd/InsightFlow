@@ -90,7 +90,7 @@ public class AccountBusiness
 
         var roles = user.UserRoles!.Select(userRole => userRole.Role).ToList();
 
-        var claims = new List<Claim>()
+        var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString())
         };

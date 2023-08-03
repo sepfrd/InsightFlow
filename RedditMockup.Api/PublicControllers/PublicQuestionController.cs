@@ -4,7 +4,6 @@ using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.PublicBusinesses;
 using RedditMockup.Common.Dtos;
-using RedditMockup.ExternalService.RabbitMQService.Contracts;
 using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.PublicControllers;
@@ -16,18 +15,12 @@ public class PublicQuestionController : PublicBaseController<Question, QuestionD
 
     private readonly PublicQuestionBusiness _publicQuestionBusiness;
 
-    private readonly IMessageBusClient _messageBusClient;
-
     #endregion
 
     #region [Constructor]
 
-    public PublicQuestionController(IPublicBaseBusiness<Question, QuestionDto> questionDtoBaseBusiness, IMessageBusClient messageBusClient) : base(questionDtoBaseBusiness)
-    {
+    public PublicQuestionController(IPublicBaseBusiness<Question, QuestionDto> questionDtoBaseBusiness) : base(questionDtoBaseBusiness) =>
         _publicQuestionBusiness = (PublicQuestionBusiness)questionDtoBaseBusiness;
-
-        _messageBusClient = messageBusClient;
-    }
 
     #endregion
 
@@ -46,25 +39,4 @@ public class PublicQuestionController : PublicBaseController<Question, QuestionD
     [Route("guid/{guid}/votes")]
     public async Task<CustomResponse> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken) =>
         await _publicQuestionBusiness.SubmitVoteAsync(guid, kind, cancellationToken);
-    
-    // ------------------------------------------------------------------------>
-
-    [HttpPost]
-    [Route("test-rabbitmq")]
-    public async Task CreateAndPublishAsync([FromBody] QuestionDto questionDto, CancellationToken cancellationToken)
-    {
-        await CreateAsync(questionDto, cancellationToken);
-
-        var questionPublishedDto = new QuestionPublishedDto
-        {
-            Title = questionDto.Title,
-            Description = questionDto.Description,
-            Event = "New Question Created"
-        };
-
-        _messageBusClient.PublishNewQuestion(questionPublishedDto);
-
-    }
-    
-    // <-----------------------------------------------------------------------
 }

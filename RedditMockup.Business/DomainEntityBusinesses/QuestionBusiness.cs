@@ -16,9 +16,7 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
     #region [Fields]
 
     private readonly QuestionRepository _questionRepository;
-
     private readonly IUnitOfWork _unitOfWork;
-
     private readonly IMapper _mapper;
 
     #endregion
@@ -42,14 +40,14 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
     {
         var question = _mapper.Map<Question>(questionDto);
 
-        var userId = await _unitOfWork.UserRepository!.GetIdByGuidAsync(questionDto.UserGuid, cancellationToken);
+        var user = await _unitOfWork.UserRepository!.GetByGuidAsync(questionDto.UserGuid, null, cancellationToken);
 
-        if (userId is null)
+        if (user is null)
         {
             return null;
         }
 
-        question.UserId = (int)userId;
+        question.UserId = user.Id;
 
         return await CreateAsync(question, cancellationToken);
     }
@@ -71,8 +69,6 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {
-        //TODO: Use MongoDB to get Id from Guid
-
         var question = await _unitOfWork.QuestionRepository!.GetByGuidAsync(questionGuid, null, cancellationToken);
 
         if (question is null)

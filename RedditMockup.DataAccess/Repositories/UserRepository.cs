@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using RedditMockup.Common.Dtos;
 using RedditMockup.DataAccess.Base;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Model.Entities;
@@ -13,18 +11,16 @@ public class UserRepository : BaseRepository<User>
     #region [Fields]
 
     private readonly DbSet<UserRole> _userRoles;
-
     private readonly DbSet<Bookmark> _bookmarks;
 
     #endregion
 
     #region [Constructor]
 
-    public UserRepository(RedditMockupContext context, ISieveProcessor sieveProcessor, IOptions<MongoDbSettings> mongoDbSettings) :
-        base(context, sieveProcessor, mongoDbSettings)
+    public UserRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) :
+        base(context, sieveProcessor)
     {
         _userRoles = context.Set<UserRole>();
-
         _bookmarks = context.Set<Bookmark>();
     }
 

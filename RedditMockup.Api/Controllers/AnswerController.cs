@@ -32,8 +32,8 @@ public class AnswerController : BaseController<Answer, AnswerDto>
 
     [HttpPost]
     [Route("{guid}/votes")]
-    public async Task<CustomResponse> SubmitVoteAsync([FromRoute] Guid answerGuid, [FromBody] bool kind, CancellationToken cancellationToken) =>
-        await _business.SubmitVoteAsync(answerGuid, kind, cancellationToken);
+    public async Task<CustomResponse> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken) =>
+        await _business.SubmitVoteAsync(guid, kind, cancellationToken);
 
     #endregion
 }

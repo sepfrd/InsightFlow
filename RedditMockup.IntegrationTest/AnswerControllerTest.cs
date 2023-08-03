@@ -52,7 +52,7 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
     private async Task AuthenticateAsync()
     {
-        var loginDto = new LoginDto()
+        var loginDto = new LoginDto
         {
             Username = "sepehr_frd",
             Password = "sfr1376",

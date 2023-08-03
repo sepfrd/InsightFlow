@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+/*
+ using Microsoft.AspNetCore.Mvc.Filters;
 using ILogger = Serilog.ILogger;
 
 namespace RedditMockup.Api.Filters;
@@ -48,3 +49,4 @@ public class CustomExceptionFilter : ExceptionFilterAttribute
 
     #endregion
 }
+*/

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using RedditMockup.Model.BaseEntities;
-using RedditMockup.Model.Entities;
 using Sieve.Models;
 
 namespace RedditMockup.DataAccess.Contracts;
@@ -15,8 +14,6 @@ public interface IBaseRepository<T> where T : BaseEntityWithGuid
 
     Task<T?> GetByGuidAsync(Guid guid, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default);
 
-    Task<int?> GetIdByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
-    
     T Update(T t);
 
     T Delete(T t);

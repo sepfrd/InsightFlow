@@ -1,14 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using Sieve.Models;
+﻿using Sieve.Models;
 
 namespace RedditMockup.Business.Contracts;
 
 public interface IBaseBusiness<TEntity, in TDto>
 {
     Task<TEntity?> CreateAsync(TDto questionDto, CancellationToken cancellationToken = default);
-    
+
     Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
-    
+
     Task<TEntity?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 
     Task<List<TEntity>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
@@ -18,5 +17,5 @@ public interface IBaseBusiness<TEntity, in TDto>
     Task<TEntity?> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 
     Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken = default);
-    
+
 }
