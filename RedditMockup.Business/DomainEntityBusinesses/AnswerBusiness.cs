@@ -12,7 +12,7 @@ namespace RedditMockup.Business.DomainEntityBusinesses;
 
 public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 {
-    #region [Fields]
+    // [Fields]
 
     private readonly AnswerRepository _answerRepository;
 
@@ -20,9 +20,9 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
     private readonly IMapper _mapper;
 
-    #endregion
+    // --------------------------------------
 
-    #region [Constructor]
+    // [Constructor]
 
     public AnswerBusiness(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
     {
@@ -31,9 +31,9 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         _mapper = mapper;
     }
 
-    #endregion
+    // --------------------------------------
 
-    #region [Methods]
+    // [Methods]
 
     public override async Task<Answer?> CreateAsync(AnswerDto questionDto, CancellationToken cancellationToken = default)
     {
@@ -131,5 +131,5 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
     }
 
-    #endregion
+    // --------------------------------------
 }

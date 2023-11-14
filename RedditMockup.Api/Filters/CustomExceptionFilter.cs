@@ -6,20 +6,20 @@ namespace RedditMockup.Api.Filters;
 
 public class CustomExceptionFilter : ExceptionFilterAttribute
 {
-    #region [Field(s)]
+    // [Field(s)]
 
     private readonly ILogger _logger;
 
-    #endregion
+    // --------------------------------------
 
-    #region [Constructor]
+    // [Constructor]
 
     public CustomExceptionFilter(ILogger logger) =>
         _logger = logger;
 
-    #endregion
+    // --------------------------------------
 
-    #region [Overridden Method(s)]
+    // [Overridden Method(s)]
 
     public override void OnException(ExceptionContext filterContext)
     {
@@ -47,6 +47,6 @@ public class CustomExceptionFilter : ExceptionFilterAttribute
         return Task.CompletedTask;
     }
 
-    #endregion
+    // --------------------------------------
 }
 */

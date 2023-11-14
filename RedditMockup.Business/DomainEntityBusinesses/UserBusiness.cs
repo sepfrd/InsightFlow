@@ -12,15 +12,15 @@ namespace RedditMockup.Business.DomainEntityBusinesses;
 
 public class UserBusiness : BaseBusiness<User, UserDto>
 {
-    #region [Fields]
+    // [Fields]
 
     private readonly UserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    #endregion
+    // --------------------------------------
 
-    #region [Constructor]
+    // [Constructor]
 
     public UserBusiness(IUnitOfWork unitOfWork, IMapper mapper) :
         base(unitOfWork, unitOfWork.UserRepository!, mapper)
@@ -30,9 +30,9 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         _mapper = mapper;
     }
 
-    #endregion
+    // --------------------------------------
 
-    #region [Methods]
+    // [Methods]
 
     public override async Task<User?> CreateAsync(UserDto userDto, CancellationToken cancellationToken = default)
     {
@@ -71,5 +71,5 @@ public class UserBusiness : BaseBusiness<User, UserDto>
                 .Include(user => user.Profile),
             cancellationToken);
 
-    #endregion
+    // --------------------------------------
 }
