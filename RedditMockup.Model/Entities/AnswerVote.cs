@@ -15,6 +15,7 @@ public class AnswerVote : BaseEntity
     // [Navigation Properties]
 
     public int AnswerId { get; set; }
+
     public Answer? Answer { get; set; }
 
     // --------------------------------------

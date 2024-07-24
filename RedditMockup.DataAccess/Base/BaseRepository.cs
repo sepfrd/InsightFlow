@@ -19,10 +19,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
 
     // [Constructor]
 
-    protected BaseRepository(RedditMockupContext context, ISieveProcessor processor)
+    protected BaseRepository(RedditMockupDbContext dbContext, ISieveProcessor processor)
     {
         _processor = processor;
-        _dbSet = context.Set<T>();
+        _dbSet = dbContext.Set<T>();
     }
 
     // --------------------------------------

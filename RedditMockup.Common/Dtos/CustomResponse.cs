@@ -32,11 +32,11 @@ public class CustomResponse<T>
 
 public class CustomResponse
 {
-    public bool IsSuccess { get; set; }
+    public bool IsSuccess { get; init; }
 
-    public string? Message { get; set; }
+    public string? Message { get; init; }
 
-    public HttpStatusCode HttpStatusCode { get; set; }
+    public HttpStatusCode HttpStatusCode { get; init; }
 
     public static CustomResponse CreateUnsuccessfulResponse(HttpStatusCode httpStatusCode, string? message = null) =>
         new()

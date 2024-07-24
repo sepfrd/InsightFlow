@@ -11,13 +11,13 @@ public class Profile : BaseEntity
 
     [Sieve(CanFilter = true, CanSort = true)]
     public string? Email { get; set; } = string.Empty;
-    
+
     // --------------------------------------
 
     // [Navigation Properties]
-    
+
     public int UserId { get; set; }
-    
+
     public User? User { get; set; }
 
     // --------------------------------------

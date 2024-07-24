@@ -17,12 +17,20 @@ public class AccountController : ControllerBase
     [Authorize]
     [HttpPost]
     [Route("logout")]
-    public async Task<CustomResponse> Logout() =>
-        await AccountBusiness.LogoutAsync(HttpContext);
+    public async Task<ActionResult<CustomResponse>> Logout()
+    {
+        var result = await AccountBusiness.LogoutAsync(HttpContext);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
 
     [HttpPost]
     [Route("login")]
-    public async Task<CustomResponse> LoginAsync(LoginDto login, CancellationToken cancellationToken) =>
-        await _accountBusiness.LoginAsync(login, HttpContext, cancellationToken);
+    public async Task<ActionResult<CustomResponse>> LoginAsync(LoginDto login, CancellationToken cancellationToken)
+    {
+        var result = await _accountBusiness.LoginAsync(login, HttpContext, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
 
 }

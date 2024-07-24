@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Text.Json.Serialization;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,6 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.Entities;
 using Serilog;
 using Sieve.Services;
-using System.Text.Json.Serialization;
 
 namespace RedditMockup.Web;
 
@@ -54,10 +54,10 @@ internal static class DependencyInjectionExtension
     {
         if (environment.IsEnvironment("Testing"))
         {
-            return services.AddDbContext<RedditMockupContext>(options => options.UseInMemoryDatabase("RedditMockup"));
+            return services.AddDbContext<RedditMockupDbContext>(options => options.UseInMemoryDatabase("RedditMockup"));
         }
 
-        return services.AddDbContext<RedditMockupContext>(options =>
+        return services.AddDbContext<RedditMockupDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("SqlServer"));
             options.EnableSensitiveDataLogging();

@@ -43,7 +43,7 @@ try
 
     await using var scope = app.Services.CreateAsyncScope();
 
-    await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupContext>();
+    await using var context = scope.ServiceProvider.GetRequiredService<RedditMockupDbContext>();
 
     app.UseSwagger()
         .UseSwaggerUI();
@@ -83,6 +83,4 @@ finally
     Log.CloseAndFlush();
 }
 
-public partial class Program
-{
-}
+public partial class Program;

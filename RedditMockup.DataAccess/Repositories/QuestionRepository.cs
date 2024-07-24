@@ -9,14 +9,14 @@ public class QuestionRepository : BaseRepository<Question>
 {
     // [Fields]
 
-    private readonly RedditMockupContext _context;
+    private readonly RedditMockupDbContext _dbContext;
 
     // --------------------------------------
 
     // [Constructor]
 
-    public QuestionRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) : base(context, sieveProcessor) =>
-        _context = context;
+    public QuestionRepository(RedditMockupDbContext dbContext, ISieveProcessor sieveProcessor) : base(dbContext, sieveProcessor) =>
+        _dbContext = dbContext;
 
     // --------------------------------------
 
@@ -24,7 +24,7 @@ public class QuestionRepository : BaseRepository<Question>
 
     public async Task<QuestionVote?> SubmitVoteAsync(QuestionVote questionVote, CancellationToken cancellationToken = default)
     {
-        var entityEntry = await _context.QuestionVotes!.AddAsync(questionVote, cancellationToken);
+        var entityEntry = await _dbContext.QuestionVotes!.AddAsync(questionVote, cancellationToken);
 
         return entityEntry.Entity;
     }

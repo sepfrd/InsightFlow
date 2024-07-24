@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RedditMockup.Business.Base;
@@ -7,7 +8,6 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
-using System.Net;
 
 namespace RedditMockup.Business.DomainEntityBusinesses;
 
@@ -36,7 +36,7 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
 
     // [Methods]
 
-    public override async Task<Question?> CreateAsync(QuestionDto questionDto, CancellationToken cancellationToken = default)
+    public async override Task<Question?> CreateAsync(QuestionDto questionDto, CancellationToken cancellationToken = default)
     {
         var question = _mapper.Map<Question>(questionDto);
 
@@ -52,17 +52,17 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         return await CreateAsync(question, cancellationToken);
     }
 
-    public override async Task<Question?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
+    public async override Task<Question?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
         await _questionRepository.GetByIdAsync(id,
             questions => questions.Include(question => question.User),
             cancellationToken);
 
-    public override async Task<Question?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
+    public async override Task<Question?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
         await _questionRepository.GetByGuidAsync(guid,
             questions => questions.Include(question => question.User),
             cancellationToken);
 
-    public override async Task<List<Question>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
+    public async override Task<List<Question>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
         await _questionRepository.GetAllAsync(sieveModel,
             questions => questions.Include(question => question.User),
             cancellationToken);

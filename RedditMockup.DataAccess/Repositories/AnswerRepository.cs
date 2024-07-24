@@ -9,15 +9,15 @@ public class AnswerRepository : BaseRepository<Answer>
 {
     // [Fields]
 
-    private readonly RedditMockupContext _context;
+    private readonly RedditMockupDbContext _dbContext;
 
     // --------------------------------------
 
     // [Constructor]
 
-    public AnswerRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) :
-        base(context, sieveProcessor) =>
-        _context = context;
+    public AnswerRepository(RedditMockupDbContext dbContext, ISieveProcessor sieveProcessor) :
+        base(dbContext, sieveProcessor) =>
+        _dbContext = dbContext;
 
     // --------------------------------------
 
@@ -25,7 +25,7 @@ public class AnswerRepository : BaseRepository<Answer>
 
     public async Task<AnswerVote?> SubmitVoteAsync(AnswerVote answerVote, CancellationToken cancellationToken = default)
     {
-        var entityEntry = await _context.AnswerVotes!.AddAsync(answerVote, cancellationToken);
+        var entityEntry = await _dbContext.AnswerVotes!.AddAsync(answerVote, cancellationToken);
 
         return entityEntry.Entity;
     }

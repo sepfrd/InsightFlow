@@ -7,11 +7,11 @@ using Person = RedditMockup.Model.Entities.Person;
 
 namespace RedditMockup.DataAccess.Context;
 
-public class RedditMockupContext : DbContext
+public class RedditMockupDbContext : DbContext
 {
     // [Constructor]
 
-    public RedditMockupContext(DbContextOptions options) : base(options)
+    public RedditMockupDbContext(DbContextOptions options) : base(options)
     {
     }
 
@@ -19,31 +19,31 @@ public class RedditMockupContext : DbContext
 
     // [Properties]
 
-    public DbSet<Answer>? Answers { get; set; }
+    public DbSet<Answer>? Answers { get; init; }
 
-    public DbSet<Person>? Persons { get; set; }
+    public DbSet<Person>? Persons { get; init; }
 
-    public DbSet<Profile>? Profiles { get; set; }
+    public DbSet<Profile>? Profiles { get; init; }
 
-    public DbSet<Question>? Questions { get; set; }
+    public DbSet<Question>? Questions { get; init; }
 
-    public DbSet<Role>? Roles { get; set; }
+    public DbSet<Role>? Roles { get; init; }
 
-    public DbSet<User>? Users { get; set; }
+    public DbSet<User>? Users { get; init; }
 
-    public DbSet<UserRole>? UserRoles { get; set; }
+    public DbSet<UserRole>? UserRoles { get; init; }
 
-    public DbSet<AnswerVote>? AnswerVotes { get; set; }
+    public DbSet<AnswerVote>? AnswerVotes { get; init; }
 
-    public DbSet<QuestionVote>? QuestionVotes { get; set; }
+    public DbSet<QuestionVote>? QuestionVotes { get; init; }
 
-    public DbSet<Bookmark>? Bookmarks { get; set; }
+    public DbSet<Bookmark>? Bookmarks { get; init; }
 
     // --------------------------------------
 
     // [Methods]
 
-    private static IEnumerable<Person> GetFakePeople()
+    private static List<Person> GetFakePeople()
     {
         var id = 3;
 
@@ -78,7 +78,7 @@ public class RedditMockupContext : DbContext
         return fakePeople;
     }
 
-    private static IEnumerable<User> GetFakeUsers()
+    private static List<User> GetFakeUsers()
     {
         var id = 3;
 
@@ -117,7 +117,7 @@ public class RedditMockupContext : DbContext
         return fakeUsers;
     }
 
-    private static IEnumerable<Profile> GetFakeProfiles()
+    private static List<Profile> GetFakeProfiles()
     {
         var profilesList = new List<Profile>();
 
@@ -148,7 +148,7 @@ public class RedditMockupContext : DbContext
         return profilesList;
     }
 
-    private static IEnumerable<UserRole> GetFakeUserRoles()
+    private static List<UserRole> GetFakeUserRoles()
     {
         var userRolesList = new List<UserRole>();
 
@@ -182,7 +182,7 @@ public class RedditMockupContext : DbContext
         return userRolesList;
     }
 
-    private static IEnumerable<Question> GetFakeQuestions()
+    private static List<Question> GetFakeQuestions()
     {
         var id = 1;
 
@@ -202,7 +202,7 @@ public class RedditMockupContext : DbContext
         return fakeQuestions;
     }
 
-    private static IEnumerable<Answer> GetFakeAnswers()
+    private static List<Answer> GetFakeAnswers()
     {
         var id = 1;
 
@@ -223,7 +223,7 @@ public class RedditMockupContext : DbContext
         return fakeAnswers;
     }
 
-    private static IEnumerable<AnswerVote> GetFakeAnswerVotes()
+    private static List<AnswerVote> GetFakeAnswerVotes()
     {
         var id = 1;
 
@@ -242,7 +242,7 @@ public class RedditMockupContext : DbContext
         return fakeAnswerVotes;
     }
 
-    private static IEnumerable<QuestionVote> GetFakeQuestionVotes()
+    private static List<QuestionVote> GetFakeQuestionVotes()
     {
         var id = 1;
 
@@ -261,7 +261,7 @@ public class RedditMockupContext : DbContext
         return fakeQuestionVotes;
     }
 
-    private static IEnumerable<Bookmark> GetFakeBookmarks()
+    private static List<Bookmark> GetFakeBookmarks()
     {
         var id = 1;
 

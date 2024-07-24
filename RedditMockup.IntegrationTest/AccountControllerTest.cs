@@ -1,12 +1,13 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using RedditMockup.Common.Dtos;
-using RestSharp;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using RedditMockup.Common.Dtos;
+using RestSharp;
 using Xunit;
 
 namespace RedditMockup.IntegrationTest;
@@ -45,7 +46,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         var request = new RestRequest($"{BaseAddress}/Login")
         {
-            Timeout = DefaultTimeout
+            Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
 
         request.AddJsonBody(loginDto);
@@ -81,7 +82,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         var loginRequest = new RestRequest($"{BaseAddress}/Login")
         {
-            Timeout = DefaultTimeout
+            Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
 
         loginRequest.AddJsonBody(loginDto);
@@ -94,7 +95,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         var getAllRequest = new RestRequest("/api/User")
         {
-            Timeout = DefaultTimeout
+            Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
 
         var getAllResponse = await client.ExecuteGetAsync<CustomResponse>(getAllRequest);
@@ -105,7 +106,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
         var logoutRequest = new RestRequest($"{BaseAddress}/Logout")
         {
-            Timeout = DefaultTimeout
+            Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
 
         var logoutResponse = await client.ExecutePostAsync<CustomResponse>(logoutRequest);

@@ -17,11 +17,11 @@ public class UserRepository : BaseRepository<User>
 
     // [Constructor]
 
-    public UserRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) :
-        base(context, sieveProcessor)
+    public UserRepository(RedditMockupDbContext dbContext, ISieveProcessor sieveProcessor) :
+        base(dbContext, sieveProcessor)
     {
-        _userRoles = context.Set<UserRole>();
-        _bookmarks = context.Set<Bookmark>();
+        _userRoles = dbContext.Set<UserRole>();
+        _bookmarks = dbContext.Set<Bookmark>();
     }
 
     // --------------------------------------
@@ -32,28 +32,28 @@ public class UserRepository : BaseRepository<User>
     {
         var entityEntry = await _userRoles.AddAsync(userRole, cancellationToken);
 
-        return entityEntry?.Entity is not null;
+        return entityEntry.State == EntityState.Added;
     }
 
     public bool DeleteUserRole(UserRole userRole)
     {
         var entityEntry = _userRoles.Remove(userRole);
 
-        return entityEntry?.Entity is not null;
+        return entityEntry.State == EntityState.Deleted;
     }
 
     public async Task<bool> CreateBookmarkAsync(Bookmark bookmark, CancellationToken cancellationToken = default)
     {
         var entityEntry = await _bookmarks.AddAsync(bookmark, cancellationToken);
 
-        return entityEntry?.Entity is not null;
+        return entityEntry.State == EntityState.Added;
     }
 
     public bool DeleteBookmark(Bookmark bookmark)
     {
         var entityEntry = _bookmarks.Remove(bookmark);
 
-        return entityEntry?.Entity is not null;
+        return entityEntry.State == EntityState.Deleted;
     }
 
     public async Task<List<Role?>> GetRolesAsync(int userId, CancellationToken cancellationToken = default) =>

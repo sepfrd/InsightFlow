@@ -11,7 +11,7 @@ using RedditMockup.DataAccess.Context;
 
 namespace RedditMockup.DataAccess.Migrations
 {
-    [DbContext(typeof(RedditMockupContext))]
+    [DbContext(typeof(RedditMockupDbContext))]
     [Migration("20230701195810_Initial")]
     partial class Initial
     {

@@ -40,13 +40,13 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
 
     protected async Task<TEntity?> CreateAsync(TEntity t, CancellationToken cancellationToken = default)
     {
-        TEntity createdEntity = await _repository.CreateAsync(t, cancellationToken);
+        var createdEntity = await _repository.CreateAsync(t, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return createdEntity;
     }
-    
+
     public abstract Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
     public abstract Task<TEntity?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
@@ -55,7 +55,7 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
 
     public async Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken = default)
     {
-        TEntity? t = await GetByGuidAsync(dto.Guid, cancellationToken);
+        var t = await GetByGuidAsync(dto.Guid, cancellationToken);
 
         if (t is null)
         {
@@ -64,7 +64,7 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
 
         _mapper.Map(dto, t);
 
-        TEntity updatedEntity = _repository.Update(t);
+        var updatedEntity = _repository.Update(t);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -80,7 +80,7 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
             return null;
         }
 
-        TEntity deletedEntity = _repository.Delete(entity);
+        var deletedEntity = _repository.Delete(entity);
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -89,7 +89,7 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
 
     public async Task<TEntity?> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
     {
-        TEntity? entity = await GetByGuidAsync(guid, cancellationToken);
+        var entity = await GetByGuidAsync(guid, cancellationToken);
 
         return entity is null ? null : _repository.Delete(entity);
     }

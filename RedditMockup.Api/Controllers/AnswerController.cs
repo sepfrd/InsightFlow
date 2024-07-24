@@ -26,14 +26,22 @@ public class AnswerController : BaseController<Answer, AnswerDto>
     // [Methods]
 
     [HttpGet]
-    [Route("{guid}/votes")]
-    public async Task<CustomResponse<List<AnswerVote>>> GetVotesByAnswerGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
-        await _business.GetVotesByAnswerGuidAsync(guid, cancellationToken);
+    [Route("{guid:guid}/votes")]
+    public async Task<ActionResult<CustomResponse<List<AnswerVote>>>> GetVotesByAnswerGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
+    {
+        var result = await _business.GetVotesByAnswerGuidAsync(guid, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
 
     [HttpPost]
-    [Route("{guid}/votes")]
-    public async Task<CustomResponse> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken) =>
-        await _business.SubmitVoteAsync(guid, kind, cancellationToken);
+    [Route("{guid:guid}/votes")]
+    public async Task<ActionResult<CustomResponse>> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken)
+    {
+        var result = await _business.SubmitVoteAsync(guid, kind, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
 
     // --------------------------------------
 }

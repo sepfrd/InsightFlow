@@ -17,32 +17,31 @@ public class UnitOfWork : IUnitOfWork
 
     private UserRepository? _userRepository;
 
-    private readonly RedditMockupContext _context;
+    private readonly RedditMockupDbContext _dbContext;
 
     private readonly ISieveProcessor _sieveProcessor;
 
-    public UnitOfWork(RedditMockupContext context, ISieveProcessor sieveProcessor)
+    public UnitOfWork(RedditMockupDbContext dbContext, ISieveProcessor sieveProcessor)
     {
-        _context = context;
+        _dbContext = dbContext;
         _sieveProcessor = sieveProcessor;
     }
 
     public AnswerRepository AnswerRepository =>
-        _answerRepository ??= new AnswerRepository(_context, _sieveProcessor);
+        _answerRepository ??= new AnswerRepository(_dbContext, _sieveProcessor);
 
     public PersonRepository PersonRepository =>
-        _personRepository ??= new PersonRepository(_context, _sieveProcessor);
-
+        _personRepository ??= new PersonRepository(_dbContext, _sieveProcessor);
 
     public QuestionRepository QuestionRepository =>
-        _questionRepository ??= new QuestionRepository(_context, _sieveProcessor);
+        _questionRepository ??= new QuestionRepository(_dbContext, _sieveProcessor);
 
     public RoleRepository RoleRepository =>
-        _roleRepository ??= new RoleRepository(_context, _sieveProcessor);
+        _roleRepository ??= new RoleRepository(_dbContext, _sieveProcessor);
 
     public UserRepository UserRepository =>
-        _userRepository ??= new UserRepository(_context, _sieveProcessor);
+        _userRepository ??= new UserRepository(_dbContext, _sieveProcessor);
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken) =>
-        await _context.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 }

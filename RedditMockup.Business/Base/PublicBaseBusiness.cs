@@ -1,9 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Model.BaseEntities;
 using Sieve.Models;
-using System.Net;
 
 namespace RedditMockup.Business.Base;
 
@@ -28,7 +28,7 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
 
     public async Task<CustomResponse<TDto>> PublicCreateAsync(TDto dto, CancellationToken cancellationToken = default)
     {
-        TEntity? entity = await _baseBusiness.CreateAsync(dto, cancellationToken);
+        var entity = await _baseBusiness.CreateAsync(dto, cancellationToken);
 
         if (entity is null)
         {
@@ -42,7 +42,7 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
 
     public async Task<CustomResponse<TDto>> PublicGetByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
     {
-        TEntity? entity = await _baseBusiness.GetByGuidAsync(guid, cancellationToken);
+        var entity = await _baseBusiness.GetByGuidAsync(guid, cancellationToken);
 
         if (entity is null)
         {
@@ -65,7 +65,7 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
 
     public async Task<CustomResponse<TDto>> PublicUpdateAsync(TDto dto, CancellationToken cancellationToken = default)
     {
-        TEntity? entity = await _baseBusiness.UpdateAsync(dto, cancellationToken);
+        var entity = await _baseBusiness.UpdateAsync(dto, cancellationToken);
 
         if (entity is null)
         {
@@ -79,7 +79,7 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
 
     public async Task<CustomResponse<TDto>> PublicDeleteByGuidAsync(Guid guid, CancellationToken cancellationToken)
     {
-        TEntity? deletedEntity = await _baseBusiness.DeleteByGuidAsync(guid, cancellationToken);
+        var deletedEntity = await _baseBusiness.DeleteByGuidAsync(guid, cancellationToken);
 
         if (deletedEntity is null)
         {

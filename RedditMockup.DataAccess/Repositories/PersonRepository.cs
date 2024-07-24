@@ -9,8 +9,8 @@ public class PersonRepository : BaseRepository<Person>
 {
     // [Constructor]
 
-    public PersonRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) :
-        base(context, sieveProcessor)
+    public PersonRepository(RedditMockupDbContext dbContext, ISieveProcessor sieveProcessor) :
+        base(dbContext, sieveProcessor)
     {
     }
 

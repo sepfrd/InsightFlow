@@ -10,7 +10,7 @@ using RedditMockup.DataAccess.Context;
 
 namespace RedditMockup.DataAccess.Migrations
 {
-    [DbContext(typeof(RedditMockupContext))]
+    [DbContext(typeof(RedditMockupDbContext))]
     partial class RedditMockupContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

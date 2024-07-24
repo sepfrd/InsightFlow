@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RedditMockup.Business.Base;
 using RedditMockup.Common.Dtos;
@@ -6,7 +7,6 @@ using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
-using System.Net;
 
 namespace RedditMockup.Business.DomainEntityBusinesses;
 
@@ -35,7 +35,7 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
     // [Methods]
 
-    public override async Task<Answer?> CreateAsync(AnswerDto questionDto, CancellationToken cancellationToken = default)
+    public async override Task<Answer?> CreateAsync(AnswerDto questionDto, CancellationToken cancellationToken = default)
     {
         var answer = _mapper.Map<Answer>(questionDto);
 
@@ -60,25 +60,23 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         return await CreateAsync(answer, cancellationToken);
     }
 
-    public override async Task<Answer?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
+    public async override Task<Answer?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
         await _answerRepository.GetByIdAsync(id,
             answers => answers.Include(answer => answer.User)
                 .Include(answer => answer.Question),
             cancellationToken);
 
-    public override async Task<Answer?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
+    public async override Task<Answer?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
         await _answerRepository.GetByGuidAsync(guid,
             answers => answers.Include(answer => answer.User)
                 .Include(answer => answer.Question),
             cancellationToken);
 
-    public override async Task<List<Answer>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
+    public async override Task<List<Answer>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
         await _answerRepository.GetAllAsync(sieveModel,
             answers => answers.Include(answer => answer.User)
                 .Include(answer => answer.Question),
             cancellationToken);
-
-
 
     public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken = default)
     {
@@ -128,7 +126,6 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
         var votes = answer.Votes!.ToList();
 
         return CustomResponse<List<AnswerVote>>.CreateSuccessfulResponse(votes);
-
     }
 
     // --------------------------------------

@@ -25,18 +25,30 @@ public class PublicQuestionController : PublicBaseController<Question, QuestionD
     // --------------------------------------
 
     [HttpGet]
-    [Route("guid/{guid}/answers")]
-    public async Task<CustomResponse<List<AnswerDto>>> GetAnswersByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
-        await _publicQuestionBusiness.GetAnswersByQuestionGuidAsync(guid, cancellationToken);
+    [Route("guid/{guid:guid}/answers")]
+    public async Task<ActionResult<CustomResponse<List<AnswerDto>>>> GetAnswersByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
+    {
+        var result = await _publicQuestionBusiness.GetAnswersByQuestionGuidAsync(guid, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
 
     [HttpGet]
-    [Route("guid/{guid}/votes")]
-    public async Task<CustomResponse<List<VoteDto>>> GetVotesByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken) =>
-        await _publicQuestionBusiness.GetVotesByQuestionGuidAsync(guid, cancellationToken);
+    [Route("guid/{guid:guid}/votes")]
+    public async Task<ActionResult<CustomResponse<List<VoteDto>>>> GetVotesByQuestionGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
+    {
+        var result = await _publicQuestionBusiness.GetVotesByQuestionGuidAsync(guid, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
 
     [Authorize]
     [HttpPost]
-    [Route("guid/{guid}/votes")]
-    public async Task<CustomResponse> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken) =>
-        await _publicQuestionBusiness.SubmitVoteAsync(guid, kind, cancellationToken);
+    [Route("guid/{guid:guid}/votes")]
+    public async Task<ActionResult<CustomResponse>> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken)
+    {
+        var result = await _publicQuestionBusiness.SubmitVoteAsync(guid, kind, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
 }

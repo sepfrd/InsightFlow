@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using RedditMockup.Common.Dtos;
-using System;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -102,29 +102,21 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         // [Assert]
 
-        switch (testResultCode)
+        if (testResultCode == TestResultCode.Ok)
         {
-            case TestResultCode.Ok:
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
+            apiResponse?.IsSuccess.Should().BeTrue();
+        }
+        else if (testResultCode == TestResultCode.NotFound)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                apiResponse?.IsSuccess.Should().BeTrue();
-
-                break;
-
-            case TestResultCode.NotFound:
-
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                apiResponse?.IsSuccess.Should().BeFalse();
-
-                break;
-
-            default:
-
-                Assert.Null("Error");
-
-                break;
+            apiResponse?.IsSuccess.Should().BeFalse();
+        }
+        else
+        {
+            Assert.Null("Error");
         }
 
         // --------------------------------------
@@ -237,33 +229,24 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         // [Assert]
 
-        switch (testResultCode)
+        if (testResultCode == TestResultCode.Ok)
         {
-            case TestResultCode.Ok:
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
+            apiResponse?.IsSuccess.Should().BeTrue();
+        }
+        else if (testResultCode == TestResultCode.NotFound)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                apiResponse?.IsSuccess.Should().BeTrue();
-
-                break;
-
-            case TestResultCode.NotFound:
-
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                apiResponse?.IsSuccess.Should().BeFalse();
-
-                break;
-
-            default:
-
-                Assert.Null("Error");
-
-                break;
+            apiResponse?.IsSuccess.Should().BeFalse();
+        }
+        else
+        {
+            Assert.Null("Error");
         }
 
         // --------------------------------------
-
     }
 
     [Fact]
@@ -321,42 +304,31 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         // [Assert]
 
-        switch (testResultCode)
+        if (testResultCode == TestResultCode.Ok)
         {
-            case TestResultCode.Ok:
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
+            apiResponse?.IsSuccess.Should().BeTrue();
+        }
+        else if (testResultCode == TestResultCode.NotFound)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                apiResponse?.IsSuccess.Should().BeTrue();
-
-                break;
-
-            case TestResultCode.NotFound:
-
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                apiResponse?.IsSuccess.Should().BeFalse();
-
-                break;
-
-            default:
-
-                Assert.Null("Error");
-
-                break;
+            apiResponse?.IsSuccess.Should().BeFalse();
+        }
+        else
+        {
+            Assert.Null("Error");
         }
 
 
         // --------------------------------------
-
-
     }
 
     [Theory]
     [MemberData(nameof(GenerateDeleteData))]
     public async Task Delete_ReturnExpectedResult(int answerId, TestResultCode testResultCode)
     {
-
         // [Arrange]
 
         if (testResultCode != TestResultCode.Unauthorized)
@@ -384,30 +356,21 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         // [Assert]
 
-        switch (testResultCode)
+        if (testResultCode == TestResultCode.Ok)
         {
-            case TestResultCode.Ok:
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
+            apiResponse?.IsSuccess.Should().BeTrue();
+        }
+        else if (testResultCode == TestResultCode.NotFound)
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                apiResponse?.IsSuccess.Should().BeTrue();
-
-                break;
-
-            case TestResultCode.NotFound:
-
-                response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                apiResponse?.IsSuccess.Should().BeFalse();
-
-                break;
-
-            default:
-
-                Assert.Null("Error");
-
-                break;
-
+            apiResponse?.IsSuccess.Should().BeFalse();
+        }
+        else
+        {
+            Assert.Null("Error");
         }
 
         // --------------------------------------
@@ -516,9 +479,6 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
     public static IEnumerable<object[]> GenerateUpdateData()
     {
-
-
-
         return new List<object[]>
         {
             new object[]

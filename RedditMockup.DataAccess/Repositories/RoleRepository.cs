@@ -9,8 +9,8 @@ public class RoleRepository : BaseRepository<Role>
 {
     // [Constructor]
 
-    public RoleRepository(RedditMockupContext context, ISieveProcessor sieveProcessor) :
-        base(context, sieveProcessor)
+    public RoleRepository(RedditMockupDbContext dbContext, ISieveProcessor sieveProcessor) :
+        base(dbContext, sieveProcessor)
     {
     }
 

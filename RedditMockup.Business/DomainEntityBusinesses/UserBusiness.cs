@@ -34,7 +34,7 @@ public class UserBusiness : BaseBusiness<User, UserDto>
 
     // [Methods]
 
-    public override async Task<User?> CreateAsync(UserDto userDto, CancellationToken cancellationToken = default)
+    public async override Task<User?> CreateAsync(UserDto userDto, CancellationToken cancellationToken = default)
     {
         var person = new Person
         {
@@ -45,7 +45,7 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         var createdPerson = await _unitOfWork.PersonRepository!.CreateAsync(person, cancellationToken);
 
         userDto.Password = await userDto.Password!.GetHashStringAsync();
-        
+
         var user = _mapper.Map<User>(userDto);
 
         user.PersonId = createdPerson.Id;
@@ -53,19 +53,19 @@ public class UserBusiness : BaseBusiness<User, UserDto>
         return await CreateAsync(user, cancellationToken);
     }
 
-    public override async Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
+    public async override Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
         await _userRepository.GetByIdAsync(id,
             users => users.Include(user => user.Person)
                 .Include(user => user.Profile),
             cancellationToken);
 
-    public override async Task<User?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
+    public async override Task<User?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
         await _userRepository.GetByGuidAsync(guid,
             users => users.Include(user => user.Person)
                 .Include(user => user.Profile),
             cancellationToken);
 
-    public override async Task<List<User>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
+    public async override Task<List<User>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
         await _userRepository.GetAllAsync(sieveModel,
             users => users.Include(user => user.Person)
                 .Include(user => user.Profile),
