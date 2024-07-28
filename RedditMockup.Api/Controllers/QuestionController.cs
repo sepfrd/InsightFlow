@@ -7,7 +7,7 @@ using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.Controllers;
 
-[Route("questions")]
+[Route("api/questions")]
 public class QuestionController : BaseController<Question, QuestionDto>
 {
     private readonly QuestionBusiness _business;

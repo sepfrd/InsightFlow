@@ -15,20 +15,10 @@ namespace RedditMockup.Business.DomainEntityBusinesses;
 
 public class AccountBusiness
 {
-    // [Fields]
-
     private readonly UserRepository _userRepository;
 
-    // --------------------------------------
-
-    // [Constructor]
-
     public AccountBusiness(IUnitOfWork unitOfWork) =>
-        _userRepository = unitOfWork.UserRepository!;
-
-    // --------------------------------------
-
-    // [Private Methods]
+        _userRepository = (UserRepository)unitOfWork.UserRepository!;
 
     private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto,
         CancellationToken cancellationToken = default)
@@ -67,10 +57,6 @@ public class AccountBusiness
 
         return users.Count == 0 ? null : users.Single();
     }
-
-    // --------------------------------------
-
-    // [Public Methods]
 
     public async Task<CustomResponse> LoginAsync(LoginDto login, HttpContext httpContext,
         CancellationToken cancellationToken = default)
@@ -121,6 +107,4 @@ public class AccountBusiness
 
         return CustomResponse.CreateSuccessfulResponse("Successfully logged out.");
     }
-
-    // --------------------------------------
 }

@@ -7,23 +7,13 @@ using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.Controllers;
 
-[Route("answers")]
+[Route("api/answers")]
 public class AnswerController : BaseController<Answer, AnswerDto>
 {
-    // [Fields]
-
     private readonly AnswerBusiness _business;
-
-    // --------------------------------------
-
-    // [Constructor]
 
     public AnswerController(IBaseBusiness<Answer, AnswerDto> business) : base(business) =>
         _business = (AnswerBusiness)business;
-
-    // --------------------------------------
-
-    // [Methods]
 
     [HttpGet]
     [Route("{guid:guid}/votes")]
@@ -42,6 +32,4 @@ public class AnswerController : BaseController<Answer, AnswerDto>
 
         return StatusCode((int)result.HttpStatusCode, result);
     }
-
-    // --------------------------------------
 }

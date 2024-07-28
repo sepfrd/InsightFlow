@@ -5,18 +5,12 @@ namespace RedditMockup.Model.Entities;
 
 public class User : BaseEntityWithGuid
 {
-    // [Properties]
-
     [Sieve(CanSort = true, CanFilter = true)]
     public string? Username { get; set; }
 
     public string? Password { get; set; }
 
     public int Score { get; set; }
-
-    // --------------------------------------
-
-    // [Navigation Properties]
 
     [Sieve(CanFilter = true)]
     public int PersonId { get; set; }
@@ -32,6 +26,4 @@ public class User : BaseEntityWithGuid
     public ICollection<UserRole>? UserRoles { get; set; }
 
     public ICollection<Bookmark>? Bookmarks { get; set; }
-
-    // --------------------------------------
 }

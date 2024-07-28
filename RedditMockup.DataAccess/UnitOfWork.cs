@@ -1,21 +1,22 @@
 ﻿using RedditMockup.DataAccess.Context;
 using RedditMockup.DataAccess.Contracts;
 using RedditMockup.DataAccess.Repositories;
+using RedditMockup.Model.Entities;
 using Sieve.Services;
 
 namespace RedditMockup.DataAccess;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private AnswerRepository? _answerRepository;
+    private IBaseRepository<Answer>? _answerRepository;
 
-    private PersonRepository? _personRepository;
+    private IBaseRepository<Person>? _personRepository;
 
-    private QuestionRepository? _questionRepository;
+    private IBaseRepository<Question>? _questionRepository;
 
-    private RoleRepository? _roleRepository;
+    private IBaseRepository<Role>? _roleRepository;
 
-    private UserRepository? _userRepository;
+    private IBaseRepository<User>? _userRepository;
 
     private readonly RedditMockupDbContext _dbContext;
 
@@ -27,19 +28,19 @@ public class UnitOfWork : IUnitOfWork
         _sieveProcessor = sieveProcessor;
     }
 
-    public AnswerRepository AnswerRepository =>
+    public IBaseRepository<Answer> AnswerRepository =>
         _answerRepository ??= new AnswerRepository(_dbContext, _sieveProcessor);
 
-    public PersonRepository PersonRepository =>
+    public IBaseRepository<Person> PersonRepository =>
         _personRepository ??= new PersonRepository(_dbContext, _sieveProcessor);
 
-    public QuestionRepository QuestionRepository =>
+    public IBaseRepository<Question> QuestionRepository =>
         _questionRepository ??= new QuestionRepository(_dbContext, _sieveProcessor);
 
-    public RoleRepository RoleRepository =>
+    public IBaseRepository<Role> RoleRepository =>
         _roleRepository ??= new RoleRepository(_dbContext, _sieveProcessor);
 
-    public UserRepository UserRepository =>
+    public IBaseRepository<User> UserRepository =>
         _userRepository ??= new UserRepository(_dbContext, _sieveProcessor);
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken) =>

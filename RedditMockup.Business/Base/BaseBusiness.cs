@@ -11,17 +11,11 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
     where TEntity : BaseEntityWithGuid
     where TDto : BaseDto
 {
-    // [Fields]
-
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly IBaseRepository<TEntity> _repository;
 
     private readonly IMapper _mapper;
-
-    // --------------------------------------
-
-    // [Constructor]
 
     protected BaseBusiness(IUnitOfWork unitOfWork, IBaseRepository<TEntity> repository, IMapper mapper)
     {
@@ -31,10 +25,6 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
 
         _mapper = mapper;
     }
-
-    // --------------------------------------
-
-    // [Methods]
 
     public abstract Task<TEntity?> CreateAsync(TDto questionDto, CancellationToken cancellationToken = default);
 
@@ -93,6 +83,4 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
 
         return entity is null ? null : _repository.Delete(entity);
     }
-
-    // --------------------------------------
 }

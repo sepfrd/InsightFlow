@@ -1,125 +1,89 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RedditMockup.Common.Dtos;
+using RedditMockup.IntegrationTest.Common;
+using RedditMockup.IntegrationTest.Common.Dtos;
+using RedditMockup.IntegrationTest.Common.Enums;
 using RestSharp;
 using Xunit;
 
 namespace RedditMockup.IntegrationTest;
 
-public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program>>
+public class AccountControllerTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-
-    // [Field(s)]
-
-    private const string BaseAddress = "/api/Account";
-
     private const int DefaultTimeout = 2000;
+    private readonly CustomWebApplicationFactory<Program> _factory;
 
-    private readonly HttpClient _client;
-
-    // --------------------------------------
-
-    // [Constructor]
-
-    public AccountControllerTest(WebApplicationFactory<Program> factory) =>
-        _client = factory.WithWebHostBuilder(builder =>
-                builder.UseEnvironment("Testing"))
-            .CreateClient();
-
-    // --------------------------------------
-
-    // [Theory Method(s)]
-
-    [Theory]
-    [MemberData(nameof(GenerateLoginData))]
-    public async Task Login_ReturnExpectedResult(LoginDto loginDto, bool expected)
+    public AccountControllerTest(CustomWebApplicationFactory<Program> factory)
     {
-        // [Arrange]
+        _factory = factory;
 
-        var client = new RestClient(_client);
-
-        var request = new RestRequest($"{BaseAddress}/Login")
-        {
-            Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
-        };
-
-        request.AddJsonBody(loginDto);
-
-        // --------------------------------------
-
-        // [Act]
-
-        var response = await client.ExecutePostAsync<CustomResponse>(request);
-
-        // --------------------------------------
-
-        // [Assert]
-
-        response.Data?.IsSuccess.Should().Be(expected);
-
-        // --------------------------------------
+        Utilities.ResetDatabase(_factory);
     }
 
     [Theory]
-    [MemberData(nameof(GenerateIntegrationData))]
-    public async Task LoginGetAllLogout_ReturnExpectedResult(LoginDto loginDto, TestResultCode expected)
+    [MemberData(nameof(LoginTestData))]
+    public async Task Login_ReturnExpectedResult(LoginRequestDto loginRequestDto)
     {
-        // [Arrange]
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
 
-        var client = new RestClient(_client);
+        var restClient = new RestClient(client);
 
-        // --------------------------------------
-
-        // [Act]
-
-        // [Login]
-
-        var loginRequest = new RestRequest($"{BaseAddress}/Login")
+        var request = new RestRequest($"{Constants.AuthBaseAddress}/login")
         {
             Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
 
-        loginRequest.AddJsonBody(loginDto);
+        request.AddJsonBody(loginRequestDto.LoginDto);
 
-        var loginResponse = await client.ExecutePostAsync<CustomResponse>(loginRequest);
+        var response = await restClient.ExecutePostAsync<CustomResponse>(request);
 
-        // --------------------------------------
+        response.Data?.IsSuccess.Should().Be(loginRequestDto.ShouldSucceed);
+    }
 
-        // [GetAll]
+    [Theory]
+    [MemberData(nameof(LoginGetAllLogoutTestData))]
+    public async Task LoginGetAllLogout_ReturnExpectedResult(LoginGetAllLogoutRequestDto loginRequestDto)
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
 
-        var getAllRequest = new RestRequest("/api/User")
+        var restClient = new RestClient(client);
+
+        var loginRequest = new RestRequest($"{Constants.AuthBaseAddress}/login")
         {
             Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
 
-        var getAllResponse = await client.ExecuteGetAsync<CustomResponse>(getAllRequest);
+        loginRequest.AddJsonBody(loginRequestDto.LoginDto);
 
-        // --------------------------------------
+        var loginResponse = await restClient.ExecutePostAsync<CustomResponse>(loginRequest);
 
-        // [Logout]
-
-        var logoutRequest = new RestRequest($"{BaseAddress}/Logout")
+        var getAllRequest = new RestRequest(Constants.UsersBaseAddress)
         {
             Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
 
-        var logoutResponse = await client.ExecutePostAsync<CustomResponse>(logoutRequest);
+        var getAllResponse = await restClient.ExecuteGetAsync<CustomResponse>(getAllRequest);
 
-        // --------------------------------------
-
-        // --------------------------------------
-
-        // [Assert]
-
-        switch (expected)
+        var logoutRequest = new RestRequest($"{Constants.AuthBaseAddress}/logout")
         {
-            case TestResultCode.AllFailed:
+            Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
+        };
+
+        var logoutResponse = await restClient.ExecutePostAsync<CustomResponse>(logoutRequest);
+
+        switch (loginRequestDto.TestResult)
+        {
+            case AccountControllerTestResult.AllFailed:
 
                 loginResponse.Data?.IsSuccess.Should().BeFalse();
 
@@ -129,7 +93,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
                 break;
 
-            case TestResultCode.AllSuccessful:
+            case AccountControllerTestResult.AllSuccessful:
 
                 loginResponse.Data?.IsSuccess.Should().BeTrue();
 
@@ -139,7 +103,7 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
 
                 break;
 
-            case TestResultCode.Unauthorized:
+            case AccountControllerTestResult.Unauthorized:
 
                 loginResponse.Data?.IsSuccess.Should().BeTrue();
 
@@ -153,120 +117,96 @@ public class AccountControllerTest : IClassFixture<WebApplicationFactory<Program
                 Assert.True(false);
                 break;
         }
-
-        // --------------------------------------
     }
 
-    // --------------------------------------
-
-    // [Data Method(s)]
-
-    public static IEnumerable<object[]> GenerateLoginData()
-    {
-        return new List<object[]>
+    public static TheoryData<LoginRequestDto> LoginTestData() =>
+        new()
         {
-            new object[]
+            new LoginRequestDto
             {
-                new LoginDto
+                LoginDto = new LoginDto
                 {
                     Username = "sepehr_frd",
                     Password = "sfr1376",
                     RememberMe = true
                 },
-                true
+                ShouldSucceed = true
             },
-
-            new object[]
+            new LoginRequestDto
             {
-                new LoginDto
+                LoginDto = new LoginDto
                 {
                     Username = "sepehr_frd",
                     Password = "asdasdasdasd",
                     RememberMe = false
                 },
-                false
+                ShouldSucceed = false
             },
-
-            new object[]
+            new LoginRequestDto
             {
-                new LoginDto
+                LoginDto = new LoginDto
                 {
                     Username = "sepehr_d",
                     Password = "sfr1376",
                     RememberMe = false
                 },
-                false
+                ShouldSucceed = false
             },
-
-            new object[]
+            new LoginRequestDto
             {
-                new LoginDto
+                LoginDto = new LoginDto
                 {
                     Username = "223",
                     Password = "sd2",
                     RememberMe = false
                 },
-                false
+                ShouldSucceed = false
             }
         };
-    }
 
-    public static IEnumerable<object[]> GenerateIntegrationData()
-    {
-        return new List<object[]>
+    public static TheoryData<LoginGetAllLogoutRequestDto> LoginGetAllLogoutTestData() =>
+        new()
         {
-            new object[]
+            new LoginGetAllLogoutRequestDto
             {
-                new LoginDto
+                LoginDto = new LoginDto
                 {
                     Username = "abbas_booazaar",
                     Password = "abbasabbas",
                     RememberMe = true
                 },
-                TestResultCode.Unauthorized
+                TestResult = AccountControllerTestResult.Unauthorized
             },
-
-            new object[]
+            new LoginGetAllLogoutRequestDto
             {
-                new LoginDto
+                LoginDto = new LoginDto
                 {
                     Username = "sepehr_frd",
                     Password = "sfr1376",
                     RememberMe = true
                 },
-                TestResultCode.AllSuccessful
+                TestResult = AccountControllerTestResult.AllSuccessful
             },
-
-            new object[]
+            new LoginGetAllLogoutRequestDto
             {
-                new LoginDto
+                LoginDto = new LoginDto
                 {
                     Username = "sepehr_frd",
                     Password = "sfr1231123376",
                     RememberMe = true
                 },
-                TestResultCode.AllFailed
+                TestResult = AccountControllerTestResult.AllFailed
             },
-
-            new object[]
+            new LoginGetAllLogoutRequestDto
             {
-                new LoginDto
+                LoginDto = new LoginDto
                 {
                     Username = "sepeasdfahr_frd",
                     Password = "sfr1376",
                     RememberMe = true
                 },
-                TestResultCode.AllFailed
+                TestResult = AccountControllerTestResult.AllFailed
             }
         };
-    }
 
-    // --------------------------------------
-
-    public enum TestResultCode
-    {
-        AllFailed,
-        AllSuccessful,
-        Unauthorized
-    }
 }

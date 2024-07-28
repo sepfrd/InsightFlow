@@ -8,14 +8,8 @@ namespace RedditMockup.DataAccess.Repositories;
 
 public class UserRepository : BaseRepository<User>
 {
-    // [Fields]
-
     private readonly DbSet<UserRole> _userRoles;
     private readonly DbSet<Bookmark> _bookmarks;
-
-    // --------------------------------------
-
-    // [Constructor]
 
     public UserRepository(RedditMockupDbContext dbContext, ISieveProcessor sieveProcessor) :
         base(dbContext, sieveProcessor)
@@ -23,10 +17,6 @@ public class UserRepository : BaseRepository<User>
         _userRoles = dbContext.Set<UserRole>();
         _bookmarks = dbContext.Set<Bookmark>();
     }
-
-    // --------------------------------------
-
-    // [Methods]
 
     public async Task<bool> CreateUserRoleAsync(UserRole userRole, CancellationToken cancellationToken = default)
     {
@@ -62,6 +52,4 @@ public class UserRepository : BaseRepository<User>
             .Include(x => x.Role)
             .Select(x => x.Role)
             .ToListAsync(cancellationToken);
-
-    // --------------------------------------
 }

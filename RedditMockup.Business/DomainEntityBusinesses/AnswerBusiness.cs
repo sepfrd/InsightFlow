@@ -12,28 +12,18 @@ namespace RedditMockup.Business.DomainEntityBusinesses;
 
 public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 {
-    // [Fields]
-
     private readonly AnswerRepository _answerRepository;
 
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly IMapper _mapper;
 
-    // --------------------------------------
-
-    // [Constructor]
-
     public AnswerBusiness(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, unitOfWork.AnswerRepository!, mapper)
     {
-        _answerRepository = unitOfWork.AnswerRepository!;
+        _answerRepository = (AnswerRepository)unitOfWork.AnswerRepository!;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-
-    // --------------------------------------
-
-    // [Methods]
 
     public async override Task<Answer?> CreateAsync(AnswerDto questionDto, CancellationToken cancellationToken = default)
     {
@@ -127,6 +117,4 @@ public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 
         return CustomResponse<List<AnswerVote>>.CreateSuccessfulResponse(votes);
     }
-
-    // --------------------------------------
 }

@@ -54,5 +54,12 @@
       <_ContentIncludedByDefault Remove="logs\internal\log-20230803.json" />
       <_ContentIncludedByDefault Remove="logs\development\log-20240723.json" />
       <_ContentIncludedByDefault Remove="logs\internal\log-20240723.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20230803.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20230804.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20231114.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240419.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20230804.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20231114.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240419.json" />
     </ItemGroup>
 </Project>

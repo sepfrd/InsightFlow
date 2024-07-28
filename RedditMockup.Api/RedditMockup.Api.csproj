@@ -14,4 +14,7 @@
         <ProjectReference Include="..\RedditMockup.Common\RedditMockup.Common.csproj" />
         <ProjectReference Include="..\RedditMockup.Business\RedditMockup.Business.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Serilog" Version="4.0.1" />
+    </ItemGroup>
 </Project>

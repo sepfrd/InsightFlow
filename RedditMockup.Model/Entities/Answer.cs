@@ -5,17 +5,11 @@ namespace RedditMockup.Model.Entities;
 
 public class Answer : BaseEntityWithGuid
 {
-    // [Properties]
-
     [Sieve(CanFilter = true, CanSort = true)]
     public string? Title { get; set; }
 
     [Sieve(CanFilter = true, CanSort = true)]
     public string? Description { get; set; }
-
-    // --------------------------------------
-
-    // [Navigation Properties]
 
     public ICollection<AnswerVote>? Votes { get; set; }
 
@@ -28,6 +22,4 @@ public class Answer : BaseEntityWithGuid
     public int UserId { get; set; }
 
     public User? User { get; set; }
-
-    // --------------------------------------
 }

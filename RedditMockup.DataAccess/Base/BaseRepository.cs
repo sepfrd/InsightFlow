@@ -10,14 +10,8 @@ namespace RedditMockup.DataAccess.Base;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
 {
-    // [Fields]
-
     private readonly DbSet<T> _dbSet;
     private readonly ISieveProcessor _processor;
-
-    // --------------------------------------
-
-    // [Constructor]
 
     protected BaseRepository(RedditMockupDbContext dbContext, ISieveProcessor processor)
     {
@@ -25,18 +19,17 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
         _dbSet = dbContext.Set<T>();
     }
 
-    // --------------------------------------
-
-    // [Methods]
-
     public async Task<T> CreateAsync(T t, CancellationToken cancellationToken = default) =>
         (await _dbSet.AddAsync(t, cancellationToken)).Entity;
 
     public async Task<List<T>> GetAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsNoTracking();
+
         if (include != null)
+        {
             query = include(query);
+        }
 
         return await _processor.Apply(sieveModel, query).ToListAsync(cancellationToken);
     }
@@ -74,6 +67,4 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
 
     public T Delete(T t) =>
         _dbSet.Remove(t).Entity;
-
-    // --------------------------------------
 }

@@ -60,23 +60,22 @@ try
         //app.UseHsts();
     }
 
+
     app
         //.UseHttpsRedirection()
         .UseCors("AllowAnyOrigin")
         .UseRouting()
         .UseAuthentication()
-        .UseAuthorization()
-        .UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-            endpoints.MapHealthChecks("/healthcheck");
-        });
+        .UseAuthorization();
+
+    app.MapControllers();
+    app.MapHealthChecks("/health-checks");
+
     await app.RunAsync();
 }
 catch (Exception exception)
 {
-    Log.Error(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
-    throw;
+    Log.Fatal(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
 }
 finally
 {

@@ -11,13 +11,9 @@ public class PublicBaseBusiness<TEntity, TDto> : IPublicBaseBusiness<TDto>
     where TDto : BaseDto
     where TEntity : BaseEntityWithGuid
 {
-    // [Fields]
-
     private readonly IMapper _mapper;
 
     private readonly IBaseBusiness<TEntity, TDto> _baseBusiness;
-
-    // --------------------------------------
 
     protected PublicBaseBusiness(IBaseBusiness<TEntity, TDto> baseBusiness, IMapper mapper)
     {

@@ -4,25 +4,16 @@ using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.PublicBusinesses;
 using RedditMockup.Common.Dtos;
-using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.PublicControllers;
 
-[Route("public/questions")]
-public class PublicQuestionController : PublicBaseController<Question, QuestionDto>
+[Route("api/public/questions")]
+public class PublicQuestionController : PublicBaseController<QuestionDto>
 {
-    // [Fields]
-
     private readonly PublicQuestionBusiness _publicQuestionBusiness;
-
-    // --------------------------------------
-
-    // [Constructor]
 
     public PublicQuestionController(IPublicBaseBusiness<QuestionDto> questionDtoBaseBusiness) : base(questionDtoBaseBusiness) =>
         _publicQuestionBusiness = (PublicQuestionBusiness)questionDtoBaseBusiness;
-
-    // --------------------------------------
 
     [HttpGet]
     [Route("guid/{guid:guid}/answers")]

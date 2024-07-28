@@ -7,12 +7,8 @@ namespace RedditMockup.DataAccess.Repositories;
 
 public class PersonRepository : BaseRepository<Person>
 {
-    // [Constructor]
-
     public PersonRepository(RedditMockupDbContext dbContext, ISieveProcessor sieveProcessor) :
         base(dbContext, sieveProcessor)
     {
     }
-
-    // --------------------------------------
 }

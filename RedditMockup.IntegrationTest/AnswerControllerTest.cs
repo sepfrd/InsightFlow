@@ -5,90 +5,82 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RedditMockup.Common.Dtos;
+using RedditMockup.IntegrationTest.Common;
+using RedditMockup.IntegrationTest.Common.Dtos;
+using RedditMockup.IntegrationTest.Common.Enums;
+using RedditMockup.IntegrationTest.Handlers;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RedditMockup.IntegrationTest;
 
-public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>>
+public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    // [Field(s)]
-
-    private const string BaseAddress = "/api/Answer";
-
-    private const string LoginAddress = "/api/Account/Login";
-
     private const string ValidTitle = "How to do sth";
-
     private const string ValidDescription = "Can anybody help me with my problem?";
+    private readonly Guid _validAnswerGuid;
 
-    private readonly HttpClient _client;
+    private readonly CustomWebApplicationFactory<Program> _factory;
 
-    // --------------------------------------
-
-    public enum TestResultCode
+    public AnswerControllerTest(CustomWebApplicationFactory<Program> factory)
     {
-        Ok,
-        NotFound,
-        Unauthorized
+        _factory = factory;
+
+        Utilities.ResetDatabase(_factory);
+
+        _validAnswerGuid = Utilities.GetValidAnswerGuid(_factory);
     }
 
-    // [Constructor]
-
-    public AnswerControllerTest(WebApplicationFactory<Program> factory)
+    private HttpClient GetHttpClient(bool isAuthenticated)
     {
-        using var customFactory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Testing"));
+        HttpClient client;
 
-        _client = customFactory.CreateClient();
-    }
-
-    // --------------------------------------
-
-    // [Method(s)]
-
-    private async Task AuthenticateAsync()
-    {
-        var loginDto = new LoginDto
+        if (isAuthenticated)
         {
-            Username = "sepehr_frd",
-            Password = "sfr1376",
-            RememberMe = true
-        };
+            client = _factory.WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureTestServices(services =>
+                    {
+                        services.AddAuthentication(defaultScheme: Constants.TestAuthSchemeName)
+                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                                Constants.TestAuthSchemeName, _ => { });
+                    });
+                })
+                .CreateClient(new WebApplicationFactoryClientOptions
+                {
+                    AllowAutoRedirect = false,
+                });
+        }
+        else
+        {
+            client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+        }
 
-        var serializedLoginDto = JsonSerializer.Serialize(loginDto);
-
-        var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
-
-        await _client.PostAsync(LoginAddress, stringContent);
+        return client;
     }
-
-    // --------------------------------------
-
-    // [Theory Method(s)]
 
     [Theory]
-    [MemberData(nameof(GenerateCreateData))]
-    public async Task Create_ReturnExpectedResult(AnswerDto dto, TestResultCode testResultCode)
+    [MemberData(nameof(CreateTestData))]
+    public async Task Create_ReturnExpectedResult(CreateAnswerRequestDto createAnswerRequestDto)
     {
-        // [Arrange]
-
-        var serializedLoginDto = JsonSerializer.Serialize(dto);
+        var serializedLoginDto = JsonSerializer.Serialize(createAnswerRequestDto.AnswerDto);
 
         var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
 
-        // --------------------------------------
+        var client = GetHttpClient(createAnswerRequestDto.TestResult != AnswerControllerTestResult.Unauthorized);
 
-        // [Act]
+        var response = await client.PostAsync(Constants.PublicAnswersBaseAddress, stringContent);
 
-        if (testResultCode != TestResultCode.Unauthorized) await AuthenticateAsync();
-
-        var response = await _client.PostAsync(BaseAddress, stringContent);
-
-        if (testResultCode == TestResultCode.Unauthorized)
+        if (createAnswerRequestDto.TestResult == AnswerControllerTestResult.Unauthorized)
         {
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             return;
@@ -98,17 +90,13 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
 
-        // --------------------------------------
-
-        // [Assert]
-
-        if (testResultCode == TestResultCode.Ok)
+        if (createAnswerRequestDto.TestResult == AnswerControllerTestResult.OK)
         {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             apiResponse?.IsSuccess.Should().BeTrue();
         }
-        else if (testResultCode == TestResultCode.NotFound)
+        else if (createAnswerRequestDto.TestResult == AnswerControllerTestResult.NotFound)
         {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -118,124 +106,86 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         {
             Assert.Null("Error");
         }
-
-        // --------------------------------------
     }
 
     [Fact]
     public async Task GetAll_ReturnCustomResponseOfListOfAnswerDto()
     {
-        // [Act]
+        var client = GetHttpClient(false);
 
-        var response = await _client.GetAsync(BaseAddress);
+        var response = await client.GetAsync(Constants.PublicAnswersBaseAddress);
 
         var streamResponse = await response.Content.ReadAsStringAsync();
 
         var apiResponse = await Task.Factory.StartNew(() =>
             JsonConvert.DeserializeObject<CustomResponse<List<AnswerDto>>>(streamResponse));
 
-        // --------------------------------------
-
-        // [Assert]
-
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         apiResponse?.Data?.Should().BeOfType<List<AnswerDto>>();
-
-        // --------------------------------------
     }
 
     [Theory]
-    [MemberData(nameof(GenerateGetByIdData))]
-    public async Task GetById_ReturnExpectedResult(int id, bool isAuthenticated, HttpStatusCode httpStatusCode)
+    [MemberData(nameof(GetAnswerByIdTestData))]
+    public async Task GetById_ReturnExpectedResult(GetAnswerByIdRequestDto getAnswerByIdRequestDto)
     {
-        if (isAuthenticated)
+        var client = GetHttpClient(getAnswerByIdRequestDto.IsAuthenticated);
+
+        var response = await client.GetAsync(Constants.PublicAnswersBaseAddress + "/id" + $"?id={getAnswerByIdRequestDto.AnswerId}");
+
+        var streamResponse = await response.Content.ReadAsStreamAsync();
+
+        var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
+
+        if (getAnswerByIdRequestDto.IsAuthenticated)
         {
-            // [Arrange]
+            response.StatusCode.Should().Be(getAnswerByIdRequestDto.ResponseStatusCode);
 
-            await AuthenticateAsync();
-
-            // --------------------------------------
-
-            // [Act]
-
-            var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
-
-            var streamResponse = await response.Content.ReadAsStreamAsync();
-
-            var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
-
-            // --------------------------------------
-
-            // [Assert]
-
-            response.StatusCode.Should().Be(httpStatusCode);
-
-            if (id > 150)
+            if (getAnswerByIdRequestDto.AnswerId > 150)
+            {
                 apiResponse?.IsSuccess.Should().BeFalse();
+            }
             else
+            {
                 apiResponse?.IsSuccess.Should().BeTrue();
-
-            // --------------------------------------
+            }
         }
         else
         {
-            // [Act]
-
-            var response = await _client.GetAsync(BaseAddress + "/id" + $"?id={id}");
-
-            // --------------------------------------
-
-            // [Assert]
-
-            response.StatusCode.Should().Be(httpStatusCode);
-
-            // --------------------------------------
+            apiResponse?.IsSuccess.Should().BeFalse();
         }
     }
 
     [Theory]
-    [MemberData(nameof(GenerateUpdateData))]
-    public async Task Update_ReturnExpectedResult(int answerId, AnswerDto dto, TestResultCode testResultCode)
+    [MemberData(nameof(UpdateAnswerTestData))]
+    public async Task Update_ReturnExpectedResult(UpdateAnswerRequestDto updateAnswerRequestDto)
     {
-        // [Arrange]
-
-        var serializedLoginDto = JsonSerializer.Serialize(dto);
+        var serializedLoginDto = JsonSerializer.Serialize(updateAnswerRequestDto.AnswerDto);
 
         var stringContent = new StringContent(serializedLoginDto, Encoding.UTF8, "application/json");
 
-        if (testResultCode != TestResultCode.Unauthorized)
-        {
-            await AuthenticateAsync();
-        }
+        var client = GetHttpClient(updateAnswerRequestDto.TestResult != AnswerControllerTestResult.Unauthorized);
 
-        // --------------------------------------
+        var response = await client.PutAsync(
+            $"{Constants.PublicAnswersBaseAddress}?id={updateAnswerRequestDto.AnswerId}",
+            stringContent);
 
-        // [Act]
-
-        var response = await _client.PutAsync($"{BaseAddress}?id={answerId}", stringContent);
-
-        if (testResultCode == TestResultCode.Unauthorized)
+        if (updateAnswerRequestDto.TestResult == AnswerControllerTestResult.Unauthorized)
         {
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             return;
         }
 
         var streamResponse = await response.Content.ReadAsStreamAsync();
-
         var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
 
-        // --------------------------------------
-
-        // [Assert]
-
-        if (testResultCode == TestResultCode.Ok)
+        if (updateAnswerRequestDto.TestResult == AnswerControllerTestResult.OK)
         {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             apiResponse?.IsSuccess.Should().BeTrue();
         }
-        else if (testResultCode == TestResultCode.NotFound)
+        else if (updateAnswerRequestDto.TestResult == AnswerControllerTestResult.NotFound)
         {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -245,52 +195,39 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         {
             Assert.Null("Error");
         }
-
-        // --------------------------------------
     }
 
     [Fact]
     public async Task GetVotes_ReturnCustomResponseOfListOfVoteDto()
     {
-        // [Act]
+        var client = GetHttpClient(false);
 
-        var response = await _client.GetAsync(BaseAddress + "/AnswerVotes");
+        var response = await client.GetAsync(Constants.PublicAnswersBaseAddress + "/guid" + _validAnswerGuid + "/votes");
 
         var streamResponse = await response.Content.ReadAsStringAsync();
 
         var apiResponse = await Task.Factory.StartNew(() =>
             JsonConvert.DeserializeObject<CustomResponse<List<VoteDto>>>(streamResponse));
 
-        // --------------------------------------
-
-        // [Assert]
-
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         apiResponse?.Data?.Should().BeOfType<List<VoteDto>>();
-
-        // --------------------------------------
     }
 
     [Theory]
-    [MemberData(nameof(GenerateSubmitVoteData))]
-    public async Task SubmitVote_ReturnExpectedResult(int answerId, bool kind, TestResultCode testResultCode)
+    [MemberData(nameof(SubmitAnswerVoteTestData))]
+    public async Task SubmitVote_ReturnExpectedResult(SubmitAnswerRequestDto submitAnswerRequestDto)
     {
-        // [Arrange]
+        var client = GetHttpClient(submitAnswerRequestDto.TestResult != AnswerControllerTestResult.Unauthorized);
 
+        var jsonData = JsonSerializer.Serialize(submitAnswerRequestDto.VoteKind);
 
-        if (testResultCode != TestResultCode.Unauthorized)
-        {
-            await AuthenticateAsync();
-        }
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        // --------------------------------------
+        var response = await client
+            .PostAsync($"{Constants.PublicAnswersBaseAddress}/guid/{_validAnswerGuid}/votes", content);
 
-        // [Act]
-
-        var response = await _client.PostAsync($"{BaseAddress}/SubmitVote?answerId={answerId}&kind={kind}", null);
-
-        if (testResultCode == TestResultCode.Unauthorized)
+        if (submitAnswerRequestDto.TestResult == AnswerControllerTestResult.Unauthorized)
         {
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             return;
@@ -300,17 +237,13 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
 
-        // --------------------------------------
-
-        // [Assert]
-
-        if (testResultCode == TestResultCode.Ok)
+        if (submitAnswerRequestDto.TestResult == AnswerControllerTestResult.OK)
         {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             apiResponse?.IsSuccess.Should().BeTrue();
         }
-        else if (testResultCode == TestResultCode.NotFound)
+        else if (submitAnswerRequestDto.TestResult == AnswerControllerTestResult.NotFound)
         {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -320,29 +253,17 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         {
             Assert.Null("Error");
         }
-
-
-        // --------------------------------------
     }
 
     [Theory]
-    [MemberData(nameof(GenerateDeleteData))]
-    public async Task Delete_ReturnExpectedResult(int answerId, TestResultCode testResultCode)
+    [MemberData(nameof(DeleteAnswerTestData))]
+    public async Task Delete_ReturnExpectedResult(DeleteAnswerRequestDto deleteAnswerRequestDto)
     {
-        // [Arrange]
+        var client = GetHttpClient(deleteAnswerRequestDto.TestResult != AnswerControllerTestResult.Unauthorized);
 
-        if (testResultCode != TestResultCode.Unauthorized)
-        {
-            await AuthenticateAsync();
-        }
+        var response = await client.DeleteAsync($"{Constants.PublicAnswersBaseAddress}/guid/{_validAnswerGuid}");
 
-        // --------------------------------------
-
-        // [Act]
-
-        var response = await _client.DeleteAsync($"{BaseAddress}?id={answerId}");
-
-        if (testResultCode == TestResultCode.Unauthorized)
+        if (deleteAnswerRequestDto.TestResult == AnswerControllerTestResult.Unauthorized)
         {
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             return;
@@ -352,17 +273,13 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
 
         var apiResponse = await JsonSerializer.DeserializeAsync<CustomResponse>(streamResponse);
 
-        // --------------------------------------
-
-        // [Assert]
-
-        if (testResultCode == TestResultCode.Ok)
+        if (deleteAnswerRequestDto.TestResult == AnswerControllerTestResult.OK)
         {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             apiResponse?.IsSuccess.Should().BeTrue();
         }
-        else if (testResultCode == TestResultCode.NotFound)
+        else if (deleteAnswerRequestDto.TestResult == AnswerControllerTestResult.NotFound)
         {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -372,212 +289,172 @@ public class AnswerControllerTest : IClassFixture<WebApplicationFactory<Program>
         {
             Assert.Null("Error");
         }
-
-        // --------------------------------------
     }
 
-    // --------------------------------------
-
-    // [Data Method(s)]
-
-    public static IEnumerable<object[]> GenerateCreateData()
-    {
-        return new List<object[]>
+    public static TheoryData<CreateAnswerRequestDto> CreateTestData() =>
+        new()
         {
-            new object[]
+            new CreateAnswerRequestDto
             {
-                new AnswerDto
+                AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                TestResultCode.Ok
+                TestResult = AnswerControllerTestResult.OK
             },
-
-            new object[]
+            new CreateAnswerRequestDto
             {
-                new AnswerDto
+                AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                TestResultCode.NotFound
+                TestResult = AnswerControllerTestResult.NotFound
             },
-
-            new object[]
+            new CreateAnswerRequestDto
             {
-                new AnswerDto
+                AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                TestResultCode.Unauthorized
+                TestResult = AnswerControllerTestResult.Unauthorized
             }
         };
-    }
 
-    public static IEnumerable<object[]> GenerateGetByIdData()
-    {
-        return new List<object[]>
+    public static TheoryData<GetAnswerByIdRequestDto> GetAnswerByIdTestData() =>
+        new()
         {
-            new object[]
+            new GetAnswerByIdRequestDto
             {
-                1,
-                true,
-                HttpStatusCode.OK
+                AnswerId = 1,
+                IsAuthenticated = true,
+                ResponseStatusCode = HttpStatusCode.OK
             },
-            new object[]
+            new GetAnswerByIdRequestDto
             {
-                20,
-                true,
-                HttpStatusCode.OK
+                AnswerId = 20,
+                IsAuthenticated = true,
+                ResponseStatusCode = HttpStatusCode.OK
             },
-            new object[]
+            new GetAnswerByIdRequestDto
             {
-                2,
-                false,
-                HttpStatusCode.Unauthorized
+                AnswerId = 2,
+                IsAuthenticated = false,
+                ResponseStatusCode = HttpStatusCode.Unauthorized
             },
-            new object[]
+            new GetAnswerByIdRequestDto
             {
-                20,
-                false,
-                HttpStatusCode.Unauthorized
+                AnswerId = 20,
+                IsAuthenticated = false,
+                ResponseStatusCode = HttpStatusCode.Unauthorized
             }
         };
-    }
 
-    public static IEnumerable<object[]> GenerateSubmitVoteData()
-    {
-        return new List<object[]>
+    public static TheoryData<SubmitAnswerRequestDto> SubmitAnswerVoteTestData() =>
+        new()
         {
-            new object[]
+            new SubmitAnswerRequestDto
             {
-                5,
-                true,
-                TestResultCode.Ok
+                AnswerId = 5,
+                VoteKind = true,
+                TestResult = AnswerControllerTestResult.OK
             },
-
-            new object[]
+            new SubmitAnswerRequestDto
             {
-                5,
-                false,
-                TestResultCode.Unauthorized
+                AnswerId = 5,
+                VoteKind = false,
+                TestResult = AnswerControllerTestResult.Unauthorized
             },
-
-            new object[]
+            new SubmitAnswerRequestDto
             {
-                200,
-                true,
-                TestResultCode.NotFound
+                AnswerId = 200,
+                VoteKind = true,
+                TestResult = AnswerControllerTestResult.NotFound
             }
         };
-    }
 
-    public static IEnumerable<object[]> GenerateUpdateData()
-    {
-        return new List<object[]>
+    public static TheoryData<UpdateAnswerRequestDto> UpdateAnswerTestData() =>
+        new()
         {
-            new object[]
+            new UpdateAnswerRequestDto
             {
-                5,
-                new AnswerDto
+                AnswerId = 5,
+                AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                TestResultCode.Ok
+                TestResult = AnswerControllerTestResult.OK
             },
-
-            new object[]
+            new UpdateAnswerRequestDto
             {
-                5,
-                new AnswerDto
+                AnswerId = 5,
+                AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                TestResultCode.Ok
+                TestResult = AnswerControllerTestResult.Unauthorized
             },
-
-            new object[]
+            new UpdateAnswerRequestDto
             {
-                5,
-                new AnswerDto
+                AnswerId = 5,
+                AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                TestResultCode.Unauthorized
+                TestResult = AnswerControllerTestResult.NotFound
             },
-
-            new object[]
+            new UpdateAnswerRequestDto
             {
-                5,
-                new AnswerDto
+                AnswerId = 450,
+                AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                TestResultCode.NotFound
+                TestResult = AnswerControllerTestResult.NotFound
             },
-
-            new object[]
+            new UpdateAnswerRequestDto
             {
-                450,
-                new AnswerDto
+                AnswerId = 450,
+                AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
                     Title = ValidTitle,
                     Description = ValidDescription
                 },
-                TestResultCode.NotFound
-            },
-
-            new object[]
-            {
-                450,
-                new AnswerDto
-                {
-                    QuestionGuid = Guid.NewGuid(),
-                    Title = ValidTitle,
-                    Description = ValidDescription
-                },
-                TestResultCode.NotFound
+                TestResult = AnswerControllerTestResult.NotFound
             }
         };
-    }
 
-    public static IEnumerable<object[]> GenerateDeleteData()
-    {
-        return new List<object[]>
+    public static TheoryData<DeleteAnswerRequestDto> DeleteAnswerTestData() =>
+        new()
         {
-            new object[]
+            new DeleteAnswerRequestDto
             {
-                5,
-                TestResultCode.Ok
+                AnswerId = 5,
+                TestResult = AnswerControllerTestResult.OK
             },
-
-            new object[]
+            new DeleteAnswerRequestDto
             {
-                200,
-                TestResultCode.NotFound
+                AnswerId = 200,
+                TestResult = AnswerControllerTestResult.NotFound
             },
-
-            new object[]
+            new DeleteAnswerRequestDto
             {
-                5,
-                TestResultCode.Unauthorized
+                AnswerId = 5,
+                TestResult = AnswerControllerTestResult.Unauthorized
             }
         };
-    }
-
-    // --------------------------------------
 }

@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using RedditMockup.Api.Filters;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.DomainEntityBusinesses;
 using RedditMockup.Business.PublicBusinesses;
@@ -23,8 +24,7 @@ internal static class DependencyInjectionExtension
 {
     internal static IServiceCollection InjectApi(this IServiceCollection services) =>
         services
-            //.AddControllers(x => x.Filters.Add<CustomExceptionFilter>())
-            .AddControllers()
+            .AddControllers(options => options.Filters.Add<CustomExceptionFilter>())
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -37,7 +37,8 @@ internal static class DependencyInjectionExtension
         {
             options.AddPolicy("AllowAnyOrigin", builder =>
             {
-                builder.AllowAnyOrigin()
+                builder
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             });
@@ -49,8 +50,10 @@ internal static class DependencyInjectionExtension
     internal static IServiceCollection InjectUnitOfWork(this IServiceCollection services) =>
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-    internal static IServiceCollection InjectContext(this IServiceCollection services,
-        IConfiguration configuration, IWebHostEnvironment environment)
+    internal static IServiceCollection InjectContext(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment)
     {
         if (environment.IsEnvironment("Testing"))
         {
@@ -82,14 +85,14 @@ internal static class DependencyInjectionExtension
             {
                 options.Events.OnRedirectToLogin = context =>
                 {
-                    context.Response.Headers["Location"] = context.RedirectUri;
+                    context.Response.Headers.Location = context.RedirectUri;
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
 
                 options.Events.OnRedirectToAccessDenied = context =>
                 {
-                    context.Response.Headers["Location"] = context.RedirectUri;
+                    context.Response.Headers.Location = context.RedirectUri;
                     context.Response.StatusCode = 403;
                     return Task.CompletedTask;
                 };

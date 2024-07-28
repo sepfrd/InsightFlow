@@ -4,27 +4,16 @@ using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.PublicBusinesses;
 using RedditMockup.Common.Dtos;
-using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.PublicControllers;
 
-[Route("public/answers")]
-public class PublicAnswerController : PublicBaseController<Answer, AnswerDto>
+[Route("api/public/answers")]
+public class PublicAnswerController : PublicBaseController<AnswerDto>
 {
-    // [Fields]
-
     private readonly PublicAnswerBusiness _publicAnswerBusiness;
-
-    // --------------------------------------
-
-    // [Constructor]
 
     public PublicAnswerController(IPublicBaseBusiness<AnswerDto> publicBaseBusiness) : base(publicBaseBusiness) =>
         _publicAnswerBusiness = (PublicAnswerBusiness)publicBaseBusiness;
-
-    // --------------------------------------
-
-    // [Methods]
 
     [HttpGet]
     [Route("guid/{guid:guid}/votes")]
@@ -44,6 +33,4 @@ public class PublicAnswerController : PublicBaseController<Answer, AnswerDto>
 
         return StatusCode((int)result.HttpStatusCode, result);
     }
-
-    // --------------------------------------
 }

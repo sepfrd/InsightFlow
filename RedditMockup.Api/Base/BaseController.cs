@@ -11,17 +11,23 @@ using Sieve.Models;
 
 namespace RedditMockup.Api.Base;
 
-[Authorize(PolicyConstants.Admin)]
 [ApiController]
-[Route("api")]
-public class BaseController<TEntity, TDto>(IBaseBusiness<TEntity, TDto> business) : ControllerBase
+[Authorize(PolicyConstants.Admin)]
+public abstract class BaseController<TEntity, TDto> : ControllerBase
     where TEntity : BaseEntity
     where TDto : BaseDto
 {
+    private readonly IBaseBusiness<TEntity, TDto> _business;
+
+    protected BaseController(IBaseBusiness<TEntity, TDto> business)
+    {
+        _business = business;
+    }
+
     [HttpPost]
     public async Task<ActionResult<CustomResponse<TEntity?>>> CreateAsync([FromBody] TDto dto, CancellationToken cancellationToken)
     {
-        var result = await business.CreateAsync(dto, cancellationToken);
+        var result = await _business.CreateAsync(dto, cancellationToken);
 
         var response = new CustomResponse<TEntity?>
         {
@@ -36,7 +42,7 @@ public class BaseController<TEntity, TDto>(IBaseBusiness<TEntity, TDto> business
     [HttpGet]
     public async Task<ActionResult<CustomResponse<List<TEntity>?>>> GetAllAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken)
     {
-        var result = await business.GetAllAsync(sieveModel, cancellationToken);
+        var result = await _business.GetAllAsync(sieveModel, cancellationToken);
 
         var response = new CustomResponse<List<TEntity>?>
         {
@@ -52,7 +58,7 @@ public class BaseController<TEntity, TDto>(IBaseBusiness<TEntity, TDto> business
     [Route("id/{id:int}")]
     public async Task<ActionResult<CustomResponse<TEntity?>>> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken)
     {
-        var result = await business.GetByIdAsync(id, cancellationToken);
+        var result = await _business.GetByIdAsync(id, cancellationToken);
 
         var response = new CustomResponse<TEntity?>
         {
@@ -68,7 +74,7 @@ public class BaseController<TEntity, TDto>(IBaseBusiness<TEntity, TDto> business
     [Route("guid/{guid:guid}")]
     public async Task<ActionResult<CustomResponse<TEntity?>>> GetByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
     {
-        var result = await business.GetByGuidAsync(guid, cancellationToken);
+        var result = await _business.GetByGuidAsync(guid, cancellationToken);
 
         var response = new CustomResponse<TEntity?>
         {
@@ -84,7 +90,7 @@ public class BaseController<TEntity, TDto>(IBaseBusiness<TEntity, TDto> business
     [Route("id/{id:int}")]
     public async Task<ActionResult<CustomResponse<TEntity?>>> DeleteByIdAsync([FromRoute] int id, CancellationToken cancellationToken)
     {
-        var result = await business.DeleteByIdAsync(id, cancellationToken);
+        var result = await _business.DeleteByIdAsync(id, cancellationToken);
 
         var response = new CustomResponse<TEntity?>
         {
@@ -100,7 +106,7 @@ public class BaseController<TEntity, TDto>(IBaseBusiness<TEntity, TDto> business
     [Route("guid/{guid:guid}")]
     public async Task<ActionResult<CustomResponse<TEntity?>>> DeleteByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
     {
-        var result = await business.DeleteByGuidAsync(guid, cancellationToken);
+        var result = await _business.DeleteByGuidAsync(guid, cancellationToken);
 
         var response = new CustomResponse<TEntity?>
         {
@@ -116,7 +122,7 @@ public class BaseController<TEntity, TDto>(IBaseBusiness<TEntity, TDto> business
     public async Task<ActionResult<CustomResponse<TEntity?>>> UpdateAsync([FromBody] TDto dto, CancellationToken
         cancellationToken)
     {
-        var result = await business.UpdateAsync(dto, cancellationToken);
+        var result = await _business.UpdateAsync(dto, cancellationToken);
 
         var response = new CustomResponse<TEntity?>
         {
