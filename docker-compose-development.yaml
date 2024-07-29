@@ -9,11 +9,9 @@ services:
       - "1433:1433"
     healthcheck:
       test: ["CMD", "bash", "-c", "echo 'SELECT 1'"]
-      interval: 1s
-      timeout: 3s
-      retries: 3
-    volumes:
-     - sqlserver-data:/var/opt/mssql
+      interval: 10s
+      timeout: 10s
+      retries: 10
     deploy:
       resources:
         limits:
@@ -31,7 +29,7 @@ services:
       InternalSerilog__MinimumLevel__Override__Microsoft: Information
       InternalSerilog__MinimumLevel__Override__System: Information
       InternalSerilog__WriteTo__0__Name: File
-      InternalSerilog__WriteTo__0__Args__path: ./logs/internal/log-.json
+      InternalSerilog__WriteTo__0__Args__path: "./logs/internal/log-.json"
       InternalSerilog__WriteTo__0__Args__rollingInterval: Day
       InternalSerilog__WriteTo__0__Args__rollOnFileSizeLimit: true
       InternalSerilog__WriteTo__0__Args__formatter: Serilog.Formatting.Json.JsonFormatter
@@ -42,7 +40,7 @@ services:
       Serilog__MinimumLevel__Override__Microsoft: Information
       Serilog__MinimumLevel__Override__System: Information
       Serilog__WriteTo__0__Name: File
-      Serilog__WriteTo__0__Args__path: ./logs/development/log-.json
+      Serilog__WriteTo__0__Args__path: "./logs/development/log-.json"
       Serilog__WriteTo__0__Args__rollingInterval: Day
       Serilog__WriteTo__0__Args__rollOnFileSizeLimit: true
       Serilog__WriteTo__0__Args__formatter: Serilog.Formatting.Json.JsonFormatter
@@ -52,11 +50,8 @@ services:
       Serilog__Enrich__1: WithMachineName
       ConnectionStrings__SqlServer: "Data Source=sqlserver,1433;Initial Catalog=RedditMockup;User Id=sa;Password=Sfr1376.;Trust Server Certificate=True;Encrypt=False"
     ports:
-      - "6000:8080"
+      - "8000:8080"
     depends_on:
       sqlserver:
         condition: service_healthy
-
-volumes:
-  sqlserver-data:
-   
+    restart: on-failure

@@ -11,10 +11,7 @@ services:
       test: ["CMD", "bash", "-c", "echo 'SELECT 1'"]
       interval: 10s
       timeout: 10s
-      retries: 5
-    volumes:
-     - sqlserver-data:/var/opt/mssql
-    restart: always
+      retries: 10
     deploy:
       resources:
         limits:
@@ -25,12 +22,11 @@ services:
     image: mongo:6.0.8
     ports:
       - "27017:27017"
-    restart: always
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 10s
-      retries: 5
+      retries: 10
 
   redditmockup:
     image: local/redditmockup:1.0
@@ -72,13 +68,10 @@ services:
       ConnectionStrings__SqlServer: "Data Source=sqlserver,1433;Initial Catalog=RedditMockup;User Id=sa;Password=Sfr1376.;Trust Server Certificate=True;Encrypt=False"
     ports:
       - "9000:8080"
-    restart: always
     depends_on:
       sqlserver:
         condition: service_healthy
       mongodb:
         condition: service_healthy
-
-volumes:
-  sqlserver-data:
+    restart: on-failure
    
