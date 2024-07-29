@@ -68,7 +68,8 @@ internal static class DependencyInjectionExtension
     }
 
     internal static IServiceCollection InjectSerilog(this IServiceCollection services, IConfiguration configuration) =>
-        services.AddSerilog(x => x.ReadFrom.Configuration(configuration));
+        services.AddSerilog(loggerConfiguration =>
+            loggerConfiguration.ReadFrom.Configuration(configuration));
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>
         services.AddScoped<ISieveProcessor, SieveProcessor>();

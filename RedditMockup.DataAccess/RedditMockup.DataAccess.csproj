@@ -12,7 +12,6 @@
         <Folder Include="Base\" />
         <Folder Include="Context\" />
         <Folder Include="Contracts\" />
-        <Folder Include="Migrations\" />
         <Folder Include="Repositories\" />
     </ItemGroup>
     <ItemGroup>

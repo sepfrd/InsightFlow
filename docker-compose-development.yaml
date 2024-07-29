@@ -1,0 +1,62 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+      - "ACCEPT_EULA=1"
+      - "MSSQL_SA_PASSWORD=Sfr1376."
+      - "Trust_Server_Certificate=True"
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo 'SELECT 1'"]
+      interval: 1s
+      timeout: 3s
+      retries: 3
+    volumes:
+     - sqlserver-data:/var/opt/mssql
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '1024M'
+
+  redditmockup:
+    image: local/redditmockup:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      InternalSerilog__MinimumLevel__Default: Information
+      InternalSerilog__MinimumLevel__Override__Microsoft: Information
+      InternalSerilog__MinimumLevel__Override__System: Information
+      InternalSerilog__WriteTo__0__Name: File
+      InternalSerilog__WriteTo__0__Args__path: ./logs/internal/log-.json
+      InternalSerilog__WriteTo__0__Args__rollingInterval: Day
+      InternalSerilog__WriteTo__0__Args__rollOnFileSizeLimit: true
+      InternalSerilog__WriteTo__0__Args__formatter: Serilog.Formatting.Json.JsonFormatter
+      InternalSerilog__Enrich__0: FromLogContext
+      InternalSerilog__Enrich__1: WithMachineName
+      InternalSerilog__Enrich__2: WithThreadId
+      Serilog__MinimumLevel__Default: Information
+      Serilog__MinimumLevel__Override__Microsoft: Information
+      Serilog__MinimumLevel__Override__System: Information
+      Serilog__WriteTo__0__Name: File
+      Serilog__WriteTo__0__Args__path: ./logs/development/log-.json
+      Serilog__WriteTo__0__Args__rollingInterval: Day
+      Serilog__WriteTo__0__Args__rollOnFileSizeLimit: true
+      Serilog__WriteTo__0__Args__formatter: Serilog.Formatting.Json.JsonFormatter
+      Serilog__WriteTo__1__Name: Console
+      Serilog__WriteTo__1__Args__outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {Message:lj} <s:{SourceContext}>{NewLine}{Exception}"
+      Serilog__Enrich__0: FromLogContext
+      Serilog__Enrich__1: WithMachineName
+      ConnectionStrings__SqlServer: "Data Source=sqlserver,1433;Initial Catalog=RedditMockup;User Id=sa;Password=Sfr1376.;Trust Server Certificate=True;Encrypt=False"
+    ports:
+      - "6000:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+volumes:
+  sqlserver-data:
+   
