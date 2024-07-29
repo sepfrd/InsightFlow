@@ -9,6 +9,7 @@ using Sieve.Models;
 namespace RedditMockup.Api.Base;
 
 [ApiController]
+[Route("api/public")]
 public class PublicBaseController<TDto> : ControllerBase
     where TDto : BaseDto
 {

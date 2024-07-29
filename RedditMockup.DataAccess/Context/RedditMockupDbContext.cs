@@ -87,7 +87,7 @@ public class RedditMockupDbContext : DbContext
             {
                 Id = 1,
                 Username = "sepehr_frd",
-                Password = "sfr1376".GetHashStringAsync().Result,
+                Password = "Sfr1376.".GetHashStringAsync().Result,
                 PersonId = 1
             },
             new()

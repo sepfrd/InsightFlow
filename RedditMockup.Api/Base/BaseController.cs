@@ -12,6 +12,7 @@ using Sieve.Models;
 namespace RedditMockup.Api.Base;
 
 [ApiController]
+[Route("api")]
 [Authorize(PolicyConstants.Admin)]
 public abstract class BaseController<TEntity, TDto> : ControllerBase
     where TEntity : BaseEntity
@@ -134,14 +135,14 @@ public abstract class BaseController<TEntity, TDto> : ControllerBase
         return StatusCode((int)response.HttpStatusCode, result);
     }
 
-    [HttpOptions]
-    public IActionResult Options()
-    {
-        Response
-            .Headers
-            .Add(new KeyValuePair<string, StringValues>("Allow", $"{HttpMethods.Post},{HttpMethods.Get},{HttpMethods.Put},{HttpMethods.Delete}"));
-
-        return Ok();
-    }
+    // [HttpOptions]
+    // public IActionResult Options()
+    // {
+    //     Response
+    //         .Headers
+    //         .Add(new KeyValuePair<string, StringValues>("Allow", $"{HttpMethods.Post},{HttpMethods.Get},{HttpMethods.Put},{HttpMethods.Delete}"));
+    //
+    //     return Ok();
+    // }
 
 }

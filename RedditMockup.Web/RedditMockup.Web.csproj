@@ -61,5 +61,15 @@
       <_ContentIncludedByDefault Remove="logs\internal\log-20230804.json" />
       <_ContentIncludedByDefault Remove="logs\internal\log-20231114.json" />
       <_ContentIncludedByDefault Remove="logs\internal\log-20240419.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240728.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240729.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240728.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240729.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 </Project>

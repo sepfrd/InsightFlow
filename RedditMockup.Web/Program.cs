@@ -60,7 +60,6 @@ try
         //app.UseHsts();
     }
 
-
     app
         //.UseHttpsRedirection()
         .UseCors("AllowAnyOrigin")
