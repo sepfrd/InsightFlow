@@ -55,8 +55,8 @@ public class RedditMockupDbContext : DbContext
             new()
             {
                 Id = 2,
-                FirstName = "Abbas",
-                LastName = "BooAzaar"
+                FirstName = "Bernard",
+                LastName = "Cool"
             }
         });
 
@@ -76,8 +76,8 @@ public class RedditMockupDbContext : DbContext
             .RuleFor(user => user.Id, _ => id)
             .RuleFor(user => user.Username, faker => faker.Internet.UserName())
             .RuleFor(user => user.Password, faker => faker.Internet.Password())
-            .RuleFor(user => user.PersonId, _ => id++)
-            .RuleFor(user => user.Score, faker => faker.Random.Number(50));
+            .RuleFor(user => user.Score, faker => faker.Random.Number(50))
+            .RuleFor(user => user.PersonId, _ => id++);
 
         var fakeUsers = new List<User>();
 
@@ -93,8 +93,8 @@ public class RedditMockupDbContext : DbContext
             new()
             {
                 Id = 2,
-                Username = "abbas_booazaar",
-                Password = "abbasabbas".GetHashStringAsync().Result,
+                Username = "bernard_cool",
+                Password = "BernardCool1997".GetHashStringAsync().Result,
                 PersonId = 2
             }
         });
@@ -109,6 +109,8 @@ public class RedditMockupDbContext : DbContext
 
     private static List<Profile> GetFakeProfiles()
     {
+        var id = 3;
+
         var profilesList = new List<Profile>();
 
         profilesList.AddRange(new List<Profile>
@@ -116,23 +118,28 @@ public class RedditMockupDbContext : DbContext
             new()
             {
                 Id = 1,
-                UserId = 1
+                UserId = 1,
+                Email = "sepfrd@outlook.com",
+                Bio = ".NET Developer"
             },
             new()
             {
                 Id = 2,
-                UserId = 2
+                UserId = 2,
+                Email = "bercool@gmail.com",
+                Bio = "React Developer"
             }
         });
 
-        for (var i = 3; i < 103; i++)
+        var profileFaker = new Faker<Profile>()
+                .RuleFor(profile => profile.Id, _ => id)
+                .RuleFor(profile => profile.UserId, _ => id++)
+                .RuleFor(profile => profile.Email, faker => faker.Internet.Email())
+                .RuleFor(profile => profile.Bio, faker => faker.Name.JobTitle());
+
+        for (var i = 0; i < 100; i++)
         {
-            profilesList.Add(
-                new Profile
-                {
-                    Id = i,
-                    UserId = i
-                });
+            profilesList.Add(profileFaker.Generate());
         }
 
         return profilesList;
@@ -178,9 +185,9 @@ public class RedditMockupDbContext : DbContext
 
         var questionFaker = new Faker<Question>()
             .RuleFor(question => question.Id, _ => id++)
-            .RuleFor(question => question.Title, faker => faker.Lorem.Sentence(5))
-            .RuleFor(question => question.Description, faker => faker.Lorem.Paragraph())
-            .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 2));
+            .RuleFor(question => question.Title, faker => faker.Random.Words(2))
+            .RuleFor(question => question.Description, faker => faker.Commerce.ProductDescription())
+            .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 100));
 
         var fakeQuestions = new List<Question>();
 
@@ -198,9 +205,9 @@ public class RedditMockupDbContext : DbContext
 
         var answerFaker = new Faker<Answer>()
             .RuleFor(answer => answer.Id, _ => id++)
-            .RuleFor(answer => answer.Title, faker => faker.Lorem.Sentence(5))
-            .RuleFor(answer => answer.Description, faker => faker.Lorem.Paragraph())
-            .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 2))
+            .RuleFor(answer => answer.Title, faker => faker.Random.Words(3))
+            .RuleFor(answer => answer.Description, faker => faker.Commerce.ProductDescription())
+            .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 100))
             .RuleFor(answer => answer.QuestionId, 1);
 
         var fakeAnswers = new List<Answer>();
@@ -220,7 +227,7 @@ public class RedditMockupDbContext : DbContext
         var answerVoteFaker = new Faker<AnswerVote>()
             .RuleFor(answerVote => answerVote.Id, _ => id)
             .RuleFor(answerVote => answerVote.AnswerId, _ => id++)
-            .RuleFor(answerVote => answerVote.Kind, true);
+            .RuleFor(answerVote => answerVote.Kind, faker => faker.Random.Bool());
 
         var fakeAnswerVotes = new List<AnswerVote>();
 
@@ -239,7 +246,7 @@ public class RedditMockupDbContext : DbContext
         var questionVoteFaker = new Faker<QuestionVote>()
             .RuleFor(questionVote => questionVote.Id, _ => id)
             .RuleFor(questionVote => questionVote.QuestionId, _ => id++)
-            .RuleFor(questionVote => questionVote.Kind, true);
+            .RuleFor(questionVote => questionVote.Kind, faker => faker.Random.Bool());
 
         var fakeQuestionVotes = new List<QuestionVote>();
 
@@ -259,7 +266,7 @@ public class RedditMockupDbContext : DbContext
             .RuleFor(bookmark => bookmark.Id, _ => id)
             .RuleFor(bookmark => bookmark.UserId, _ => id)
             .RuleFor(bookmark => bookmark.QuestionId, _ => id++)
-            .RuleFor(bookmark => bookmark.IsBookmarked, true);
+            .RuleFor(bookmark => bookmark.IsBookmarked, faker => faker.Random.Bool());
 
         var fakeBookmarks = new List<Bookmark>();
 
@@ -339,12 +346,12 @@ public class RedditMockupDbContext : DbContext
             new()
             {
                 Id = 1,
-                Title = RoleConstants.Admin
+                Title = ApplicationConstants.AdminRoleName
             },
             new()
             {
                 Id = 2,
-                Title = RoleConstants.User
+                Title = ApplicationConstants.UserRoleName
             }
         });
 

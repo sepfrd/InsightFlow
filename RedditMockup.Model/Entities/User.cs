@@ -6,9 +6,9 @@ namespace RedditMockup.Model.Entities;
 public class User : BaseEntityWithGuid
 {
     [Sieve(CanSort = true, CanFilter = true)]
-    public string? Username { get; set; }
+    public required string Username { get; set; }
 
-    public string? Password { get; set; }
+    public required string Password { get; set; }
 
     public int Score { get; set; }
 

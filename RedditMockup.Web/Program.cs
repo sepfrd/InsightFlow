@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RedditMockup.Common.Constants;
 using RedditMockup.DataAccess.Context;
 using RedditMockup.Web;
 using Serilog;
@@ -26,14 +27,15 @@ try
 {
     builder.Services
         .AddEndpointsApiExplorer()
-        .InjectApi()
-        .InjectCors()
-        .InjectSwagger()
+        .InjectApiControllers()
+        .AddHttpContextAccessor()
+        .InjectCors(builder.Configuration)
+        .InjectSwagger(builder.Configuration)
         .InjectUnitOfWork()
         .InjectSieve()
         .InjectSerilog(builder.Configuration)
-        .InjectAuthentication()
-        .InjectContext(builder.Configuration, builder.Environment)
+        .InjectAuth(builder.Configuration)
+        .InjectDbContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
         .InjectAutoMapper()
@@ -48,7 +50,7 @@ try
     app.UseSwagger()
         .UseSwaggerUI();
 
-    if (app.Environment.IsEnvironment("Testing"))
+    if (app.Environment.IsEnvironment(ApplicationConstants.TestingEnvironmentName))
     {
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
@@ -62,7 +64,7 @@ try
 
     app
         //.UseHttpsRedirection()
-        .UseCors("AllowAnyOrigin")
+        .UseCors(!app.Environment.IsProduction() ? ApplicationConstants.AllowAnyOriginCorsPolicy : ApplicationConstants.RestrictedCorsPolicy)
         .UseRouting()
         .UseAuthentication()
         .UseAuthorization();
@@ -74,7 +76,7 @@ try
 }
 catch (Exception exception)
 {
-    Log.Fatal(exception, "Program stopped due to a {ExceptionType} exception", exception.GetType());
+    Log.Fatal(exception, MessageConstants.ApplicationFatalExceptionMessage, exception.GetType());
 }
 finally
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RedditMockup.Business.DomainEntityBusinesses;
+using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
 
 namespace RedditMockup.Api.Controllers;
@@ -9,28 +9,17 @@ namespace RedditMockup.Api.Controllers;
 [Route("api/auth")]
 public class AccountController : ControllerBase
 {
-    private readonly AccountBusiness _accountBusiness;
+    private readonly IAuthBusiness _authBusiness;
 
-    public AccountController(AccountBusiness accountBusiness) =>
-        _accountBusiness = accountBusiness;
-
-    [Authorize]
-    [HttpPost]
-    [Route("logout")]
-    public async Task<ActionResult<CustomResponse>> Logout()
-    {
-        var result = await AccountBusiness.LogoutAsync(HttpContext);
-
-        return StatusCode((int)result.HttpStatusCode, result);
-    }
+    public AccountController(IAuthBusiness authBusiness) =>
+        _authBusiness = authBusiness;
 
     [HttpPost]
     [Route("login")]
-    public async Task<ActionResult<CustomResponse>> LoginAsync(LoginDto login, CancellationToken cancellationToken)
+    public async Task<ActionResult<CustomResponse<string>>> LoginAsync(LoginDto login, CancellationToken cancellationToken)
     {
-        var result = await _accountBusiness.LoginAsync(login, HttpContext, cancellationToken);
+        var result = await _authBusiness.LoginAsync(login, cancellationToken);
 
         return StatusCode((int)result.HttpStatusCode, result);
     }
-
 }

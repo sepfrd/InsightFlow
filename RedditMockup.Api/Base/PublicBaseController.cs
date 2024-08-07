@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using RedditMockup.Business.Contracts;
+using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 using Sieve.Models;
 
@@ -20,8 +21,8 @@ public class PublicBaseController<TDto> : ControllerBase
         _publicBaseBusiness = publicBaseBusiness;
     }
 
-    [Authorize]
     [HttpPost]
+    [Authorize(ApplicationConstants.UserPolicyName)]
     public async Task<ActionResult<CustomResponse<TDto>>> CreateAsync([FromBody] TDto dto, CancellationToken cancellationToken)
     {
         var result = await _publicBaseBusiness.PublicCreateAsync(dto, cancellationToken);
@@ -46,9 +47,9 @@ public class PublicBaseController<TDto> : ControllerBase
         return StatusCode((int)result.HttpStatusCode, result);
     }
 
-    [Authorize]
     [HttpDelete]
     [Route("guid/{guid:guid}")]
+    [Authorize(ApplicationConstants.UserPolicyName)]
     public async Task<ActionResult<CustomResponse<TDto>>> DeleteByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
     {
         var result = await _publicBaseBusiness.PublicDeleteByGuidAsync(guid, cancellationToken);
@@ -56,8 +57,8 @@ public class PublicBaseController<TDto> : ControllerBase
         return StatusCode((int)result.HttpStatusCode, result);
     }
 
-    [Authorize]
     [HttpPut]
+    [Authorize(ApplicationConstants.UserPolicyName)]
     public async Task<ActionResult<CustomResponse<TDto>>> UpdateAsync([FromBody] TDto dto, CancellationToken
         cancellationToken)
     {

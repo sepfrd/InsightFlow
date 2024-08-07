@@ -13,7 +13,7 @@ namespace RedditMockup.Api.Base;
 
 [ApiController]
 [Route("api")]
-[Authorize(PolicyConstants.Admin)]
+[Authorize(ApplicationConstants.AdminPolicyName)]
 public abstract class BaseController<TEntity, TDto> : ControllerBase
     where TEntity : BaseEntity
     where TDto : BaseDto

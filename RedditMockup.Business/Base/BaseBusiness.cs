@@ -81,6 +81,15 @@ public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
     {
         var entity = await GetByGuidAsync(guid, cancellationToken);
 
-        return entity is null ? null : _repository.Delete(entity);
+        if (entity is null)
+        {
+            return null;
+        }
+        
+        var deletedEntity = _repository.Delete(entity);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        return deletedEntity;
     }
 }

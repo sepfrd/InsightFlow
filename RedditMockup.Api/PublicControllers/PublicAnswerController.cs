@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Api.Base;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Business.PublicBusinesses;
+using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 
 namespace RedditMockup.Api.PublicControllers;
@@ -24,9 +25,9 @@ public class PublicAnswerController : PublicBaseController<AnswerDto>
         return StatusCode((int)result.HttpStatusCode, result);
     }
 
-    [Authorize]
     [HttpPost]
     [Route("guid/{guid:guid}/votes")]
+    [Authorize(ApplicationConstants.UserPolicyName)]
     public async Task<ActionResult<CustomResponse>> SubmitVoteAsync([FromRoute] Guid guid, [FromBody] bool kind, CancellationToken cancellationToken)
     {
         var result = await _publicAnswerBusiness.SubmitVoteAsync(guid, kind, cancellationToken);

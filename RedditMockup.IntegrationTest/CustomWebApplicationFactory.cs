@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using RedditMockup.Common.Constants;
 using RedditMockup.DataAccess.Context;
-using RedditMockup.IntegrationTest.Common;
 
 namespace RedditMockup.IntegrationTest;
 
@@ -22,9 +22,10 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
                 services.Remove(dbContextDescriptor);
             }
 
-            services.AddDbContext<RedditMockupDbContext>(options => options.UseInMemoryDatabase(Constants.DatabaseName));
+            services.AddDbContext<RedditMockupDbContext>(options =>
+                options.UseInMemoryDatabase(ApplicationConstants.ApplicationName));
         });
 
-        builder.UseEnvironment(Constants.TestEnvironmentName);
+        builder.UseEnvironment(ApplicationConstants.TestingEnvironmentName);
     }
 }
