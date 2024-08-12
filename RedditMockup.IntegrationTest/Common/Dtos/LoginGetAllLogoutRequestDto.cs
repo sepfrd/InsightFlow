@@ -8,12 +8,12 @@ public class LoginGetAllLogoutRequestDto : IXunitSerializable
 {
     public required LoginDto LoginDto { get; set; }
 
-    public required AccountControllerTestResult TestResult { get; set; }
+    public required AuthControllerTestResult TestResult { get; set; }
 
     public void Deserialize(IXunitSerializationInfo info)
     {
         LoginDto = info.GetValue<LoginDto>(nameof(LoginDto));
-        TestResult = info.GetValue<AccountControllerTestResult>(nameof(TestResult));
+        TestResult = info.GetValue<AuthControllerTestResult>(nameof(TestResult));
     }
 
     public void Serialize(IXunitSerializationInfo info)

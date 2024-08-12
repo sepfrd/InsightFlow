@@ -59,4 +59,4 @@ services:
     depends_on:
       sqlserver:
         condition: service_healthy
-    restart: on-failure
+    restart: always

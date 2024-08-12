@@ -1,4 +1,4 @@
-using RedditMockup.IntegrationTest.Common.Enums;
+using System.Net;
 using Xunit.Abstractions;
 
 namespace RedditMockup.IntegrationTest.Common.Dtos;
@@ -9,19 +9,23 @@ public class SubmitAnswerRequestDto : IXunitSerializable
 
     public required bool VoteKind { get; set; }
 
-    public required AnswerControllerTestResult TestResult { get; set; }
+    public required HttpStatusCode ResultStatusCode { get; set; }
+
+    public string? Role { get; set; }
 
     public void Deserialize(IXunitSerializationInfo info)
     {
         AnswerId = info.GetValue<int>(nameof(AnswerId));
         VoteKind = info.GetValue<bool>(nameof(VoteKind));
-        TestResult = info.GetValue<AnswerControllerTestResult>(nameof(TestResult));
+        ResultStatusCode = info.GetValue<HttpStatusCode>(nameof(ResultStatusCode));
+        Role = info.GetValue<string?>(nameof(Role));
     }
 
     public void Serialize(IXunitSerializationInfo info)
     {
         info.AddValue(nameof(AnswerId), AnswerId);
         info.AddValue(nameof(VoteKind), VoteKind);
-        info.AddValue(nameof(TestResult), TestResult);
+        info.AddValue(nameof(ResultStatusCode), ResultStatusCode);
+        info.AddValue(nameof(Role), Role);
     }
 }

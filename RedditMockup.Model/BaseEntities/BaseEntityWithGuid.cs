@@ -7,5 +7,5 @@ public class BaseEntityWithGuid : BaseEntity
 {
     protected BaseEntityWithGuid() => Guid = Guid.NewGuid();
 
-    public Guid Guid { get; }
+    public Guid Guid { get; init; }
 }

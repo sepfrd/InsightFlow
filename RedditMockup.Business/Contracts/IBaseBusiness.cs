@@ -1,21 +1,17 @@
-﻿using Sieve.Models;
+﻿using RedditMockup.Common.Dtos;
+using Sieve.Models;
 
 namespace RedditMockup.Business.Contracts;
 
-public interface IBaseBusiness<TEntity, in TDto>
+public interface IBaseBusiness<TDto>
 {
-    Task<TEntity?> CreateAsync(TDto questionDto, CancellationToken cancellationToken = default);
+    Task<CustomResponse<TDto>> CreateAsync(TDto dto, CancellationToken cancellationToken = default);
 
-    Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<CustomResponse<TDto>> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 
-    Task<TEntity?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
+    Task<CustomResponse<List<TDto>>> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
 
-    Task<List<TEntity>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
+    Task<CustomResponse<TDto>> UpdateAsync(TDto dto, CancellationToken cancellationToken = default);
 
-    Task<TEntity?> DeleteByIdAsync(int id, CancellationToken cancellationToken = default);
-
-    Task<TEntity?> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
-
-    Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken = default);
-
+    Task<CustomResponse<TDto>> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
 }

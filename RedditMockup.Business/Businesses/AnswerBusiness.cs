@@ -1,27 +1,27 @@
 ﻿using AutoMapper;
 using RedditMockup.Business.Base;
+using RedditMockup.Business.Businesses.AdminBusinesses;
 using RedditMockup.Business.Contracts;
-using RedditMockup.Business.DomainEntityBusinesses;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Model.Entities;
 
-namespace RedditMockup.Business.PublicBusinesses;
+namespace RedditMockup.Business.Businesses;
 
-public class PublicAnswerBusiness : PublicBaseBusiness<Answer, AnswerDto>
+public class AnswerBusiness : BaseBusiness<Answer, AnswerDto>
 {
     private readonly IMapper _mapper;
 
-    private readonly AnswerBusiness _answerBusiness;
+    private readonly AdminAnswerBusiness _adminAnswerBusiness;
 
-    public PublicAnswerBusiness(IBaseBusiness<Answer, AnswerDto> answerBusiness, IMapper mapper) : base(answerBusiness, mapper)
+    public AnswerBusiness(IAdminBaseBusiness<Answer, AnswerDto> answerBusiness, IMapper mapper) : base(answerBusiness, mapper)
     {
         _mapper = mapper;
-        _answerBusiness = (AnswerBusiness)answerBusiness;
+        _adminAnswerBusiness = (AdminAnswerBusiness)answerBusiness;
     }
 
     public async Task<CustomResponse<List<VoteDto>>> GetVotesByAnswerGuidAsync(Guid answerGuid, CancellationToken cancellationToken = default)
     {
-        var votesResponse = await _answerBusiness.GetVotesByAnswerGuidAsync(answerGuid, cancellationToken);
+        var votesResponse = await _adminAnswerBusiness.GetVotesByAnswerGuidAsync(answerGuid, cancellationToken);
 
         if (!votesResponse.IsSuccess)
         {
@@ -34,5 +34,5 @@ public class PublicAnswerBusiness : PublicBaseBusiness<Answer, AnswerDto>
     }
 
     public async Task<CustomResponse> SubmitVoteAsync(Guid answerGuid, bool kind, CancellationToken cancellationToken = default) =>
-        await _answerBusiness.SubmitVoteAsync(answerGuid, kind, cancellationToken);
+        await _adminAnswerBusiness.SubmitVoteAsync(answerGuid, kind, cancellationToken);
 }

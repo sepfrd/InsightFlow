@@ -1,27 +1,28 @@
+using System;
 using System.Net;
 using Xunit.Abstractions;
 
 namespace RedditMockup.IntegrationTest.Common.Dtos;
 
-public class GetAnswerByIdRequestDto : IXunitSerializable
+public class GetAnswerByGuidRequestDto : IXunitSerializable
 {
-    public required int AnswerId { get; set; }
-
-    public required bool IsAuthenticated { get; set; }
+    public required Guid AnswerGuid { get; set; }
 
     public required HttpStatusCode ResponseStatusCode { get; set; }
 
+    public string? Role { get; set; }
+
     public void Deserialize(IXunitSerializationInfo info)
     {
-        AnswerId = info.GetValue<int>(nameof(AnswerId));
-        IsAuthenticated = info.GetValue<bool>(nameof(IsAuthenticated));
+        AnswerGuid = info.GetValue<Guid>(nameof(AnswerGuid));
         ResponseStatusCode = info.GetValue<HttpStatusCode>(nameof(ResponseStatusCode));
+        Role = info.GetValue<string?>(nameof(Role));
     }
 
     public void Serialize(IXunitSerializationInfo info)
     {
-        info.AddValue(nameof(AnswerId), AnswerId);
-        info.AddValue(nameof(IsAuthenticated), IsAuthenticated);
+        info.AddValue(nameof(AnswerGuid), AnswerGuid);
         info.AddValue(nameof(ResponseStatusCode), ResponseStatusCode);
+        info.AddValue(nameof(Role), Role);
     }
 }

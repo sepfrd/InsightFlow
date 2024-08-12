@@ -83,20 +83,8 @@ public class RedditMockupDbContext : DbContext
 
         fakeUsers.AddRange(new List<User>
         {
-            new()
-            {
-                Id = 1,
-                Username = "sepehr_frd",
-                Password = "Sfr1376.".GetHashStringAsync().Result,
-                PersonId = 1
-            },
-            new()
-            {
-                Id = 2,
-                Username = "bernard_cool",
-                Password = "BernardCool1997".GetHashStringAsync().Result,
-                PersonId = 2
-            }
+            FakeDataHelper.FakeAdmin,
+            FakeDataHelper.FakeUser
         });
 
         for (var i = 0; i < 100; i++)
@@ -115,27 +103,15 @@ public class RedditMockupDbContext : DbContext
 
         profilesList.AddRange(new List<Profile>
         {
-            new()
-            {
-                Id = 1,
-                UserId = 1,
-                Email = "sepfrd@outlook.com",
-                Bio = ".NET Developer"
-            },
-            new()
-            {
-                Id = 2,
-                UserId = 2,
-                Email = "bercool@gmail.com",
-                Bio = "React Developer"
-            }
+            FakeDataHelper.FakeAdminProfile,
+            FakeDataHelper.FakeUserProfile
         });
 
         var profileFaker = new Faker<Profile>()
-                .RuleFor(profile => profile.Id, _ => id)
-                .RuleFor(profile => profile.UserId, _ => id++)
-                .RuleFor(profile => profile.Email, faker => faker.Internet.Email())
-                .RuleFor(profile => profile.Bio, faker => faker.Name.JobTitle());
+            .RuleFor(profile => profile.Id, _ => id)
+            .RuleFor(profile => profile.UserId, _ => id++)
+            .RuleFor(profile => profile.Email, faker => faker.Internet.Email())
+            .RuleFor(profile => profile.Bio, faker => faker.Name.JobTitle());
 
         for (var i = 0; i < 100; i++)
         {
@@ -151,18 +127,8 @@ public class RedditMockupDbContext : DbContext
 
         userRolesList.AddRange(new List<UserRole>
         {
-            new()
-            {
-                Id = 1,
-                UserId = 1,
-                RoleId = 1
-            },
-            new()
-            {
-                Id = 2,
-                UserId = 2,
-                RoleId = 2
-            }
+            FakeDataHelper.FakeAdminUserRole,
+            FakeDataHelper.FakeUserUserRole
         });
 
         for (var i = 3; i < 102; i++)
@@ -181,7 +147,7 @@ public class RedditMockupDbContext : DbContext
 
     private static List<Question> GetFakeQuestions()
     {
-        var id = 1;
+        var id = 2;
 
         var questionFaker = new Faker<Question>()
             .RuleFor(question => question.Id, _ => id++)
@@ -189,7 +155,10 @@ public class RedditMockupDbContext : DbContext
             .RuleFor(question => question.Description, faker => faker.Commerce.ProductDescription())
             .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 100));
 
-        var fakeQuestions = new List<Question>();
+        var fakeQuestions = new List<Question>
+        {
+            FakeDataHelper.FakeQuestion
+        };
 
         for (var i = 0; i < 100; i++)
         {
@@ -201,7 +170,7 @@ public class RedditMockupDbContext : DbContext
 
     private static List<Answer> GetFakeAnswers()
     {
-        var id = 1;
+        var id = 2;
 
         var answerFaker = new Faker<Answer>()
             .RuleFor(answer => answer.Id, _ => id++)
@@ -210,7 +179,10 @@ public class RedditMockupDbContext : DbContext
             .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 100))
             .RuleFor(answer => answer.QuestionId, 1);
 
-        var fakeAnswers = new List<Answer>();
+        var fakeAnswers = new List<Answer>
+        {
+            FakeDataHelper.FakeAnswer
+        };
 
         for (var i = 0; i < 100; i++)
         {

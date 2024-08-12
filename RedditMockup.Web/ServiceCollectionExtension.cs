@@ -9,9 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using RedditMockup.Api.Filters;
+using RedditMockup.Business.Businesses;
+using RedditMockup.Business.Businesses.AdminBusinesses;
 using RedditMockup.Business.Contracts;
-using RedditMockup.Business.DomainEntityBusinesses;
-using RedditMockup.Business.PublicBusinesses;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Profiles;
@@ -193,11 +193,11 @@ internal static class ServiceCollectionExtension
             });
 
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
-        services.AddScoped<IBaseBusiness<User, UserDto>, UserBusiness>()
-            .AddScoped<IBaseBusiness<Answer, AnswerDto>, AnswerBusiness>()
-            .AddScoped<IBaseBusiness<Question, QuestionDto>, QuestionBusiness>()
-            .AddScoped<IPublicBaseBusiness<AnswerDto>, PublicAnswerBusiness>()
-            .AddScoped<IPublicBaseBusiness<QuestionDto>, PublicQuestionBusiness>()
+        services.AddScoped<IAdminBaseBusiness<User, UserDto>, AdminUserBusiness>()
+            .AddScoped<IAdminBaseBusiness<Answer, AnswerDto>, AdminAnswerBusiness>()
+            .AddScoped<IAdminBaseBusiness<Question, QuestionDto>, AdminQuestionBusiness>()
+            .AddScoped<IBaseBusiness<AnswerDto>, AnswerBusiness>()
+            .AddScoped<IBaseBusiness<QuestionDto>, QuestionBusiness>()
             .AddScoped<IAuthBusiness, AuthBusiness>();
 
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>

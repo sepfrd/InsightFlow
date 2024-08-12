@@ -1,5 +1,4 @@
-﻿using RedditMockup.DataAccess.Repositories;
-using RedditMockup.Model.Entities;
+﻿using RedditMockup.Model.Entities;
 
 namespace RedditMockup.DataAccess.Contracts;
 

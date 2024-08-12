@@ -19,8 +19,8 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
         _dbSet = dbContext.Set<T>();
     }
 
-    public async Task<T> CreateAsync(T t, CancellationToken cancellationToken = default) =>
-        (await _dbSet.AddAsync(t, cancellationToken)).Entity;
+    public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default) =>
+        (await _dbSet.AddAsync(entity, cancellationToken)).Entity;
 
     public async Task<List<T>> GetAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
     {
@@ -58,13 +58,13 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityWithGuid
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
-    public T Update(T t)
+    public T Update(T entity)
     {
-        t.LastUpdated = DateTime.Now;
+        entity.LastUpdated = DateTime.Now;
 
-        return _dbSet.Update(t).Entity;
+        return _dbSet.Update(entity).Entity;
     }
 
-    public T Delete(T t) =>
-        _dbSet.Remove(t).Entity;
+    public T Delete(T entity) =>
+        _dbSet.Remove(entity).Entity;
 }

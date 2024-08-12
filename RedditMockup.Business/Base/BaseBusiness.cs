@@ -1,95 +1,89 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
-using RedditMockup.DataAccess.Contracts;
 using RedditMockup.Model.BaseEntities;
 using Sieve.Models;
 
 namespace RedditMockup.Business.Base;
 
-public abstract class BaseBusiness<TEntity, TDto> : IBaseBusiness<TEntity, TDto>
-    where TEntity : BaseEntityWithGuid
+public class BaseBusiness<TEntity, TDto> : IBaseBusiness<TDto>
     where TDto : BaseDto
+    where TEntity : BaseEntityWithGuid
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    private readonly IBaseRepository<TEntity> _repository;
-
     private readonly IMapper _mapper;
 
-    protected BaseBusiness(IUnitOfWork unitOfWork, IBaseRepository<TEntity> repository, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
+    private readonly IAdminBaseBusiness<TEntity, TDto> _adminBaseBusiness;
 
-        _repository = repository;
+    protected BaseBusiness(IAdminBaseBusiness<TEntity, TDto> adminBaseBusiness, IMapper mapper)
+    {
+        _adminBaseBusiness = adminBaseBusiness;
 
         _mapper = mapper;
     }
 
-    public abstract Task<TEntity?> CreateAsync(TDto questionDto, CancellationToken cancellationToken = default);
-
-    protected async Task<TEntity?> CreateAsync(TEntity t, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<TDto>> CreateAsync(TDto dto, CancellationToken cancellationToken = default)
     {
-        var createdEntity = await _repository.CreateAsync(t, cancellationToken);
+        var result = await _adminBaseBusiness.CreateAsync(dto, cancellationToken);
 
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        return createdEntity;
-    }
-
-    public abstract Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
-
-    public abstract Task<TEntity?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default);
-
-    public abstract Task<List<TEntity>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
-
-    public async Task<TEntity?> UpdateAsync(TDto dto, CancellationToken cancellationToken = default)
-    {
-        var t = await GetByGuidAsync(dto.Guid, cancellationToken);
-
-        if (t is null)
+        if (!result.IsSuccess)
         {
-            return null;
+            return CustomResponse<TDto>.CreateUnsuccessfulResponse(result.HttpStatusCode);
         }
 
-        _mapper.Map(dto, t);
+        var entityDto = _mapper.Map<TDto>(result.Data);
 
-        var updatedEntity = _repository.Update(t);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        return updatedEntity;
+        return CustomResponse<TDto>.CreateSuccessfulResponse(entityDto, httpStatusCode: HttpStatusCode.Created);
     }
 
-    public async Task<TEntity?> DeleteByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<TDto>> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id, null, cancellationToken);
+        var result = await _adminBaseBusiness.GetByGuidAsync(guid, cancellationToken);
 
-        if (entity is null)
+        if (!result.IsSuccess)
         {
-            return null;
+            return CustomResponse<TDto>.CreateUnsuccessfulResponse(result.HttpStatusCode);
         }
 
-        var deletedEntity = _repository.Delete(entity);
+        var entityDto = _mapper.Map<TDto>(result.Data);
 
-        await _unitOfWork.CommitAsync(cancellationToken);
-
-        return deletedEntity;
+        return CustomResponse<TDto>.CreateSuccessfulResponse(entityDto);
     }
 
-    public async Task<TEntity?> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<List<TDto>>> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default)
     {
-        var entity = await GetByGuidAsync(guid, cancellationToken);
+        var result = await _adminBaseBusiness.GetAllAsync(sieveModel, cancellationToken);
 
-        if (entity is null)
+        var dtos = _mapper.Map<List<TDto>>(result.Data);
+
+        return CustomResponse<List<TDto>>.CreateSuccessfulResponse(dtos);
+    }
+
+    public async Task<CustomResponse<TDto>> UpdateAsync(TDto dto, CancellationToken cancellationToken = default)
+    {
+        var result = await _adminBaseBusiness.UpdateAsync(dto, cancellationToken);
+
+        if (!result.IsSuccess)
         {
-            return null;
+            return CustomResponse<TDto>.CreateUnsuccessfulResponse(result.HttpStatusCode);
         }
-        
-        var deletedEntity = _repository.Delete(entity);
 
-        await _unitOfWork.CommitAsync(cancellationToken);
+        var updatedDto = _mapper.Map<TDto>(result.Data);
 
-        return deletedEntity;
+        return CustomResponse<TDto>.CreateSuccessfulResponse(updatedDto);
+    }
+
+    public async Task<CustomResponse<TDto>> DeleteByGuidAsync(Guid guid, CancellationToken cancellationToken)
+    {
+        var result = await _adminBaseBusiness.DeleteByGuidAsync(guid, cancellationToken);
+
+        if (!result.IsSuccess)
+        {
+            return CustomResponse<TDto>.CreateUnsuccessfulResponse(result.HttpStatusCode);
+        }
+
+        var deletedDto = _mapper.Map<TDto>(result.Data);
+
+        return CustomResponse<TDto>.CreateSuccessfulResponse(deletedDto);
     }
 }

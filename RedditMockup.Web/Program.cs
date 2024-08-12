@@ -19,7 +19,7 @@ Log.Logger = new LoggerConfiguration()
     {
         SectionName = "InternalSerilog"
     })
-    .CreateBootstrapLogger();
+    .CreateLogger();
 
 Log.Information("Application setup started.");
 

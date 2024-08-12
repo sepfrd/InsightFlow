@@ -6,7 +6,7 @@ namespace RedditMockup.DataAccess.Contracts;
 
 public interface IBaseRepository<T> where T : BaseEntityWithGuid
 {
-    Task<T> CreateAsync(T t, CancellationToken cancellationToken);
+    Task<T> CreateAsync(T entity, CancellationToken cancellationToken);
 
     Task<List<T>> GetAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default);
 
@@ -14,7 +14,7 @@ public interface IBaseRepository<T> where T : BaseEntityWithGuid
 
     Task<T?> GetByGuidAsync(Guid guid, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default);
 
-    T Update(T t);
+    T Update(T entity);
 
-    T Delete(T t);
+    T Delete(T entity);
 }

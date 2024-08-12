@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RedditMockup.Business.Contracts;
 using RedditMockup.Common.Dtos;
 
@@ -7,11 +6,11 @@ namespace RedditMockup.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AccountController : ControllerBase
+public class AuthController : ControllerBase
 {
     private readonly IAuthBusiness _authBusiness;
 
-    public AccountController(IAuthBusiness authBusiness) =>
+    public AuthController(IAuthBusiness authBusiness) =>
         _authBusiness = authBusiness;
 
     [HttpPost]

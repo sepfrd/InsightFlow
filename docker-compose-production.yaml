@@ -9,9 +9,6 @@ services:
       - "1433:1433"
     healthcheck:
       test: [ "CMD", "bash", "-c", "echo 'SELECT 1'" ]
-      interval: 10s
-      timeout: 10s
-      retries: 10
     deploy:
       resources:
         limits:
@@ -24,9 +21,6 @@ services:
       - "27017:27017"
     healthcheck:
       test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
-      interval: 10s
-      timeout: 10s
-      retries: 10
 
   redditmockup:
     image: local/redditmockup:1.0

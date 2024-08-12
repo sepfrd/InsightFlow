@@ -16,7 +16,7 @@ using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
 
-namespace RedditMockup.Business.DomainEntityBusinesses;
+namespace RedditMockup.Business.Businesses;
 
 public class AuthBusiness : IAuthBusiness
 {

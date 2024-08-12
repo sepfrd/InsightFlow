@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using RedditMockup.Common.Constants;
 using ILogger = Serilog.ILogger;
@@ -24,6 +25,8 @@ public class CustomExceptionFilter : ExceptionFilterAttribute
             filterContext.Exception.GetType());
 
         filterContext.ExceptionHandled = true;
+
+        filterContext.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
     }
 
     public override Task OnExceptionAsync(ExceptionContext filterContext)

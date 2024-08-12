@@ -1,8 +1,8 @@
 namespace RedditMockup.IntegrationTest.Common.Enums;
 
-public enum AccountControllerTestResult
+public enum AuthControllerTestResult
 {
     AllFailed,
     AllSuccessful,
-    Unauthorized
+    Forbidden
 }

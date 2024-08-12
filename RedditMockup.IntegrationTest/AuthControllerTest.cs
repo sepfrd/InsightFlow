@@ -8,16 +8,17 @@ using RedditMockup.IntegrationTest.Common;
 using RedditMockup.IntegrationTest.Common.Dtos;
 using RedditMockup.IntegrationTest.Common.Enums;
 using RestSharp;
+using RestSharp.Authenticators;
 using Xunit;
 
 namespace RedditMockup.IntegrationTest;
 
-public class AccountControllerTest : IClassFixture<CustomWebApplicationFactory<Program>>
+public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {
     private const int DefaultTimeout = 2000;
     private readonly CustomWebApplicationFactory<Program> _factory;
 
-    public AccountControllerTest(CustomWebApplicationFactory<Program> factory)
+    public AuthControllerTest(CustomWebApplicationFactory<Program> factory)
     {
         _factory = factory;
 
@@ -48,8 +49,8 @@ public class AccountControllerTest : IClassFixture<CustomWebApplicationFactory<P
     }
 
     [Theory]
-    [MemberData(nameof(LoginGetAllLogoutTestData))]
-    public async Task LoginGetAllLogout_ReturnExpectedResult(LoginGetAllLogoutRequestDto loginRequestDto)
+    [MemberData(nameof(LoginGetAllTestData))]
+    public async Task LoginGetAll_ReturnExpectedResult(LoginGetAllLogoutRequestDto loginRequestDto)
     {
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
@@ -65,51 +66,45 @@ public class AccountControllerTest : IClassFixture<CustomWebApplicationFactory<P
 
         loginRequest.AddJsonBody(loginRequestDto.LoginDto);
 
-        var loginResponse = await restClient.ExecutePostAsync<CustomResponse>(loginRequest);
+        var loginResponse = await restClient.ExecutePostAsync<CustomResponse<string>>(loginRequest);
 
-        var getAllRequest = new RestRequest(Constants.UsersBaseAddress)
+        var getAllRequest = new RestRequest(Constants.AdminUsersBaseAddress)
         {
             Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
+
+        if (loginResponse.IsSuccessful)
+        {
+            var authToken = loginResponse.Data?.Data!;
+
+            getAllRequest.Authenticator = new JwtAuthenticator(authToken);
+        }
 
         var getAllResponse = await restClient.ExecuteGetAsync<CustomResponse>(getAllRequest);
 
-        var logoutRequest = new RestRequest($"{Constants.AuthBaseAddress}/logout")
-        {
-            Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
-        };
-
-        var logoutResponse = await restClient.ExecutePostAsync<CustomResponse>(logoutRequest);
-
         switch (loginRequestDto.TestResult)
         {
-            case AccountControllerTestResult.AllFailed:
+            case AuthControllerTestResult.AllFailed:
 
                 loginResponse.Data?.IsSuccess.Should().BeFalse();
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
-                logoutResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-
                 break;
 
-            case AccountControllerTestResult.AllSuccessful:
+            case AuthControllerTestResult.AllSuccessful:
 
                 loginResponse.Data?.IsSuccess.Should().BeTrue();
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                logoutResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-
                 break;
 
-            case AccountControllerTestResult.Unauthorized:
+            case AuthControllerTestResult.Forbidden:
 
                 loginResponse.Data?.IsSuccess.Should().BeTrue();
 
                 getAllResponse.StatusCode.Should().Be(HttpStatusCode.Forbidden);
-
-                logoutResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
                 break;
 
@@ -127,7 +122,7 @@ public class AccountControllerTest : IClassFixture<CustomWebApplicationFactory<P
                 LoginDto = new LoginDto
                 {
                     Username = "sepehr_frd",
-                    Password = "sfr1376",
+                    Password = "Sfr1376.",
                     RememberMe = true
                 },
                 ShouldSucceed = true
@@ -147,7 +142,7 @@ public class AccountControllerTest : IClassFixture<CustomWebApplicationFactory<P
                 LoginDto = new LoginDto
                 {
                     Username = "sepehr_d",
-                    Password = "sfr1376",
+                    Password = "Sfr1376.",
                     RememberMe = false
                 },
                 ShouldSucceed = false
@@ -164,28 +159,28 @@ public class AccountControllerTest : IClassFixture<CustomWebApplicationFactory<P
             }
         };
 
-    public static TheoryData<LoginGetAllLogoutRequestDto> LoginGetAllLogoutTestData() =>
+    public static TheoryData<LoginGetAllLogoutRequestDto> LoginGetAllTestData() =>
         new()
         {
             new LoginGetAllLogoutRequestDto
             {
                 LoginDto = new LoginDto
                 {
-                    Username = "abbas_booazaar",
-                    Password = "abbasabbas",
+                    Username = "bernard_cool",
+                    Password = "BernardCool1997",
                     RememberMe = true
                 },
-                TestResult = AccountControllerTestResult.Unauthorized
+                TestResult = AuthControllerTestResult.Forbidden
             },
             new LoginGetAllLogoutRequestDto
             {
                 LoginDto = new LoginDto
                 {
                     Username = "sepehr_frd",
-                    Password = "sfr1376",
+                    Password = "Sfr1376.",
                     RememberMe = true
                 },
-                TestResult = AccountControllerTestResult.AllSuccessful
+                TestResult = AuthControllerTestResult.AllSuccessful
             },
             new LoginGetAllLogoutRequestDto
             {
@@ -195,17 +190,17 @@ public class AccountControllerTest : IClassFixture<CustomWebApplicationFactory<P
                     Password = "sfr1231123376",
                     RememberMe = true
                 },
-                TestResult = AccountControllerTestResult.AllFailed
+                TestResult = AuthControllerTestResult.AllFailed
             },
             new LoginGetAllLogoutRequestDto
             {
                 LoginDto = new LoginDto
                 {
                     Username = "sepeasdfahr_frd",
-                    Password = "sfr1376",
+                    Password = "Sfr1376.",
                     RememberMe = true
                 },
-                TestResult = AccountControllerTestResult.AllFailed
+                TestResult = AuthControllerTestResult.AllFailed
             }
         };
 

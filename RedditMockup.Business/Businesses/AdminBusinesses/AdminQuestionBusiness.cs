@@ -9,26 +9,26 @@ using RedditMockup.DataAccess.Repositories;
 using RedditMockup.Model.Entities;
 using Sieve.Models;
 
-namespace RedditMockup.Business.DomainEntityBusinesses;
+namespace RedditMockup.Business.Businesses.AdminBusinesses;
 
-public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
+public class AdminQuestionBusiness : AdminBaseBusiness<Question, QuestionDto>
 {
     private readonly QuestionRepository _questionRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public QuestionBusiness(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
+    public AdminQuestionBusiness(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, unitOfWork.QuestionRepository!, mapper)
     {
         _questionRepository = (QuestionRepository)unitOfWork.QuestionRepository!;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async override Task<Question?> CreateAsync(QuestionDto questionDto, CancellationToken cancellationToken = default)
+    public async override Task<CustomResponse<Question?>> CreateAsync(QuestionDto answerDto, CancellationToken cancellationToken = default)
     {
-        var question = _mapper.Map<Question>(questionDto);
+        var question = _mapper.Map<Question>(answerDto);
 
-        var user = await _unitOfWork.UserRepository!.GetByGuidAsync(questionDto.UserGuid, null, cancellationToken);
+        var user = await _unitOfWork.UserRepository!.GetByGuidAsync(answerDto.UserGuid, null, cancellationToken);
 
         if (user is null)
         {
@@ -40,20 +40,44 @@ public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
         return await CreateAsync(question, cancellationToken);
     }
 
-    public async override Task<Question?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
-        await _questionRepository.GetByIdAsync(id,
+    public async override Task<CustomResponse<Question?>> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var question = await _questionRepository.GetByIdAsync(
+            id,
+            questions => questions.Include(questionEntity => questionEntity.User),
+            cancellationToken);
+
+        if (question is null)
+        {
+            return CustomResponse<Question?>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
+        }
+
+        return CustomResponse<Question?>.CreateSuccessfulResponse(question);
+    }
+
+    public async override Task<CustomResponse<Question?>> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
+    {
+        var question = await _questionRepository.GetByGuidAsync(
+            guid,
+            questions => questions.Include(questionEntity => questionEntity.User),
+            cancellationToken);
+
+        if (question is null)
+        {
+            return CustomResponse<Question?>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
+        }
+
+        return CustomResponse<Question?>.CreateSuccessfulResponse(question);
+    }
+
+    public async override Task<CustomResponse<List<Question>?>> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default)
+    {
+        var questions = await _questionRepository.GetAllAsync(sieveModel,
             questions => questions.Include(question => question.User),
             cancellationToken);
 
-    public async override Task<Question?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default) =>
-        await _questionRepository.GetByGuidAsync(guid,
-            questions => questions.Include(question => question.User),
-            cancellationToken);
-
-    public async override Task<List<Question>?> GetAllAsync(SieveModel sieveModel, CancellationToken cancellationToken = default) =>
-        await _questionRepository.GetAllAsync(sieveModel,
-            questions => questions.Include(question => question.User),
-            cancellationToken);
+        return CustomResponse<List<Question>?>.CreateSuccessfulResponse(questions);
+    }
 
     public async Task<CustomResponse<List<Answer>>> GetAnswersByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
     {

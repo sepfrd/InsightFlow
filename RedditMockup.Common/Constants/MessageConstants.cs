@@ -7,6 +7,9 @@ public static class MessageConstants
     public const string NotSignedInMessage = "You are not signed in.";
     public const string InvalidCredentialsMessage = "Username and/or password not correct.";
 
+    // ---------------------------- Not Found (404) Messages ----------------------------
+    public const string QuestionNotFoundMessage = "Question with guid of {0} not found.";
+
     // ---------------------------- OK (200) Messages ----------------------------
     public const string SuccessfulLoginMessage = "Successfully logged in.";
     public const string SuccessfulLogoutMessage = "Successfully logged out.";
