@@ -7,7 +7,7 @@ using RedditMockup.Model.Entities;
 namespace RedditMockup.Api.Controllers.AdminControllers;
 
 [ApiController]
-[Route("api/admin/users")]
+[Route("api/admin/users", Name = "Admin - Users")]
 public class AdminUserController : AdminBaseController<User, UserDto>
 {
     public AdminUserController(IAdminBaseBusiness<User, UserDto> business) : base(business)

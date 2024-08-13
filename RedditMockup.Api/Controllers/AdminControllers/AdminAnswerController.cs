@@ -7,7 +7,7 @@ using RedditMockup.Model.Entities;
 
 namespace RedditMockup.Api.Controllers.AdminControllers;
 
-[Route("api/admin/answers")]
+[Route("api/admin/answers", Name = "Admin - Answers")]
 public class AdminAnswerController : AdminBaseController<Answer, AnswerDto>
 {
     private readonly AdminAnswerBusiness _business;

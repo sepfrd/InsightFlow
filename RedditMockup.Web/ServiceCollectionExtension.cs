@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using RedditMockup.Api.Conventions;
 using RedditMockup.Api.Filters;
 using RedditMockup.Business.Businesses;
 using RedditMockup.Business.Businesses.AdminBusinesses;
@@ -29,7 +30,11 @@ internal static class ServiceCollectionExtension
 {
     internal static IServiceCollection InjectApiControllers(this IServiceCollection services) =>
         services
-            .AddControllers(options => options.Filters.Add<CustomExceptionFilter>())
+            .AddControllers(options =>
+            {
+                options.Filters.Add<CustomExceptionFilter>();
+                options.Conventions.Add(new ControllerDocumentationConvention());
+            })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;

@@ -5,7 +5,7 @@ using RedditMockup.Common.Dtos;
 namespace RedditMockup.Api.Controllers;
 
 [ApiController]
-[Route("api/auth")]
+[Route("api/auth", Name = "Authentication")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthBusiness _authBusiness;

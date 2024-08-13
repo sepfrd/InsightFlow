@@ -8,7 +8,7 @@ using RedditMockup.Common.Dtos;
 
 namespace RedditMockup.Api.Controllers;
 
-[Route("api/answers")]
+[Route("api/answers", Name = "Answers")]
 public class AnswerController : BaseController<AnswerDto>
 {
     private readonly AnswerBusiness _answerBusiness;
