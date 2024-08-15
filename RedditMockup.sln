@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6139C60F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{3A4E3860-A539-4EC1-A7DB-4C950FB0F004}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditMockup.IntegrationTest", "RedditMockup.IntegrationTest\RedditMockup.IntegrationTest.csproj", "{4EDC313C-5954-49AE-B3E3-CA66EBE2340F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditMockup.IntegrationTests", "RedditMockup.IntegrationTests\RedditMockup.IntegrationTests.csproj", "{4EDC313C-5954-49AE-B3E3-CA66EBE2340F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 
-namespace RedditMockup.IntegrationTest.Common.AuthMockHelpers;
+namespace RedditMockup.IntegrationTests.Common.AuthMockHelpers;
 
 public class TestAuthSchemeProvider : AuthenticationSchemeProvider
 {

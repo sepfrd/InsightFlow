@@ -1,8 +1,8 @@
 using RedditMockup.Common.Dtos;
-using RedditMockup.IntegrationTest.Common.Enums;
+using RedditMockup.IntegrationTests.Common.Enums;
 using Xunit.Abstractions;
 
-namespace RedditMockup.IntegrationTest.Common.Dtos;
+namespace RedditMockup.IntegrationTests.Common.Dtos;
 
 public class LoginGetAllLogoutRequestDto : IXunitSerializable
 {

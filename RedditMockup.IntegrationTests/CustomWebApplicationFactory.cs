@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RedditMockup.Common.Constants;
 using RedditMockup.DataAccess.Context;
 
-namespace RedditMockup.IntegrationTest;
+namespace RedditMockup.IntegrationTests;
 
 public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {

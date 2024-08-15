@@ -1,4 +1,4 @@
-namespace RedditMockup.IntegrationTest.Common;
+namespace RedditMockup.IntegrationTests.Common;
 
 public static class Constants
 {

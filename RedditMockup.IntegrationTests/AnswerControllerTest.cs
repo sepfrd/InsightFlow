@@ -16,13 +16,13 @@ using Newtonsoft.Json;
 using RedditMockup.Common.Constants;
 using RedditMockup.Common.Dtos;
 using RedditMockup.Common.Helpers;
-using RedditMockup.IntegrationTest.Common;
-using RedditMockup.IntegrationTest.Common.AuthMockHelpers;
-using RedditMockup.IntegrationTest.Common.Dtos;
+using RedditMockup.IntegrationTests.Common;
+using RedditMockup.IntegrationTests.Common.AuthMockHelpers;
+using RedditMockup.IntegrationTests.Common.Dtos;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace RedditMockup.IntegrationTest;
+namespace RedditMockup.IntegrationTests;
 
 public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {

@@ -1,7 +1,7 @@
 using RedditMockup.Common.Dtos;
 using Xunit.Abstractions;
 
-namespace RedditMockup.IntegrationTest.Common.Dtos;
+namespace RedditMockup.IntegrationTests.Common.Dtos;
 
 public class LoginRequestDto : IXunitSerializable
 {

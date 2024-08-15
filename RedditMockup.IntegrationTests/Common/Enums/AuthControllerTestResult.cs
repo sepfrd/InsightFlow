@@ -1,4 +1,4 @@
-namespace RedditMockup.IntegrationTest.Common.Enums;
+namespace RedditMockup.IntegrationTests.Common.Enums;
 
 public enum AuthControllerTestResult
 {

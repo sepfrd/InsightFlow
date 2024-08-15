@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace RedditMockup.IntegrationTest.Common.AuthMockHelpers;
+namespace RedditMockup.IntegrationTests.Common.AuthMockHelpers;
 
 public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {

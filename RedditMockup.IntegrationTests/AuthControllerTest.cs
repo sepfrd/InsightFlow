@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RedditMockup.Common.Dtos;
-using RedditMockup.IntegrationTest.Common;
-using RedditMockup.IntegrationTest.Common.Dtos;
-using RedditMockup.IntegrationTest.Common.Enums;
+using RedditMockup.IntegrationTests.Common;
+using RedditMockup.IntegrationTests.Common.Dtos;
+using RedditMockup.IntegrationTests.Common.Enums;
 using RestSharp;
 using RestSharp.Authenticators;
 using Xunit;
 
-namespace RedditMockup.IntegrationTest;
+namespace RedditMockup.IntegrationTests;
 
 public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {

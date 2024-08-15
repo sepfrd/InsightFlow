@@ -1,12 +1,13 @@
 using System.Net;
-using RedditMockup.Common.Dtos;
 using Xunit.Abstractions;
 
-namespace RedditMockup.IntegrationTest.Common.Dtos;
+namespace RedditMockup.IntegrationTests.Common.Dtos;
 
-public class CreateAnswerRequestDto : IXunitSerializable
+public class SubmitAnswerRequestDto : IXunitSerializable
 {
-    public required AnswerDto AnswerDto { get; set; }
+    public required int AnswerId { get; set; }
+
+    public required bool VoteKind { get; set; }
 
     public required HttpStatusCode ResultStatusCode { get; set; }
 
@@ -14,14 +15,16 @@ public class CreateAnswerRequestDto : IXunitSerializable
 
     public void Deserialize(IXunitSerializationInfo info)
     {
-        AnswerDto = info.GetValue<AnswerDto>(nameof(AnswerDto));
+        AnswerId = info.GetValue<int>(nameof(AnswerId));
+        VoteKind = info.GetValue<bool>(nameof(VoteKind));
         ResultStatusCode = info.GetValue<HttpStatusCode>(nameof(ResultStatusCode));
         Role = info.GetValue<string?>(nameof(Role));
     }
 
     public void Serialize(IXunitSerializationInfo info)
     {
-        info.AddValue(nameof(AnswerDto), AnswerDto);
+        info.AddValue(nameof(AnswerId), AnswerId);
+        info.AddValue(nameof(VoteKind), VoteKind);
         info.AddValue(nameof(ResultStatusCode), ResultStatusCode);
         info.AddValue(nameof(Role), Role);
     }

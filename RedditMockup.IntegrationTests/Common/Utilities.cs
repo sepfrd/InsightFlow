@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using RedditMockup.DataAccess.Context;
 
-namespace RedditMockup.IntegrationTest.Common;
+namespace RedditMockup.IntegrationTests.Common;
 
 public class Utilities
 {
