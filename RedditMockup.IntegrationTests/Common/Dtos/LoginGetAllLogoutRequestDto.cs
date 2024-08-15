@@ -1,24 +1,11 @@
 using RedditMockup.Common.Dtos;
 using RedditMockup.IntegrationTests.Common.Enums;
-using Xunit.Abstractions;
 
 namespace RedditMockup.IntegrationTests.Common.Dtos;
 
-public class LoginGetAllLogoutRequestDto : IXunitSerializable
+public class LoginGetAllLogoutRequestDto
 {
-    public required LoginDto LoginDto { get; set; }
+    public required LoginDto LoginDto { get; init; }
 
-    public required AuthControllerTestResult TestResult { get; set; }
-
-    public void Deserialize(IXunitSerializationInfo info)
-    {
-        LoginDto = info.GetValue<LoginDto>(nameof(LoginDto));
-        TestResult = info.GetValue<AuthControllerTestResult>(nameof(TestResult));
-    }
-
-    public void Serialize(IXunitSerializationInfo info)
-    {
-        info.AddValue(nameof(LoginDto), LoginDto);
-        info.AddValue(nameof(TestResult), TestResult);
-    }
+    public required AuthControllerTestResult TestResult { get; init; }
 }
