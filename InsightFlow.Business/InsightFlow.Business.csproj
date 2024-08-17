@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="Base\" />
+        <None Remove="Businesses\" />
+        <None Remove="Contracts\" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\InsightFlow.Common\InsightFlow.Common.csproj" />
+        <ProjectReference Include="..\InsightFlow.DataAccess\InsightFlow.DataAccess.csproj" />
+    </ItemGroup>
+</Project>

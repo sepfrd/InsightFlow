@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Library</OutputType>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="Base\" />
+        <Folder Include="Context\" />
+        <Folder Include="Contracts\" />
+        <Folder Include="Repositories\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\InsightFlow.Common\InsightFlow.Common.csproj" />
+        <ProjectReference Include="..\InsightFlow.Model\InsightFlow.Model.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Bogus" Version="35.6.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    </ItemGroup>
+</Project>
