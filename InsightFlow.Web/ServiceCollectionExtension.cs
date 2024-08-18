@@ -13,8 +13,8 @@ using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Profiles;
 using InsightFlow.Common.Validations;
 using InsightFlow.DataAccess;
-using InsightFlow.DataAccess.Context;
 using InsightFlow.DataAccess.Contracts;
+using InsightFlow.DataAccess.Sieve;
 using InsightFlow.Model.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -148,7 +148,7 @@ internal static class ServiceCollectionExtension
             loggerConfiguration.ReadFrom.Configuration(configuration));
 
     internal static IServiceCollection InjectSieve(this IServiceCollection services) =>
-        services.AddScoped<ISieveProcessor, SieveProcessor>();
+        services.AddScoped<ISieveProcessor, CustomSieveProcessor>();
 
     internal static IServiceCollection InjectAuth(this IServiceCollection services, IConfiguration configuration) =>
         services.AddAuthentication(options =>

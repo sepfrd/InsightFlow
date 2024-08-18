@@ -1,6 +1,6 @@
 using System.Linq;
 using InsightFlow.Common.Constants;
-using InsightFlow.DataAccess.Context;
+using InsightFlow.DataAccess;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;

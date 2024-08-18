@@ -1,5 +1,5 @@
 ﻿using InsightFlow.Common.Constants;
-using InsightFlow.DataAccess.Context;
+using InsightFlow.DataAccess;
 using InsightFlow.Web;
 using Microsoft.EntityFrameworkCore;
 using Serilog;

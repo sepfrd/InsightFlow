@@ -1,5 +1,4 @@
-﻿using InsightFlow.DataAccess.Context;
-using InsightFlow.DataAccess.Contracts;
+﻿using InsightFlow.DataAccess.Contracts;
 using InsightFlow.DataAccess.Dtos;
 using InsightFlow.Model.BaseEntities;
 using Microsoft.EntityFrameworkCore;

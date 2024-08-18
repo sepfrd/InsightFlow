@@ -73,7 +73,7 @@ public class AuthBusiness : IAuthBusiness
 
     private async Task<User?> LoadByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
-        SieveModel sieveModel = new()
+        var sieveModel = new SieveModel
         {
             Filters = nameof(User.Username) + "==" + username,
             Page = 1,

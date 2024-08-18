@@ -7,11 +7,13 @@
         <LangVersion>12</LangVersion>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Bogus" Version="35.6.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8" />
         <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+        <PackageReference Include="Sieve" Version="2.5.5" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\InsightFlow.Model\InsightFlow.Model.csproj" />

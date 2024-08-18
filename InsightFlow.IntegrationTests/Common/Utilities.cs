@@ -1,4 +1,4 @@
-using InsightFlow.DataAccess.Context;
+using InsightFlow.DataAccess;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InsightFlow.IntegrationTests.Common;
