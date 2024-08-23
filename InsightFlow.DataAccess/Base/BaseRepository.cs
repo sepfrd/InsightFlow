@@ -1,6 +1,7 @@
-﻿using InsightFlow.DataAccess.Contracts;
-using InsightFlow.DataAccess.Dtos;
+﻿using InsightFlow.DataAccess.Dtos;
+using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
+using InsightFlow.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Sieve.Models;
@@ -28,7 +29,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     public async Task<PagedEntitiesResponseDto<T>> GetAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.AsNoTracking();
+        var query = _dbSet.AsNoTracking().Where(entity => entity.State == BaseEntityState.Active);
 
         if (include != null)
         {
@@ -48,7 +49,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     public async Task<T?> GetByIdAsync(int id, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(t => t.Id == id);
+        var query = _dbSet.Where(entity => entity.Id == id && entity.State == BaseEntityState.Active);
 
         if (include != null)
         {
@@ -60,7 +61,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     public async Task<T?> GetByGuidAsync(Guid guid, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(t => t.Guid == guid);
+        var query = _dbSet.Where(entity => entity.Guid == guid && entity.State == BaseEntityState.Active);
 
         if (include != null)
         {

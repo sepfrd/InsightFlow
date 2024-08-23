@@ -1,7 +1,7 @@
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 
-namespace InsightFlow.Business.Contracts;
+namespace InsightFlow.Business.Interfaces;
 
 public interface IAuthBusiness
 {

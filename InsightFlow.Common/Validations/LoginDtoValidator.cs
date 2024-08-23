@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 
 namespace InsightFlow.Common.Validations;
@@ -7,8 +8,7 @@ public class LoginDtoValidator : AbstractValidator<LoginDto>
 {
     public LoginDtoValidator()
     {
-        RuleFor(x => x.Username).NotEmpty().MaximumLength(20).MinimumLength(8);
-
-        RuleFor(x => x.Password).NotEmpty().MinimumLength(6);
+        RuleFor(loginDto => loginDto.Username).Matches(RegexPatternConstants.UsernamePattern);
+        RuleFor(loginDto => loginDto.Password).Matches(RegexPatternConstants.PasswordPattern);
     }
 }

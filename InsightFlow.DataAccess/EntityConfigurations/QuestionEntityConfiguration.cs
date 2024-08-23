@@ -1,3 +1,4 @@
+using System.Data;
 using InsightFlow.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,5 +14,15 @@ public class QuestionEntityConfiguration : IEntityTypeConfiguration<Question>
             .WithMany(user => user.Questions)
             .HasForeignKey(question => question.UserId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder
+            .Property(question => question.Title)
+            .HasColumnType(SqlDbType.NVarChar.ToString())
+            .HasMaxLength(200);
+
+        builder
+            .Property(question => question.Body)
+            .HasColumnType(SqlDbType.NVarChar.ToString())
+            .HasMaxLength(2000);
     }
 }

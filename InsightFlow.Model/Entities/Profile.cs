@@ -4,9 +4,7 @@ public class Profile : BaseEntity
 {
     public string Bio { get; set; } = string.Empty;
 
-    public required string Email { get; set; }
-
-    public ProfilePicture? ProfilePicture { get; set; }
+    public ProfileImage? ProfileImage { get; set; }
 
     public int UserId { get; set; }
 

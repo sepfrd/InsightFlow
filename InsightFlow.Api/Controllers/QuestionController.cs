@@ -1,4 +1,4 @@
-﻿using InsightFlow.Business.Contracts;
+﻿using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
@@ -91,6 +91,55 @@ public class QuestionController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await _questionBusiness.GetCurrentUserQuestionDtosAsync(pageNumber, pageSize, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpPost]
+    [Route("guid/{questionGuid:guid}/answers")]
+    [Authorize(ApplicationConstants.UserPolicyName)]
+    public async Task<ActionResult<CustomResponse<AnswerDto>>> SubmitAnswerAsync(
+        [FromRoute] Guid questionGuid,
+        [FromBody] CreateAnswerRequestDto requestDto,
+        CancellationToken cancellationToken)
+    {
+        var result = await _answerBusiness.CreateAnswerAsync(
+            questionGuid,
+            requestDto,
+            cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpPut]
+    [Authorize(ApplicationConstants.UserPolicyName)]
+    [Route("{questionGuid:guid}")]
+    public async Task<ActionResult<CustomResponse<QuestionDto>>> UpdateQuestionByGuidAsync(
+        [FromRoute] Guid questionGuid,
+        [FromBody] UpdateQuestionRequestDto requestDto,
+        CancellationToken cancellationToken)
+    {
+        var result = await _questionBusiness.UpdateQuestionAsync(questionGuid, requestDto, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpDelete]
+    [Route("id/{questionId:int}")]
+    [Authorize(ApplicationConstants.AdminPolicyName)]
+    public async Task<ActionResult<CustomResponse>> DeleteQuestionByIdAsync(int questionId, CancellationToken cancellationToken)
+    {
+        var result = await _questionBusiness.DeleteQuestionByIdAsync(questionId, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpDelete]
+    [Route("guid/{questionGuid:guid}")]
+    [Authorize(ApplicationConstants.UserPolicyName)]
+    public async Task<ActionResult<CustomResponse>> DeleteQuestionByGuidAsync(Guid questionGuid, CancellationToken cancellationToken)
+    {
+        var result = await _questionBusiness.DeleteQuestionByGuidAsync(questionGuid, cancellationToken);
 
         return StatusCode((int)result.HttpStatusCode, result);
     }

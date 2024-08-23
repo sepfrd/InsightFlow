@@ -4,11 +4,11 @@ using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.Model.Entities;
 using Sieve.Models;
 
-namespace InsightFlow.Business.Contracts;
+namespace InsightFlow.Business.Interfaces;
 
 public interface IAnswerBusiness
 {
-    Task<CustomResponse<AnswerDto>> CreateAnswerAsync(CreateAnswerRequestDto requestDto, CancellationToken cancellationToken = default);
+    Task<CustomResponse<AnswerDto>> CreateAnswerAsync(Guid questionGuid, CreateAnswerRequestDto requestDto, CancellationToken cancellationToken = default);
 
     Task<CustomResponse<Answer>> GetAnswerByIdAsync(int id, CancellationToken cancellationToken = default);
 
@@ -26,4 +26,10 @@ public interface IAnswerBusiness
         int pageNumber = 1,
         int pageSize = 10,
         CancellationToken cancellationToken = default);
+
+    Task<CustomResponse<AnswerDto>> UpdateAnswerAsync(Guid answerGuid, UpdateAnswerRequestDto requestDto, CancellationToken cancellationToken = default);
+
+    Task<CustomResponse> DeleteAnswerByIdAsync(int answerId, CancellationToken cancellationToken = default);
+
+    Task<CustomResponse> DeleteAnswerByGuidAsync(Guid answerGuid, CancellationToken cancellationToken = default);
 }

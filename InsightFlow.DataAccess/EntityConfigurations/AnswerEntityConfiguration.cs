@@ -1,3 +1,4 @@
+using System.Data;
 using InsightFlow.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,5 +19,10 @@ public class AnswerEntityConfiguration : IEntityTypeConfiguration<Answer>
             .HasOne<Question>(answer => answer.Question)
             .WithMany(question => question.Answers)
             .HasForeignKey(answer => answer.QuestionId);
+
+        builder
+            .Property(answer => answer.Body)
+            .HasColumnType(SqlDbType.NVarChar.ToString())
+            .HasMaxLength(2000);
     }
 }

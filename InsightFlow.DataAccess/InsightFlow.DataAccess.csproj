@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <Folder Include="Base\" />
-        <Folder Include="Contracts\" />
+        <Folder Include="Interfaces\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\InsightFlow.Common\InsightFlow.Common.csproj" />

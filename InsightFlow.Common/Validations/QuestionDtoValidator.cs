@@ -7,7 +7,12 @@ public class QuestionDtoValidator : AbstractValidator<QuestionDto>
 {
     public QuestionDtoValidator()
     {
-        RuleFor(x => x.Title).NotEmpty().MinimumLength(5);
-        RuleFor(x => x.Description).NotEmpty().MinimumLength(10);
+        RuleFor(questionDto => questionDto.Title)
+            .MinimumLength(10)
+            .MaximumLength(200);
+
+        RuleFor(questionDto => questionDto.Body)
+            .MinimumLength(20)
+            .MaximumLength(2000);
     }
 }

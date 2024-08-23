@@ -10,7 +10,7 @@ public class RoleSieveConfiguration : BaseSieveConfiguration<Role>
         base.Configure(mapper);
 
         mapper
-            .Property<Role>(entity => entity.Title)
+            .Property<Role>(entity => entity.Name)
             .CanSort()
             .CanFilter();
     }

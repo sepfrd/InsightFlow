@@ -4,7 +4,7 @@ public class Question : BaseEntity
 {
     public required string Title { get; set; }
 
-    public required string Description { get; set; }
+    public required string Body { get; set; }
 
     public ICollection<Answer> Answers { get; set; } = [];
 

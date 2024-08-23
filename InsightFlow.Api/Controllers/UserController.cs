@@ -1,4 +1,4 @@
-﻿using InsightFlow.Business.Contracts;
+﻿using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
@@ -57,6 +57,29 @@ public class UserController : ControllerBase
     public async Task<ActionResult<CustomResponse<UserDto>>> GetCurrentUserAsync(CancellationToken cancellationToken)
     {
         var result = await _userBusiness.GetCurrentUserAsync(cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpGet]
+    [Authorize]
+    [Route("current-user/profile/image")]
+    public async Task<ActionResult> GetCurrentUserProfileImageAsync(CancellationToken cancellationToken)
+    {
+        var result = await _userBusiness.GetCurrentUserProfileImageAsync(cancellationToken);
+
+        return result.Data is null ? StatusCode((int)result.HttpStatusCode, result) : result.Data;
+    }
+
+    [HttpPost]
+    [Authorize]
+    [Route("current-user/profile/image")]
+    [RequestSizeLimit(2097152L)]
+    public async Task<ActionResult<CustomResponse>> UploadProfileImageForCurrentUserAsync(
+        IFormFile profileImage,
+        CancellationToken cancellationToken)
+    {
+        var result = await _userBusiness.AddProfileImageForCurrentUserAsync(profileImage, cancellationToken);
 
         return StatusCode((int)result.HttpStatusCode, result);
     }

@@ -27,8 +27,7 @@ namespace InsightFlow.IntegrationTests;
 
 public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private const string ValidTitle = "How to do sth";
-    private const string ValidDescription = "Can anybody help me with my problem?";
+    private const string ValidAnswerBody = "Can anybody help me with my problem?";
 
     private static readonly Guid _validAnswerGuid = FakeDataHelper.FakeAnswer.Guid;
     private readonly CustomWebApplicationFactory<Program> _factory;
@@ -171,8 +170,7 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
                 {
                     QuestionGuid = FakeDataHelper.FakeQuestion.Guid,
                     UserGuid = FakeDataHelper.FakeUser.Guid,
-                    Title = ValidTitle,
-                    Description = ValidDescription
+                    Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.Created,
                 Role = ApplicationConstants.UserRoleName
@@ -183,8 +181,7 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
                 {
                     QuestionGuid = Guid.NewGuid(),
                     UserGuid = FakeDataHelper.FakeUser.Guid,
-                    Title = ValidTitle,
-                    Description = ValidDescription
+                    Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.NotFound,
                 Role = ApplicationConstants.UserRoleName
@@ -195,8 +192,7 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
                 {
                     QuestionGuid = FakeDataHelper.FakeQuestion.Guid,
                     UserGuid = FakeDataHelper.FakeAdmin.Guid,
-                    Title = ValidTitle,
-                    Description = ValidDescription
+                    Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.Forbidden,
                 Role = ApplicationConstants.AdminRoleName

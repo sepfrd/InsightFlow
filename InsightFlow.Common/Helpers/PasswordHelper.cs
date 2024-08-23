@@ -1,26 +1,12 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using BCrypt.Net;
 
 namespace InsightFlow.Common.Helpers;
 
 public static class PasswordHelper
 {
-    public async static Task<string> GetHashStringAsync(this string inputString)
-    {
-        using HashAlgorithm algorithm = SHA512.Create();
+    public static string HashPassword(string password) =>
+        BCrypt.Net.BCrypt.EnhancedHashPassword(password, HashType.SHA512, 12);
 
-        return Get(await algorithm.ComputeHashAsync(new MemoryStream(Encoding.UTF8.GetBytes(inputString))));
-    }
-
-    private static string Get(IReadOnlyCollection<byte> array)
-    {
-        var hex = new StringBuilder(array.Count * 2);
-
-        foreach (var b in array)
-        {
-            hex.Append($"{b:x2}");
-        }
-
-        return hex.ToString();
-    }
+    public static bool ValidatePassword(string password, string passwordHash) =>
+        BCrypt.Net.BCrypt.EnhancedVerify(password, passwordHash, HashType.SHA512);
 }

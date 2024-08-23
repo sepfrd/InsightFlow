@@ -1,12 +1,12 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using AutoMapper;
-using InsightFlow.Business.Contracts;
+using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
-using InsightFlow.DataAccess.Contracts;
+using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +32,7 @@ public class AnswerBusiness : IAnswerBusiness
         _answerRepository = unitOfWork.AnswerRepository;
     }
 
-    public async Task<CustomResponse<AnswerDto>> CreateAnswerAsync(CreateAnswerRequestDto requestDto, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<AnswerDto>> CreateAnswerAsync(Guid questionGuid, CreateAnswerRequestDto requestDto, CancellationToken cancellationToken = default)
     {
         var answer = _mapper.Map<Answer>(requestDto);
 
@@ -40,11 +40,11 @@ public class AnswerBusiness : IAnswerBusiness
 
         var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
 
-        var question = await _unitOfWork.QuestionRepository.GetByGuidAsync(requestDto.QuestionGuid, null, cancellationToken);
+        var question = await _unitOfWork.QuestionRepository.GetByGuidAsync(questionGuid, null, cancellationToken);
 
         if (question is null)
         {
-            var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.QuestionGuid));
+            var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(questionGuid));
 
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
@@ -56,7 +56,7 @@ public class AnswerBusiness : IAnswerBusiness
         var createdAnswer = await _answerRepository.CreateAsync(answer, cancellationToken);
 
         await _unitOfWork.CommitAsync(cancellationToken);
-        
+
         var answerDto = _mapper.Map<AnswerDto>(createdAnswer);
 
         return CustomResponse<AnswerDto>.CreateSuccessfulResponse(answerDto, null, HttpStatusCode.Created);
@@ -88,13 +88,12 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (answer is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundMessage, nameof(Answer), guid);
+            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), guid);
 
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
 
         var answerDto = _mapper.Map<AnswerDto>(answer);
-
 
         return CustomResponse<AnswerDto>.CreateSuccessfulResponse(answerDto);
     }
@@ -112,7 +111,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (question is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundMessage, nameof(Question), questionGuid);
+            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Question), questionGuid);
 
             return PagedCustomResponse<List<AnswerDto>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -184,7 +183,7 @@ public class AnswerBusiness : IAnswerBusiness
                 .Include(user => user.Answers)
                 .ThenInclude(answer => answer.Question),
             cancellationToken);
-        
+
         if (user!.Answers.Count == 0)
         {
             return PagedCustomResponse<List<AnswerDto>>.CreateSuccessfulResponse([]);
@@ -212,5 +211,98 @@ public class AnswerBusiness : IAnswerBusiness
             answerDtos.Count,
             pageNumber,
             pageSize);
+    }
+
+    public async Task<CustomResponse<AnswerDto>> UpdateAnswerAsync(
+        Guid answerGuid,
+        UpdateAnswerRequestDto requestDto,
+        CancellationToken cancellationToken = default)
+    {
+        var answer = await _answerRepository.GetByGuidAsync(
+            answerGuid,
+            answers => answers
+                .Include(answer => answer.Question),
+            cancellationToken);
+
+        if (answer is null)
+        {
+            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), answerGuid);
+
+            return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
+        }
+
+        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
+
+        if (user!.Id != answer.UserId)
+        {
+            var message = string.Format(MessageConstants.ForbiddenActionMessage, "update", nameof(Answer));
+
+            return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
+        }
+
+        answer.Body = requestDto.NewBody;
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        var updatedAnswerDto = new AnswerDto
+        {
+            Guid = answerGuid,
+            UserGuid = user.Guid,
+            QuestionGuid = answer.Question!.Guid,
+            Body = requestDto.NewBody
+        };
+
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer));
+
+        return CustomResponse<AnswerDto>.CreateSuccessfulResponse(updatedAnswerDto, successMessage);
+    }
+
+    public async Task<CustomResponse> DeleteAnswerByIdAsync(int answerId, CancellationToken cancellationToken = default)
+    {
+        var answer = await _answerRepository.GetByIdAsync(answerId, null, cancellationToken);
+
+        if (answer is null)
+        {
+            var message = string.Format(MessageConstants.EntityNotFoundByIdMessage, nameof(Answer), answerId);
+
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
+        }
+
+        _answerRepository.Delete(answer);
+
+        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer));
+
+        return CustomResponse.CreateSuccessfulResponse(successMessage);
+    }
+
+    public async Task<CustomResponse> DeleteAnswerByGuidAsync(Guid answerGuid, CancellationToken cancellationToken = default)
+    {
+        var answer = await _answerRepository.GetByGuidAsync(answerGuid, null, cancellationToken);
+
+        if (answer is null)
+        {
+            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), answerGuid);
+
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
+        }
+
+        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
+
+        if (answer.UserId != user!.Id)
+        {
+            var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Answer));
+
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
+        }
+
+        _answerRepository.Delete(answer);
+
+        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer));
+
+        return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
 }

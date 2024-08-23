@@ -20,7 +20,7 @@ public class CustomSieveProcessor : SieveProcessor
         nameof(Answer) + nameof(BaseEntity.Id),
         nameof(Person) + nameof(BaseEntity.Id),
         nameof(Profile) + nameof(BaseEntity.Id),
-        nameof(ProfilePicture) + nameof(BaseEntity.Id),
+        nameof(ProfileImage) + nameof(BaseEntity.Id),
         nameof(Question) + nameof(BaseEntity.Id),
         nameof(Role) + nameof(BaseEntity.Id),
         nameof(User) + nameof(BaseEntity.Id),

@@ -6,6 +6,8 @@ public class UserDto : BaseDto
 
     public string? Password { get; set; }
 
+    public string? Email { get; set; }
+
     public string? FirstName { get; init; }
 
     public string? LastName { get; init; }

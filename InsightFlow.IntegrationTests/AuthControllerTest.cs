@@ -168,7 +168,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     Username = "bernard_cool",
-                    Password = "BernardCool1997",
+                    Password = "BernardCool1997.",
                     RememberMe = true
                 },
                 TestResult = AuthControllerTestResult.Forbidden

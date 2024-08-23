@@ -4,7 +4,7 @@ using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.Model.Entities;
 using Sieve.Models;
 
-namespace InsightFlow.Business.Contracts;
+namespace InsightFlow.Business.Interfaces;
 
 public interface IQuestionBusiness
 {
@@ -20,4 +20,10 @@ public interface IQuestionBusiness
         int pageNumber = 1,
         int pageSize = 10,
         CancellationToken cancellationToken = default);
+
+    Task<CustomResponse<QuestionDto>> UpdateQuestionAsync(Guid questionGuid, UpdateQuestionRequestDto requestDto, CancellationToken cancellationToken = default);
+
+    Task<CustomResponse> DeleteQuestionByIdAsync(int questionId, CancellationToken cancellationToken = default);
+
+    Task<CustomResponse> DeleteQuestionByGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default);
 }

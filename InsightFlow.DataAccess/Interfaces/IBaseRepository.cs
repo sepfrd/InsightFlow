@@ -3,7 +3,7 @@ using InsightFlow.Model.Entities;
 using Microsoft.EntityFrameworkCore.Query;
 using Sieve.Models;
 
-namespace InsightFlow.DataAccess.Contracts;
+namespace InsightFlow.DataAccess.Interfaces;
 
 public interface IBaseRepository<T> where T : BaseEntity
 {

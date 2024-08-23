@@ -2,9 +2,11 @@ using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.Model.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 
-namespace InsightFlow.Business.Contracts;
+namespace InsightFlow.Business.Interfaces;
 
 public interface IUserBusiness
 {
@@ -15,4 +17,8 @@ public interface IUserBusiness
     Task<CustomResponse<User>> GetUserByIdAsync(int id, CancellationToken cancellationToken = default);
 
     Task<CustomResponse<UserDto>> GetCurrentUserAsync(CancellationToken cancellationToken = default);
+
+    Task<CustomResponse<FileContentResult>> GetCurrentUserProfileImageAsync(CancellationToken cancellationToken = default);
+
+    Task<CustomResponse> AddProfileImageForCurrentUserAsync(IFormFile profileImage, CancellationToken cancellationToken = default);
 }

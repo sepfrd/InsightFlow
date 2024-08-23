@@ -1,3 +1,4 @@
+using System.Data;
 using InsightFlow.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,5 +13,10 @@ public class ProfileEntityConfiguration : IEntityTypeConfiguration<Profile>
             .HasOne<User>(profile => profile.User)
             .WithOne(user => user.Profile)
             .HasForeignKey<Profile>(profile => profile.UserId);
+
+        builder
+            .Property(profile => profile.Bio)
+            .HasColumnType(SqlDbType.NVarChar.ToString())
+            .HasMaxLength(500);
     }
 }

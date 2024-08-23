@@ -7,7 +7,7 @@ public class SieveModelValidator : AbstractValidator<SieveModel>
 {
     public SieveModelValidator()
     {
-        RuleFor(x => x.PageSize)
+        RuleFor(sieveModel => sieveModel.PageSize)
             .LessThanOrEqualTo(100);
     }
 }

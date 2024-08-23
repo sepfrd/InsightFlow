@@ -13,7 +13,7 @@ public static class FakeDataHelper
         LastUpdated = DateTime.Now,
         Guid = Guid.NewGuid(),
         Title = "How to do some job?",
-        Description = "Please help me with my problem.",
+        Body = "Please help me with my problem.",
         UserId = 1
     };
 
@@ -22,8 +22,7 @@ public static class FakeDataHelper
         Id = 1,
         LastUpdated = DateTime.Now,
         Guid = Guid.NewGuid(),
-        Title = "Answer for doing some job",
-        Description = "This is how you do that job.",
+        Body = "This is how you do that job.",
         QuestionId = 1,
         UserId = 2
     };
@@ -33,7 +32,8 @@ public static class FakeDataHelper
         Id = 1,
         Guid = Guid.NewGuid(),
         Username = "sepehr_frd",
-        Password = "Sfr1376.".GetHashStringAsync().Result,
+        Password = PasswordHelper.HashPassword("Sfr1376."),
+        Email = "sepfrd@outlook.com",
         PersonId = 1
     };
 
@@ -42,7 +42,8 @@ public static class FakeDataHelper
         Id = 2,
         Guid = Guid.NewGuid(),
         Username = "bernard_cool",
-        Password = "BernardCool1997".GetHashStringAsync().Result,
+        Password = PasswordHelper.HashPassword("BernardCool1997."),
+        Email = "bercool@gmail.com",
         PersonId = 2
     };
 
@@ -50,7 +51,6 @@ public static class FakeDataHelper
     {
         Id = 1,
         UserId = 1,
-        Email = "sepfrd@outlook.com",
         Bio = ".NET Developer"
     };
 
@@ -58,7 +58,6 @@ public static class FakeDataHelper
     {
         Id = 2,
         UserId = 2,
-        Email = "bercool@gmail.com",
         Bio = "React Developer"
     };
 
@@ -82,8 +81,7 @@ public static class FakeDataHelper
 
         var answerFaker = new Faker<Answer>()
             .RuleFor(answer => answer.Id, _ => id++)
-            .RuleFor(answer => answer.Title, faker => faker.Random.Words(3))
-            .RuleFor(answer => answer.Description, faker => faker.Commerce.ProductDescription())
+            .RuleFor(answer => answer.Body, faker => faker.Commerce.ProductDescription())
             .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 100))
             .RuleFor(answer => answer.QuestionId, 1);
 
@@ -150,7 +148,6 @@ public static class FakeDataHelper
         var profileFaker = new Faker<Profile>()
             .RuleFor(profile => profile.Id, _ => id)
             .RuleFor(profile => profile.UserId, _ => id++)
-            .RuleFor(profile => profile.Email, faker => faker.Internet.Email())
             .RuleFor(profile => profile.Bio, faker => faker.Name.JobTitle());
 
         for (var i = 0; i < 100; i++)
@@ -161,24 +158,24 @@ public static class FakeDataHelper
         return fakeProfiles;
     }
 
-    public static List<ProfilePicture> GetFakeProfilePictures()
+    public static List<ProfileImage> GetFakeProfileImages()
     {
         var id = 1;
 
-        var fakeProfilePictures = new List<ProfilePicture>();
+        var fakeProfileImages = new List<ProfileImage>();
 
-        // var fakeProfilePicture = await GetFakeImageAsync();
+        // var fakeProfileImage = await GetFakeImageAsync();
 
-        var profileFaker = new Faker<ProfilePicture>()
-            .RuleFor(profilePicture => profilePicture.Id, _ => id)
-            .RuleFor(profilePicture => profilePicture.ProfileId, _ => id++);
+        var profileFaker = new Faker<ProfileImage>()
+            .RuleFor(profileImage => profileImage.Id, _ => id)
+            .RuleFor(profileImage => profileImage.ProfileId, _ => id++);
 
         for (var i = 0; i < 100; i++)
         {
-            fakeProfilePictures.Add(profileFaker.Generate());
+            fakeProfileImages.Add(profileFaker.Generate());
         }
 
-        return fakeProfilePictures;
+        return fakeProfileImages;
     }
 
     public static List<Question> GetFakeQuestions()
@@ -188,7 +185,7 @@ public static class FakeDataHelper
         var questionFaker = new Faker<Question>()
             .RuleFor(question => question.Id, _ => id++)
             .RuleFor(question => question.Title, faker => faker.Random.Words(2))
-            .RuleFor(question => question.Description, faker => faker.Commerce.ProductDescription())
+            .RuleFor(question => question.Body, faker => faker.Commerce.ProductDescription())
             .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 100));
 
         var fakeQuestions = new List<Question>
@@ -209,12 +206,14 @@ public static class FakeDataHelper
         new Role
         {
             Id = 1,
-            Title = ApplicationConstants.AdminRoleName
+            Name = ApplicationConstants.AdminRoleName,
+            Description = "Administrator of the Application"
         },
         new Role
         {
             Id = 2,
-            Title = ApplicationConstants.UserRoleName
+            Name = ApplicationConstants.UserRoleName,
+            Description = "Basic User of the Application"
         }
     ];
 
@@ -226,6 +225,7 @@ public static class FakeDataHelper
             .RuleFor(user => user.Id, _ => id)
             .RuleFor(user => user.Username, faker => faker.Internet.UserName())
             .RuleFor(user => user.Password, faker => faker.Internet.Password())
+            .RuleFor(user => user.Email, faker => faker.Internet.Email())
             .RuleFor(user => user.PersonId, _ => id++);
 
         var fakeUsers = new List<User>();

@@ -2,6 +2,12 @@ namespace InsightFlow.Common.Constants;
 
 public static class ApplicationConstants
 {
+    // ---------------------------- File Extensions Constants ----------------------------
+    public static readonly string[] ValidProfileImageFormats = [Png, Jpeg, Jpg];
+    public const string Png = "png";
+    public const string Jpeg = "jpeg";
+    public const string Jpg = "jpg";
+
     // ---------------------------- Auth Constants ----------------------------
     public const string AdminPolicyName = "OnlyAdminPolicy";
     public const string UserPolicyName = "OnlyUserPolicy";

@@ -1,5 +1,5 @@
 ﻿using InsightFlow.DataAccess.Base;
-using InsightFlow.DataAccess.Contracts;
+using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
 using Sieve.Services;
 
@@ -11,7 +11,7 @@ public class UnitOfWork : IUnitOfWork
     private IBaseRepository<EntityStateInformation>? _entityStateInformationRepository;
     private IBaseRepository<Person>? _personRepository;
     private IBaseRepository<Profile>? _profileRepository;
-    private IBaseRepository<ProfilePicture>? _profilePictureRepository;
+    private IBaseRepository<ProfileImage>? _profileImageRepository;
     private IBaseRepository<Question>? _questionRepository;
     private IBaseRepository<Role>? _roleRepository;
     private IBaseRepository<User>? _userRepository;
@@ -38,8 +38,8 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<Profile> ProfileRepository =>
         _profileRepository ??= new BaseRepository<Profile>(_dbContext, _sieveProcessor);
 
-    public IBaseRepository<ProfilePicture> ProfilePictureRepository =>
-        _profilePictureRepository ??= new BaseRepository<ProfilePicture>(_dbContext, _sieveProcessor);
+    public IBaseRepository<ProfileImage> ProfileImageRepository =>
+        _profileImageRepository ??= new BaseRepository<ProfileImage>(_dbContext, _sieveProcessor);
 
     public IBaseRepository<Question> QuestionRepository =>
         _questionRepository ??= new BaseRepository<Question>(_dbContext, _sieveProcessor);
@@ -53,6 +53,6 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<UserRole> UserRoleRepository =>
         _userRoleRepository ??= new BaseRepository<UserRole>(_dbContext, _sieveProcessor);
 
-    public async Task<int> CommitAsync(CancellationToken cancellationToken) =>
+    public async Task<int> CommitAsync(CancellationToken cancellationToken = default) =>
         await _dbContext.SaveChangesAsync(cancellationToken);
 }

@@ -7,8 +7,6 @@ public class ProfileDtoValidator : AbstractValidator<ProfileDto>
 {
     public ProfileDtoValidator()
     {
-        RuleFor(x => x.Bio).MaximumLength(40);
-
-        RuleFor(x => x.Email).EmailAddress();
+        RuleFor(profileDto => profileDto.Bio).MaximumLength(500);
     }
 }

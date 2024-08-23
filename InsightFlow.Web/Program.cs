@@ -7,6 +7,8 @@ using Serilog.Settings.Configuration;
 
 // TODO: Use logging across the app
 // TODO: Implement deleting and updating entities
+// TODO: Extract getting user's GUID from claims into a service
+// TODO: Add varchar max length constraints to all string properties of entities 
 
 var builder = WebApplication.CreateBuilder(args);
 

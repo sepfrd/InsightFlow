@@ -3,12 +3,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using InsightFlow.Business.Contracts;
+using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Helpers;
-using InsightFlow.DataAccess.Contracts;
+using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -60,9 +60,7 @@ public class AuthBusiness : IAuthBusiness
             return null;
         }
 
-        var password = await loginDto.Password!.GetHashStringAsync();
-
-        var isPasswordValid = password == user.Password;
+        var isPasswordValid = PasswordHelper.ValidatePassword(loginDto.Password, user.Password);
 
         return !isPasswordValid ? null : user;
     }
@@ -81,14 +79,9 @@ public class AuthBusiness : IAuthBusiness
 
         var result = await _userRepository.GetAllAsync(
             sieveModel,
-            users =>
-                users
-                    .Include(x => x.Person)
-                    .Include(x => x.Profile)
-                    .Include(x => x.Questions)
-                    .Include(x => x.Answers)
-                    .Include(x => x.UserRoles)
-                    .ThenInclude(x => x.Role), cancellationToken);
+            users => users
+                .Include(user => user.UserRoles)
+                .ThenInclude(userRole => userRole.Role), cancellationToken);
 
         return result.Entities?.SingleOrDefault();
     }
@@ -122,7 +115,7 @@ public class AuthBusiness : IAuthBusiness
                 JwtRegisteredClaimNames.Iat,
                 DateTime.Now.ToUniversalTime().ToString(CultureInfo.InvariantCulture)),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Profile!.Email),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(ApplicationConstants.UsernameClaim, user.Username),
             new Claim(ApplicationConstants.ExternalIdClaim, user.Guid.ToString())
         });
@@ -131,7 +124,7 @@ public class AuthBusiness : IAuthBusiness
 
         foreach (var role in roles)
         {
-            var claim = new Claim(ClaimTypes.Role, role?.Title!);
+            var claim = new Claim(ClaimTypes.Role, role?.Name!);
 
             claims.AddClaim(claim);
         }

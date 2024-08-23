@@ -10,12 +10,7 @@ public class AnswerSieveConfiguration : BaseSieveConfiguration<Answer>
         base.Configure(mapper);
 
         mapper
-            .Property<Answer>(entity => entity.Title)
-            .CanSort()
-            .CanFilter();
-
-        mapper
-            .Property<Answer>(entity => entity.Description)
+            .Property<Answer>(entity => entity.Body)
             .CanSort()
             .CanFilter();
 

@@ -7,7 +7,9 @@ public class AnswerDtoValidator : AbstractValidator<AnswerDto>
 {
     public AnswerDtoValidator()
     {
-        RuleFor(x => x.Title).NotEmpty().MinimumLength(5);
-        RuleFor(x => x.Description).NotEmpty().MinimumLength(5);
+        RuleFor(answerDto => answerDto.Body)
+            .NotEmpty()
+            .MinimumLength(10)
+            .MaximumLength(2000);
     }
 }

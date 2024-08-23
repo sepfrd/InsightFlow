@@ -15,7 +15,7 @@ public class QuestionSieveConfiguration : BaseSieveConfiguration<Question>
             .CanFilter();
 
         mapper
-            .Property<Question>(entity => entity.Description)
+            .Property<Question>(entity => entity.Body)
             .CanSort()
             .CanFilter();
 

@@ -1,6 +1,6 @@
 ﻿using InsightFlow.Model.Entities;
 
-namespace InsightFlow.DataAccess.Contracts;
+namespace InsightFlow.DataAccess.Interfaces;
 
 public interface IUnitOfWork
 {
@@ -12,7 +12,7 @@ public interface IUnitOfWork
 
     IBaseRepository<Profile> ProfileRepository { get; }
 
-    IBaseRepository<ProfilePicture> ProfilePictureRepository { get; }
+    IBaseRepository<ProfileImage> ProfileImageRepository { get; }
 
     IBaseRepository<Question> QuestionRepository { get; }
 
@@ -22,5 +22,5 @@ public interface IUnitOfWork
 
     IBaseRepository<UserRole> UserRoleRepository { get; }
 
-    Task<int> CommitAsync(CancellationToken cancellationToken);
+    Task<int> CommitAsync(CancellationToken cancellationToken = default);
 }

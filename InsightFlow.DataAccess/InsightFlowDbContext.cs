@@ -21,7 +21,7 @@ public class InsightFlowDbContext : DbContext
 
     public DbSet<Profile>? Profiles { get; init; }
 
-    public DbSet<ProfilePicture>? ProfilePictures { get; init; }
+    public DbSet<ProfileImage>? ProfileImages { get; init; }
 
     public DbSet<Question>? Questions { get; init; }
 
@@ -37,7 +37,7 @@ public class InsightFlowDbContext : DbContext
 
         modelBuilder.ApplyConfiguration(new AnswerEntityConfiguration());
         modelBuilder.ApplyConfiguration(new ProfileEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new ProfilePictureEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new ProfileImageEntityConfiguration());
         modelBuilder.ApplyConfiguration(new QuestionEntityConfiguration());
         modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
         modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
@@ -45,7 +45,7 @@ public class InsightFlowDbContext : DbContext
         modelBuilder.Entity<Answer>().HasData(FakeDataHelper.GetFakeAnswers());
         modelBuilder.Entity<Person>().HasData(FakeDataHelper.GetFakePeople());
         modelBuilder.Entity<Profile>().HasData(FakeDataHelper.GetFakeProfiles());
-        modelBuilder.Entity<ProfilePicture>().HasData(FakeDataHelper.GetFakeProfilePictures());
+        modelBuilder.Entity<ProfileImage>().HasData(FakeDataHelper.GetFakeProfileImages());
         modelBuilder.Entity<Question>().HasData(FakeDataHelper.GetFakeQuestions());
         modelBuilder.Entity<Role>().HasData(FakeDataHelper.GetFakeRoles());
         modelBuilder.Entity<User>().HasData(FakeDataHelper.GetFakeUsers());

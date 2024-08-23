@@ -1,4 +1,4 @@
-﻿using InsightFlow.Business.Contracts;
+﻿using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using Microsoft.AspNetCore.Mvc;

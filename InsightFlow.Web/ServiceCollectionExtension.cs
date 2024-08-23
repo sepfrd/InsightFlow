@@ -6,12 +6,12 @@ using FluentValidation.AspNetCore;
 using InsightFlow.Api.Conventions;
 using InsightFlow.Api.Filters;
 using InsightFlow.Business.Businesses;
-using InsightFlow.Business.Contracts;
+using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Profiles;
 using InsightFlow.Common.Validations;
 using InsightFlow.DataAccess;
-using InsightFlow.DataAccess.Contracts;
+using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.DataAccess.Sieve;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -204,7 +204,7 @@ internal static class ServiceCollectionExtension
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>
         services
             .AddFluentValidationAutoValidation()
-            .AddValidatorsFromAssemblyContaining<RoleValidator>();
+            .AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
 
     internal static IServiceCollection InjectAutoMapper(this IServiceCollection services) =>
         services.AddAutoMapper(typeof(AnswerProfile).Assembly);

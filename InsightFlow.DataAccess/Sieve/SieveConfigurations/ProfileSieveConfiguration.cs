@@ -15,11 +15,6 @@ public class ProfileSieveConfiguration : BaseSieveConfiguration<Profile>
             .CanFilter();
 
         mapper
-            .Property<Profile>(entity => entity.Email)
-            .CanSort()
-            .CanFilter();
-
-        mapper
             .Property<Profile>(entity => entity.UserId)
             .CanSort()
             .CanFilter();

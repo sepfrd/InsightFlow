@@ -6,6 +6,8 @@ public class User : BaseEntity
 
     public required string Password { get; set; }
 
+    public required string Email { get; set; }
+
     public int PersonId { get; set; }
 
     public Person? Person { get; set; }
