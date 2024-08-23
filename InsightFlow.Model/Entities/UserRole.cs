@@ -1,6 +1,4 @@
-﻿using InsightFlow.Model.BaseEntities;
-
-namespace InsightFlow.Model.Entities;
+﻿namespace InsightFlow.Model.Entities;
 
 public class UserRole : BaseEntity
 {

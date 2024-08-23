@@ -1,8 +1,3 @@
 ﻿namespace InsightFlow.Common.Dtos;
 
-public class ProfileDto
-{
-    public string? Bio { get; init; }
-
-    public string? Email { get; init; }
-}
+public record ProfileDto(string Email, string Bio = "");

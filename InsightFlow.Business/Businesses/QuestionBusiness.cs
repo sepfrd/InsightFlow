@@ -1,68 +1,148 @@
 ﻿using System.Net;
+using System.Security.Claims;
 using AutoMapper;
-using InsightFlow.Business.Base;
-using InsightFlow.Business.Businesses.AdminBusinesses;
 using InsightFlow.Business.Contracts;
+using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
+using InsightFlow.Common.Dtos.Requests;
+using InsightFlow.DataAccess.Contracts;
 using InsightFlow.Model.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Sieve.Models;
 
 namespace InsightFlow.Business.Businesses;
 
-public class QuestionBusiness : BaseBusiness<Question, QuestionDto>
+public class QuestionBusiness : IQuestionBusiness
 {
-    private readonly AdminQuestionBusiness _adminQuestionBusiness;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IBaseRepository<Question> _questionRepository;
 
-    public QuestionBusiness(IAdminBaseBusiness<Question, QuestionDto> questionBusiness, IMapper mapper) : base(questionBusiness, mapper)
+    public QuestionBusiness(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor)
     {
-        _adminQuestionBusiness = (AdminQuestionBusiness)questionBusiness;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
+        _questionRepository = unitOfWork.QuestionRepository;
     }
 
-    public async Task<PagedCustomResponse<List<AnswerDto>>> GetAnswersByQuestionGuidAsync(
-        Guid questionGuid,
+    public async Task<CustomResponse<QuestionDto>> CreateQuestionAsync(CreateQuestionRequestDto requestDto, CancellationToken cancellationToken = default)
+    {
+        var question = _mapper.Map<Question>(requestDto);
+
+        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
+
+        question.UserId = user!.Id;
+
+        var createdQuestion = await _questionRepository.CreateAsync(question, cancellationToken);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+        
+        var questionDto = _mapper.Map<QuestionDto>(createdQuestion);
+
+        return CustomResponse<QuestionDto>.CreateSuccessfulResponse(questionDto, null, HttpStatusCode.Created);
+    }
+
+    public async Task<CustomResponse<Question>> GetQuestionByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var question = await _questionRepository.GetByIdAsync(
+            id,
+            questions => questions.Include(questionEntity => questionEntity.User),
+            cancellationToken);
+
+        if (question is null)
+        {
+            return CustomResponse<Question>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
+        }
+
+        return CustomResponse<Question>.CreateSuccessfulResponse(question);
+    }
+
+    public async Task<CustomResponse<QuestionDto>> GetQuestionByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
+    {
+        var question = await _questionRepository.GetByGuidAsync(
+            guid,
+            questions => questions.Include(questionEntity => questionEntity.User),
+            cancellationToken);
+
+        if (question is null)
+        {
+            return CustomResponse<QuestionDto>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
+        }
+
+        var questionDto = _mapper.Map<QuestionDto>(question);
+
+        return CustomResponse<QuestionDto>.CreateSuccessfulResponse(questionDto);
+    }
+
+    public async Task<PagedCustomResponse<List<Question>>> GetAllQuestionsAsync(SieveModel sieveModel, CancellationToken cancellationToken = default)
+    {
+        sieveModel.Page ??= 1;
+        sieveModel.PageSize ??= 10;
+
+        var result = await _questionRepository.GetAllAsync(
+            sieveModel,
+            questions => questions.Include(question => question.User),
+            cancellationToken);
+
+        var currentCount = result.Entities?.Count ?? 0;
+
+        return PagedCustomResponse<List<Question>>.CreateSuccessfulResponse(
+            result.Entities,
+            null,
+            HttpStatusCode.OK,
+            result.TotalCount,
+            currentCount,
+            sieveModel.Page.Value,
+            sieveModel.PageSize.Value);
+    }
+
+    public async Task<PagedCustomResponse<List<QuestionDto>>> GetCurrentUserQuestionDtosAsync(
         int pageNumber = 1,
         int pageSize = 10,
         CancellationToken cancellationToken = default)
     {
-        var answersResponse = await _adminQuestionBusiness.GetAnswersByQuestionGuidAsync(
-            questionGuid,
-            pageNumber > 0 ? pageNumber : 1,
-            pageSize >= 10 && pageSize <= 100 ? pageSize : 10,
-            cancellationToken);
+        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
 
-        if (!answersResponse.IsSuccess)
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(
+            Guid.Parse(userGuid),
+            users => users.Include(user => user.Questions),
+            cancellationToken);
+        
+        if (user!.Questions.Count == 0)
         {
-            return PagedCustomResponse<List<AnswerDto>>.CreateUnsuccessfulResponse(answersResponse.HttpStatusCode, answersResponse.Message);
+            return PagedCustomResponse<List<QuestionDto>>.CreateSuccessfulResponse([]);
         }
 
-        var answerDtos = _mapper.Map<List<AnswerDto>>(answersResponse.Data);
+        pageNumber = pageNumber > 0 ? pageNumber : 1;
+        pageSize = pageSize >= 10 && pageSize <= 100 ? pageSize : 10;
 
-        return PagedCustomResponse<List<AnswerDto>>.CreateSuccessfulResponse(
-            answerDtos,
+        var skipCount = (pageNumber - 1) * pageSize;
+
+        var questions = user
+            .Questions
+            .OrderByDescending(question => question.Id)
+            .Skip(skipCount)
+            .Take(pageSize)
+            .ToList();
+
+        var questionDtos = _mapper.Map<List<QuestionDto>>(questions);
+
+        return PagedCustomResponse<List<QuestionDto>>.CreateSuccessfulResponse(
+            questionDtos,
             null,
             HttpStatusCode.OK,
-            answersResponse.TotalCount,
-            answerDtos.Count,
-            answersResponse.PageNumber,
-            answersResponse.PageSize);
+            user.Questions.Count,
+            questionDtos.Count,
+            pageNumber,
+            pageSize);
     }
-
-    public async Task<CustomResponse<List<VoteDto>>> GetVotesByQuestionGuidAsync(Guid questionGuid, CancellationToken cancellationToken = default)
-    {
-        var votesResponse = await _adminQuestionBusiness.GetVotesByQuestionGuidAsync(questionGuid, cancellationToken);
-
-        if (!votesResponse.IsSuccess)
-        {
-            return CustomResponse<List<VoteDto>>.CreateUnsuccessfulResponse(votesResponse.HttpStatusCode, votesResponse.Message);
-        }
-
-        var voteDtos = _mapper.Map<List<VoteDto>>(votesResponse.Data);
-
-        return CustomResponse<List<VoteDto>>.CreateSuccessfulResponse(voteDtos);
-    }
-
-    public async Task<CustomResponse> SubmitVoteAsync(Guid questionGuid, bool kind, CancellationToken cancellationToken = default) =>
-        await _adminQuestionBusiness.SubmitVoteAsync(questionGuid, kind, cancellationToken);
 }

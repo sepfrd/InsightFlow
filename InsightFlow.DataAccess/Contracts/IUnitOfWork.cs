@@ -4,15 +4,23 @@ namespace InsightFlow.DataAccess.Contracts;
 
 public interface IUnitOfWork
 {
-    IBaseRepository<Answer>? AnswerRepository { get; }
+    IBaseRepository<Answer> AnswerRepository { get; }
 
-    IBaseRepository<Person>? PersonRepository { get; }
+    IBaseRepository<EntityStateInformation> EntityStateInformationRepository { get; }
 
-    IBaseRepository<Question>? QuestionRepository { get; }
+    IBaseRepository<Person> PersonRepository { get; }
 
-    IBaseRepository<Role>? RoleRepository { get; }
+    IBaseRepository<Profile> ProfileRepository { get; }
 
-    IBaseRepository<User>? UserRepository { get; }
+    IBaseRepository<ProfilePicture> ProfilePictureRepository { get; }
+
+    IBaseRepository<Question> QuestionRepository { get; }
+
+    IBaseRepository<Role> RoleRepository { get; }
+
+    IBaseRepository<User> UserRepository { get; }
+
+    IBaseRepository<UserRole> UserRoleRepository { get; }
 
     Task<int> CommitAsync(CancellationToken cancellationToken);
 }

@@ -1,10 +1,8 @@
-﻿using InsightFlow.Model.BaseEntities;
+﻿namespace InsightFlow.Model.Entities;
 
-namespace InsightFlow.Model.Entities;
-
-public class Role : BaseEntityWithGuid
+public class Role : BaseEntity
 {
-    public string? Title { get; set; }
+    public required string Title { get; set; }
 
-    public ICollection<UserRole>? UserRoles { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = [];
 }

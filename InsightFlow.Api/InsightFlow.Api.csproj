@@ -7,9 +7,6 @@
         <LangVersion>12</LangVersion>
     </PropertyGroup>
     <ItemGroup>
-        <Folder Include="Base\" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\InsightFlow.Common\InsightFlow.Common.csproj" />
         <ProjectReference Include="..\InsightFlow.Business\InsightFlow.Business.csproj" />
     </ItemGroup>

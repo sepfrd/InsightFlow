@@ -1,4 +1,4 @@
-using InsightFlow.Model.BaseEntities;
+using InsightFlow.Model.Entities;
 using Sieve.Services;
 
 namespace InsightFlow.DataAccess.Sieve.SieveConfigurations;

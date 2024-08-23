@@ -1,18 +1,12 @@
-﻿using InsightFlow.Model.BaseEntities;
+﻿namespace InsightFlow.Model.Entities;
 
-namespace InsightFlow.Model.Entities;
-
-public class Question : BaseEntityWithGuid
+public class Question : BaseEntity
 {
-    public string? Title { get; set; }
+    public required string Title { get; set; }
 
-    public string? Description { get; set; }
+    public required string Description { get; set; }
 
-    public ICollection<Answer>? Answers { get; set; }
-
-    public ICollection<QuestionVote>? Votes { get; set; }
-
-    public ICollection<Bookmark>? Bookmarks { get; set; }
+    public ICollection<Answer> Answers { get; set; } = [];
 
     public int UserId { get; set; }
 

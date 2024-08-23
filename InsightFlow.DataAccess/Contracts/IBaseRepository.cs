@@ -1,21 +1,28 @@
 ﻿using InsightFlow.DataAccess.Dtos;
-using InsightFlow.Model.BaseEntities;
+using InsightFlow.Model.Entities;
 using Microsoft.EntityFrameworkCore.Query;
 using Sieve.Models;
 
 namespace InsightFlow.DataAccess.Contracts;
 
-public interface IBaseRepository<T> where T : BaseEntityWithGuid
+public interface IBaseRepository<T> where T : BaseEntity
 {
-    Task<T> CreateAsync(T entity, CancellationToken cancellationToken);
+    Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default);
 
-    Task<PagedEntitiesResponseDto<T>> GetAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default);
+    Task<PagedEntitiesResponseDto<T>> GetAllAsync(
+        SieveModel sieveModel,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
+        CancellationToken cancellationToken = default);
 
-    Task<T?> GetByIdAsync(int id, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default);
+    Task<T?> GetByIdAsync(
+        int id,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
+        CancellationToken cancellationToken = default);
 
-    Task<T?> GetByGuidAsync(Guid guid, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default);
-
-    T Update(T entity);
+    Task<T?> GetByGuidAsync(
+        Guid guid,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
+        CancellationToken cancellationToken = default);
 
     T Delete(T entity);
 }

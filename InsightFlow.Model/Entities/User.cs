@@ -1,14 +1,10 @@
-﻿using InsightFlow.Model.BaseEntities;
+﻿namespace InsightFlow.Model.Entities;
 
-namespace InsightFlow.Model.Entities;
-
-public class User : BaseEntityWithGuid
+public class User : BaseEntity
 {
     public required string Username { get; set; }
 
     public required string Password { get; set; }
-
-    public int Score { get; set; }
 
     public int PersonId { get; set; }
 
@@ -16,11 +12,9 @@ public class User : BaseEntityWithGuid
 
     public Profile? Profile { get; set; }
 
-    public ICollection<Question>? Questions { get; set; }
+    public ICollection<Question> Questions { get; set; } = [];
 
-    public ICollection<Answer>? Answers { get; set; }
+    public ICollection<Answer> Answers { get; set; } = [];
 
-    public ICollection<UserRole>? UserRoles { get; set; }
-
-    public ICollection<Bookmark>? Bookmarks { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = [];
 }

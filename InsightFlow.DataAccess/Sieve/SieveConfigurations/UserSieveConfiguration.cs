@@ -15,11 +15,6 @@ public class UserSieveConfiguration : BaseSieveConfiguration<User>
             .CanFilter();
 
         mapper
-            .Property<User>(entity => entity.Score)
-            .CanSort()
-            .CanFilter();
-
-        mapper
             .Property<User>(entity => entity.PersonId)
             .CanSort()
             .CanFilter();

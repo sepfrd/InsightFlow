@@ -6,16 +6,13 @@ using FluentValidation.AspNetCore;
 using InsightFlow.Api.Conventions;
 using InsightFlow.Api.Filters;
 using InsightFlow.Business.Businesses;
-using InsightFlow.Business.Businesses.AdminBusinesses;
 using InsightFlow.Business.Contracts;
 using InsightFlow.Common.Constants;
-using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Profiles;
 using InsightFlow.Common.Validations;
 using InsightFlow.DataAccess;
 using InsightFlow.DataAccess.Contracts;
 using InsightFlow.DataAccess.Sieve;
-using InsightFlow.Model.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -198,12 +195,11 @@ internal static class ServiceCollectionExtension
             });
 
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
-        services.AddScoped<IAdminBaseBusiness<User, UserDto>, AdminUserBusiness>()
-            .AddScoped<IAdminBaseBusiness<Answer, AnswerDto>, AdminAnswerBusiness>()
-            .AddScoped<IAdminBaseBusiness<Question, QuestionDto>, AdminQuestionBusiness>()
-            .AddScoped<IBaseBusiness<AnswerDto>, AnswerBusiness>()
-            .AddScoped<IBaseBusiness<QuestionDto>, QuestionBusiness>()
-            .AddScoped<IAuthBusiness, AuthBusiness>();
+        services
+            .AddScoped<IAnswerBusiness, AnswerBusiness>()
+            .AddScoped<IAuthBusiness, AuthBusiness>()
+            .AddScoped<IQuestionBusiness, QuestionBusiness>()
+            .AddScoped<IUserBusiness, UserBusiness>();
 
     internal static IServiceCollection InjectFluentValidation(this IServiceCollection services) =>
         services

@@ -1,12 +1,12 @@
-﻿using InsightFlow.Model.BaseEntities;
-
-namespace InsightFlow.Model.Entities;
+﻿namespace InsightFlow.Model.Entities;
 
 public class Profile : BaseEntity
 {
     public string Bio { get; set; } = string.Empty;
 
     public required string Email { get; set; }
+
+    public ProfilePicture? ProfilePicture { get; set; }
 
     public int UserId { get; set; }
 

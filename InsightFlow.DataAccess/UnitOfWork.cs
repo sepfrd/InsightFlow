@@ -1,5 +1,5 @@
-﻿using InsightFlow.DataAccess.Contracts;
-using InsightFlow.DataAccess.Repositories;
+﻿using InsightFlow.DataAccess.Base;
+using InsightFlow.DataAccess.Contracts;
 using InsightFlow.Model.Entities;
 using Sieve.Services;
 
@@ -8,17 +8,16 @@ namespace InsightFlow.DataAccess;
 public class UnitOfWork : IUnitOfWork
 {
     private IBaseRepository<Answer>? _answerRepository;
-
+    private IBaseRepository<EntityStateInformation>? _entityStateInformationRepository;
     private IBaseRepository<Person>? _personRepository;
-
+    private IBaseRepository<Profile>? _profileRepository;
+    private IBaseRepository<ProfilePicture>? _profilePictureRepository;
     private IBaseRepository<Question>? _questionRepository;
-
     private IBaseRepository<Role>? _roleRepository;
-
     private IBaseRepository<User>? _userRepository;
+    private IBaseRepository<UserRole>? _userRoleRepository;
 
     private readonly InsightFlowDbContext _dbContext;
-
     private readonly ISieveProcessor _sieveProcessor;
 
     public UnitOfWork(InsightFlowDbContext dbContext, ISieveProcessor sieveProcessor)
@@ -28,19 +27,31 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public IBaseRepository<Answer> AnswerRepository =>
-        _answerRepository ??= new AnswerRepository(_dbContext, _sieveProcessor);
+        _answerRepository ??= new BaseRepository<Answer>(_dbContext, _sieveProcessor);
+
+    public IBaseRepository<EntityStateInformation> EntityStateInformationRepository =>
+        _entityStateInformationRepository ??= new BaseRepository<EntityStateInformation>(_dbContext, _sieveProcessor);
 
     public IBaseRepository<Person> PersonRepository =>
-        _personRepository ??= new PersonRepository(_dbContext, _sieveProcessor);
+        _personRepository ??= new BaseRepository<Person>(_dbContext, _sieveProcessor);
+
+    public IBaseRepository<Profile> ProfileRepository =>
+        _profileRepository ??= new BaseRepository<Profile>(_dbContext, _sieveProcessor);
+
+    public IBaseRepository<ProfilePicture> ProfilePictureRepository =>
+        _profilePictureRepository ??= new BaseRepository<ProfilePicture>(_dbContext, _sieveProcessor);
 
     public IBaseRepository<Question> QuestionRepository =>
-        _questionRepository ??= new QuestionRepository(_dbContext, _sieveProcessor);
+        _questionRepository ??= new BaseRepository<Question>(_dbContext, _sieveProcessor);
 
     public IBaseRepository<Role> RoleRepository =>
-        _roleRepository ??= new RoleRepository(_dbContext, _sieveProcessor);
+        _roleRepository ??= new BaseRepository<Role>(_dbContext, _sieveProcessor);
 
     public IBaseRepository<User> UserRepository =>
-        _userRepository ??= new UserRepository(_dbContext, _sieveProcessor);
+        _userRepository ??= new BaseRepository<User>(_dbContext, _sieveProcessor);
+
+    public IBaseRepository<UserRole> UserRoleRepository =>
+        _userRoleRepository ??= new BaseRepository<UserRole>(_dbContext, _sieveProcessor);
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken) =>
         await _dbContext.SaveChangesAsync(cancellationToken);

@@ -1,4 +1,5 @@
 ﻿using InsightFlow.Common.Dtos;
+using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.Model.Entities;
 using Profile = AutoMapper.Profile;
 
@@ -13,6 +14,8 @@ public class AnswerProfile : Profile
                 option => option.MapFrom(answer => answer.User!.Guid))
             .ForMember(answerDto => answerDto.QuestionGuid,
                 option => option.MapFrom(answer => answer.Question!.Guid));
+
+        CreateMap<CreateAnswerRequestDto, Answer>();
 
         CreateMap<AnswerDto, Answer>();
     }

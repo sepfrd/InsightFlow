@@ -15,13 +15,6 @@ services:
           cpus: '0.5'
           memory: '1024M'
 
-  mongodb:
-    image: mongo:6.0.8
-    ports:
-      - "27017:27017"
-    healthcheck:
-      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
-
   insight-flow:
     image: local/insight-flow:1.0
     build:
@@ -41,23 +34,16 @@ services:
       InternalSerilog__Enrich__0: FromLogContext
       InternalSerilog__Enrich__1: WithMachineName
       InternalSerilog__Enrich__2: WithThreadId
-      Serilog__WriteTo__0__Name: MongoDBBson
-      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongodb:27017/InsightFlow
-      Serilog__WriteTo__0__Args__collectionName: ProductionLogs
-      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 1024
-      Serilog__WriteTo__0__Args__cappedMaxDocuments: 50000
-      Serilog__WriteTo__0__Args__rollingInterval: Day
-      Serilog__WriteTo__0__Args__formatter: Serilog.Formatting.Json.JsonFormatter
       Serilog__MinimumLevel__Default: Warning
       Serilog__MinimumLevel__Override__Microsoft: Warning
       Serilog__MinimumLevel__Override__System: Warning
-      Serilog__WriteTo__1__Name: File
-      Serilog__WriteTo__1__Args__path: ./logs/development/log-.json
-      Serilog__WriteTo__1__Args__rollingInterval: Day
-      Serilog__WriteTo__1__Args__rollOnFileSizeLimit: true
-      Serilog__WriteTo__1__Args__formatter: Serilog.Formatting.Json.JsonFormatter
-      Serilog__WriteTo__2__Name: Console
-      Serilog__WriteTo__2__Args__outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {Message:lj} <s:{SourceContext}>{NewLine}{Exception}"
+      Serilog__WriteTo__0__Name: File
+      Serilog__WriteTo__0__Args__path: ./logs/development/log-.json
+      Serilog__WriteTo__0__Args__rollingInterval: Day
+      Serilog__WriteTo__0__Args__rollOnFileSizeLimit: true
+      Serilog__WriteTo__0__Args__formatter: Serilog.Formatting.Json.JsonFormatter
+      Serilog__WriteTo__1__Name: Console
+      Serilog__WriteTo__1__Args__outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {Message:lj} <s:{SourceContext}>{NewLine}{Exception}"
       Serilog__Enrich__0: FromLogContext
       Serilog__Enrich__1: WithMachineName
       ConnectionStrings__SqlServer: "Data Source=sqlserver;Initial Catalog=InsightFlow;User Id=sa;Password=Sfr1376.;Trust Server Certificate=True;Encrypt=False"
@@ -69,8 +55,6 @@ services:
       - "9000:8080"
     depends_on:
       sqlserver:
-        condition: service_healthy
-      mongodb:
         condition: service_healthy
     restart: on-failure
    

@@ -100,45 +100,6 @@ public static class FakeDataHelper
         return fakeAnswers;
     }
 
-    public static List<AnswerVote> GetFakeAnswerVotes()
-    {
-        var id = 1;
-
-        var answerVoteFaker = new Faker<AnswerVote>()
-            .RuleFor(answerVote => answerVote.Id, _ => id)
-            .RuleFor(answerVote => answerVote.AnswerId, _ => id++)
-            .RuleFor(answerVote => answerVote.Kind, faker => faker.Random.Bool());
-
-        var fakeAnswerVotes = new List<AnswerVote>();
-
-        for (var i = 0; i < 100; i++)
-        {
-            fakeAnswerVotes.Add(answerVoteFaker.Generate());
-        }
-
-        return fakeAnswerVotes;
-    }
-
-    public static List<Bookmark> GetFakeBookmarks()
-    {
-        var id = 1;
-
-        var bookmarkFaker = new Faker<Bookmark>()
-            .RuleFor(bookmark => bookmark.Id, _ => id)
-            .RuleFor(bookmark => bookmark.UserId, _ => id)
-            .RuleFor(bookmark => bookmark.QuestionId, _ => id++)
-            .RuleFor(bookmark => bookmark.IsBookmarked, faker => faker.Random.Bool());
-
-        var fakeBookmarks = new List<Bookmark>();
-
-        for (var i = 0; i < 50; i++)
-        {
-            fakeBookmarks.Add(bookmarkFaker.Generate());
-        }
-
-        return fakeBookmarks;
-    }
-
     public static List<Person> GetFakePeople()
     {
         var id = 3;
@@ -178,9 +139,9 @@ public static class FakeDataHelper
     {
         var id = 3;
 
-        var profilesList = new List<Profile>();
+        var fakeProfiles = new List<Profile>();
 
-        profilesList.AddRange(new List<Profile>
+        fakeProfiles.AddRange(new List<Profile>
         {
             FakeAdminProfile,
             FakeUserProfile
@@ -194,10 +155,30 @@ public static class FakeDataHelper
 
         for (var i = 0; i < 100; i++)
         {
-            profilesList.Add(profileFaker.Generate());
+            fakeProfiles.Add(profileFaker.Generate());
         }
 
-        return profilesList;
+        return fakeProfiles;
+    }
+
+    public static List<ProfilePicture> GetFakeProfilePictures()
+    {
+        var id = 1;
+
+        var fakeProfilePictures = new List<ProfilePicture>();
+
+        // var fakeProfilePicture = await GetFakeImageAsync();
+
+        var profileFaker = new Faker<ProfilePicture>()
+            .RuleFor(profilePicture => profilePicture.Id, _ => id)
+            .RuleFor(profilePicture => profilePicture.ProfileId, _ => id++);
+
+        for (var i = 0; i < 100; i++)
+        {
+            fakeProfilePictures.Add(profileFaker.Generate());
+        }
+
+        return fakeProfilePictures;
     }
 
     public static List<Question> GetFakeQuestions()
@@ -223,25 +204,6 @@ public static class FakeDataHelper
         return fakeQuestions;
     }
 
-    public static List<QuestionVote> GetFakeQuestionVotes()
-    {
-        var id = 1;
-
-        var questionVoteFaker = new Faker<QuestionVote>()
-            .RuleFor(questionVote => questionVote.Id, _ => id)
-            .RuleFor(questionVote => questionVote.QuestionId, _ => id++)
-            .RuleFor(questionVote => questionVote.Kind, faker => faker.Random.Bool());
-
-        var fakeQuestionVotes = new List<QuestionVote>();
-
-        for (var i = 0; i < 100; i++)
-        {
-            fakeQuestionVotes.Add(questionVoteFaker.Generate());
-        }
-
-        return fakeQuestionVotes;
-    }
-
     public static List<Role> GetFakeRoles() =>
     [
         new Role
@@ -264,7 +226,6 @@ public static class FakeDataHelper
             .RuleFor(user => user.Id, _ => id)
             .RuleFor(user => user.Username, faker => faker.Internet.UserName())
             .RuleFor(user => user.Password, faker => faker.Internet.Password())
-            .RuleFor(user => user.Score, faker => faker.Random.Number(50))
             .RuleFor(user => user.PersonId, _ => id++);
 
         var fakeUsers = new List<User>();
@@ -306,4 +267,16 @@ public static class FakeDataHelper
 
         return userRolesList;
     }
+
+    // private async static Task<byte[]?> GetFakeImageAsync()
+    // {
+    //     var client = new HttpClient
+    //     {
+    //         Timeout = TimeSpan.FromSeconds(5)
+    //     };
+    //
+    //     var response = await client.GetByteArrayAsync("https://picsum.photos/1000");
+    //
+    //     return response;
+    // }
 }

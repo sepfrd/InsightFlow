@@ -9,7 +9,6 @@ using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Helpers;
 using InsightFlow.DataAccess.Contracts;
-using InsightFlow.DataAccess.Repositories;
 using InsightFlow.Model.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +20,16 @@ namespace InsightFlow.Business.Businesses;
 
 public class AuthBusiness : IAuthBusiness
 {
-    private readonly UserRepository _userRepository;
+    private readonly IBaseRepository<User> _userRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IConfiguration _configuration;
+
+    public AuthBusiness(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+    {
+        _userRepository = unitOfWork.UserRepository;
+        _httpContextAccessor = httpContextAccessor;
+        _configuration = configuration;
+    }
 
     public async Task<CustomResponse<string>> LoginAsync(LoginDto login, CancellationToken cancellationToken = default)
     {
@@ -42,13 +48,6 @@ public class AuthBusiness : IAuthBusiness
         var jwt = CreateJwt(user)!;
 
         return CustomResponse<string>.CreateSuccessfulResponse(jwt, MessageConstants.SuccessfulLoginMessage);
-    }
-
-    public AuthBusiness(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _configuration = configuration;
-        _userRepository = (UserRepository)unitOfWork.UserRepository!;
     }
 
     private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto,
@@ -88,7 +87,7 @@ public class AuthBusiness : IAuthBusiness
                     .Include(x => x.Profile)
                     .Include(x => x.Questions)
                     .Include(x => x.Answers)
-                    .Include(x => x.UserRoles)!
+                    .Include(x => x.UserRoles)
                     .ThenInclude(x => x.Role), cancellationToken);
 
         return result.Entities?.SingleOrDefault();
@@ -128,7 +127,7 @@ public class AuthBusiness : IAuthBusiness
             new Claim(ApplicationConstants.ExternalIdClaim, user.Guid.ToString())
         });
 
-        var roles = user.UserRoles!.Select(userRole => userRole.Role).ToList();
+        var roles = user.UserRoles.Select(userRole => userRole.Role).ToList();
 
         foreach (var role in roles)
         {

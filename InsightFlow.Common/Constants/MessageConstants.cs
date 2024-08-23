@@ -5,6 +5,7 @@ public static class MessageConstants
     // ---------------------------- Bad Request (400) Messages ----------------------------
     public const string AlreadySignedInMessage = "You are already signed in.";
     public const string InvalidCredentialsMessage = "Username and/or password not correct.";
+    public const string InvalidParametersMessage = "Invalid value for parameter(s) {0}.";
 
     // ---------------------------- Not Found (404) Messages ----------------------------
     public const string EntityNotFoundMessage = "{0} with guid of {1} not found.";

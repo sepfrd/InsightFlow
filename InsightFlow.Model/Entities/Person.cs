@@ -1,14 +1,10 @@
-﻿using InsightFlow.Model.BaseEntities;
+﻿namespace InsightFlow.Model.Entities;
 
-namespace InsightFlow.Model.Entities;
-
-public class Person : BaseEntityWithGuid
+public class Person : BaseEntity
 {
-    public string? FirstName { get; set; }
+    public required string FirstName { get; set; }
 
     public string? LastName { get; set; }
-
-    public string FullName => FirstName + " " + LastName;
 
     public User? User { get; set; }
 }
