@@ -164,13 +164,11 @@ public static class FakeDataHelper
 
         var fakeProfileImages = new List<ProfileImage>();
 
-        var fakeProfileImage = GetFakeImageAsync().Result;
+        // var fakeProfileImage = GetFakeImageAsync().Result;
 
         var profileFaker = new Faker<ProfileImage>()
             .RuleFor(profileImage => profileImage.Id, _ => id)
-            .RuleFor(profileImage => profileImage.ProfileId, _ => id++)
-            .RuleFor(profileImage => profileImage.ImageFormat, _ => ApplicationConstants.Jpeg)
-            .RuleFor(profileImage => profileImage.ImageBytes, _ => fakeProfileImage);
+            .RuleFor(profileImage => profileImage.ProfileId, _ => id++);
 
         for (var i = 0; i < 100; i++)
         {
@@ -272,15 +270,15 @@ public static class FakeDataHelper
         return userRolesList;
     }
 
-    private static Task<byte[]> GetFakeImageAsync()
-    {
-        var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(5)
-        };
-
-        var response = client.GetByteArrayAsync("https://picsum.photos/500.jpg");
-
-        return response;
-    }
+    // private static Task<byte[]> GetFakeImageAsync()
+    // {
+    //     var client = new HttpClient
+    //     {
+    //         Timeout = TimeSpan.FromSeconds(5)
+    //     };
+    //
+    //     var response = client.GetByteArrayAsync("https://picsum.photos/500.jpg");
+    //
+    //     return response;
+    // }
 }

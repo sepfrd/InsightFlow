@@ -9,9 +9,6 @@ services:
       - "1533:1433"
     healthcheck:
       test: [ "CMD", "bash", "-c", "echo 'SELECT 1'" ]
-      interval: 10s
-      timeout: 10s
-      retries: 10
     deploy:
       resources:
         limits:
@@ -24,39 +21,29 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__SqlServer: "Server=sqlserver,1433;Database=InsightFlow;User Id=sa;Password=Sfr1376.;Trust Server Certificate=True;Encrypt=False"
       ApplicationVersion: "v1"
-      InternalSerilog__MinimumLevel__Default: Information
-      InternalSerilog__MinimumLevel__Override__Microsoft: Information
-      InternalSerilog__MinimumLevel__Override__System: Information
-      InternalSerilog__WriteTo__0__Name: File
-      InternalSerilog__WriteTo__0__Args__path: "./logs/internal/log-.json"
-      InternalSerilog__WriteTo__0__Args__rollingInterval: Day
-      InternalSerilog__WriteTo__0__Args__rollOnFileSizeLimit: true
-      InternalSerilog__WriteTo__0__Args__formatter: Serilog.Formatting.Json.JsonFormatter
-      InternalSerilog__Enrich__0: FromLogContext
-      InternalSerilog__Enrich__1: WithMachineName
-      InternalSerilog__Enrich__2: WithThreadId
-      Serilog__MinimumLevel__Default: Information
-      Serilog__MinimumLevel__Override__Microsoft: Information
-      Serilog__MinimumLevel__Override__System: Information
-      Serilog__WriteTo__0__Name: File
-      Serilog__WriteTo__0__Args__path: "./logs/development/log-.json"
-      Serilog__WriteTo__0__Args__rollingInterval: Day
-      Serilog__WriteTo__0__Args__rollOnFileSizeLimit: true
-      Serilog__WriteTo__0__Args__formatter: Serilog.Formatting.Json.JsonFormatter
-      Serilog__WriteTo__1__Name: Console
-      Serilog__WriteTo__1__Args__outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {Message:lj} <s:{SourceContext}>{NewLine}{Exception}"
-      Serilog__Enrich__0: FromLogContext
-      Serilog__Enrich__1: WithMachineName
-      ConnectionStrings__SqlServer: "Data Source=sqlserver;Initial Catalog=InsightFlow;User Id=sa;Password=Sfr1376.;Trust Server Certificate=True;Encrypt=False"
       ApplicationUrls__ServerUrl: "http://localhost"
       ApplicationUrls__ClientUrl: "http://localhost"
       JwtConfiguration__PrivateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC7VJTUt9Us8cKjMzEfYyjiWA4R4/M2bS1GB4t7NXp98C3SC6dVMvDuictGeurT8jNbvJZHtCSuYEvuNMoSfm76oqFvAp8Gy0iz5sxjZmSnXyCdPEovGhLa0VzMaQ8s+CLOyS56YyCFGeJZqgtzJ6GR3eqoYSW9b9UMvkBpZODSctWSNGj3P7jRFDO5VoTwCQAWbFnOjDfH5Ulgp2PKSQnSJP3AJLQNFNe7br1XbrhV//eO+t51mIpGSDCUv3E0DDFcWDTH9cXDTTlRZVEiR2BwpZOOkE/Z0/BVnhZYL71oZV34bKfWjQIt6V/isSMahdsAASACp4ZTGtwiVuNd9tybAgMBAAECggEBAKTmjaS6tkK8BlPXClTQ2vpz/N6uxDeS35mXpqasqskVlaAidgg/sWqpjXDbXr93otIMLlWsM+X0CqMDgSXKejLS2jx4GDjI1ZTXg++0AMJ8sJ74pWzVDOfmCEQ/7wXs3+cbnXhKriO8Z036q92Qc1+N87SI38nkGa0ABH9CN83HmQqt4fB7UdHzuIRe/me2PGhIq5ZBzj6h3BpoPGzEP+x3l9YmK8t/1cN0pqI+dQwYdgfGjackLu/2qH80MCF7IyQaseZUOJyKrCLtSD/Iixv/hzDEUPfOCjFDgTpzf3cwta8+oE4wHCo1iI1/4TlPkwmXx4qSXtmw4aQPz7IDQvECgYEA8KNThCO2gsC2I9PQDM/8Cw0O983WCDY+oi+7JPiNAJwv5DYBqEZB1QYdj06YD16XlC/HAZMsMku1na2TN0driwenQQWzoev3g2S7gRDoS/FCJSI3jJ+kjgtaA7Qmzlgk1TxODN+G1H91HW7t0l7VnL27IWyYo2qRRK3jzxqUiPUCgYEAx0oQs2reBQGMVZnApD1jeq7n4MvNLcPvt8b/eU9iUv6Y4Mj0Suo/AU8lYZXm8ubbqAlwz2VSVunD2tOplHyMUrtCtObAfVDUAhCndKaA9gApgfb3xw1IKbuQ1u4IF1FJl3VtumfQn//LiH1B3rXhcdyo3/vIttEk48RakUKClU8CgYEAzV7W3COOlDDcQd935DdtKBFRAPRPAlspQUnzMi5eSHMD/ISLDY5IiQHbIH83D4bvXq0X7qQoSBSNP7Dvv3HYuqMhf0DaegrlBuJllFVVq9qPVRnKxt1Il2HgxOBvbhOT+9in1BzA+YJ99UzC85O0Qz06A+CmtHEy4aZ2kj5hHjECgYEAmNS4+A8Fkss8Js1RieK2LniBxMgmYml3pfVLKGnzmng7H2+cwPLhPIzIuwytXywh2bzbsYEfYx3EoEVgMEpPhoarQnYPukrJO4gwE2o5Te6T5mJSZGlQJQj9q4ZB2Dfzet6INsK0oG8XVGXSpQvQh3RUYekCZQkBBFcpqWpbIEsCgYAnM3DQf3FJoSnXaMhrVBIovic5l0xFkEHskAjFTevO86Fsz1C2aSeRKSqGFoOQ0tmJzBEs1R6KqnHInicDTQrKhArgLXX4v3CddjfTRJkFWDbE/CkvKZNOrcf1nhaGCPspRJj2KUkj1Fhl9Cncdn/RsYEONbwQSjIfMPkvxF+8HQ==\n-----END PRIVATE KEY-----"
       JwtConfiguration__PublicKey: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu1SU1LfVLPHCozMxH2Mo4lgOEePzNm0tRgeLezV6ffAt0gunVTLw7onLRnrq0/IzW7yWR7QkrmBL7jTKEn5u+qKhbwKfBstIs+bMY2Zkp18gnTxKLxoS2tFczGkPLPgizskuemMghRniWaoLcyehkd3qqGElvW/VDL5AaWTg0nLVkjRo9z+40RQzuVaE8AkAFmxZzow3x+VJYKdjykkJ0iT9wCS0DRTXu269V264Vf/3jvredZiKRkgwlL9xNAwxXFg0x/XFw005UWVRIkdgcKWTjpBP2dPwVZ4WWC+9aGVd+Gyn1o0CLelf4rEjGoXbAAEgAqeGUxrcIlbjXfbcmwIDAQAB\n-----END PUBLIC KEY-----"
+      CaptchaConfiguration__NonceKey: "NETESCAPADES_NONCE"
+      CaptchaConfiguration__HiddenInputName: "CaptchaText"
+      CaptchaConfiguration__EncryptionKey: "KyB^krszTz2U$S7LtU3*%KAF!GY7$n9bDd256J3Nn%xacpu2$B&N%XT53Th9giz2b^zwUTYhtFzXQ@JPatLa**iCT@!7h$^xS$#BM2Qoc44qv$G3GxFkDBSGoe86wh55"
+      CaptchaConfiguration__HiddenTokenName: "CaptchaToken"
+      CaptchaConfiguration__InputName: "CaptchaInputText"
+      CaptchaConfiguration__Identifier: "InsightFlowCaptcha"
+      CaptchaConfiguration__ExpirationPeriodMinutes: 2
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__PermitLimit: 5
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__WindowSeconds: 120
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__ReplenishmentPeriodSeconds: 10
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__TokensPerPeriod: 10
+      RateLimitersConfiguration__ConcurrencyLimiterOptions__PermitLimit: 100
     ports:
-      - "8000:8080"
+      - "9000:8080"
     depends_on:
       sqlserver:
         condition: service_healthy
-    restart: always
+    restart: on-failure
+   

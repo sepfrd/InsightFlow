@@ -36,6 +36,7 @@ internal static class ServiceCollectionExtensions
             {
                 options.Filters.Add<CustomExceptionFilter>();
                 options.Conventions.Add(new ControllerDocumentationConvention());
+                options.Conventions.Add(new ExcludeDntCaptchaEndpointsConvention());
             })
             .AddJsonOptions(options =>
             {
@@ -146,12 +147,6 @@ internal static class ServiceCollectionExtensions
         services.AddSwaggerGen(options =>
         {
             var applicationVersion = configuration.GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey);
-
-            options.DocInclusionPredicate((_, apiDesc) =>
-            {
-                var routeTemplate = apiDesc.RelativePath;
-                return !routeTemplate!.StartsWith("DNTCaptchaImage");
-            });
 
             options.SwaggerDoc(applicationVersion, new OpenApiInfo
             {

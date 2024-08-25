@@ -32,6 +32,8 @@ public static class ApplicationConstants
     public const string CaptchaConfigurationSectionKey = "CaptchaConfiguration";
     public const string RateLimitersSectionKey = "RateLimitersConfiguration";
 
+    public const string DntCaptchaName = "dntcaptcha";
+    
     public const string FixedWindowRateLimiterPolicy = "FixedWindowRateLimiterPolicy";
     public const string ConcurrencyRateLimiterPolicy = "ConcurrencyRateLimiterPolicy";
 
