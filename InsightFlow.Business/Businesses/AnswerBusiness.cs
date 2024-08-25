@@ -106,7 +106,9 @@ public class AnswerBusiness : IAnswerBusiness
     {
         var question = await _unitOfWork.QuestionRepository.GetByGuidAsync(
             questionGuid,
-            questions => questions.Include(question => question.Answers),
+            questions => questions
+                .Include(question => question.Answers)
+                .ThenInclude(answer => answer.User),
             cancellationToken);
 
         if (question is null)
