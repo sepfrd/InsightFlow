@@ -24,7 +24,6 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(ApplicationConstants.UserPolicyName)]
     public async Task<ActionResult<CustomResponse<UserDto>>> CreateUserAsync([FromBody] CreateUserRequestDto requestDto, CancellationToken cancellationToken)
     {
         var result = await _userBusiness.CreateUserAsync(requestDto, cancellationToken);

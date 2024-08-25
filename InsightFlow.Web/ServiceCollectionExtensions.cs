@@ -1,6 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
+using DNTCaptcha.Core;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using InsightFlow.Api.Conventions;
@@ -8,12 +11,14 @@ using InsightFlow.Api.Filters;
 using InsightFlow.Business.Businesses;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Dtos.Configurations;
 using InsightFlow.Common.Profiles;
-using InsightFlow.Common.Validations;
+using InsightFlow.Common.Validators;
 using InsightFlow.DataAccess;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.DataAccess.Sieve;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
@@ -23,7 +28,7 @@ using Sieve.Services;
 
 namespace InsightFlow.Web;
 
-internal static class ServiceCollectionExtension
+internal static class ServiceCollectionExtensions
 {
     internal static IServiceCollection InjectApiControllers(this IServiceCollection services) =>
         services
@@ -38,6 +43,61 @@ internal static class ServiceCollectionExtension
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             })
             .Services;
+
+    internal static IServiceCollection InjectRateLimiters(this IServiceCollection services, IConfiguration configuration)
+    {
+        var customRateLimitOptions = configuration.GetSection(ApplicationConstants.RateLimitersSectionKey).Get<CustomRateLimitOptions>()!;
+
+        services
+            .AddRateLimiter(limiterOptions =>
+            {
+                limiterOptions.AddFixedWindowLimiter(
+                    ApplicationConstants.FixedWindowRateLimiterPolicy,
+                    fixedWindowOptions =>
+                    {
+                        fixedWindowOptions.PermitLimit = customRateLimitOptions.FixedWindowRateLimiterOptions.PermitLimit;
+                        fixedWindowOptions.Window = TimeSpan.FromSeconds(customRateLimitOptions.FixedWindowRateLimiterOptions.WindowSeconds);
+                        fixedWindowOptions.QueueLimit = customRateLimitOptions.FixedWindowRateLimiterOptions.QueueLimit;
+                        fixedWindowOptions.QueueProcessingOrder = customRateLimitOptions.FixedWindowRateLimiterOptions.QueueProcessingOrder;
+                        fixedWindowOptions.AutoReplenishment = customRateLimitOptions.FixedWindowRateLimiterOptions.AutoReplenishment;
+                    });
+
+                limiterOptions.AddConcurrencyLimiter(
+                    ApplicationConstants.ConcurrencyRateLimiterPolicy,
+                    concurrencyOptions =>
+                    {
+                        concurrencyOptions.PermitLimit = customRateLimitOptions.ConcurrencyLimiterOptions.PermitLimit;
+                        concurrencyOptions.QueueLimit = customRateLimitOptions.ConcurrencyLimiterOptions.QueueLimit;
+                        concurrencyOptions.QueueProcessingOrder = customRateLimitOptions.ConcurrencyLimiterOptions.QueueProcessingOrder;
+                    });
+
+                limiterOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, IPAddress>(context =>
+                {
+                    var remoteIpAddress = context.Connection.RemoteIpAddress;
+
+                    if (remoteIpAddress is null || IPAddress.IsLoopback(remoteIpAddress))
+                    {
+                        return RateLimitPartition.GetNoLimiter(IPAddress.Loopback);
+                    }
+
+                    return RateLimitPartition.GetTokenBucketLimiter(
+                        remoteIpAddress,
+                        _ => new TokenBucketRateLimiterOptions
+                        {
+                            AutoReplenishment = customRateLimitOptions.TokenBucketRateLimiterOptions.AutoReplenishment,
+                            QueueLimit = customRateLimitOptions.TokenBucketRateLimiterOptions.QueueLimit,
+                            QueueProcessingOrder = customRateLimitOptions.TokenBucketRateLimiterOptions.QueueProcessingOrder,
+                            ReplenishmentPeriod = TimeSpan.FromSeconds(customRateLimitOptions.TokenBucketRateLimiterOptions.ReplenishmentPeriodSeconds),
+                            TokenLimit = customRateLimitOptions.TokenBucketRateLimiterOptions.TokenLimit,
+                            TokensPerPeriod = customRateLimitOptions.TokenBucketRateLimiterOptions.TokensPerPeriod
+                        });
+                });
+
+                limiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            });
+
+        return services;
+    }
 
     internal static IServiceCollection InjectCors(this IServiceCollection services, IConfiguration configuration) =>
         services.AddCors(options =>
@@ -86,6 +146,12 @@ internal static class ServiceCollectionExtension
         services.AddSwaggerGen(options =>
         {
             var applicationVersion = configuration.GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey);
+
+            options.DocInclusionPredicate((_, apiDesc) =>
+            {
+                var routeTemplate = apiDesc.RelativePath;
+                return !routeTemplate!.StartsWith("DNTCaptchaImage");
+            });
 
             options.SwaggerDoc(applicationVersion, new OpenApiInfo
             {
@@ -193,6 +259,31 @@ internal static class ServiceCollectionExtension
                 options.AddPolicy(ApplicationConstants.UserPolicyName,
                     policy => policy.RequireRole(ApplicationConstants.UserRoleName));
             });
+
+    internal static IServiceCollection InjectCaptcha(this IServiceCollection services, IConfiguration configuration)
+    {
+        var captchaDto = configuration.GetSection(ApplicationConstants.CaptchaConfigurationSectionKey).Get<CaptchaConfigurationDto>()!;
+
+        services.AddDNTCaptcha(options =>
+        {
+            options
+                .UseCookieStorageProvider()
+                .AbsoluteExpiration(captchaDto.ExpirationPeriodMinutes)
+                .ShowThousandsSeparators(false)
+                .WithNoise(0.015f, 0.015f, 1, 0.0f)
+                .WithEncryptionKey(captchaDto.EncryptionKey)
+                .WithNonceKey(captchaDto.NonceKey)
+                .InputNames(new DNTCaptchaComponent
+                {
+                    CaptchaHiddenInputName = captchaDto.HiddenInputName,
+                    CaptchaHiddenTokenName = captchaDto.HiddenTokenName,
+                    CaptchaInputName = captchaDto.InputName
+                })
+                .Identifier(captchaDto.Identifier);
+        });
+
+        return services;
+    }
 
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
         services

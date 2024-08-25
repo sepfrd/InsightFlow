@@ -4,7 +4,7 @@ public static class ApplicationConstants
 {
     // ---------------------------- File Extensions Constants ----------------------------
     public static readonly string[] ValidProfileImageFormats = [Png, Jpeg, Jpg];
-    public const string Png = "png";
+    private const string Png = "png";
     public const string Jpeg = "jpeg";
     public const string Jpg = "jpg";
 
@@ -29,8 +29,13 @@ public static class ApplicationConstants
     public const string JwtConfigurationSectionKey = "JwtConfiguration";
     public const string JwtPublicKeyConfigurationKey = "PublicKey";
     public const string JwtPrivateKeyConfigurationKey = "PrivateKey";
+    public const string CaptchaConfigurationSectionKey = "CaptchaConfiguration";
+    public const string RateLimitersSectionKey = "RateLimitersConfiguration";
 
-    public const string TestingEnvironmentName = "Testing Environment";
+    public const string FixedWindowRateLimiterPolicy = "FixedWindowRateLimiterPolicy";
+    public const string ConcurrencyRateLimiterPolicy = "ConcurrencyRateLimiterPolicy";
+
+    public const string TestingEnvironmentName = "Testing";
 
     public const string ApplicationName = "InsightFlow";
 }

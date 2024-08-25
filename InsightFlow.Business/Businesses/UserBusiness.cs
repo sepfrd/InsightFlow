@@ -12,6 +12,7 @@ using InsightFlow.Model.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Sieve.Models;
 using Profile = InsightFlow.Model.Entities.Profile;
 
@@ -38,6 +39,36 @@ public class UserBusiness : IUserBusiness
     // TODO: Make sure this nested setup works
     public async Task<CustomResponse<UserDto>> CreateUserAsync(CreateUserRequestDto requestDto, CancellationToken cancellationToken = default)
     {
+        var isUsernameUnique = await IsUsernameUnique(requestDto.Username, cancellationToken);
+
+        if (!isUsernameUnique)
+        {
+            var message = string.Format(
+                MessageConstants.PropertyNotUniqueMessage,
+                requestDto.Username,
+                nameof(User.Username).ToLowerInvariant());
+
+            return CustomResponse<UserDto>
+                .CreateUnsuccessfulResponse(
+                    HttpStatusCode.BadRequest,
+                    message);
+        }
+
+        var isEmailUnique = await IsEmailUnique(requestDto.Email, cancellationToken);
+
+        if (!isEmailUnique)
+        {
+            var message = string.Format(
+                MessageConstants.PropertyNotUniqueMessage,
+                requestDto.Email,
+                nameof(User.Email).ToLowerInvariant());
+
+            return CustomResponse<UserDto>
+                .CreateUnsuccessfulResponse(
+                    HttpStatusCode.BadRequest,
+                    message);
+        }
+
         var password = PasswordHelper.HashPassword(requestDto.Password);
 
         var user = new User
@@ -195,5 +226,33 @@ public class UserBusiness : IUserBusiness
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return CustomResponse.CreateSuccessfulResponse(MessageConstants.SuccessfulProfileImageUploadMessage);
+    }
+
+    private async Task<bool> IsUsernameUnique(string username, CancellationToken cancellationToken = default)
+    {
+        var sieveModel = new SieveModel
+        {
+            Filters = nameof(User.Username) + "==" + username,
+            Page = 1,
+            PageSize = 1
+        };
+
+        var user = await _userRepository.GetAllAsync(sieveModel, null, cancellationToken);
+
+        return user.Entities.IsNullOrEmpty();
+    }
+
+    private async Task<bool> IsEmailUnique(string email, CancellationToken cancellationToken = default)
+    {
+        var sieveModel = new SieveModel
+        {
+            Filters = nameof(User.Email) + "==" + email,
+            Page = 1,
+            PageSize = 1
+        };
+
+        var user = await _userRepository.GetAllAsync(sieveModel, null, cancellationToken);
+
+        return user.Entities.IsNullOrEmpty();
     }
 }

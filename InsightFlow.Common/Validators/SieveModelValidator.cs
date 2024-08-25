@@ -1,7 +1,7 @@
 using FluentValidation;
 using Sieve.Models;
 
-namespace InsightFlow.Common.Validations;
+namespace InsightFlow.Common.Validators;
 
 public class SieveModelValidator : AbstractValidator<SieveModel>
 {

@@ -3,6 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using DNTCaptcha.Core;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
@@ -14,31 +16,75 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using Sieve.Models;
 
 namespace InsightFlow.Business.Businesses;
 
-public class AuthBusiness : IAuthBusiness
+public partial class AuthBusiness : IAuthBusiness
 {
     private readonly IBaseRepository<User> _userRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IConfiguration _configuration;
+    private readonly IDNTCaptchaApiProvider _apiProvider;
+    private readonly IDNTCaptchaValidatorService _validatorService;
+    private readonly ILogger _logger;
 
-    public AuthBusiness(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+    public AuthBusiness(
+        IUnitOfWork unitOfWork,
+        IHttpContextAccessor httpContextAccessor,
+        IConfiguration configuration,
+        IDNTCaptchaApiProvider apiProvider,
+        IDNTCaptchaValidatorService validatorService,
+        ILogger logger)
     {
         _userRepository = unitOfWork.UserRepository;
         _httpContextAccessor = httpContextAccessor;
         _configuration = configuration;
+        _apiProvider = apiProvider;
+        _validatorService = validatorService;
+        _logger = logger;
     }
 
-    public async Task<CustomResponse<string>> LoginAsync(LoginDto login, CancellationToken cancellationToken = default)
+    public DNTCaptchaApiResponse CreateCaptcha() =>
+        _apiProvider.CreateDNTCaptcha(new DNTCaptchaTagHelperHtmlAttributes
+        {
+            FontSize = 36,
+            Language = Language.English,
+            DisplayMode = DisplayMode.ShowDigits,
+            Max = 999999,
+            Min = 111111
+        });
+
+    private bool ValidateCaptcha(CaptchaDto _)
+    {
+        try
+        {
+            return _validatorService.HasRequestValidCaptchaEntry();
+        }
+        catch (Exception exception)
+        {
+            _logger.Error(exception.Message, exception);
+
+            return false;
+        }
+    }
+
+    public async Task<CustomResponse<string>> LoginAsync(CaptchaDto captchaDto, LoginDto loginDto, CancellationToken cancellationToken = default)
     {
         if (IsSignedIn())
         {
             return CustomResponse<string>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, MessageConstants.AlreadySignedInMessage);
         }
 
-        var user = await ValidateAndGetUserByCredentialsAsync(login, cancellationToken);
+        var isCaptchaValid = ValidateCaptcha(captchaDto);
+
+        if (!isCaptchaValid)
+        {
+            return CustomResponse<string>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, MessageConstants.InvalidCaptchaMessage);
+        }
+
+        var user = await ValidateAndGetUserByCredentialsAsync(loginDto, cancellationToken);
 
         if (user is null)
         {
@@ -50,10 +96,18 @@ public class AuthBusiness : IAuthBusiness
         return CustomResponse<string>.CreateSuccessfulResponse(jwt, MessageConstants.SuccessfulLoginMessage);
     }
 
-    private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto,
-        CancellationToken cancellationToken = default)
+    private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
-        var user = await LoadByUsernameAsync(loginDto.Username!, cancellationToken);
+        User? user;
+
+        if (UsernameRegex().IsMatch(loginDto.UsernameOrEmail))
+        {
+            user = await GetByUsernameAsync(loginDto.UsernameOrEmail, cancellationToken);
+        }
+        else
+        {
+            user = await GetByEmailAsync(loginDto.UsernameOrEmail, cancellationToken);
+        }
 
         if (user is null)
         {
@@ -68,11 +122,29 @@ public class AuthBusiness : IAuthBusiness
     private bool IsSignedIn() =>
         _httpContextAccessor.HttpContext!.User.Identity is not null && _httpContextAccessor.HttpContext!.User.Identity.IsAuthenticated;
 
-    private async Task<User?> LoadByUsernameAsync(string username, CancellationToken cancellationToken = default)
+    private async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
         var sieveModel = new SieveModel
         {
             Filters = nameof(User.Username) + "==" + username,
+            Page = 1,
+            PageSize = 1
+        };
+
+        var result = await _userRepository.GetAllAsync(
+            sieveModel,
+            users => users
+                .Include(user => user.UserRoles)
+                .ThenInclude(userRole => userRole.Role), cancellationToken);
+
+        return result.Entities?.SingleOrDefault();
+    }
+
+    private async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var sieveModel = new SieveModel
+        {
+            Filters = nameof(User.Email) + "==" + email,
             Page = 1,
             PageSize = 1
         };
@@ -144,4 +216,7 @@ public class AuthBusiness : IAuthBusiness
 
         return jwt;
     }
+
+    [GeneratedRegex(RegexPatternConstants.UsernameRegexPattern)]
+    private static partial Regex UsernameRegex();
 }

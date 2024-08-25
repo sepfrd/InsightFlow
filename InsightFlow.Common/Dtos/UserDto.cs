@@ -4,8 +4,6 @@ public class UserDto : BaseDto
 {
     public string? Username { get; init; }
 
-    public string? Password { get; set; }
-
     public string? Email { get; set; }
 
     public string? FirstName { get; init; }

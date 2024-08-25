@@ -1,7 +1,6 @@
 ﻿using InsightFlow.Common.Constants;
 using InsightFlow.DataAccess;
 using InsightFlow.Web;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Settings.Configuration;
 
@@ -31,6 +30,7 @@ try
     builder.Services
         .AddEndpointsApiExplorer()
         .InjectApiControllers()
+        .InjectRateLimiters(builder.Configuration)
         .AddHttpContextAccessor()
         .InjectCors(builder.Configuration)
         .InjectSwagger(builder.Configuration)
@@ -38,6 +38,7 @@ try
         .InjectSieve()
         .InjectSerilog(builder.Configuration)
         .InjectAuth(builder.Configuration)
+        .InjectCaptcha(builder.Configuration)
         .InjectDbContext(builder.Configuration, builder.Environment)
         .InjectBusinesses()
         .InjectFluentValidation()
@@ -58,17 +59,18 @@ try
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
     }
-
-    else
-    {
-        await context.Database.MigrateAsync();
-        //app.UseHsts();
-    }
+    //
+    // else
+    // {
+    //     await context.Database.MigrateAsync();
+    //     //app.UseHsts();
+    // }
 
     app
         //.UseHttpsRedirection()
         .UseCors(!app.Environment.IsProduction() ? ApplicationConstants.AllowAnyOriginCorsPolicy : ApplicationConstants.RestrictedCorsPolicy)
         .UseRouting()
+        .UseRateLimiter()
         .UseAuthentication()
         .UseAuthorization();
 

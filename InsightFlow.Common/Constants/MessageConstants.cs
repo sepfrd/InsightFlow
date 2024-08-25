@@ -4,7 +4,9 @@ public static class MessageConstants
 {
     // ---------------------------- Bad Request (400) Messages ----------------------------
     public const string AlreadySignedInMessage = "You are already signed in.";
-    public const string InvalidCredentialsMessage = "Username and/or password not correct.";
+    public const string PropertyNotUniqueMessage = "{0} is already taken.\nChoose another {1}.";
+    public const string InvalidCredentialsMessage = "Username/Email and/or password not correct.";
+    public const string InvalidCaptchaMessage = "Invalid CAPTCHA parameters";
     public const string InvalidParametersMessage = "Invalid value for parameter(s) {0}.";
     public const string InvalidProfileImageFormatMessage = "{0} is not a valid image format for profile image.\nValid formats: {1}";
 

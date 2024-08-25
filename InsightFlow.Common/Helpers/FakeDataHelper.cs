@@ -164,11 +164,13 @@ public static class FakeDataHelper
 
         var fakeProfileImages = new List<ProfileImage>();
 
-        // var fakeProfileImage = await GetFakeImageAsync();
+        var fakeProfileImage = GetFakeImageAsync().Result;
 
         var profileFaker = new Faker<ProfileImage>()
             .RuleFor(profileImage => profileImage.Id, _ => id)
-            .RuleFor(profileImage => profileImage.ProfileId, _ => id++);
+            .RuleFor(profileImage => profileImage.ProfileId, _ => id++)
+            .RuleFor(profileImage => profileImage.ImageFormat, _ => ApplicationConstants.Jpeg)
+            .RuleFor(profileImage => profileImage.ImageBytes, _ => fakeProfileImage);
 
         for (var i = 0; i < 100; i++)
         {
@@ -221,10 +223,12 @@ public static class FakeDataHelper
     {
         var id = 3;
 
+        var password = PasswordHelper.HashPassword("Correct_p0");
+
         var userFaker = new Faker<User>()
             .RuleFor(user => user.Id, _ => id)
             .RuleFor(user => user.Username, faker => faker.Internet.UserName())
-            .RuleFor(user => user.Password, faker => faker.Internet.Password())
+            .RuleFor(user => user.Password, _ => password)
             .RuleFor(user => user.Email, faker => faker.Internet.Email())
             .RuleFor(user => user.PersonId, _ => id++);
 
@@ -268,15 +272,15 @@ public static class FakeDataHelper
         return userRolesList;
     }
 
-    // private async static Task<byte[]?> GetFakeImageAsync()
-    // {
-    //     var client = new HttpClient
-    //     {
-    //         Timeout = TimeSpan.FromSeconds(5)
-    //     };
-    //
-    //     var response = await client.GetByteArrayAsync("https://picsum.photos/1000");
-    //
-    //     return response;
-    // }
+    private static Task<byte[]> GetFakeImageAsync()
+    {
+        var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(5)
+        };
+
+        var response = client.GetByteArrayAsync("https://picsum.photos/500.jpg");
+
+        return response;
+    }
 }
