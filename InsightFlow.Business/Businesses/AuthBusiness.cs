@@ -4,7 +4,6 @@ using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using DNTCaptcha.Core;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
@@ -16,7 +15,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
 using Sieve.Models;
 
 namespace InsightFlow.Business.Businesses;
@@ -26,64 +24,24 @@ public partial class AuthBusiness : IAuthBusiness
     private readonly IBaseRepository<User> _userRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IConfiguration _configuration;
-    private readonly IDNTCaptchaApiProvider _apiProvider;
-    private readonly IDNTCaptchaValidatorService _validatorService;
-    private readonly ILogger _logger;
 
     public AuthBusiness(
         IUnitOfWork unitOfWork,
         IHttpContextAccessor httpContextAccessor,
-        IConfiguration configuration,
-        IDNTCaptchaApiProvider apiProvider,
-        IDNTCaptchaValidatorService validatorService,
-        ILogger logger)
+        IConfiguration configuration)
     {
         _userRepository = unitOfWork.UserRepository;
         _httpContextAccessor = httpContextAccessor;
         _configuration = configuration;
-        _apiProvider = apiProvider;
-        _validatorService = validatorService;
-        _logger = logger;
     }
-
-    public DNTCaptchaApiResponse CreateCaptcha() =>
-        _apiProvider.CreateDNTCaptcha(new DNTCaptchaTagHelperHtmlAttributes
-        {
-            FontSize = 36,
-            Language = Language.English,
-            DisplayMode = DisplayMode.ShowDigits,
-            Max = 999999,
-            Min = 111111
-        });
-
-    private bool ValidateCaptcha(CaptchaDto _)
-    {
-        try
-        {
-            return _validatorService.HasRequestValidCaptchaEntry();
-        }
-        catch (Exception exception)
-        {
-            _logger.Error(exception.Message, exception);
-
-            return false;
-        }
-    }
-
-    public async Task<CustomResponse<string>> LoginAsync(CaptchaDto captchaDto, LoginDto loginDto, CancellationToken cancellationToken = default)
+    
+    public async Task<CustomResponse<string>> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
         if (IsSignedIn())
         {
             return CustomResponse<string>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, MessageConstants.AlreadySignedInMessage);
         }
-
-        var isCaptchaValid = ValidateCaptcha(captchaDto);
-
-        if (!isCaptchaValid)
-        {
-            return CustomResponse<string>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, MessageConstants.InvalidCaptchaMessage);
-        }
-
+        
         var user = await ValidateAndGetUserByCredentialsAsync(loginDto, cancellationToken);
 
         if (user is null)

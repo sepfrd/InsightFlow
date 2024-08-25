@@ -74,6 +74,22 @@
       <_ContentIncludedByDefault Remove="logs\internal\log-20240808.json" />
       <_ContentIncludedByDefault Remove="logs\internal\log-20240811.json" />
       <_ContentIncludedByDefault Remove="logs\internal\log-20240813.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240817.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240818.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240819.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240820.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240821.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240823.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240824.json" />
+      <_ContentIncludedByDefault Remove="logs\development\log-20240825.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240817.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240818.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240819.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240820.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240821.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240823.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240824.json" />
+      <_ContentIncludedByDefault Remove="logs\internal\log-20240825.json" />
     </ItemGroup>
 
     <ItemGroup>

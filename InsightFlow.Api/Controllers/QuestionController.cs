@@ -44,6 +44,15 @@ public class QuestionController : ControllerBase
     }
 
     [HttpGet]
+    [Route("dtos")]
+    public async Task<ActionResult<CustomResponse<List<QuestionDto>>>> GetAllQuestionDtosAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken)
+    {
+        var result = await _questionBusiness.GetAllQuestionDtosAsync(sieveModel, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpGet]
     [Route("guid/{guid:guid}/answers")]
     public async Task<ActionResult<CustomResponse<List<AnswerDto>>>> GetAnswerDtosByQuestionGuidAsync(
         [FromRoute] Guid guid,

@@ -3,7 +3,6 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
-using DNTCaptcha.Core;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using InsightFlow.Api.Conventions;
@@ -36,7 +35,6 @@ internal static class ServiceCollectionExtensions
             {
                 options.Filters.Add<CustomExceptionFilter>();
                 options.Conventions.Add(new ControllerDocumentationConvention());
-                options.Conventions.Add(new ExcludeDntCaptchaEndpointsConvention());
             })
             .AddJsonOptions(options =>
             {
@@ -147,7 +145,7 @@ internal static class ServiceCollectionExtensions
         services.AddSwaggerGen(options =>
         {
             var applicationVersion = configuration.GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey);
-
+            
             options.SwaggerDoc(applicationVersion, new OpenApiInfo
             {
                 Title = ApplicationConstants.ApplicationName,
@@ -254,31 +252,6 @@ internal static class ServiceCollectionExtensions
                 options.AddPolicy(ApplicationConstants.UserPolicyName,
                     policy => policy.RequireRole(ApplicationConstants.UserRoleName));
             });
-
-    internal static IServiceCollection InjectCaptcha(this IServiceCollection services, IConfiguration configuration)
-    {
-        var captchaDto = configuration.GetSection(ApplicationConstants.CaptchaConfigurationSectionKey).Get<CaptchaConfigurationDto>()!;
-
-        services.AddDNTCaptcha(options =>
-        {
-            options
-                .UseCookieStorageProvider()
-                .AbsoluteExpiration(captchaDto.ExpirationPeriodMinutes)
-                .ShowThousandsSeparators(false)
-                .WithNoise(0.015f, 0.015f, 1, 0.0f)
-                .WithEncryptionKey(captchaDto.EncryptionKey)
-                .WithNonceKey(captchaDto.NonceKey)
-                .InputNames(new DNTCaptchaComponent
-                {
-                    CaptchaHiddenInputName = captchaDto.HiddenInputName,
-                    CaptchaHiddenTokenName = captchaDto.HiddenTokenName,
-                    CaptchaInputName = captchaDto.InputName
-                })
-                .Identifier(captchaDto.Identifier);
-        });
-
-        return services;
-    }
 
     internal static IServiceCollection InjectBusinesses(this IServiceCollection services) =>
         services

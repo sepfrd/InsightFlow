@@ -105,6 +105,25 @@ public class QuestionBusiness : IQuestionBusiness
             sieveModel.PageSize.Value);
     }
 
+    public async Task<PagedCustomResponse<List<QuestionDto>>> GetAllQuestionDtosAsync(SieveModel sieveModel, CancellationToken cancellationToken = default)
+    {
+        var result = await GetAllQuestionsAsync(sieveModel, cancellationToken);
+
+        var questionDtos = result.IsSuccess ? _mapper.Map<List<QuestionDto>>(result.Data) : null;
+
+        return new PagedCustomResponse<List<QuestionDto>>
+        {
+            Data = questionDtos,
+            IsSuccess = result.IsSuccess,
+            Message = result.Message,
+            HttpStatusCode = result.HttpStatusCode,
+            TotalCount = result.TotalCount,
+            CurrentCount = result.CurrentCount,
+            PageNumber = result.PageNumber,
+            PageSize = result.PageSize
+        };
+    }
+
     public async Task<PagedCustomResponse<List<QuestionDto>>> GetCurrentUserQuestionDtosAsync(
         int pageNumber = 1,
         int pageSize = 10,

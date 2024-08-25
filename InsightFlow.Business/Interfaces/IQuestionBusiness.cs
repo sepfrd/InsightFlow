@@ -16,6 +16,8 @@ public interface IQuestionBusiness
 
     Task<PagedCustomResponse<List<Question>>> GetAllQuestionsAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
 
+    Task<PagedCustomResponse<List<QuestionDto>>> GetAllQuestionDtosAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
+    
     Task<PagedCustomResponse<List<QuestionDto>>> GetCurrentUserQuestionDtosAsync(
         int pageNumber = 1,
         int pageSize = 10,
