@@ -13,7 +13,7 @@ services:
       resources:
         limits:
           cpus: '0.5'
-          memory: '1024M'
+          memory: '1524M'
 
   insight-flow:
     image: local/insight-flow:1.0
