@@ -2,11 +2,11 @@
 
 public class UserRole : BaseEntity
 {
-    public int UserId { get; set; }
+    public int UserId { get; init; }
 
-    public User? User { get; set; }
+    public User? User { get; init; }
 
-    public int RoleId { get; set; }
+    public int RoleId { get; init; }
 
-    public Role? Role { get; set; }
+    public Role? Role { get; init; }
 }

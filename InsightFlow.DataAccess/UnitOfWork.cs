@@ -9,7 +9,6 @@ public class UnitOfWork : IUnitOfWork
 {
     private IBaseRepository<Answer>? _answerRepository;
     private IBaseRepository<EntityStateInformation>? _entityStateInformationRepository;
-    private IBaseRepository<Person>? _personRepository;
     private IBaseRepository<Profile>? _profileRepository;
     private IBaseRepository<ProfileImage>? _profileImageRepository;
     private IBaseRepository<Question>? _questionRepository;
@@ -31,9 +30,6 @@ public class UnitOfWork : IUnitOfWork
 
     public IBaseRepository<EntityStateInformation> EntityStateInformationRepository =>
         _entityStateInformationRepository ??= new BaseRepository<EntityStateInformation>(_dbContext, _sieveProcessor);
-
-    public IBaseRepository<Person> PersonRepository =>
-        _personRepository ??= new BaseRepository<Person>(_dbContext, _sieveProcessor);
 
     public IBaseRepository<Profile> ProfileRepository =>
         _profileRepository ??= new BaseRepository<Profile>(_dbContext, _sieveProcessor);

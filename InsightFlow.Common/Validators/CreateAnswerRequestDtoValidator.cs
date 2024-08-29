@@ -7,7 +7,7 @@ public class CreateAnswerRequestDtoValidator : AbstractValidator<CreateAnswerReq
 {
     public CreateAnswerRequestDtoValidator()
     {
-        RuleFor(requestDto => requestDto.Body)
+        RuleFor(createAnswerRequestDto => createAnswerRequestDto.Body)
             .NotEmpty()
             .MinimumLength(10)
             .MaximumLength(2000);

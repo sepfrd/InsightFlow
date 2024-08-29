@@ -13,9 +13,14 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(user => user.Username).IsUnique();
 
         builder
-            .HasOne<Person>(user => user.Person)
-            .WithOne(person => person.User)
-            .HasForeignKey<User>(user => user.PersonId);
+            .Property(user => user.FirstName)
+            .HasColumnType(SqlDbType.NVarChar.ToString())
+            .HasMaxLength(100);
+
+        builder
+            .Property(user => user.LastName)
+            .HasColumnType(SqlDbType.NVarChar.ToString())
+            .HasMaxLength(100);
 
         builder
             .Property(user => user.Username)

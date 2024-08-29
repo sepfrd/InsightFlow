@@ -1,3 +1,4 @@
+using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
@@ -17,14 +18,14 @@ public interface IAnswerBusiness
     Task<PagedCustomResponse<List<AnswerDto>>> GetAnswerDtosByQuestionGuidAsync(
         Guid questionGuid,
         int pageNumber = 1,
-        int pageSize = 10,
+        int pageSize = ApplicationConstants.MinimumPageSize,
         CancellationToken cancellationToken = default);
 
     Task<PagedCustomResponse<List<Answer>>> GetAllAnswersAsync(SieveModel sieveModel, CancellationToken cancellationToken = default);
 
     Task<PagedCustomResponse<List<AnswerDto>>> GetCurrentUserAnswerDtosAsync(
         int pageNumber = 1,
-        int pageSize = 10,
+        int pageSize = ApplicationConstants.MinimumPageSize,
         CancellationToken cancellationToken = default);
 
     Task<CustomResponse<AnswerDto>> UpdateAnswerAsync(Guid answerGuid, UpdateAnswerRequestDto requestDto, CancellationToken cancellationToken = default);

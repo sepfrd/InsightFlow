@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Net;
+using InsightFlow.Common.Constants;
 
 namespace InsightFlow.Common.Dtos.CustomResponses;
 
 public class PagedCustomResponse<T> : CustomResponse<T> where T : IEnumerable?
 {
-    public int TotalCount { get; set; }
+    public int TotalCount { get; init; }
 
-    public int CurrentCount { get; set; }
+    public int CurrentCount { get; init; }
 
-    public int PageNumber { get; set; }
+    public int PageNumber { get; init; }
 
-    public int PageSize { get; set; }
+    public int PageSize { get; init; }
 
     public new static PagedCustomResponse<T> CreateUnsuccessfulResponse(HttpStatusCode httpStatusCode, string? message = null) =>
         new()
@@ -27,8 +28,8 @@ public class PagedCustomResponse<T> : CustomResponse<T> where T : IEnumerable?
         HttpStatusCode httpStatusCode = HttpStatusCode.OK,
         int totalCount = 0,
         int currentCount = 0,
-        int pageNumber = 0,
-        int pageSize = 0) => new()
+        int pageNumber = 1,
+        int pageSize = ApplicationConstants.MinimumPageSize) => new()
     {
         Data = data,
         IsSuccess = true,

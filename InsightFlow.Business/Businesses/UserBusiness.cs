@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Security.Claims;
 using AutoMapper;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
@@ -22,17 +21,17 @@ public class UserBusiness : IUserBusiness
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IAuthBusiness _authBusiness;
     private readonly IBaseRepository<User> _userRepository;
 
     public UserBusiness(
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        IHttpContextAccessor httpContextAccessor)
+        IAuthBusiness authBusiness)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _httpContextAccessor = httpContextAccessor;
+        _authBusiness = authBusiness;
         _userRepository = unitOfWork.UserRepository;
     }
 
@@ -73,11 +72,6 @@ public class UserBusiness : IUserBusiness
 
         var user = new User
         {
-            Person = new Person
-            {
-                FirstName = requestDto.FirstName,
-                LastName = requestDto.LastName
-            },
             Profile = new Profile
             {
                 Bio = requestDto.Bio ?? string.Empty,
@@ -85,7 +79,9 @@ public class UserBusiness : IUserBusiness
             },
             Email = requestDto.Email,
             Username = requestDto.Username,
-            Password = password
+            Password = password,
+            FirstName = requestDto.FirstName,
+            LastName = requestDto.LastName
         };
 
         var createdUser = await _userRepository.CreateAsync(user, cancellationToken);
@@ -100,13 +96,10 @@ public class UserBusiness : IUserBusiness
     public async Task<PagedCustomResponse<List<User>>> GetAllUsersAsync(SieveModel sieveModel, CancellationToken cancellationToken = default)
     {
         sieveModel.Page ??= 1;
-        sieveModel.PageSize ??= 10;
+        sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
         var result = await _userRepository.GetAllAsync(
-            sieveModel, users =>
-                users
-                    .Include(user => user.Person)
-                    .Include(user => user.Profile),
+            sieveModel, users => users.Include(user => user.Profile),
             cancellationToken);
 
         var currentCount = result.Entities?.Count ?? 0;
@@ -125,9 +118,7 @@ public class UserBusiness : IUserBusiness
     {
         var user = await _userRepository.GetByIdAsync(
             id,
-            users => users
-                .Include(user => user.Person)
-                .Include(userEntity => userEntity.Profile),
+            users => users.Include(user => user.Profile),
             cancellationToken);
 
         if (user is null)
@@ -138,28 +129,26 @@ public class UserBusiness : IUserBusiness
         return CustomResponse<User>.CreateSuccessfulResponse(user);
     }
 
-    public async Task<CustomResponse<UserDto>> GetCurrentUserAsync(CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<UserWithBioDto>> GetCurrentUserAsync(CancellationToken cancellationToken = default)
     {
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
         var user = await _userRepository.GetByGuidAsync(
-            Guid.Parse(userGuid),
-            users => users
-                .Include(userEntity => userEntity.Person)
-                .Include(user => user.Profile),
+            Guid.Parse(userExternalId),
+            users => users.Include(user => user.Profile),
             cancellationToken);
 
-        var userDto = _mapper.Map<UserDto>(user);
+        var userDto = _mapper.Map<UserWithBioDto>(user);
 
-        return CustomResponse<UserDto>.CreateSuccessfulResponse(userDto);
+        return CustomResponse<UserWithBioDto>.CreateSuccessfulResponse(userDto);
     }
 
     public async Task<CustomResponse<FileContentResult>> GetCurrentUserProfileImageAsync(CancellationToken cancellationToken = default)
     {
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
         var user = await _userRepository.GetByGuidAsync(
-            Guid.Parse(userGuid),
+            Guid.Parse(userExternalId),
             users => users
                 .Include(user => user.Profile)
                 .ThenInclude(profile => profile!.ProfileImage),
@@ -203,10 +192,10 @@ public class UserBusiness : IUserBusiness
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
 
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
         var user = await _unitOfWork.UserRepository.GetByGuidAsync(
-            Guid.Parse(userGuid),
+            Guid.Parse(userExternalId),
             users => users
                 .Include(user => user.Profile)
                 .ThenInclude(profile => profile!.ProfileImage),
@@ -222,6 +211,9 @@ public class UserBusiness : IUserBusiness
 
         user!.Profile!.ProfileImage!.ImageBytes = profileImageBytes;
         user.Profile.ProfileImage.ImageFormat = imageFormat;
+        user.LastUpdated = DateTime.Now;
+        user.Profile.LastUpdated = DateTime.Now;
+        user.Profile.ProfileImage.LastUpdated = DateTime.Now;
 
         await _unitOfWork.CommitAsync(cancellationToken);
 

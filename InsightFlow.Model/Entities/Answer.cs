@@ -6,9 +6,9 @@ public class Answer : BaseEntity
 
     public int QuestionId { get; set; }
 
-    public Question? Question { get; set; }
+    public Question? Question { get; init; }
 
     public int UserId { get; set; }
 
-    public User? User { get; set; }
+    public User? User { get; init; }
 }

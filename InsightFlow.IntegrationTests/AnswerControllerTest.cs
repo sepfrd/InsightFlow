@@ -5,11 +5,13 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using AutoMapper;
 using FluentAssertions;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Helpers;
+using InsightFlow.Common.Profiles;
 using InsightFlow.IntegrationTests.Common;
 using InsightFlow.IntegrationTests.Common.AuthMockHelpers;
 using InsightFlow.IntegrationTests.Common.Dtos;
@@ -161,15 +163,21 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
         }
     }
 
-    public static TheoryData<CreateAnswerRequestDto> CreateTestData() =>
-        new()
+    public static TheoryData<CreateAnswerRequestDto> CreateTestData()
+    {
+        var mapper = new Mapper(new MapperConfiguration(mapperConfiguration => mapperConfiguration.AddProfile(typeof(UserProfile))));
+
+        var adminDto = mapper.Map<UserDto>(FakeDataHelper.FakeAdmin);
+        var userDto = mapper.Map<UserDto>(FakeDataHelper.FakeUser);
+
+        return new TheoryData<CreateAnswerRequestDto>
         {
             new CreateAnswerRequestDto
             {
                 AnswerDto = new AnswerDto
                 {
                     QuestionGuid = FakeDataHelper.FakeQuestion.Guid,
-                    UserGuid = FakeDataHelper.FakeUser.Guid,
+                    AnsweringUser = userDto,
                     Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.Created,
@@ -180,7 +188,7 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
                 AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
-                    UserGuid = FakeDataHelper.FakeUser.Guid,
+                    AnsweringUser = userDto,
                     Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.NotFound,
@@ -191,13 +199,14 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
                 AnswerDto = new AnswerDto
                 {
                     QuestionGuid = FakeDataHelper.FakeQuestion.Guid,
-                    UserGuid = FakeDataHelper.FakeAdmin.Guid,
+                    AnsweringUser = adminDto,
                     Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.Forbidden,
                 Role = ApplicationConstants.AdminRoleName
             }
         };
+    }
 
     public static TheoryData<GetAnswerByGuidRequestDto> GetAnswerByGuidTestData() =>
         new()

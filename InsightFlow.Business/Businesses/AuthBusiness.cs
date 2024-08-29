@@ -34,14 +34,14 @@ public partial class AuthBusiness : IAuthBusiness
         _httpContextAccessor = httpContextAccessor;
         _configuration = configuration;
     }
-    
+
     public async Task<CustomResponse<string>> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
         if (IsSignedIn())
         {
             return CustomResponse<string>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, MessageConstants.AlreadySignedInMessage);
         }
-        
+
         var user = await ValidateAndGetUserByCredentialsAsync(loginDto, cancellationToken);
 
         if (user is null)
@@ -53,6 +53,9 @@ public partial class AuthBusiness : IAuthBusiness
 
         return CustomResponse<string>.CreateSuccessfulResponse(jwt, MessageConstants.SuccessfulLoginMessage);
     }
+
+    public string GetSignedInUserExternalId() =>
+        _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
 
     private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {

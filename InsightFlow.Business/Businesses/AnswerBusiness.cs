@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Security.Claims;
 using AutoMapper;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
@@ -8,7 +7,6 @@ using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 
@@ -18,27 +16,28 @@ public class AnswerBusiness : IAnswerBusiness
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IAuthBusiness _authBusiness;
     private readonly IBaseRepository<Answer> _answerRepository;
 
     public AnswerBusiness(
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        IHttpContextAccessor httpContextAccessor)
+        IAuthBusiness authBusiness)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _httpContextAccessor = httpContextAccessor;
+        _authBusiness = authBusiness;
         _answerRepository = unitOfWork.AnswerRepository;
     }
 
-    public async Task<CustomResponse<AnswerDto>> CreateAnswerAsync(Guid questionGuid, CreateAnswerRequestDto requestDto, CancellationToken cancellationToken = default)
+    public async Task<CustomResponse<AnswerDto>> CreateAnswerAsync(
+        Guid questionGuid,
+        CreateAnswerRequestDto requestDto,
+        CancellationToken cancellationToken = default)
     {
-        var answer = _mapper.Map<Answer>(requestDto);
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
-
-        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userExternalId), null, cancellationToken);
 
         var question = await _unitOfWork.QuestionRepository.GetByGuidAsync(questionGuid, null, cancellationToken);
 
@@ -48,6 +47,8 @@ public class AnswerBusiness : IAnswerBusiness
 
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
+
+        var answer = _mapper.Map<Answer>(requestDto);
 
         answer.UserId = user!.Id;
 
@@ -64,10 +65,11 @@ public class AnswerBusiness : IAnswerBusiness
 
     public async Task<CustomResponse<Answer>> GetAnswerByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        var answer = await _answerRepository.GetByIdAsync(id, answers =>
-                answers
-                    .Include(answer => answer.User)
-                    .Include(answer => answer.Question),
+        var answer = await _answerRepository.GetByIdAsync(
+            id,
+            answers => answers
+                .Include(answer => answer.User)
+                .Include(answer => answer.Question),
             cancellationToken);
 
         if (answer is null)
@@ -101,7 +103,7 @@ public class AnswerBusiness : IAnswerBusiness
     public async Task<PagedCustomResponse<List<AnswerDto>>> GetAnswerDtosByQuestionGuidAsync(
         Guid questionGuid,
         int pageNumber = 1,
-        int pageSize = 10,
+        int pageSize = ApplicationConstants.MinimumPageSize,
         CancellationToken cancellationToken = default)
     {
         var question = await _unitOfWork.QuestionRepository.GetByGuidAsync(
@@ -124,7 +126,10 @@ public class AnswerBusiness : IAnswerBusiness
         }
 
         pageNumber = pageNumber > 0 ? pageNumber : 1;
-        pageSize = pageSize >= 10 && pageSize <= 100 ? pageSize : 10;
+
+        pageSize = pageSize >= ApplicationConstants.MinimumPageSize && pageSize <= ApplicationConstants.MaximumPageSize
+            ? pageSize
+            : ApplicationConstants.MinimumPageSize;
 
         var skipCount = (pageNumber - 1) * pageSize;
 
@@ -150,7 +155,7 @@ public class AnswerBusiness : IAnswerBusiness
     public async Task<PagedCustomResponse<List<Answer>>> GetAllAnswersAsync(SieveModel sieveModel, CancellationToken cancellationToken = default)
     {
         sieveModel.Page ??= 1;
-        sieveModel.PageSize ??= 10;
+        sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
         var result = await _answerRepository.GetAllAsync(
             sieveModel,
@@ -174,13 +179,13 @@ public class AnswerBusiness : IAnswerBusiness
 
     public async Task<PagedCustomResponse<List<AnswerDto>>> GetCurrentUserAnswerDtosAsync(
         int pageNumber = 1,
-        int pageSize = 10,
+        int pageSize = ApplicationConstants.MinimumPageSize,
         CancellationToken cancellationToken = default)
     {
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
         var user = await _unitOfWork.UserRepository.GetByGuidAsync(
-            Guid.Parse(userGuid),
+            Guid.Parse(userExternalId),
             users => users
                 .Include(user => user.Answers)
                 .ThenInclude(answer => answer.Question),
@@ -192,7 +197,10 @@ public class AnswerBusiness : IAnswerBusiness
         }
 
         pageNumber = pageNumber > 0 ? pageNumber : 1;
-        pageSize = pageSize >= 10 && pageSize <= 100 ? pageSize : 10;
+
+        pageSize = pageSize >= ApplicationConstants.MinimumPageSize && pageSize <= ApplicationConstants.MaximumPageSize
+            ? pageSize
+            : ApplicationConstants.MinimumPageSize;
 
         var skipCount = (pageNumber - 1) * pageSize;
 
@@ -222,8 +230,7 @@ public class AnswerBusiness : IAnswerBusiness
     {
         var answer = await _answerRepository.GetByGuidAsync(
             answerGuid,
-            answers => answers
-                .Include(answer => answer.Question),
+            answers => answers.Include(answer => answer.Question),
             cancellationToken);
 
         if (answer is null)
@@ -233,9 +240,9 @@ public class AnswerBusiness : IAnswerBusiness
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
 
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
-        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userExternalId), null, cancellationToken);
 
         if (user!.Id != answer.UserId)
         {
@@ -245,16 +252,13 @@ public class AnswerBusiness : IAnswerBusiness
         }
 
         answer.Body = requestDto.NewBody;
+        answer.LastUpdated = DateTime.Now;
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var updatedAnswerDto = new AnswerDto
-        {
-            Guid = answerGuid,
-            UserGuid = user.Guid,
-            QuestionGuid = answer.Question!.Guid,
-            Body = requestDto.NewBody
-        };
+        var updatedAnswerDto = _mapper.Map<AnswerDto>(answer);
+
+        updatedAnswerDto.AnsweringUser ??= _mapper.Map<UserDto>(user);
 
         var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer));
 
@@ -290,15 +294,15 @@ public class AnswerBusiness : IAnswerBusiness
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
 
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
-        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userExternalId), null, cancellationToken);
 
         if (answer.UserId != user!.Id)
         {
             var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Answer));
 
-            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
 
         _answerRepository.Delete(answer);

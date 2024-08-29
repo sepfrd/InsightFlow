@@ -6,7 +6,7 @@ public class ProfileImage : BaseEntity
 
     public string? ImageFormat { get; set; }
 
-    public int ProfileId { get; set; }
+    public int ProfileId { get; init; }
 
-    public Profile? Profile { get; set; }
+    public Profile? Profile { get; init; }
 }

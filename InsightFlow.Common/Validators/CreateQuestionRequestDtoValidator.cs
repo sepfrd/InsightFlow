@@ -7,11 +7,11 @@ public class CreateQuestionRequestDtoValidator : AbstractValidator<CreateQuestio
 {
     public CreateQuestionRequestDtoValidator()
     {
-        RuleFor(requestDto => requestDto.Title)
+        RuleFor(createQuestionRequestDto => createQuestionRequestDto.Title)
             .MinimumLength(10)
             .MaximumLength(200);
 
-        RuleFor(requestDto => requestDto.Body)
+        RuleFor(createQuestionRequestDto => createQuestionRequestDto.Body)
             .MinimumLength(20)
             .MaximumLength(2000);
     }

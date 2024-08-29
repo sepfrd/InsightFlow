@@ -8,8 +8,6 @@ public interface IUnitOfWork
 
     IBaseRepository<EntityStateInformation> EntityStateInformationRepository { get; }
 
-    IBaseRepository<Person> PersonRepository { get; }
-
     IBaseRepository<Profile> ProfileRepository { get; }
 
     IBaseRepository<ProfileImage> ProfileImageRepository { get; }

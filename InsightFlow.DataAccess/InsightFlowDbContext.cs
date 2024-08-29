@@ -3,7 +3,6 @@ using InsightFlow.DataAccess.EntityConfigurations;
 using InsightFlow.Model.Entities;
 using InsightFlow.Model.Enums;
 using Microsoft.EntityFrameworkCore;
-using Person = InsightFlow.Model.Entities.Person;
 
 namespace InsightFlow.DataAccess;
 
@@ -16,8 +15,6 @@ public class InsightFlowDbContext : DbContext
     public DbSet<Answer>? Answers { get; init; }
 
     public DbSet<EntityStateInformation> EntityStateInformation { get; init; }
-
-    public DbSet<Person>? Persons { get; init; }
 
     public DbSet<Profile>? Profiles { get; init; }
 
@@ -43,7 +40,6 @@ public class InsightFlowDbContext : DbContext
         modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
 
         modelBuilder.Entity<Answer>().HasData(FakeDataHelper.GetFakeAnswers());
-        modelBuilder.Entity<Person>().HasData(FakeDataHelper.GetFakePeople());
         modelBuilder.Entity<Profile>().HasData(FakeDataHelper.GetFakeProfiles());
         modelBuilder.Entity<ProfileImage>().HasData(FakeDataHelper.GetFakeProfileImages());
         modelBuilder.Entity<Question>().HasData(FakeDataHelper.GetFakeQuestions());

@@ -145,11 +145,19 @@ internal static class ServiceCollectionExtensions
         services.AddSwaggerGen(options =>
         {
             var applicationVersion = configuration.GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey);
-            
+
             options.SwaggerDoc(applicationVersion, new OpenApiInfo
             {
                 Title = ApplicationConstants.ApplicationName,
-                Version = applicationVersion
+                Version = applicationVersion,
+                Description = "A Simple Q/A .NET Web API Application",
+
+                Contact = new OpenApiContact
+                {
+                    Name = ApplicationConstants.ApplicationContactName,
+                    Url = new Uri(ApplicationConstants.ApplicationContactUrl),
+                    Email = ApplicationConstants.ApplicationContactEmail
+                }
             });
 
             options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
@@ -159,7 +167,7 @@ internal static class ServiceCollectionExtensions
                 Name = HeaderNames.Authorization,
                 Type = SecuritySchemeType.Http,
                 BearerFormat = JwtConstants.TokenType,
-                Scheme = JwtBearerDefaults.AuthenticationScheme
+                Scheme = JwtBearerDefaults.AuthenticationScheme.ToLowerInvariant()
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -176,6 +184,13 @@ internal static class ServiceCollectionExtensions
                     []
                 }
             });
+
+            options.CustomOperationIds(apiDescription =>
+                apiDescription.ActionDescriptor.RouteValues["controller"] +
+                "_" +
+                apiDescription.ActionDescriptor.RouteValues["action"] +
+                "_" +
+                apiDescription.HttpMethod);
         });
 
     internal static IServiceCollection InjectUnitOfWork(this IServiceCollection services) =>

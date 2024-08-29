@@ -6,4 +6,6 @@ namespace InsightFlow.Business.Interfaces;
 public interface IAuthBusiness
 {
     Task<CustomResponse<string>> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken = default);
+
+    string GetSignedInUserExternalId();
 }

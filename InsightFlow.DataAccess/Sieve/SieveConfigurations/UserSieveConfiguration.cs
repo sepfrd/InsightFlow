@@ -20,7 +20,12 @@ public class UserSieveConfiguration : BaseSieveConfiguration<User>
             .CanFilter();
 
         mapper
-            .Property<User>(entity => entity.PersonId)
+            .Property<User>(entity => entity.FirstName)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<User>(entity => entity.LastName)
             .CanSort()
             .CanFilter();
     }

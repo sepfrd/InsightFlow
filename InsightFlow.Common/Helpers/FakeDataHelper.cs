@@ -1,7 +1,6 @@
 using Bogus;
 using InsightFlow.Common.Constants;
 using InsightFlow.Model.Entities;
-using Person = InsightFlow.Model.Entities.Person;
 
 namespace InsightFlow.Common.Helpers;
 
@@ -34,7 +33,8 @@ public static class FakeDataHelper
         Username = "sepehr_frd",
         Password = PasswordHelper.HashPassword("Sfr1376."),
         Email = "sepfrd@outlook.com",
-        PersonId = 1
+        FirstName = "Sepehr",
+        LastName = "Foroughi Rad"
     };
 
     public static readonly User FakeUser = new()
@@ -44,7 +44,8 @@ public static class FakeDataHelper
         Username = "bernard_cool",
         Password = PasswordHelper.HashPassword("BernardCool1997."),
         Email = "bercool@gmail.com",
-        PersonId = 2
+        FirstName = "Bernard",
+        LastName = "Cool"
     };
 
     private static readonly Profile FakeAdminProfile = new()
@@ -96,41 +97,6 @@ public static class FakeDataHelper
         }
 
         return fakeAnswers;
-    }
-
-    public static List<Person> GetFakePeople()
-    {
-        var id = 3;
-
-        var personFaker = new Faker<Person>()
-            .RuleFor(person => person.Id, _ => id++)
-            .RuleFor(person => person.FirstName, faker => faker.Name.FirstName())
-            .RuleFor(person => person.LastName, faker => faker.Name.LastName());
-
-        var fakePeople = new List<Person>();
-
-        fakePeople.AddRange(new List<Person>
-        {
-            new()
-            {
-                Id = 1,
-                FirstName = "Sepehr",
-                LastName = "Foroughi Rad"
-            },
-            new()
-            {
-                Id = 2,
-                FirstName = "Bernard",
-                LastName = "Cool"
-            }
-        });
-
-        for (var i = 0; i < 100; i++)
-        {
-            fakePeople.Add(personFaker.Generate());
-        }
-
-        return fakePeople;
     }
 
     public static List<Profile> GetFakeProfiles()
@@ -224,11 +190,12 @@ public static class FakeDataHelper
         var password = PasswordHelper.HashPassword("Correct_p0");
 
         var userFaker = new Faker<User>()
-            .RuleFor(user => user.Id, _ => id)
+            .RuleFor(user => user.Id, _ => id++)
             .RuleFor(user => user.Username, faker => faker.Internet.UserName())
             .RuleFor(user => user.Password, _ => password)
             .RuleFor(user => user.Email, faker => faker.Internet.Email())
-            .RuleFor(user => user.PersonId, _ => id++);
+            .RuleFor(user => user.FirstName, faker => faker.Name.FirstName())
+            .RuleFor(user => user.LastName, faker => faker.Name.LastName());
 
         var fakeUsers = new List<User>();
 

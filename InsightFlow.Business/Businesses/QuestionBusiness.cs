@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Security.Claims;
 using AutoMapper;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
@@ -8,7 +7,6 @@ using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 
@@ -18,27 +16,27 @@ public class QuestionBusiness : IQuestionBusiness
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IAuthBusiness _authBusiness;
     private readonly IBaseRepository<Question> _questionRepository;
 
     public QuestionBusiness(
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        IHttpContextAccessor httpContextAccessor)
+        IAuthBusiness authBusiness)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _httpContextAccessor = httpContextAccessor;
+        _authBusiness = authBusiness;
         _questionRepository = unitOfWork.QuestionRepository;
     }
 
     public async Task<CustomResponse<QuestionDto>> CreateQuestionAsync(CreateQuestionRequestDto requestDto, CancellationToken cancellationToken = default)
     {
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
+
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userExternalId), null, cancellationToken);
+
         var question = _mapper.Map<Question>(requestDto);
-
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
-
-        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
 
         question.UserId = user!.Id;
 
@@ -48,6 +46,8 @@ public class QuestionBusiness : IQuestionBusiness
 
         var questionDto = _mapper.Map<QuestionDto>(createdQuestion);
 
+        questionDto.AskingUser ??= _mapper.Map<UserDto>(user);
+
         return CustomResponse<QuestionDto>.CreateSuccessfulResponse(questionDto, null, HttpStatusCode.Created);
     }
 
@@ -55,7 +55,7 @@ public class QuestionBusiness : IQuestionBusiness
     {
         var question = await _questionRepository.GetByIdAsync(
             id,
-            questions => questions.Include(questionEntity => questionEntity.User),
+            questions => questions.Include(question => question.User),
             cancellationToken);
 
         if (question is null)
@@ -86,7 +86,7 @@ public class QuestionBusiness : IQuestionBusiness
     public async Task<PagedCustomResponse<List<Question>>> GetAllQuestionsAsync(SieveModel sieveModel, CancellationToken cancellationToken = default)
     {
         sieveModel.Page ??= 1;
-        sieveModel.PageSize ??= 10;
+        sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
         var result = await _questionRepository.GetAllAsync(
             sieveModel,
@@ -126,13 +126,13 @@ public class QuestionBusiness : IQuestionBusiness
 
     public async Task<PagedCustomResponse<List<QuestionDto>>> GetCurrentUserQuestionDtosAsync(
         int pageNumber = 1,
-        int pageSize = 10,
+        int pageSize = ApplicationConstants.MinimumPageSize,
         CancellationToken cancellationToken = default)
     {
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
         var user = await _unitOfWork.UserRepository.GetByGuidAsync(
-            Guid.Parse(userGuid),
+            Guid.Parse(userExternalId),
             users => users.Include(user => user.Questions),
             cancellationToken);
 
@@ -142,7 +142,10 @@ public class QuestionBusiness : IQuestionBusiness
         }
 
         pageNumber = pageNumber > 0 ? pageNumber : 1;
-        pageSize = pageSize >= 10 && pageSize <= 100 ? pageSize : 10;
+
+        pageSize = pageSize >= ApplicationConstants.MinimumPageSize && pageSize <= ApplicationConstants.MaximumPageSize
+            ? pageSize
+            : ApplicationConstants.MinimumPageSize;
 
         var skipCount = (pageNumber - 1) * pageSize;
 
@@ -179,9 +182,9 @@ public class QuestionBusiness : IQuestionBusiness
             return CustomResponse<QuestionDto>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
 
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
-        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userExternalId), null, cancellationToken);
 
         if (user!.Id != question.UserId)
         {
@@ -192,16 +195,13 @@ public class QuestionBusiness : IQuestionBusiness
 
         question.Body = requestDto.NewBody;
         question.Title = requestDto.NewTitle;
+        question.LastUpdated = DateTime.Now;
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var updatedQuestionDto = new QuestionDto
-        {
-            Guid = questionGuid,
-            UserGuid = user.Guid,
-            Title = requestDto.NewTitle,
-            Body = requestDto.NewBody
-        };
+        var updatedQuestionDto = _mapper.Map<QuestionDto>(question);
+
+        updatedQuestionDto.AskingUser ??= _mapper.Map<UserDto>(user);
 
         var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Question));
 
@@ -237,15 +237,15 @@ public class QuestionBusiness : IQuestionBusiness
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
 
-        var userGuid = _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+        var userExternalId = _authBusiness.GetSignedInUserExternalId();
 
-        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userGuid), null, cancellationToken);
+        var user = await _unitOfWork.UserRepository.GetByGuidAsync(Guid.Parse(userExternalId), null, cancellationToken);
 
         if (question.UserId != user!.Id)
         {
             var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Question));
 
-            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
 
         _questionRepository.Delete(question);

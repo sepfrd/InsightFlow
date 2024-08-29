@@ -30,11 +30,19 @@ public static class ApplicationConstants
     public const string JwtPublicKeyConfigurationKey = "PublicKey";
     public const string JwtPrivateKeyConfigurationKey = "PrivateKey";
     public const string RateLimitersSectionKey = "RateLimitersConfiguration";
-    
+
+    // ---------------------------- Pagination Constants ----------------------------
+    public const int MinimumPageSize = 10;
+    public const int MaximumPageSize = 100;
+
+    // ---------------------------- Rate Limiting Constants ----------------------------
     public const string FixedWindowRateLimiterPolicy = "FixedWindowRateLimiterPolicy";
     public const string ConcurrencyRateLimiterPolicy = "ConcurrencyRateLimiterPolicy";
 
     public const string TestingEnvironmentName = "Testing";
-
     public const string ApplicationName = "InsightFlow";
+    public const string ApplicationContactName = "Sepehr Foroughi Rad";
+    public const string ApplicationContactEmail = "sepfrd@outlook.com";
+    public const string ApplicationContactUrl = "https://github.com/sepehr-frd";
+    public const long ProfileImageMaximumAllowedBytes = 2097152L;
 }

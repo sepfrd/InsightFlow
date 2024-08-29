@@ -18,7 +18,6 @@ public class CustomSieveProcessor : SieveProcessor
     [
         nameof(BaseEntity.Id),
         nameof(Answer) + nameof(BaseEntity.Id),
-        nameof(Person) + nameof(BaseEntity.Id),
         nameof(Profile) + nameof(BaseEntity.Id),
         nameof(ProfileImage) + nameof(BaseEntity.Id),
         nameof(Question) + nameof(BaseEntity.Id),
@@ -35,7 +34,6 @@ public class CustomSieveProcessor : SieveProcessor
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper) =>
         mapper
             .ApplyConfiguration<AnswerSieveConfiguration>()
-            .ApplyConfiguration<PersonSieveConfiguration>()
             .ApplyConfiguration<ProfileSieveConfiguration>()
             .ApplyConfiguration<QuestionSieveConfiguration>()
             .ApplyConfiguration<RoleSieveConfiguration>()

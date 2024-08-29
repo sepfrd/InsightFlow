@@ -73,7 +73,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [Authorize]
     [Route("current-user/profile/image")]
-    [RequestSizeLimit(2097152L)]
+    [RequestSizeLimit(ApplicationConstants.ProfileImageMaximumAllowedBytes)]
     public async Task<ActionResult<CustomResponse>> UploadProfileImageForCurrentUserAsync(
         IFormFile profileImage,
         CancellationToken cancellationToken)

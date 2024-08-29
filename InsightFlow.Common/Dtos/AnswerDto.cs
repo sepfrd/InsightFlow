@@ -2,9 +2,9 @@
 
 public class AnswerDto : BaseDto
 {
+    public UserDto? AnsweringUser { get; set; }
+
     public Guid QuestionGuid { get; init; }
 
-    public Guid UserGuid { get; init; }
-
-    public required string Body { get; init; }
+    public string? Body { get; init; }
 }

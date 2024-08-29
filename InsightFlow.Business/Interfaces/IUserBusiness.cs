@@ -16,7 +16,7 @@ public interface IUserBusiness
 
     Task<CustomResponse<User>> GetUserByIdAsync(int id, CancellationToken cancellationToken = default);
 
-    Task<CustomResponse<UserDto>> GetCurrentUserAsync(CancellationToken cancellationToken = default);
+    Task<CustomResponse<UserWithBioDto>> GetCurrentUserAsync(CancellationToken cancellationToken = default);
 
     Task<CustomResponse<FileContentResult>> GetCurrentUserProfileImageAsync(CancellationToken cancellationToken = default);
 
