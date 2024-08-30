@@ -13,12 +13,13 @@ public class AnswerEntityConfiguration : IEntityTypeConfiguration<Answer>
             .HasOne<User>(answer => answer.User)
             .WithMany(user => user.Answers)
             .HasForeignKey(answer => answer.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasOne<Question>(answer => answer.Question)
             .WithMany(question => question.Answers)
-            .HasForeignKey(answer => answer.QuestionId);
+            .HasForeignKey(answer => answer.QuestionId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .Property(answer => answer.Body)

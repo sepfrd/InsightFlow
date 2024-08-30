@@ -4,6 +4,7 @@ using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.Model.Entities;
+using InsightFlow.Model.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +74,19 @@ public class AnswerController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await _answerBusiness.UpdateAnswerAsync(answerGuid, requestDto, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpPut]
+    [Authorize(ApplicationConstants.AdminPolicyName)]
+    [Route("{answerId:int}/state")]
+    public async Task<ActionResult<CustomResponse<Answer>>> UpdateAnswerStateAsync(
+        [FromRoute] int answerId,
+        [FromBody] BaseEntityState newState,
+        CancellationToken cancellationToken)
+    {
+        var result = await _answerBusiness.UpdateAnswerStateAsync(answerId, newState, cancellationToken);
 
         return StatusCode((int)result.HttpStatusCode, result);
     }

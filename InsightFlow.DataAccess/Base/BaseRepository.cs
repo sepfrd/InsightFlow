@@ -71,10 +71,6 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
-    public T Delete(T entity)
-    {
-        var entityEntry = _dbSet.Remove(entity);
-
-        return entityEntry.Entity;
-    }
+    public void Delete(T entity) =>
+        _dbSet.Remove(entity);
 }

@@ -1,4 +1,5 @@
-﻿using InsightFlow.Common.Helpers;
+﻿using InsightFlow.Common.Constants;
+using InsightFlow.Common.Helpers;
 using InsightFlow.DataAccess.EntityConfigurations;
 using InsightFlow.Model.Entities;
 using InsightFlow.Model.Enums;
@@ -43,7 +44,6 @@ public class InsightFlowDbContext : DbContext
         modelBuilder.Entity<Profile>().HasData(FakeDataHelper.GetFakeProfiles());
         modelBuilder.Entity<ProfileImage>().HasData(FakeDataHelper.GetFakeProfileImages());
         modelBuilder.Entity<Question>().HasData(FakeDataHelper.GetFakeQuestions());
-        modelBuilder.Entity<Role>().HasData(FakeDataHelper.GetFakeRoles());
         modelBuilder.Entity<User>().HasData(FakeDataHelper.GetFakeUsers());
         modelBuilder.Entity<UserRole>().HasData(FakeDataHelper.GetFakeUserRoles());
 
@@ -68,6 +68,22 @@ public class InsightFlowDbContext : DbContext
                 StateNumber = BaseEntityState.Deleted,
                 Name = nameof(BaseEntityState.Deleted),
                 Description = "The entity is (soft) deleted."
+            }
+        ]);
+
+        modelBuilder.Entity<Role>().HasData(
+        [
+            new Role
+            {
+                Id = ApplicationConstants.AdminRoleId,
+                Name = ApplicationConstants.AdminRoleName,
+                Description = "Administrator of the Application"
+            },
+            new Role
+            {
+                Id = ApplicationConstants.UserRoleId,
+                Name = ApplicationConstants.UserRoleName,
+                Description = "Basic User of the Application"
             }
         ]);
     }

@@ -35,6 +35,9 @@ public partial class AuthBusiness : IAuthBusiness
         _configuration = configuration;
     }
 
+    public string GetSignedInUserExternalId() =>
+        _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
+
     public async Task<CustomResponse<string>> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
         if (IsSignedIn())
@@ -53,9 +56,6 @@ public partial class AuthBusiness : IAuthBusiness
 
         return CustomResponse<string>.CreateSuccessfulResponse(jwt, MessageConstants.SuccessfulLoginMessage);
     }
-
-    public string GetSignedInUserExternalId() =>
-        _httpContextAccessor.HttpContext?.User.FindFirstValue(ApplicationConstants.ExternalIdClaim)!;
 
     private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {

@@ -10,9 +10,11 @@ public class AnswerProfile : Profile
     public AnswerProfile()
     {
         CreateMap<Answer, AnswerDto>()
-            .ForMember(answerDto => answerDto.AnsweringUser,
+            .ForMember(
+                answerDto => answerDto.AnsweringUser,
                 option => option.MapFrom(answer => answer.User))
-            .ForMember(answerDto => answerDto.QuestionGuid,
+            .ForMember(
+                answerDto => answerDto.QuestionGuid,
                 option => option.MapFrom(answer => answer.Question!.Guid));
 
         CreateMap<CreateAnswerRequestDto, Answer>();

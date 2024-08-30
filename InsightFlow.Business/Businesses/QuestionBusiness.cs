@@ -7,6 +7,7 @@ using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
+using InsightFlow.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 
@@ -208,6 +209,35 @@ public class QuestionBusiness : IQuestionBusiness
         return CustomResponse<QuestionDto>.CreateSuccessfulResponse(updatedQuestionDto, successMessage);
     }
 
+    public async Task<CustomResponse<Question>> UpdateQuestionStateAsync(
+        int questionId,
+        BaseEntityState newState,
+        CancellationToken cancellationToken = default)
+    {
+        var question = await _questionRepository.GetByIdAsync(questionId, null, cancellationToken);
+
+        if (question is null)
+        {
+            return CustomResponse<Question>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
+        }
+
+        if (question.State == newState)
+        {
+            var message = string.Format(MessageConstants.IdenticalNewValue, "State", newState);
+
+            return CustomResponse<Question>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
+        }
+
+        question.State = newState;
+        question.LastUpdated = DateTime.Now;
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Question));
+
+        return CustomResponse<Question>.CreateSuccessfulResponse(question, successMessage);
+    }
+
     public async Task<CustomResponse> DeleteQuestionByIdAsync(int questionId, CancellationToken cancellationToken = default)
     {
         var question = await _questionRepository.GetByIdAsync(questionId, null, cancellationToken);
@@ -220,6 +250,8 @@ public class QuestionBusiness : IQuestionBusiness
         }
 
         _questionRepository.Delete(question);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
 
         var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Question));
 
@@ -249,6 +281,8 @@ public class QuestionBusiness : IQuestionBusiness
         }
 
         _questionRepository.Delete(question);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
 
         var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Question));
 

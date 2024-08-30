@@ -24,5 +24,5 @@ public interface IBaseRepository<T> where T : BaseEntity
         Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
         CancellationToken cancellationToken = default);
 
-    T Delete(T entity);
+    void Delete(T entity);
 }

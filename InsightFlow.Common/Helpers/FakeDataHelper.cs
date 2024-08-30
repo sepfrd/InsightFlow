@@ -66,14 +66,14 @@ public static class FakeDataHelper
     {
         Id = 1,
         UserId = 1,
-        RoleId = 1
+        RoleId = ApplicationConstants.AdminRoleId
     };
 
     private static readonly UserRole FakeUserUserRole = new()
     {
         Id = 2,
         UserId = 2,
-        RoleId = 2
+        RoleId = ApplicationConstants.UserRoleId
     };
 
     public static List<Answer> GetFakeAnswers()
@@ -167,22 +167,6 @@ public static class FakeDataHelper
         return fakeQuestions;
     }
 
-    public static List<Role> GetFakeRoles() =>
-    [
-        new Role
-        {
-            Id = 1,
-            Name = ApplicationConstants.AdminRoleName,
-            Description = "Administrator of the Application"
-        },
-        new Role
-        {
-            Id = 2,
-            Name = ApplicationConstants.UserRoleName,
-            Description = "Basic User of the Application"
-        }
-    ];
-
     public static List<User> GetFakeUsers()
     {
         var id = 3;
@@ -191,9 +175,9 @@ public static class FakeDataHelper
 
         var userFaker = new Faker<User>()
             .RuleFor(user => user.Id, _ => id++)
-            .RuleFor(user => user.Username, faker => faker.Internet.UserName())
+            .RuleFor(user => user.Username, faker => faker.Internet.UserName().ToLowerInvariant())
             .RuleFor(user => user.Password, _ => password)
-            .RuleFor(user => user.Email, faker => faker.Internet.Email())
+            .RuleFor(user => user.Email, faker => faker.Internet.Email().ToLowerInvariant())
             .RuleFor(user => user.FirstName, faker => faker.Name.FirstName())
             .RuleFor(user => user.LastName, faker => faker.Name.LastName());
 
@@ -230,7 +214,7 @@ public static class FakeDataHelper
                 {
                     Id = i,
                     UserId = i,
-                    RoleId = 2
+                    RoleId = ApplicationConstants.UserRoleId
                 });
         }
 

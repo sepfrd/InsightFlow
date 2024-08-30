@@ -8,7 +8,7 @@ public class PagedEntitiesResponseDto<T>
         TotalCount = totalCount;
     }
 
-    public List<T>? Entities { get; set; }
+    public List<T>? Entities { get; }
 
-    public int TotalCount { get; set; }
+    public int TotalCount { get; }
 }

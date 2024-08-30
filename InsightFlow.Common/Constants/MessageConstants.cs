@@ -8,6 +8,8 @@ public static class MessageConstants
     public const string InvalidCredentialsMessage = "Username/Email and/or password not correct.";
     public const string InvalidParametersMessage = "Invalid value for parameter(s) {0}.";
     public const string InvalidProfileImageFormatMessage = "{0} is not a valid image format for profile image.\nValid formats: {1}";
+    public const string IdenticalNewPropertyValues = "At least one new property value must be different from its current value.";
+    public const string IdenticalNewValue = "{0} value is already {1}";
 
     // ---------------------------- Forbidden (403) Messages ----------------------------
     public const string ForbiddenActionMessage = "You do not have permission to {0} this {1}.";

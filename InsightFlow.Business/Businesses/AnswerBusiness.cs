@@ -7,6 +7,7 @@ using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
+using InsightFlow.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 
@@ -265,6 +266,32 @@ public class AnswerBusiness : IAnswerBusiness
         return CustomResponse<AnswerDto>.CreateSuccessfulResponse(updatedAnswerDto, successMessage);
     }
 
+    public async Task<CustomResponse<Answer>> UpdateAnswerStateAsync(int answerId, BaseEntityState newState, CancellationToken cancellationToken = default)
+    {
+        var answer = await _answerRepository.GetByIdAsync(answerId, null, cancellationToken);
+
+        if (answer is null)
+        {
+            return CustomResponse<Answer>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound);
+        }
+
+        if (answer.State == newState)
+        {
+            var message = string.Format(MessageConstants.IdenticalNewValue, "State", newState);
+
+            return CustomResponse<Answer>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
+        }
+
+        answer.State = newState;
+        answer.LastUpdated = DateTime.Now;
+
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer));
+
+        return CustomResponse<Answer>.CreateSuccessfulResponse(answer, successMessage);
+    }
+
     public async Task<CustomResponse> DeleteAnswerByIdAsync(int answerId, CancellationToken cancellationToken = default)
     {
         var answer = await _answerRepository.GetByIdAsync(answerId, null, cancellationToken);
@@ -277,6 +304,8 @@ public class AnswerBusiness : IAnswerBusiness
         }
 
         _answerRepository.Delete(answer);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
 
         var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer));
 
@@ -306,6 +335,8 @@ public class AnswerBusiness : IAnswerBusiness
         }
 
         _answerRepository.Delete(answer);
+
+        await _unitOfWork.CommitAsync(cancellationToken);
 
         var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer));
 

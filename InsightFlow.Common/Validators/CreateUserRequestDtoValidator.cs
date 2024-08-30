@@ -8,11 +8,24 @@ public class CreateUserRequestDtoValidator : AbstractValidator<CreateUserRequest
 {
     public CreateUserRequestDtoValidator()
     {
-        RuleFor(createUserRequestDto => createUserRequestDto.Username).Matches(RegexPatternConstants.UsernameRegexPattern);
-        RuleFor(createUserRequestDto => createUserRequestDto.Password).Matches(RegexPatternConstants.PasswordRegexPattern);
-        RuleFor(createUserRequestDto => createUserRequestDto.Email).Matches(RegexPatternConstants.EmailRegexPattern);
-        RuleFor(createUserRequestDto => createUserRequestDto.FirstName).MinimumLength(3).MaximumLength(100);
-        RuleFor(createUserRequestDto => createUserRequestDto.LastName).MaximumLength(100);
-        RuleFor(createUserRequestDto => createUserRequestDto.Bio).MaximumLength(500);
+        RuleFor(createUserRequestDto => createUserRequestDto.Username)
+            .Matches(RegexPatternConstants.UsernameRegexPattern);
+
+        RuleFor(createUserRequestDto => createUserRequestDto.Password)
+            .Matches(RegexPatternConstants.PasswordRegexPattern)
+            .Equal(createUserRequestDto => createUserRequestDto.PasswordConfirmation);
+
+        RuleFor(createUserRequestDto => createUserRequestDto.Email)
+            .Matches(RegexPatternConstants.EmailRegexPattern);
+
+        RuleFor(createUserRequestDto => createUserRequestDto.FirstName)
+            .MinimumLength(3)
+            .MaximumLength(100);
+
+        RuleFor(createUserRequestDto => createUserRequestDto.LastName)
+            .MaximumLength(100);
+
+        RuleFor(createUserRequestDto => createUserRequestDto.Bio)
+            .MaximumLength(500);
     }
 }

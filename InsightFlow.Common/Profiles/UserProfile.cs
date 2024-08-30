@@ -12,7 +12,8 @@ public class UserProfile : Profile
             .ReverseMap();
 
         CreateMap<User, UserWithBioDto>()
-            .ForMember(userWithBioDto => userWithBioDto.Bio,
+            .ForMember(
+                userWithBioDto => userWithBioDto.Bio,
                 option => option.MapFrom(user => user.Profile!.Bio));
     }
 }

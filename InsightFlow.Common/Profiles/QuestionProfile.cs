@@ -9,7 +9,8 @@ public class QuestionProfile : Profile
     public QuestionProfile()
     {
         CreateMap<Question, QuestionDto>()
-            .ForMember(questionDto => questionDto.AskingUser,
+            .ForMember(
+                questionDto => questionDto.AskingUser,
                 option => option.MapFrom(question => question.User!));
 
         CreateMap<QuestionDto, Question>();

@@ -3,6 +3,7 @@ using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
 using InsightFlow.Common.Dtos.Requests;
 using InsightFlow.Model.Entities;
+using InsightFlow.Model.Enums;
 using Sieve.Models;
 
 namespace InsightFlow.Business.Interfaces;
@@ -29,6 +30,8 @@ public interface IAnswerBusiness
         CancellationToken cancellationToken = default);
 
     Task<CustomResponse<AnswerDto>> UpdateAnswerAsync(Guid answerGuid, UpdateAnswerRequestDto requestDto, CancellationToken cancellationToken = default);
+
+    Task<CustomResponse<Answer>> UpdateAnswerStateAsync(int answerId, BaseEntityState newState, CancellationToken cancellationToken = default);
 
     Task<CustomResponse> DeleteAnswerByIdAsync(int answerId, CancellationToken cancellationToken = default);
 
