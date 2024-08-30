@@ -1,4 +1,5 @@
-﻿using InsightFlow.Business.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
@@ -139,7 +140,8 @@ public class QuestionController : ControllerBase
     [Route("{questionId:int}/state")]
     public async Task<ActionResult<CustomResponse<Question>>> UpdateQuestionStateAsync(
         [FromRoute] int questionId,
-        [FromBody] BaseEntityState newState,
+        [FromBody] [EnumDataType(typeof(BaseEntityState))]
+        BaseEntityState newState,
         CancellationToken cancellationToken)
     {
         var result = await _questionBusiness.UpdateQuestionStateAsync(questionId, newState, cancellationToken);

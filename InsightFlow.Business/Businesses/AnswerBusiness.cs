@@ -158,7 +158,7 @@ public class AnswerBusiness : IAnswerBusiness
         sieveModel.Page ??= 1;
         sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
-        var result = await _answerRepository.GetAllActiveAsync(
+        var result = await _answerRepository.GetAllAsync(
             sieveModel,
             answers =>
                 answers

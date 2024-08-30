@@ -46,7 +46,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
         return new PagedEntitiesResponseDto<T>(paginatedEntities, totalCount);
     }
-    
+
     public async Task<PagedEntitiesResponseDto<T>> GetAllActiveAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsNoTracking().Where(entity => entity.State == BaseEntityState.Active);
@@ -69,7 +69,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     public async Task<T?> GetByIdAsync(int id, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(entity => entity.Id == id && entity.State == BaseEntityState.Active);
+        var query = _dbSet.Where(entity => entity.Id == id);
 
         if (include != null)
         {

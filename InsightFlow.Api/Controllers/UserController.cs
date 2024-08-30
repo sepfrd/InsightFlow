@@ -1,4 +1,5 @@
-﻿using InsightFlow.Business.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
@@ -103,7 +104,8 @@ public class UserController : ControllerBase
     [Route("{userId:int}/state")]
     public async Task<ActionResult<CustomResponse<User>>> UpdateUserStateAsync(
         [FromRoute] int userId,
-        [FromBody] BaseEntityState newState,
+        [FromBody] [EnumDataType(typeof(BaseEntityState))]
+        BaseEntityState newState,
         CancellationToken cancellationToken)
     {
         var result = await _userBusiness.UpdateUserStateAsync(userId, newState, cancellationToken);
@@ -113,7 +115,7 @@ public class UserController : ControllerBase
 
     [HttpPut]
     [Route("current-user")]
-    [Authorize(ApplicationConstants.UserPolicyName)]
+    [Authorize]
     public async Task<ActionResult<CustomResponse<UserWithBioDto>>> UpdateCurrentUserAsync(
         [FromBody] UpdateUserRequestDto requestDto,
         CancellationToken cancellationToken)

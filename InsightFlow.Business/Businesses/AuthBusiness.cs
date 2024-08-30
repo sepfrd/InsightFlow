@@ -165,7 +165,7 @@ public partial class AuthBusiness : IAuthBusiness
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = claims,
-            Expires = DateTime.Now.AddDays(1),
+            Expires = DateTime.Now.AddDays(1d),
             SigningCredentials = signingCredentials
         };
 

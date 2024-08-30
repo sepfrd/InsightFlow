@@ -156,7 +156,7 @@ public class UserBusiness : IUserBusiness
         sieveModel.Page ??= 1;
         sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
-        var result = await _userRepository.GetAllActiveAsync(
+        var result = await _userRepository.GetAllAsync(
             sieveModel, users => users.Include(user => user.Profile),
             cancellationToken);
 
@@ -417,10 +417,10 @@ public class UserBusiness : IUserBusiness
         if (user is null)
         {
             var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.Username));
-            
+
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
-        
+
         if (!string.Equals(requestDto.Username, user.Username, StringComparison.InvariantCultureIgnoreCase))
         {
             var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.Username));

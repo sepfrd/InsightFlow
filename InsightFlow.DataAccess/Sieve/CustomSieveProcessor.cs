@@ -46,41 +46,41 @@ public class CustomSieveProcessor : SieveProcessor
 
     protected override IQueryable<TEntity> ApplyFiltering<TEntity>(SieveModel model, IQueryable<TEntity> result, object[]? dataForCustomMethods = null)
     {
-        var filters = model.GetFiltersParsed();
-
-        if (filters.IsNullOrEmpty())
-        {
-            return result;
-        }
-
-        if (_userRole is not null && _userRole == ApplicationConstants.AdminRoleName)
-        {
-            return base.ApplyFiltering(model, result);
-        }
-
-        var finalFilters = filters.Where(filter =>
-                !_idPhrases.Intersect(filter.Names).Any() &&
-                !filter.Names.Any(filterName => filterName.Contains(".id", StringComparison.InvariantCultureIgnoreCase)))
-            .ToList();
-
-        if (finalFilters.Count == 0)
-        {
-            return result.Except(result);
-        }
-
-        var finalStringFilters = finalFilters.Select(filterTerm =>
-            {
-                var names = filterTerm.Names.Length == 1 ? filterTerm.Names.First() : '(' + string.Join('|', filterTerm.Names) + ')';
-                var values = filterTerm.Values.Length == 1 ? filterTerm.Values.First() : string.Join('|', filterTerm.Values);
-
-                return $"{names}{filterTerm.Operator}{values}";
-            }
-        );
-
-        model.Filters = string.Join(',', finalStringFilters);
-
         try
         {
+            var filters = model.GetFiltersParsed();
+
+            if (filters.IsNullOrEmpty())
+            {
+                return result;
+            }
+
+            if (_userRole is not null && _userRole == ApplicationConstants.AdminRoleName)
+            {
+                return base.ApplyFiltering(model, result);
+            }
+
+            var finalFilters = filters.Where(filter =>
+                    !_idPhrases.Intersect(filter.Names).Any() &&
+                    !filter.Names.Any(filterName => filterName.Contains(".id", StringComparison.InvariantCultureIgnoreCase)))
+                .ToList();
+
+            if (finalFilters.Count == 0)
+            {
+                return result.Except(result);
+            }
+
+            var finalStringFilters = finalFilters.Select(filterTerm =>
+                {
+                    var names = filterTerm.Names.Length == 1 ? filterTerm.Names.First() : '(' + string.Join('|', filterTerm.Names) + ')';
+                    var values = filterTerm.Values.Length == 1 ? filterTerm.Values.First() : string.Join('|', filterTerm.Values);
+
+                    return $"{names}{filterTerm.Operator}{values}";
+                }
+            );
+
+            model.Filters = string.Join(',', finalStringFilters);
+
             return base.ApplyFiltering(model, result);
         }
         catch (Exception exception)

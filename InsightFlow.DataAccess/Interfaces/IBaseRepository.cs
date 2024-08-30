@@ -13,7 +13,7 @@ public interface IBaseRepository<T> where T : BaseEntity
         SieveModel sieveModel,
         Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,
         CancellationToken cancellationToken = default);
-    
+
     Task<PagedEntitiesResponseDto<T>> GetAllActiveAsync(
         SieveModel sieveModel,
         Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null,

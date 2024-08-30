@@ -89,7 +89,7 @@ public class QuestionBusiness : IQuestionBusiness
         sieveModel.Page ??= 1;
         sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
-        var result = await _questionRepository.GetAllActiveAsync(
+        var result = await _questionRepository.GetAllAsync(
             sieveModel,
             questions => questions.Include(question => question.User),
             cancellationToken);

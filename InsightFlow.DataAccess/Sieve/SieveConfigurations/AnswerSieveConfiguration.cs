@@ -8,7 +8,7 @@ public class AnswerSieveConfiguration : BaseSieveConfiguration<Answer>
     public override void Configure(SievePropertyMapper mapper)
     {
         base.Configure(mapper);
-        
+
         mapper
             .Property<Answer>(answer => answer.Body)
             .CanSort()
@@ -23,32 +23,52 @@ public class AnswerSieveConfiguration : BaseSieveConfiguration<Answer>
             .Property<Answer>(answer => answer.UserId)
             .CanSort()
             .CanFilter();
-        
+
+        mapper
+            .Property<Answer>(answer => answer.User!.Username)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<Answer>(answer => answer.User!.Email)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<Answer>(answer => answer.User!.FirstName)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<Answer>(answer => answer.User!.LastName)
+            .CanSort()
+            .CanFilter();
+
         mapper
             .Property<Answer>(answer => answer.Question!.User!.Username)
             .CanSort()
             .CanFilter();
-        
+
         mapper
             .Property<Answer>(answer => answer.Question!.User!.Email)
             .CanSort()
             .CanFilter();
-        
+
         mapper
             .Property<Answer>(answer => answer.Question!.User!.FirstName)
             .CanSort()
             .CanFilter();
-        
+
         mapper
             .Property<Answer>(answer => answer.Question!.User!.LastName)
             .CanSort()
             .CanFilter();
-        
+
         mapper
             .Property<Answer>(answer => answer.Question!.Title)
             .CanSort()
             .CanFilter();
-        
+
         mapper
             .Property<Answer>(answer => answer.Question!.Body)
             .CanSort()

@@ -14,6 +14,11 @@ public abstract class BaseSieveConfiguration<T> : ISieveConfiguration
             .CanFilter();
 
         mapper
+            .Property<T>(entity => entity.State)
+            .CanSort()
+            .CanFilter();
+
+        mapper
             .Property<T>(entity => entity.CreationDate)
             .CanSort()
             .CanFilter();
