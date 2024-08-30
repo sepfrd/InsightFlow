@@ -30,9 +30,18 @@ services:
       JwtConfiguration__PublicKey: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu1SU1LfVLPHCozMxH2Mo4lgOEePzNm0tRgeLezV6ffAt0gunVTLw7onLRnrq0/IzW7yWR7QkrmBL7jTKEn5u+qKhbwKfBstIs+bMY2Zkp18gnTxKLxoS2tFczGkPLPgizskuemMghRniWaoLcyehkd3qqGElvW/VDL5AaWTg0nLVkjRo9z+40RQzuVaE8AkAFmxZzow3x+VJYKdjykkJ0iT9wCS0DRTXu269V264Vf/3jvredZiKRkgwlL9xNAwxXFg0x/XFw005UWVRIkdgcKWTjpBP2dPwVZ4WWC+9aGVd+Gyn1o0CLelf4rEjGoXbAAEgAqeGUxrcIlbjXfbcmwIDAQAB\n-----END PUBLIC KEY-----"
       RateLimitersConfiguration__FixedWindowRateLimiterOptions__PermitLimit: 5
       RateLimitersConfiguration__FixedWindowRateLimiterOptions__WindowSeconds: 120
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__QueueLimit: 0
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__QueueProcessingOrder: 0
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__AutoReplenishment: true
       RateLimitersConfiguration__TokenBucketRateLimiterOptions__ReplenishmentPeriodSeconds: 10
       RateLimitersConfiguration__TokenBucketRateLimiterOptions__TokensPerPeriod: 10
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__AutoReplenishment: true
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__TokenLimit: 100
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__QueueProcessingOrder: 0
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__QueueLimit: 0
       RateLimitersConfiguration__ConcurrencyLimiterOptions__PermitLimit: 100
+      RateLimitersConfiguration__ConcurrencyLimiterOptions__QueueProcessingOrder: 0
+      RateLimitersConfiguration__ConcurrencyLimiterOptions__QueueLimit: 0
     ports:
       - "9000:8080"
     depends_on:
