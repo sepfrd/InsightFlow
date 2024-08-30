@@ -10,22 +10,27 @@ public class UserSieveConfiguration : BaseSieveConfiguration<User>
         base.Configure(mapper);
 
         mapper
-            .Property<User>(entity => entity.Username)
+            .Property<User>(user => user.Username)
             .CanSort()
             .CanFilter();
 
         mapper
-            .Property<User>(entity => entity.Email)
+            .Property<User>(user => user.Email)
             .CanSort()
             .CanFilter();
 
         mapper
-            .Property<User>(entity => entity.FirstName)
+            .Property<User>(user => user.FirstName)
             .CanSort()
             .CanFilter();
 
         mapper
-            .Property<User>(entity => entity.LastName)
+            .Property<User>(user => user.LastName)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<User>(user => user.UserRoles.Select(userRole => userRole.RoleId).First())
             .CanSort()
             .CanFilter();
     }

@@ -5,6 +5,7 @@ using InsightFlow.Model.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -12,6 +13,7 @@ namespace InsightFlow.DataAccess.Sieve;
 
 public class CustomSieveProcessor : SieveProcessor
 {
+    private readonly ILogger _logger;
     private readonly string? _userRole;
 
     private readonly string[] _idPhrases =
@@ -26,18 +28,20 @@ public class CustomSieveProcessor : SieveProcessor
         nameof(UserRole) + nameof(BaseEntity.Id)
     ];
 
-    public CustomSieveProcessor(IOptions<SieveOptions> options, IHttpContextAccessor httpContextAccessor) : base(options)
+    public CustomSieveProcessor(
+        IOptions<SieveOptions> options,
+        IHttpContextAccessor httpContextAccessor,
+        ILogger logger)
+        : base(options)
     {
+        _logger = logger;
         _userRole = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role);
     }
 
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper) =>
         mapper
             .ApplyConfiguration<AnswerSieveConfiguration>()
-            .ApplyConfiguration<ProfileSieveConfiguration>()
             .ApplyConfiguration<QuestionSieveConfiguration>()
-            .ApplyConfiguration<RoleSieveConfiguration>()
-            .ApplyConfiguration<UserRoleSieveConfiguration>()
             .ApplyConfiguration<UserSieveConfiguration>();
 
     protected override IQueryable<TEntity> ApplyFiltering<TEntity>(SieveModel model, IQueryable<TEntity> result, object[]? dataForCustomMethods = null)
@@ -54,11 +58,14 @@ public class CustomSieveProcessor : SieveProcessor
             return base.ApplyFiltering(model, result);
         }
 
-        var finalFilters = filters.Where(filter => !_idPhrases.Intersect(filter.Names).Any()).ToList();
+        var finalFilters = filters.Where(filter =>
+                !_idPhrases.Intersect(filter.Names).Any() &&
+                !filter.Names.Any(filterName => filterName.Contains(".id", StringComparison.InvariantCultureIgnoreCase)))
+            .ToList();
 
         if (finalFilters.Count == 0)
         {
-            return Enumerable.Empty<TEntity>().AsQueryable();
+            return result.Except(result);
         }
 
         var finalStringFilters = finalFilters.Select(filterTerm =>
@@ -72,6 +79,15 @@ public class CustomSieveProcessor : SieveProcessor
 
         model.Filters = string.Join(',', finalStringFilters);
 
-        return base.ApplyFiltering(model, result);
+        try
+        {
+            return base.ApplyFiltering(model, result);
+        }
+        catch (Exception exception)
+        {
+            _logger.Error(exception, exception.Message);
+
+            return result.Except(result);
+        }
     }
 }

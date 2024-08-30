@@ -54,9 +54,9 @@ public class QuestionController : ControllerBase
     }
 
     [HttpGet]
-    [Route("guid/{guid:guid}/answers")]
+    [Route("guid/{questionGuid:guid}/answers")]
     public async Task<ActionResult<CustomResponse<List<AnswerDto>>>> GetAnswerDtosByQuestionGuidAsync(
-        [FromRoute] Guid guid,
+        [FromRoute] Guid questionGuid,
         [FromQuery] int? pageNumber,
         [FromQuery] int? pageSize,
         CancellationToken cancellationToken)
@@ -65,7 +65,7 @@ public class QuestionController : ControllerBase
         pageSize ??= 10;
 
         var result = await _answerBusiness.GetAnswerDtosByQuestionGuidAsync(
-            guid,
+            questionGuid,
             pageNumber.Value,
             pageSize.Value,
             cancellationToken);

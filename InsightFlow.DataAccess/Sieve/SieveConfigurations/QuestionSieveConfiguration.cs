@@ -10,17 +10,37 @@ public class QuestionSieveConfiguration : BaseSieveConfiguration<Question>
         base.Configure(mapper);
 
         mapper
-            .Property<Question>(entity => entity.Title)
+            .Property<Question>(question => question.Title)
             .CanSort()
             .CanFilter();
 
         mapper
-            .Property<Question>(entity => entity.Body)
+            .Property<Question>(question => question.Body)
             .CanSort()
             .CanFilter();
 
         mapper
-            .Property<Question>(entity => entity.UserId)
+            .Property<Question>(question => question.UserId)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<Question>(question => question.User!.Username)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<Question>(question => question.User!.Email)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<Question>(question => question.User!.FirstName)
+            .CanSort()
+            .CanFilter();
+
+        mapper
+            .Property<Question>(question => question.User!.LastName)
             .CanSort()
             .CanFilter();
     }

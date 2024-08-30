@@ -156,7 +156,7 @@ public class UserBusiness : IUserBusiness
         sieveModel.Page ??= 1;
         sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
-        var result = await _userRepository.GetAllAsync(
+        var result = await _userRepository.GetAllActiveAsync(
             sieveModel, users => users.Include(user => user.Profile),
             cancellationToken);
 
@@ -299,7 +299,7 @@ public class UserBusiness : IUserBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User));
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse<User>.CreateSuccessfulResponse(user, successMessage);
     }
@@ -368,7 +368,7 @@ public class UserBusiness : IUserBusiness
 
         var updatedUserDto = _mapper.Map<UserWithBioDto>(user);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User));
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse<UserWithBioDto>.CreateSuccessfulResponse(updatedUserDto, successMessage);
     }
@@ -395,7 +395,7 @@ public class UserBusiness : IUserBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User));
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
@@ -414,7 +414,14 @@ public class UserBusiness : IUserBusiness
                 .ThenInclude(question => question.Answers),
             cancellationToken);
 
-        if (!string.Equals(requestDto.Username, user!.Username, StringComparison.InvariantCultureIgnoreCase))
+        if (user is null)
+        {
+            var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.Username));
+            
+            return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
+        }
+        
+        if (!string.Equals(requestDto.Username, user.Username, StringComparison.InvariantCultureIgnoreCase))
         {
             var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.Username));
 
@@ -423,7 +430,7 @@ public class UserBusiness : IUserBusiness
 
         var isPasswordValid = PasswordHelper.ValidatePassword(requestDto.Password, user.Password);
 
-        if (isPasswordValid)
+        if (!isPasswordValid)
         {
             var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.Password));
 
@@ -462,7 +469,7 @@ public class UserBusiness : IUserBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(User));
+        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
@@ -495,7 +502,7 @@ public class UserBusiness : IUserBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(User));
+        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }

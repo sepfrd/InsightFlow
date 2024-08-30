@@ -11,7 +11,7 @@ public class AnswerProfile : Profile
     {
         CreateMap<Answer, AnswerDto>()
             .ForMember(
-                answerDto => answerDto.AnsweringUser,
+                answerDto => answerDto.User,
                 option => option.MapFrom(answer => answer.User))
             .ForMember(
                 answerDto => answerDto.QuestionGuid,

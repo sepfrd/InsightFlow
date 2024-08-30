@@ -29,6 +29,26 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 
     public async Task<PagedEntitiesResponseDto<T>> GetAllAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
     {
+        var query = _dbSet.AsNoTracking();
+
+        if (include != null)
+        {
+            query = include(query);
+        }
+
+        var filteredQuery = _processor.Apply(sieveModel, query, applyPagination: false, applySorting: false);
+
+        var totalCount = filteredQuery.Count();
+
+        var sortedQuery = filteredQuery.OrderByDescending(entity => entity.Id);
+
+        var paginatedEntities = await _processor.Apply(sieveModel, sortedQuery, applyFiltering: false).ToListAsync(cancellationToken);
+
+        return new PagedEntitiesResponseDto<T>(paginatedEntities, totalCount);
+    }
+    
+    public async Task<PagedEntitiesResponseDto<T>> GetAllActiveAsync(SieveModel sieveModel, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null, CancellationToken cancellationToken = default)
+    {
         var query = _dbSet.AsNoTracking().Where(entity => entity.State == BaseEntityState.Active);
 
         if (include != null)

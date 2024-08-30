@@ -2,7 +2,7 @@
 
 public class QuestionDto : BaseDto
 {
-    public UserDto? AskingUser { get; set; }
+    public UserDto? User { get; set; }
 
     public string? Title { get; init; }
 

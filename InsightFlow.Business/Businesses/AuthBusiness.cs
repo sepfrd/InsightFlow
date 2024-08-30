@@ -92,7 +92,7 @@ public partial class AuthBusiness : IAuthBusiness
             PageSize = 1
         };
 
-        var result = await _userRepository.GetAllAsync(
+        var result = await _userRepository.GetAllActiveAsync(
             sieveModel,
             users => users
                 .Include(user => user.UserRoles)
@@ -110,7 +110,7 @@ public partial class AuthBusiness : IAuthBusiness
             PageSize = 1
         };
 
-        var result = await _userRepository.GetAllAsync(
+        var result = await _userRepository.GetAllActiveAsync(
             sieveModel,
             users => users
                 .Include(user => user.UserRoles)

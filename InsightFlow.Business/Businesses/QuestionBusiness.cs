@@ -47,7 +47,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         var questionDto = _mapper.Map<QuestionDto>(createdQuestion);
 
-        questionDto.AskingUser ??= _mapper.Map<UserDto>(user);
+        questionDto.User ??= _mapper.Map<UserDto>(user);
 
         return CustomResponse<QuestionDto>.CreateSuccessfulResponse(questionDto, null, HttpStatusCode.Created);
     }
@@ -89,7 +89,7 @@ public class QuestionBusiness : IQuestionBusiness
         sieveModel.Page ??= 1;
         sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
-        var result = await _questionRepository.GetAllAsync(
+        var result = await _questionRepository.GetAllActiveAsync(
             sieveModel,
             questions => questions.Include(question => question.User),
             cancellationToken);
@@ -189,7 +189,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         if (user!.Id != question.UserId)
         {
-            var message = string.Format(MessageConstants.ForbiddenActionMessage, "update", nameof(Question));
+            var message = string.Format(MessageConstants.ForbiddenActionMessage, "update", nameof(Question).ToLowerInvariant());
 
             return CustomResponse<QuestionDto>.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
@@ -202,9 +202,9 @@ public class QuestionBusiness : IQuestionBusiness
 
         var updatedQuestionDto = _mapper.Map<QuestionDto>(question);
 
-        updatedQuestionDto.AskingUser ??= _mapper.Map<UserDto>(user);
+        updatedQuestionDto.User ??= _mapper.Map<UserDto>(user);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Question));
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Question).ToLowerInvariant());
 
         return CustomResponse<QuestionDto>.CreateSuccessfulResponse(updatedQuestionDto, successMessage);
     }
@@ -233,7 +233,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Question));
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Question).ToLowerInvariant());
 
         return CustomResponse<Question>.CreateSuccessfulResponse(question, successMessage);
     }
@@ -253,7 +253,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Question));
+        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Question).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
@@ -275,7 +275,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         if (question.UserId != user!.Id)
         {
-            var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Question));
+            var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Question).ToLowerInvariant());
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
@@ -284,7 +284,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Question));
+        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Question).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }

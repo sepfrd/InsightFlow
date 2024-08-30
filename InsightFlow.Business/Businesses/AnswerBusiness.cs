@@ -158,7 +158,7 @@ public class AnswerBusiness : IAnswerBusiness
         sieveModel.Page ??= 1;
         sieveModel.PageSize ??= ApplicationConstants.MinimumPageSize;
 
-        var result = await _answerRepository.GetAllAsync(
+        var result = await _answerRepository.GetAllActiveAsync(
             sieveModel,
             answers =>
                 answers
@@ -247,7 +247,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (user!.Id != answer.UserId)
         {
-            var message = string.Format(MessageConstants.ForbiddenActionMessage, "update", nameof(Answer));
+            var message = string.Format(MessageConstants.ForbiddenActionMessage, "update", nameof(Answer).ToLowerInvariant());
 
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
@@ -259,9 +259,9 @@ public class AnswerBusiness : IAnswerBusiness
 
         var updatedAnswerDto = _mapper.Map<AnswerDto>(answer);
 
-        updatedAnswerDto.AnsweringUser ??= _mapper.Map<UserDto>(user);
+        updatedAnswerDto.User ??= _mapper.Map<UserDto>(user);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer));
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer).ToLowerInvariant());
 
         return CustomResponse<AnswerDto>.CreateSuccessfulResponse(updatedAnswerDto, successMessage);
     }
@@ -287,7 +287,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer));
+        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer).ToLowerInvariant());
 
         return CustomResponse<Answer>.CreateSuccessfulResponse(answer, successMessage);
     }
@@ -307,7 +307,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer));
+        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
@@ -329,7 +329,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (answer.UserId != user!.Id)
         {
-            var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Answer));
+            var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Answer).ToLowerInvariant());
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
@@ -338,7 +338,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer));
+        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }

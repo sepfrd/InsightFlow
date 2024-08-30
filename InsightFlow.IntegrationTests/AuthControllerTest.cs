@@ -123,8 +123,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     UsernameOrEmail = "sepehr_frd",
-                    Password = "Sfr1376.",
-                    RememberMe = true
+                    Password = "Sfr1376."
                 },
                 ShouldSucceed = true
             },
@@ -133,8 +132,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     UsernameOrEmail = "sepehr_frd",
-                    Password = "asdasdasdasd",
-                    RememberMe = false
+                    Password = "asdasdasdasd"
                 },
                 ShouldSucceed = false
             },
@@ -143,8 +141,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     UsernameOrEmail = "sepehr_d",
-                    Password = "Sfr1376.",
-                    RememberMe = false
+                    Password = "Sfr1376."
                 },
                 ShouldSucceed = false
             },
@@ -153,8 +150,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     UsernameOrEmail = "223",
-                    Password = "sd2",
-                    RememberMe = false
+                    Password = "sd2"
                 },
                 ShouldSucceed = false
             }
@@ -168,8 +164,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     UsernameOrEmail = "bernard_cool",
-                    Password = "BernardCool1997.",
-                    RememberMe = true
+                    Password = "BernardCool1997."
                 },
                 TestResult = AuthControllerTestResult.Forbidden
             },
@@ -178,8 +173,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     UsernameOrEmail = "sepehr_frd",
-                    Password = "Sfr1376.",
-                    RememberMe = true
+                    Password = "Sfr1376."
                 },
                 TestResult = AuthControllerTestResult.AllSuccessful
             },
@@ -188,8 +182,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     UsernameOrEmail = "sepehr_frd",
-                    Password = "sfr1231123376",
-                    RememberMe = true
+                    Password = "sfr1231123376"
                 },
                 TestResult = AuthControllerTestResult.AllFailed
             },
@@ -198,8 +191,7 @@ public class AuthControllerTest : IClassFixture<CustomWebApplicationFactory<Prog
                 LoginDto = new LoginDto
                 {
                     UsernameOrEmail = "sepeasdfahr_frd",
-                    Password = "Sfr1376.",
-                    RememberMe = true
+                    Password = "Sfr1376."
                 },
                 TestResult = AuthControllerTestResult.AllFailed
             }

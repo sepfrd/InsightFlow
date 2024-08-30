@@ -13,7 +13,7 @@ public static class FakeDataHelper
         Guid = Guid.NewGuid(),
         Title = "How to do some job?",
         Body = "Please help me with my problem.",
-        UserId = 1
+        UserId = 2
     };
 
     public static readonly Answer FakeAnswer = new()

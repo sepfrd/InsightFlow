@@ -177,7 +177,7 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
                 AnswerDto = new AnswerDto
                 {
                     QuestionGuid = FakeDataHelper.FakeQuestion.Guid,
-                    AnsweringUser = userDto,
+                    User = userDto,
                     Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.Created,
@@ -188,7 +188,7 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
                 AnswerDto = new AnswerDto
                 {
                     QuestionGuid = Guid.NewGuid(),
-                    AnsweringUser = userDto,
+                    User = userDto,
                     Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.NotFound,
@@ -199,7 +199,7 @@ public class AnswerControllerTest : IClassFixture<CustomWebApplicationFactory<Pr
                 AnswerDto = new AnswerDto
                 {
                     QuestionGuid = FakeDataHelper.FakeQuestion.Guid,
-                    AnsweringUser = adminDto,
+                    User = adminDto,
                     Body = ValidAnswerBody
                 },
                 ResultStatusCode = HttpStatusCode.Forbidden,
