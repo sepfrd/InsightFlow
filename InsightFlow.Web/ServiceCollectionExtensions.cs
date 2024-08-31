@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Humanizer;
 using InsightFlow.Api.Conventions;
 using InsightFlow.Api.Filters;
 using InsightFlow.Business.Businesses;
@@ -146,13 +147,15 @@ internal static class ServiceCollectionExtensions
     internal static IServiceCollection InjectSwagger(this IServiceCollection services, IConfiguration configuration) =>
         services.AddSwaggerGen(options =>
         {
+            options.OperationFilter<CamelCaseOperationFilter>();
+
             var applicationVersion = configuration.GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey);
 
             options.SwaggerDoc(applicationVersion, new OpenApiInfo
             {
                 Title = ApplicationConstants.ApplicationName,
                 Version = applicationVersion,
-                Description = "A Simple Q/A .NET Web API Application",
+                Description = "A Simple Q/A .NET REST Web API Application",
 
                 Contact = new OpenApiContact
                 {
@@ -188,11 +191,7 @@ internal static class ServiceCollectionExtensions
             });
 
             options.CustomOperationIds(apiDescription =>
-                apiDescription.ActionDescriptor.RouteValues["controller"] +
-                "_" +
-                apiDescription.ActionDescriptor.RouteValues["action"] +
-                "_" +
-                apiDescription.HttpMethod);
+                apiDescription.ActionDescriptor.RouteValues["action"]?.Kebaberize());
         });
 
     internal static IServiceCollection InjectUnitOfWork(this IServiceCollection services) =>

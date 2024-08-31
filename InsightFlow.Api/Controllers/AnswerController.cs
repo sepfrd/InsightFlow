@@ -96,7 +96,7 @@ public class AnswerController : ControllerBase
     [HttpDelete]
     [Route("id/{answerId:int}")]
     [Authorize(ApplicationConstants.AdminPolicyName)]
-    public async Task<ActionResult<CustomResponse>> DeleteAnswerByIdAsync(int answerId, CancellationToken cancellationToken)
+    public async Task<ActionResult<CustomResponse>> DeleteAnswerByIdAsync([FromRoute] int answerId, CancellationToken cancellationToken)
     {
         var result = await _answerBusiness.DeleteAnswerByIdAsync(answerId, cancellationToken);
 
@@ -106,7 +106,7 @@ public class AnswerController : ControllerBase
     [HttpDelete]
     [Route("guid/{answerGuid:guid}")]
     [Authorize(ApplicationConstants.UserPolicyName)]
-    public async Task<ActionResult<CustomResponse>> DeleteAnswerByGuidAsync(Guid answerGuid, CancellationToken cancellationToken)
+    public async Task<ActionResult<CustomResponse>> DeleteAnswerByGuidAsync([FromRoute] Guid answerGuid, CancellationToken cancellationToken)
     {
         var result = await _answerBusiness.DeleteAnswerByGuidAsync(answerGuid, cancellationToken);
 
@@ -114,7 +114,7 @@ public class AnswerController : ControllerBase
     }
 
     [HttpOptions]
-    public IActionResult Options()
+    public IActionResult AnswersOptions()
     {
         Response
             .Headers

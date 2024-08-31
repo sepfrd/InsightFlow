@@ -99,6 +99,18 @@ public class UserController : ControllerBase
         return StatusCode((int)result.HttpStatusCode, result);
     }
 
+    [Authorize]
+    [HttpPost]
+    [Route("deactivation")]
+    public async Task<ActionResult<CustomResponse>> DeactivateCurrentUserAsync(
+        [FromBody] SoftDeleteCurrentUserRequestDto requestDto,
+        CancellationToken cancellationToken)
+    {
+        var result = await _userBusiness.SoftDeleteCurrentUserAsync(requestDto, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
     [HttpPut]
     [Authorize(ApplicationConstants.AdminPolicyName)]
     [Route("{userId:int}/state")]
@@ -130,21 +142,9 @@ public class UserController : ControllerBase
     [Route("password")]
     public async Task<ActionResult<CustomResponse>> ChangeCurrentUserPasswordAsync(
         [FromBody] ChangePasswordRequestDto requestDto,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var result = await _userBusiness.ChangeCurrentUserPasswordAsync(requestDto, cancellationToken);
-
-        return StatusCode((int)result.HttpStatusCode, result);
-    }
-
-    [Authorize]
-    [HttpDelete]
-    [Route("deactivation")]
-    public async Task<ActionResult<CustomResponse>> SoftDeleteCurrentUserAsync(
-        [FromBody] SoftDeleteCurrentUserRequestDto requestDto,
-        CancellationToken cancellationToken = default)
-    {
-        var result = await _userBusiness.SoftDeleteCurrentUserAsync(requestDto, cancellationToken);
 
         return StatusCode((int)result.HttpStatusCode, result);
     }
@@ -154,7 +154,7 @@ public class UserController : ControllerBase
     [Authorize(ApplicationConstants.AdminPolicyName)]
     public async Task<ActionResult<CustomResponse>> HardDeleteUserByIdAsync(
         [FromRoute] int userId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var result = await _userBusiness.HardDeleteUserByIdAsync(userId, cancellationToken);
 
@@ -162,7 +162,7 @@ public class UserController : ControllerBase
     }
 
     [HttpOptions]
-    public IActionResult Options()
+    public IActionResult UsersOptions()
     {
         Response
             .Headers
