@@ -19,6 +19,8 @@ RedditMockup.sln.DotSettings.user
 NlogLogs.txt
 logs/
 
+# Environment variables related files
+.env
 
 # Mono auto generated files
 mono_crash.*

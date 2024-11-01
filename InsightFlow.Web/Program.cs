@@ -20,7 +20,7 @@ Log.Logger = new LoggerConfiguration()
     .ReadFrom
     .Configuration(builder.Configuration, new ConfigurationReaderOptions
     {
-        SectionName = "InternalSerilog"
+        SectionName = "INTERNALSERILOG"
     })
     .CreateLogger();
 
@@ -74,7 +74,7 @@ try
         .UseAuthorization();
 
     app.MapControllers();
-    app.MapHealthChecks("/health-checks");
+    app.MapHealthChecks("/health");
 
     await app.RunAsync();
 }
