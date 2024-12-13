@@ -94,9 +94,8 @@ public partial class AuthBusiness : IAuthBusiness
 
         var result = await _userRepository.GetAllActiveAsync(
             sieveModel,
-            users => users
-                .Include(user => user.UserRoles)
-                .ThenInclude(userRole => userRole.Role), cancellationToken);
+            users => EntityFrameworkQueryableExtensions.ThenInclude(users
+                .Include(user => user.UserRoles), userRole => userRole.Role), cancellationToken);
 
         return result.Entities?.SingleOrDefault();
     }
@@ -112,9 +111,8 @@ public partial class AuthBusiness : IAuthBusiness
 
         var result = await _userRepository.GetAllActiveAsync(
             sieveModel,
-            users => users
-                .Include(user => user.UserRoles)
-                .ThenInclude(userRole => userRole.Role), cancellationToken);
+            users => EntityFrameworkQueryableExtensions.ThenInclude(users
+                .Include(user => user.UserRoles), userRole => userRole.Role), cancellationToken);
 
         return result.Entities?.SingleOrDefault();
     }

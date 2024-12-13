@@ -68,9 +68,8 @@ public class AnswerBusiness : IAnswerBusiness
     {
         var answer = await _answerRepository.GetByIdAsync(
             id,
-            answers => answers
-                .Include(answer => answer.User)
-                .Include(answer => answer.Question),
+            answers => EntityFrameworkQueryableExtensions.Include(answers
+                .Include(answer => answer.User), answer => answer.Question),
             cancellationToken);
 
         if (answer is null)
@@ -84,9 +83,8 @@ public class AnswerBusiness : IAnswerBusiness
     public async Task<CustomResponse<AnswerDto>> GetAnswerByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
     {
         var answer = await _answerRepository.GetByGuidAsync(guid, answers =>
-                answers
-                    .Include(answer => answer.User)
-                    .Include(answer => answer.Question),
+                EntityFrameworkQueryableExtensions.Include(answers
+                    .Include(answer => answer.User), answer => answer.Question),
             cancellationToken);
 
         if (answer is null)
@@ -109,9 +107,8 @@ public class AnswerBusiness : IAnswerBusiness
     {
         var question = await _unitOfWork.QuestionRepository.GetByGuidAsync(
             questionGuid,
-            questions => questions
-                .Include(question => question.Answers)
-                .ThenInclude(answer => answer.User),
+            questions => EntityFrameworkQueryableExtensions.ThenInclude(questions
+                .Include(question => question.Answers), answer => answer.User),
             cancellationToken);
 
         if (question is null)
@@ -161,9 +158,8 @@ public class AnswerBusiness : IAnswerBusiness
         var result = await _answerRepository.GetAllAsync(
             sieveModel,
             answers =>
-                answers
-                    .Include(answer => answer.User)
-                    .Include(answer => answer.Question),
+                EntityFrameworkQueryableExtensions.Include(answers
+                    .Include(answer => answer.User), answer => answer.Question),
             cancellationToken);
 
         var currentCount = result.Entities?.Count ?? 0;
@@ -187,9 +183,8 @@ public class AnswerBusiness : IAnswerBusiness
 
         var user = await _unitOfWork.UserRepository.GetByGuidAsync(
             Guid.Parse(userExternalId),
-            users => users
-                .Include(user => user.Answers)
-                .ThenInclude(answer => answer.Question),
+            users => EntityFrameworkQueryableExtensions.ThenInclude(users
+                .Include(user => user.Answers), answer => answer.Question),
             cancellationToken);
 
         if (user!.Answers.Count == 0)

@@ -12,7 +12,6 @@ using InsightFlow.Model.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Sieve.Models;
 using Profile = InsightFlow.Model.Entities.Profile;
 
@@ -207,9 +206,8 @@ public class UserBusiness : IUserBusiness
 
         var user = await _userRepository.GetByGuidAsync(
             Guid.Parse(userExternalId),
-            users => users
-                .Include(user => user.Profile)
-                .ThenInclude(profile => profile!.ProfileImage),
+            users => EntityFrameworkQueryableExtensions.ThenInclude(users
+                .Include(user => user.Profile), profile => profile!.ProfileImage),
             cancellationToken);
 
         var profileImage = user!.Profile!.ProfileImage!;
@@ -254,9 +252,8 @@ public class UserBusiness : IUserBusiness
 
         var user = await _unitOfWork.UserRepository.GetByGuidAsync(
             Guid.Parse(userExternalId),
-            users => users
-                .Include(user => user.Profile)
-                .ThenInclude(profile => profile!.ProfileImage),
+            users => EntityFrameworkQueryableExtensions.ThenInclude(users
+                .Include(user => user.Profile), profile => profile!.ProfileImage),
             cancellationToken);
 
         await using var memoryStream = new MemoryStream();
@@ -406,9 +403,8 @@ public class UserBusiness : IUserBusiness
 
         var user = await _userRepository.GetByGuidAsync(
             Guid.Parse(userExternalId),
-            users => users
-                .Include(user => user.Profile)
-                .Include(user => user.UserRoles)
+            users => EntityFrameworkQueryableExtensions.Include(users
+                    .Include(user => user.Profile), user => user.UserRoles)
                 .Include(user => user.Answers)
                 .Include(user => user.Questions)
                 .ThenInclude(question => question.Answers),
@@ -478,9 +474,8 @@ public class UserBusiness : IUserBusiness
     {
         var user = await _userRepository.GetByIdAsync(
             userId,
-            users => users
-                .Include(user => user.Profile)
-                .Include(user => user.UserRoles)
+            users => EntityFrameworkQueryableExtensions.Include(users
+                    .Include(user => user.Profile), user => user.UserRoles)
                 .Include(user => user.Answers)
                 .Include(user => user.Questions)
                 .ThenInclude(question => question.Answers),
@@ -518,7 +513,7 @@ public class UserBusiness : IUserBusiness
 
         var user = await _userRepository.GetAllAsync(sieveModel, null, cancellationToken);
 
-        return user.Entities.IsNullOrEmpty();
+        return user.Entities is null || user.Entities.Count == 0;
     }
 
     private async Task<bool> IsEmailUnique(string email, CancellationToken cancellationToken = default)
@@ -532,6 +527,6 @@ public class UserBusiness : IUserBusiness
 
         var user = await _userRepository.GetAllAsync(sieveModel, null, cancellationToken);
 
-        return user.Entities.IsNullOrEmpty();
+        return user.Entities is null || user.Entities.Count == 0;
     }
 }
