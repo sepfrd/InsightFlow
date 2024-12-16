@@ -5,7 +5,7 @@ using InsightFlow.Model.Entities;
 using Microsoft.EntityFrameworkCore.Query;
 using Sieve.Models;
 
-namespace InsightFlow.UnitTests.Common.FakeItEasyProviders;
+namespace InsightFlow.UnitTests.Common.FakeItEasyHelpers;
 
 public static class BaseRepositoryFakeExtensions
 {

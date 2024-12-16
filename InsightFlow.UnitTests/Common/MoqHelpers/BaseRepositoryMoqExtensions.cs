@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using Sieve.Models;
 
-namespace InsightFlow.UnitTests.Common.MoqProviders;
+namespace InsightFlow.UnitTests.Common.MoqHelpers;
 
 public static class BaseRepositoryMoqExtensions
 {

@@ -1,7 +1,7 @@
 using FakeItEasy;
 using InsightFlow.Business.Interfaces;
 
-namespace InsightFlow.UnitTests.Common.FakeItEasyProviders;
+namespace InsightFlow.UnitTests.Common.FakeItEasyHelpers;
 
 public static class AuthBusinessFakeExtensions
 {

@@ -9,10 +9,10 @@ using InsightFlow.DataAccess.Dtos;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
 using InsightFlow.UnitTests.Common.FakeDataGenerators;
-using InsightFlow.UnitTests.Common.MoqHelpers;
-using Moq;
+using InsightFlow.UnitTests.Common.NSubstituteHelpers;
+using NSubstitute;
 
-namespace InsightFlow.UnitTests.UserBusinessUnitTests.MoqTests;
+namespace InsightFlow.UnitTests.UserBusinessUnitTests.NSubstituteTests;
 
 public class CreateUserAsync
 {
@@ -30,20 +30,24 @@ public class CreateUserAsync
             user.LastName,
             user.Email);
 
-        var unitOfWorkMock = new Mock<IUnitOfWork>().SetupCommitAsyncToReturn(1);
+        var unitOfWorkSubstitute = Substitute.For<IUnitOfWork>();
 
-        var userRepositoryMock = new Mock<IBaseRepository<User>>()
+        unitOfWorkSubstitute.SetupCommitAsyncToReturn(1);
+
+        var userRepositorySubstitute = Substitute.For<IBaseRepository<User>>();
+
+        userRepositorySubstitute
             .SetupCreateAsyncToReturn(user)
             .SetupGetAllAsyncToReturn(new PagedEntitiesResponseDto<User>([]));
 
-        unitOfWorkMock.SetupGet(unitOfWork => unitOfWork.UserRepository).Returns(userRepositoryMock.Object);
+        unitOfWorkSubstitute.UserRepository.Returns(userRepositorySubstitute);
 
-        var authBusinessMock = new Mock<IAuthBusiness>();
+        var authBusinessSubstitute = Substitute.For<IAuthBusiness>();
 
         var mapperConfig = new MapperConfiguration(configExpression => configExpression.AddProfile<UserProfile>());
         var mapper = mapperConfig.CreateMapper();
 
-        var userBusiness = new UserBusiness(unitOfWorkMock.Object, mapper, authBusinessMock.Object);
+        var userBusiness = new UserBusiness(unitOfWorkSubstitute, mapper, authBusinessSubstitute);
 
         // Act
 

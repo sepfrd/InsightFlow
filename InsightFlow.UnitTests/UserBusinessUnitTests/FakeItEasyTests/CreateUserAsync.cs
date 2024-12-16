@@ -10,7 +10,7 @@ using InsightFlow.DataAccess.Dtos;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
 using InsightFlow.UnitTests.Common.FakeDataGenerators;
-using InsightFlow.UnitTests.Common.FakeItEasyProviders;
+using InsightFlow.UnitTests.Common.FakeItEasyHelpers;
 
 namespace InsightFlow.UnitTests.UserBusinessUnitTests.FakeItEasyTests;
 

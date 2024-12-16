@@ -1,7 +1,7 @@
 using InsightFlow.Business.Interfaces;
 using Moq;
 
-namespace InsightFlow.UnitTests.Common.MoqProviders;
+namespace InsightFlow.UnitTests.Common.MoqHelpers;
 
 public static class AuthBusinessMoqExtensions
 {
