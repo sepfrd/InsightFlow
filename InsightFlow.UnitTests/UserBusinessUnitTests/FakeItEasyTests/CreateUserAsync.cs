@@ -1,5 +1,6 @@
 using System.Net;
 using AutoMapper;
+using FakeItEasy;
 using InsightFlow.Business.Businesses;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Dtos;
@@ -9,10 +10,9 @@ using InsightFlow.DataAccess.Dtos;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.Model.Entities;
 using InsightFlow.UnitTests.Common.FakeDataGenerators;
-using InsightFlow.UnitTests.Common.MoqProviders;
-using Moq;
+using InsightFlow.UnitTests.Common.FakeItEasyProviders;
 
-namespace InsightFlow.UnitTests.UserBusinessUnitTests;
+namespace InsightFlow.UnitTests.UserBusinessUnitTests.FakeItEasyTests;
 
 public class CreateUserAsync
 {
@@ -30,20 +30,24 @@ public class CreateUserAsync
             user.LastName,
             user.Email);
 
-        var unitOfWorkMock = new Mock<IUnitOfWork>().SetupCommitAsyncToReturn(1);
+        var unitOfWorkFake = A.Fake<IUnitOfWork>();
 
-        var userRepositoryMock = new Mock<IBaseRepository<User>>()
+        unitOfWorkFake.SetupCommitAsyncToReturn(1);
+
+        var userRepositoryFake = A.Fake<IBaseRepository<User>>();
+
+        userRepositoryFake
             .SetupCreateAsyncToReturn(user)
             .SetupGetAllAsyncToReturn(new PagedEntitiesResponseDto<User>([]));
 
-        unitOfWorkMock.SetupGet(unitOfWork => unitOfWork.UserRepository).Returns(userRepositoryMock.Object);
+        A.CallTo(() => unitOfWorkFake.UserRepository).Returns(userRepositoryFake);
 
-        var authBusinessMock = new Mock<IAuthBusiness>();
+        var authBusinessFake = A.Fake<IAuthBusiness>();
 
         var mapperConfig = new MapperConfiguration(configExpression => configExpression.AddProfile<UserProfile>());
         var mapper = mapperConfig.CreateMapper();
 
-        var userBusiness = new UserBusiness(unitOfWorkMock.Object, mapper, authBusinessMock.Object);
+        var userBusiness = new UserBusiness(unitOfWorkFake, mapper, authBusinessFake);
 
         // Act
 
@@ -57,7 +61,6 @@ public class CreateUserAsync
         Assert.Null(customResponse.Message);
         Assert.True(customResponse.IsSuccess);
         Assert.Equal(HttpStatusCode.Created, customResponse.HttpStatusCode);
-
         Assert.Equivalent(userDto, customResponse.Data);
     }
 
@@ -69,5 +72,4 @@ public class CreateUserAsync
 
         return theoryData;
     }
-
 }
