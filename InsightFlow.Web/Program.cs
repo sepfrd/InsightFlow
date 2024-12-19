@@ -49,19 +49,19 @@ try
 
     await using var scope = app.Services.CreateAsyncScope();
 
-    await using var context = scope.ServiceProvider.GetRequiredService<InsightFlowDbContext>();
+    await using var dbContext = scope.ServiceProvider.GetRequiredService<InsightFlowDbContext>();
 
     app.UseSwagger()
         .UseSwaggerUI();
 
     if (app.Environment.IsEnvironment(ApplicationConstants.TestingEnvironmentName))
     {
-        await context.Database.EnsureDeletedAsync();
-        await context.Database.EnsureCreatedAsync();
+        await dbContext.Database.EnsureDeletedAsync();
+        await dbContext.Database.EnsureCreatedAsync();
     }
     else
     {
-        await context.Database.MigrateAsync();
+        await dbContext.Database.MigrateAsync();
         //app.UseHsts();
     }
 

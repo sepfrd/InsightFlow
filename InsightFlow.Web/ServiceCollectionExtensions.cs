@@ -11,13 +11,17 @@ using InsightFlow.Api.Conventions;
 using InsightFlow.Api.Filters;
 using InsightFlow.Business.Businesses;
 using InsightFlow.Business.Interfaces;
+using InsightFlow.Common;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos.Configurations;
+using InsightFlow.Common.Helpers;
 using InsightFlow.Common.Profiles;
 using InsightFlow.Common.Validators;
 using InsightFlow.DataAccess;
 using InsightFlow.DataAccess.Interfaces;
 using InsightFlow.DataAccess.Sieve;
+using InsightFlow.Model.Entities;
+using InsightFlow.Model.Enums;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -210,8 +214,15 @@ internal static class ServiceCollectionExtensions
 
         return services.AddDbContext<InsightFlowDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString(ApplicationConstants.SqlServerConfigurationKey));
-            options.EnableSensitiveDataLogging();
+            options
+                .UseSqlServer(configuration.GetConnectionString(ApplicationConstants.SqlServerConfigurationKey))
+                .UseSeeding((dbContext, _) => dbContext.SeedDatabase())
+                .UseAsyncSeeding((dbContext, _, _) => Task.FromResult(dbContext.SeedDatabase()));
+
+            if (!environment.IsProduction())
+            {
+                options.EnableSensitiveDataLogging();
+            }
         });
     }
 
@@ -283,4 +294,102 @@ internal static class ServiceCollectionExtensions
 
     internal static IServiceCollection InjectAutoMapper(this IServiceCollection services) =>
         services.AddAutoMapper(typeof(AnswerProfile).Assembly);
+
+    private static DbContext SeedDatabase(this DbContext dbContext)
+    {
+        var rolesDbSet = dbContext.Set<Role>();
+        var entityStateInformationDbSet = dbContext.Set<EntityStateInformation>();
+
+        if (!rolesDbSet.Any())
+        {
+            rolesDbSet.AddRange(
+                new Role
+                {
+                    Name = ApplicationConstants.AdminRoleName,
+                    Description = "Administrator of the Application"
+                },
+                new Role
+                {
+                    Name = ApplicationConstants.UserRoleName,
+                    Description = "Basic User of the Application"
+                });
+
+            dbContext.SaveChanges();
+        }
+
+        RoleIds.AdminRoleId = rolesDbSet.First(role => role.Name == ApplicationConstants.AdminRoleName).Id;
+        RoleIds.UserRoleId = rolesDbSet.First(role => role.Name == ApplicationConstants.UserRoleName).Id;
+
+        if (!entityStateInformationDbSet.Any())
+        {
+            entityStateInformationDbSet.AddRange(
+                new EntityStateInformation
+                {
+                    StateNumber = BaseEntityState.Active,
+                    Name = nameof(BaseEntityState.Active),
+                    Description = "The entity is active."
+                },
+                new EntityStateInformation
+                {
+                    StateNumber = BaseEntityState.Inactive,
+                    Name = nameof(BaseEntityState.Inactive),
+                    Description = "The entity is inactive."
+                },
+                new EntityStateInformation
+                {
+                    StateNumber = BaseEntityState.Deleted,
+                    Name = nameof(BaseEntityState.Deleted),
+                    Description = "The entity is (soft) deleted."
+                });
+
+            dbContext.SaveChanges();
+        }
+
+        if (dbContext.Set<User>().Any())
+        {
+            return dbContext;
+        }
+
+        const int fakeUsersCount = 1_000;
+        const int fakeQuestionsCount = 1_000;
+        const int fakeAnswersCount = 1_000;
+
+        var fakeUsers = FakeDataHelper.GetFakeUsers(fakeUsersCount);
+
+        dbContext.Set<User>().AddRange(fakeUsers);
+
+        dbContext.SaveChanges();
+
+        var fakeQuestions = FakeDataHelper.GetFakeQuestions(fakeUsers, fakeQuestionsCount);
+
+        dbContext.Set<Question>().AddRange(fakeQuestions);
+
+        dbContext.SaveChanges();
+
+        var fakeAnswers = FakeDataHelper.GetFakeAnswers(fakeQuestions, fakeUsers, fakeAnswersCount);
+
+        dbContext.Set<Answer>().AddRange(fakeAnswers);
+
+        dbContext.SaveChanges();
+
+        var fakeProfiles = FakeDataHelper.GetFakeProfiles(fakeUsers);
+
+        dbContext.Set<Profile>().AddRange(fakeProfiles);
+
+        dbContext.SaveChanges();
+
+        var fakeProfileImages = FakeDataHelper.GetFakeProfileImages(fakeProfiles);
+
+        dbContext.Set<ProfileImage>().AddRange(fakeProfileImages);
+
+        dbContext.SaveChanges();
+
+        var fakeUserRoles = FakeDataHelper.GetFakeUserRoles(fakeUsers, dbContext.Set<Role>().ToList());
+
+        dbContext.Set<UserRole>().AddRange(fakeUserRoles);
+
+        dbContext.SaveChanges();
+
+        return dbContext;
+    }
 }

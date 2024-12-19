@@ -47,6 +47,31 @@ public class UserController : ControllerBase
         return StatusCode((int)result.HttpStatusCode, result);
     }
 
+    [HttpPost]
+    [Authorize]
+    [Route("current-user/profile/image")]
+    [RequestSizeLimit(ApplicationConstants.ProfileImageMaximumAllowedBytes)]
+    public async Task<ActionResult<CustomResponse>> UploadProfileImageForCurrentUserAsync(
+        IFormFile profileImage,
+        CancellationToken cancellationToken)
+    {
+        var result = await _userBusiness.AddProfileImageForCurrentUserAsync(profileImage, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpPost]
+    [Authorize]
+    [Route("deactivation")]
+    public async Task<ActionResult<CustomResponse>> DeactivateCurrentUserAsync(
+        [FromBody] SoftDeleteCurrentUserRequestDto requestDto,
+        CancellationToken cancellationToken)
+    {
+        var result = await _userBusiness.SoftDeleteCurrentUserAsync(requestDto, cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
     [HttpGet]
     [Authorize(ApplicationConstants.AdminPolicyName)]
     public async Task<ActionResult<CustomResponse<List<User>>>> GetAllUsersAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken)
@@ -86,34 +111,9 @@ public class UserController : ControllerBase
         return result.Data is null ? StatusCode((int)result.HttpStatusCode, result) : result.Data;
     }
 
-    [HttpPost]
-    [Authorize]
-    [Route("current-user/profile/image")]
-    [RequestSizeLimit(ApplicationConstants.ProfileImageMaximumAllowedBytes)]
-    public async Task<ActionResult<CustomResponse>> UploadProfileImageForCurrentUserAsync(
-        IFormFile profileImage,
-        CancellationToken cancellationToken)
-    {
-        var result = await _userBusiness.AddProfileImageForCurrentUserAsync(profileImage, cancellationToken);
-
-        return StatusCode((int)result.HttpStatusCode, result);
-    }
-
-    [Authorize]
-    [HttpPost]
-    [Route("deactivation")]
-    public async Task<ActionResult<CustomResponse>> DeactivateCurrentUserAsync(
-        [FromBody] SoftDeleteCurrentUserRequestDto requestDto,
-        CancellationToken cancellationToken)
-    {
-        var result = await _userBusiness.SoftDeleteCurrentUserAsync(requestDto, cancellationToken);
-
-        return StatusCode((int)result.HttpStatusCode, result);
-    }
-
     [HttpPut]
+    [Route("id/{userId:int}/state")]
     [Authorize(ApplicationConstants.AdminPolicyName)]
-    [Route("{userId:int}/state")]
     public async Task<ActionResult<CustomResponse<User>>> UpdateUserStateAsync(
         [FromRoute] int userId,
         [FromBody] [EnumDataType(typeof(BaseEntityState))]
@@ -126,8 +126,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
-    [Route("current-user")]
     [Authorize]
+    [Route("current-user")]
     public async Task<ActionResult<CustomResponse<UserWithBioDto>>> UpdateCurrentUserAsync(
         [FromBody] UpdateUserRequestDto requestDto,
         CancellationToken cancellationToken)

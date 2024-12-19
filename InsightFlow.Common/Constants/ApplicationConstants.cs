@@ -13,8 +13,6 @@ public static class ApplicationConstants
     public const string UserPolicyName = "OnlyUserPolicy";
     public const string AdminRoleName = "Admin";
     public const string UserRoleName = "User";
-    public const int AdminRoleId = 1;
-    public const int UserRoleId = 2;
     public const string UsernameClaim = "username";
     public const string ExternalIdClaim = "external_id";
 

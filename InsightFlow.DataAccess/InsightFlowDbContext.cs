@@ -1,8 +1,5 @@
-﻿using InsightFlow.Common.Constants;
-using InsightFlow.Common.Helpers;
-using InsightFlow.DataAccess.EntityConfigurations;
+﻿using InsightFlow.DataAccess.EntityConfigurations;
 using InsightFlow.Model.Entities;
-using InsightFlow.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace InsightFlow.DataAccess;
@@ -34,57 +31,12 @@ public class InsightFlowDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfiguration(new AnswerEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new EntityStateInformationEntityConfiguration());
         modelBuilder.ApplyConfiguration(new ProfileEntityConfiguration());
         modelBuilder.ApplyConfiguration(new ProfileImageEntityConfiguration());
         modelBuilder.ApplyConfiguration(new QuestionEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new RoleEntityConfiguration());
         modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
         modelBuilder.ApplyConfiguration(new UserRoleEntityConfiguration());
-
-        modelBuilder.Entity<Answer>().HasData(FakeDataHelper.GetFakeAnswers());
-        modelBuilder.Entity<Profile>().HasData(FakeDataHelper.GetFakeProfiles());
-        modelBuilder.Entity<ProfileImage>().HasData(FakeDataHelper.GetFakeProfileImages());
-        modelBuilder.Entity<Question>().HasData(FakeDataHelper.GetFakeQuestions());
-        modelBuilder.Entity<User>().HasData(FakeDataHelper.GetFakeUsers());
-        modelBuilder.Entity<UserRole>().HasData(FakeDataHelper.GetFakeUserRoles());
-
-        modelBuilder.Entity<EntityStateInformation>().HasData([
-            new EntityStateInformation
-            {
-                Id = 1,
-                StateNumber = BaseEntityState.Active,
-                Name = nameof(BaseEntityState.Active),
-                Description = "The entity is active."
-            },
-            new EntityStateInformation
-            {
-                Id = 2,
-                StateNumber = BaseEntityState.Inactive,
-                Name = nameof(BaseEntityState.Inactive),
-                Description = "The entity is inactive."
-            },
-            new EntityStateInformation
-            {
-                Id = 3,
-                StateNumber = BaseEntityState.Deleted,
-                Name = nameof(BaseEntityState.Deleted),
-                Description = "The entity is (soft) deleted."
-            }
-        ]);
-
-        modelBuilder.Entity<Role>().HasData(
-        [
-            new Role
-            {
-                Id = ApplicationConstants.AdminRoleId,
-                Name = ApplicationConstants.AdminRoleName,
-                Description = "Administrator of the Application"
-            },
-            new Role
-            {
-                Id = ApplicationConstants.UserRoleId,
-                Name = ApplicationConstants.UserRoleName,
-                Description = "Basic User of the Application"
-            }
-        ]);
     }
 }

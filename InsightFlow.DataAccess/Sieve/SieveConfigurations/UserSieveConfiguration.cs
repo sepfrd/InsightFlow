@@ -30,7 +30,7 @@ public class UserSieveConfiguration : BaseSieveConfiguration<User>
             .CanFilter();
 
         mapper
-            .Property<User>(user => Enumerable.Select(user.UserRoles, userRole => userRole.RoleId).First())
+            .Property<User>(user => user.UserRoles.Select(userRole => userRole.RoleId).First())
             .CanSort()
             .CanFilter();
     }

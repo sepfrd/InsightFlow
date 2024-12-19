@@ -68,7 +68,7 @@ public class AnswerController : ControllerBase
 
     [HttpPut]
     [Authorize(ApplicationConstants.UserPolicyName)]
-    [Route("{answerGuid:guid}")]
+    [Route("guid/{answerGuid:guid}")]
     public async Task<ActionResult<CustomResponse<AnswerDto>>> UpdateAnswerByGuidAsync(
         [FromRoute] Guid answerGuid,
         [FromBody] UpdateAnswerRequestDto requestDto,
@@ -81,7 +81,7 @@ public class AnswerController : ControllerBase
 
     [HttpPut]
     [Authorize(ApplicationConstants.AdminPolicyName)]
-    [Route("{answerId:int}/state")]
+    [Route("id/{answerId:int}/state")]
     public async Task<ActionResult<CustomResponse<Answer>>> UpdateAnswerStateAsync(
         [FromRoute] int answerId,
         [FromBody] [EnumDataType(typeof(BaseEntityState))]

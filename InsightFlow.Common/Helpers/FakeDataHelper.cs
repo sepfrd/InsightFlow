@@ -6,29 +6,8 @@ namespace InsightFlow.Common.Helpers;
 
 public static class FakeDataHelper
 {
-    public static readonly Question FakeQuestion = new()
-    {
-        Id = 1,
-        LastUpdated = DateTime.Now,
-        Guid = Guid.NewGuid(),
-        Title = "How to do some job?",
-        Body = "Please help me with my problem.",
-        UserId = 2
-    };
-
-    public static readonly Answer FakeAnswer = new()
-    {
-        Id = 1,
-        LastUpdated = DateTime.Now,
-        Guid = Guid.NewGuid(),
-        Body = "This is how you do that job.",
-        QuestionId = 1,
-        UserId = 2
-    };
-
     public static readonly User FakeAdmin = new()
     {
-        Id = 1,
         Guid = Guid.NewGuid(),
         Username = "sepehr_frd",
         Password = PasswordHelper.HashPassword("Sfr1376."),
@@ -39,7 +18,6 @@ public static class FakeDataHelper
 
     public static readonly User FakeUser = new()
     {
-        Id = 2,
         Guid = Guid.NewGuid(),
         Username = "bernard_cool",
         Password = PasswordHelper.HashPassword("BernardCool1997."),
@@ -48,133 +26,78 @@ public static class FakeDataHelper
         LastName = "Cool"
     };
 
-    private static readonly Profile FakeAdminProfile = new()
+    public static List<Answer> GetFakeAnswers(List<Question> fakeQuestions, List<User> fakeUsers, int countToGenerate)
     {
-        Id = 1,
-        UserId = 1,
-        Bio = ".NET Developer"
-    };
-
-    private static readonly Profile FakeUserProfile = new()
-    {
-        Id = 2,
-        UserId = 2,
-        Bio = "React Developer"
-    };
-
-    private static readonly UserRole FakeAdminUserRole = new()
-    {
-        Id = 1,
-        UserId = 1,
-        RoleId = ApplicationConstants.AdminRoleId
-    };
-
-    private static readonly UserRole FakeUserUserRole = new()
-    {
-        Id = 2,
-        UserId = 2,
-        RoleId = ApplicationConstants.UserRoleId
-    };
-
-    public static List<Answer> GetFakeAnswers()
-    {
-        var id = 2;
-
         var answerFaker = new Faker<Answer>()
-            .RuleFor(answer => answer.Id, _ => id++)
             .RuleFor(answer => answer.Body, faker => faker.Commerce.ProductDescription())
-            .RuleFor(answer => answer.UserId, faker => faker.Random.Number(1, 100))
-            .RuleFor(answer => answer.QuestionId, 1);
+            .RuleFor(answer => answer.User, faker => faker.PickRandom(fakeUsers))
+            .RuleFor(answer => answer.Question, faker => faker.PickRandom(fakeQuestions));
 
-        var fakeAnswers = new List<Answer>
-        {
-            FakeAnswer
-        };
-
-        for (var i = 0; i < 100; i++)
-        {
-            fakeAnswers.Add(answerFaker.Generate());
-        }
+        var fakeAnswers = answerFaker.Generate(countToGenerate);
 
         return fakeAnswers;
     }
 
-    public static List<Profile> GetFakeProfiles()
+    public static List<Profile> GetFakeProfiles(List<User> fakeUsers)
     {
-        var id = 3;
-
-        var fakeProfiles = new List<Profile>();
-
-        fakeProfiles.AddRange(new List<Profile>
+        var fakeProfiles = new List<Profile>
         {
-            FakeAdminProfile,
-            FakeUserProfile
-        });
+            new()
+            {
+                User = fakeUsers.First(user => user.Username == FakeAdmin.Username),
+                Bio = ".NET Developer"
+            },
+            new()
+            {
+                User = fakeUsers.First(user => user.Username == FakeUser.Username),
+                Bio = "React Developer"
+            }
+        };
+
+        var currentUserProfilesCount = fakeProfiles.Count;
+
+        var fakeUsersIndex = currentUserProfilesCount;
 
         var profileFaker = new Faker<Profile>()
-            .RuleFor(profile => profile.Id, _ => id)
-            .RuleFor(profile => profile.UserId, _ => id++)
+            .RuleFor(profile => profile.User, _ => fakeUsers[fakeUsersIndex++])
             .RuleFor(profile => profile.Bio, faker => faker.Name.JobTitle());
 
-        for (var i = 0; i < 100; i++)
-        {
-            fakeProfiles.Add(profileFaker.Generate());
-        }
+        fakeProfiles.AddRange(profileFaker.Generate(fakeUsers.Count - currentUserProfilesCount));
 
         return fakeProfiles;
     }
 
-    public static List<ProfileImage> GetFakeProfileImages()
+    public static List<ProfileImage> GetFakeProfileImages(List<Profile> fakeProfiles)
     {
-        var id = 1;
-
-        var fakeProfileImages = new List<ProfileImage>();
+        var fakeProfilesIndex = 0;
 
         // var fakeProfileImage = GetFakeImageAsync().Result;
 
         var profileFaker = new Faker<ProfileImage>()
-            .RuleFor(profileImage => profileImage.Id, _ => id)
-            .RuleFor(profileImage => profileImage.ProfileId, _ => id++);
+            .RuleFor(profileImage => profileImage.Profile, _ => fakeProfiles[fakeProfilesIndex++]);
 
-        for (var i = 0; i < 100; i++)
-        {
-            fakeProfileImages.Add(profileFaker.Generate());
-        }
+        var fakeProfileImages = profileFaker.Generate(fakeProfiles.Count);
 
         return fakeProfileImages;
     }
 
-    public static List<Question> GetFakeQuestions()
+    public static List<Question> GetFakeQuestions(List<User> fakeUsers, int countToGenerate)
     {
-        var id = 2;
-
         var questionFaker = new Faker<Question>()
-            .RuleFor(question => question.Id, _ => id++)
             .RuleFor(question => question.Title, faker => faker.Random.Words(2))
             .RuleFor(question => question.Body, faker => faker.Commerce.ProductDescription())
-            .RuleFor(question => question.UserId, faker => faker.Random.Number(1, 100));
+            .RuleFor(question => question.User, faker => faker.PickRandom(fakeUsers));
 
-        var fakeQuestions = new List<Question>
-        {
-            FakeQuestion
-        };
-
-        for (var i = 0; i < 100; i++)
-        {
-            fakeQuestions.Add(questionFaker.Generate());
-        }
+        var fakeQuestions = questionFaker.Generate(countToGenerate);
 
         return fakeQuestions;
     }
 
-    public static List<User> GetFakeUsers()
+    public static List<User> GetFakeUsers(int countToGenerate)
     {
-        var id = 3;
-
         var password = PasswordHelper.HashPassword("Correct_p0");
 
         var userFaker = new Faker<User>()
-            .RuleFor(user => user.Id, _ => id++)
             .RuleFor(user => user.Username, faker => faker.Internet.UserName().ToLowerInvariant())
             .RuleFor(user => user.Password, _ => password)
             .RuleFor(user => user.Email, faker => faker.Internet.Email().ToLowerInvariant())
@@ -189,34 +112,38 @@ public static class FakeDataHelper
             FakeUser
         });
 
-        for (var i = 0; i < 100; i++)
-        {
-            fakeUsers.Add(userFaker.Generate());
-        }
+        var currentUsersCount = fakeUsers.Count;
+
+        fakeUsers.AddRange(userFaker.Generate(countToGenerate - currentUsersCount));
 
         return fakeUsers;
     }
 
-    public static List<UserRole> GetFakeUserRoles()
+    public static List<UserRole> GetFakeUserRoles(List<User> fakeUsers, List<Role> fakeRoles)
     {
-        var userRolesList = new List<UserRole>();
-
-        userRolesList.AddRange(new List<UserRole>
+        var userRolesList = new List<UserRole>
         {
-            FakeAdminUserRole,
-            FakeUserUserRole
-        });
+            new()
+            {
+                User = fakeUsers.First(user => user.Username == FakeAdmin.Username),
+                Role = fakeRoles.First(role => role.Name == ApplicationConstants.AdminRoleName)
+            },
+            new()
+            {
+                User = fakeUsers.First(user => user.Username == FakeUser.Username),
+                Role = fakeRoles.First(role => role.Name == ApplicationConstants.UserRoleName)
+            }
+        };
 
-        for (var i = 3; i < 102; i++)
-        {
-            userRolesList.Add(
+        var currentUserRolesListCount = userRolesList.Count;
+
+        userRolesList.AddRange(fakeUsers[currentUserRolesListCount..]
+            .Select(user =>
                 new UserRole
                 {
-                    Id = i,
-                    UserId = i,
-                    RoleId = ApplicationConstants.UserRoleId
-                });
-        }
+                    User = user,
+                    Role = fakeRoles[Random.Shared.Next(0, fakeRoles.Count)]
+                }));
 
         return userRolesList;
     }

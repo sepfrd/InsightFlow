@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using AutoMapper;
 using InsightFlow.Business.Interfaces;
+using InsightFlow.Common;
 using InsightFlow.Common.Constants;
 using InsightFlow.Common.Dtos;
 using InsightFlow.Common.Dtos.CustomResponses;
@@ -82,7 +83,7 @@ public class UserBusiness : IUserBusiness
         createdUser.UserRoles.Add(new UserRole
         {
             UserId = user.Id,
-            RoleId = ApplicationConstants.UserRoleId
+            RoleId = RoleIds.UserRoleId
         });
 
         await _unitOfWork.CommitAsync(cancellationToken);
@@ -142,7 +143,7 @@ public class UserBusiness : IUserBusiness
         createdAdmin.UserRoles.Add(new UserRole
         {
             UserId = user.Id,
-            RoleId = ApplicationConstants.AdminRoleId
+            RoleId = RoleIds.AdminRoleId
         });
 
         await _unitOfWork.CommitAsync(cancellationToken);

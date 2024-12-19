@@ -36,6 +36,22 @@ public class QuestionController : ControllerBase
         return StatusCode((int)result.HttpStatusCode, result);
     }
 
+    [HttpPost]
+    [Route("guid/{questionGuid:guid}/answers")]
+    [Authorize(ApplicationConstants.UserPolicyName)]
+    public async Task<ActionResult<CustomResponse<AnswerDto>>> SubmitAnswerAsync(
+        [FromRoute] Guid questionGuid,
+        [FromBody] CreateAnswerRequestDto requestDto,
+        CancellationToken cancellationToken)
+    {
+        var result = await _answerBusiness.CreateAnswerAsync(
+            questionGuid,
+            requestDto,
+            cancellationToken);
+
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
     [HttpGet]
     [Authorize(ApplicationConstants.AdminPolicyName)]
     public async Task<ActionResult<CustomResponse<List<Question>>>> GetAllQuestionsAsync([FromQuery] SieveModel sieveModel, CancellationToken cancellationToken)
@@ -106,25 +122,9 @@ public class QuestionController : ControllerBase
         return StatusCode((int)result.HttpStatusCode, result);
     }
 
-    [HttpPost]
-    [Route("guid/{questionGuid:guid}/answers")]
-    [Authorize(ApplicationConstants.UserPolicyName)]
-    public async Task<ActionResult<CustomResponse<AnswerDto>>> SubmitAnswerAsync(
-        [FromRoute] Guid questionGuid,
-        [FromBody] CreateAnswerRequestDto requestDto,
-        CancellationToken cancellationToken)
-    {
-        var result = await _answerBusiness.CreateAnswerAsync(
-            questionGuid,
-            requestDto,
-            cancellationToken);
-
-        return StatusCode((int)result.HttpStatusCode, result);
-    }
-
     [HttpPut]
     [Authorize(ApplicationConstants.UserPolicyName)]
-    [Route("{questionGuid:guid}")]
+    [Route("guid/{questionGuid:guid}")]
     public async Task<ActionResult<CustomResponse<QuestionDto>>> UpdateQuestionByGuidAsync(
         [FromRoute] Guid questionGuid,
         [FromBody] UpdateQuestionRequestDto requestDto,
@@ -137,7 +137,7 @@ public class QuestionController : ControllerBase
 
     [HttpPut]
     [Authorize(ApplicationConstants.AdminPolicyName)]
-    [Route("{questionId:int}/state")]
+    [Route("id/{questionId:int}/state")]
     public async Task<ActionResult<CustomResponse<Question>>> UpdateQuestionStateAsync(
         [FromRoute] int questionId,
         [FromBody] [EnumDataType(typeof(BaseEntityState))]

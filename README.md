@@ -34,7 +34,7 @@ InsightFlow is a Q&A web application built with .NET Web API, designed to facili
 
 ### Prerequisites
 
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 - [Docker](https://www.docker.com/get-started) (for containerized setup)
 
 ### Installation
@@ -48,9 +48,9 @@ InsightFlow is a Q&A web application built with .NET Web API, designed to facili
 
 ### Usage
 
-1. Run the following command:
+1. Run the following command (you have to set up Microsoft SQL Server SA password via environment variables first):
    ```bash
-   docker compose --file docker-compose.yaml up
+   MSSQL_SA_PASSWORD=SOME_STRONG_PASSWORD_HERE docker compose --file docker-compose.yaml up
    ```
 2. Now you can access the application at http://localhost:8000 and the Microsoft SQL Server database instance at http://localhost:1533 (or any other port you specified in previous steps).
 

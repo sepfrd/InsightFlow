@@ -4,7 +4,6 @@ using InsightFlow.DataAccess.Sieve.SieveConfigurations;
 using InsightFlow.Model.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Sieve.Models;
 using Sieve.Services;
@@ -50,7 +49,7 @@ public class CustomSieveProcessor : SieveProcessor
         {
             var filters = model.GetFiltersParsed();
 
-            if (filters.IsNullOrEmpty())
+            if (filters is null || filters.Count == 0)
             {
                 return result;
             }
