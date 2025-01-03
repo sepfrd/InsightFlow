@@ -7,7 +7,6 @@ namespace InsightFlow.DataAccess.EntityConfigurations;
 
 public class EntityStateInformationEntityConfiguration : IEntityTypeConfiguration<EntityStateInformation>
 {
-
     public void Configure(EntityTypeBuilder<EntityStateInformation> builder)
     {
         builder

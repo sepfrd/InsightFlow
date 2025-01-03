@@ -2,7 +2,7 @@
 
 namespace InsightFlow.Model.Entities;
 
-public class BaseEntity
+public abstract class BaseEntity
 {
     protected BaseEntity()
     {

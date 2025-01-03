@@ -22,18 +22,16 @@ namespace InsightFlow.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("InsightFlow.Model.Entities.Answer", b =>
+            modelBuilder.HasSequence("BaseEntitySequence");
+
+            modelBuilder.Entity("InsightFlow.Model.Entities.BaseEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("NEXT VALUE FOR [BaseEntitySequence]");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("NVarChar");
+                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -44,16 +42,33 @@ namespace InsightFlow.DataAccess.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
                     b.Property<byte>("State")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("UserId")
+                    b.HasKey("Id");
+
+                    b.HasIndex("Guid")
+                        .IsUnique();
+
+                    b.ToTable((string)null);
+
+                    b.UseTpcMappingStrategy();
+                });
+
+            modelBuilder.Entity("InsightFlow.Model.Entities.Answer", b =>
+                {
+                    b.HasBaseType("InsightFlow.Model.Entities.BaseEntity");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("NVarChar");
+
+                    b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasIndex("QuestionId");
 
@@ -64,91 +79,46 @@ namespace InsightFlow.DataAccess.Migrations
 
             modelBuilder.Entity("InsightFlow.Model.Entities.EntityStateInformation", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                    b.HasBaseType("InsightFlow.Model.Entities.BaseEntity");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVarChar");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("NVarChar");
 
-                    b.Property<byte>("State")
-                        .HasColumnType("tinyint");
-
                     b.Property<byte>("StateNumber")
                         .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
 
                     b.ToTable("EntityStateInformation");
                 });
 
             modelBuilder.Entity("InsightFlow.Model.Entities.Profile", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasBaseType("InsightFlow.Model.Entities.BaseEntity");
 
                     b.Property<string>("Bio")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("NVarChar");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte>("State")
-                        .HasColumnType("tinyint");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
                     b.HasIndex("UserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("InsightFlow.Model.Entities.ProfileImage", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasBaseType("InsightFlow.Model.Entities.BaseEntity");
 
                     b.Property<byte[]>("ImageBytes")
                         .HasColumnType("varbinary(max)");
@@ -157,47 +127,24 @@ namespace InsightFlow.DataAccess.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("VarChar");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("ProfileId")
                         .HasColumnType("int");
 
-                    b.Property<byte>("State")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("ProfileId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ProfileId] IS NOT NULL");
 
                     b.ToTable("ProfileImages");
                 });
 
             modelBuilder.Entity("InsightFlow.Model.Entities.Question", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasBaseType("InsightFlow.Model.Entities.BaseEntity");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("NVarChar");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte>("State")
-                        .HasColumnType("tinyint");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -207,8 +154,6 @@ namespace InsightFlow.DataAccess.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Questions");
@@ -216,49 +161,24 @@ namespace InsightFlow.DataAccess.Migrations
 
             modelBuilder.Entity("InsightFlow.Model.Entities.Role", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                    b.HasBaseType("InsightFlow.Model.Entities.BaseEntity");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVarChar");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("NVarChar");
-
-                    b.Property<byte>("State")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
 
                     b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("InsightFlow.Model.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                    b.HasBaseType("InsightFlow.Model.Entities.BaseEntity");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -270,64 +190,36 @@ namespace InsightFlow.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("NVarChar");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("LastName")
                         .HasMaxLength(100)
                         .HasColumnType("NVarChar");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("NVarChar");
 
-                    b.Property<byte>("State")
-                        .HasColumnType("tinyint");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("NVarChar");
 
-                    b.HasKey("Id");
-
                     b.HasIndex("Username")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Username] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("InsightFlow.Model.Entities.UserRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
+                    b.HasBaseType("InsightFlow.Model.Entities.BaseEntity");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<byte>("State")
-                        .HasColumnType("tinyint");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using AutoMapper;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
@@ -44,7 +45,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (question is null)
         {
-            var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(questionGuid));
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.InvalidParametersMessage, nameof(questionGuid));
 
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
@@ -89,7 +90,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (answer is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), guid);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), guid);
 
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -113,7 +114,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (question is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Question), questionGuid);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByGuidMessage, nameof(Question), questionGuid);
 
             return PagedCustomResponse<List<AnswerDto>>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -231,7 +232,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (answer is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), answerGuid);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), answerGuid);
 
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -242,7 +243,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (user!.Id != answer.UserId)
         {
-            var message = string.Format(MessageConstants.ForbiddenActionMessage, "update", nameof(Answer).ToLowerInvariant());
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.ForbiddenActionMessage, "update", nameof(Answer).ToLowerInvariant());
 
             return CustomResponse<AnswerDto>.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
@@ -256,7 +257,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         updatedAnswerDto.User ??= _mapper.Map<UserDto>(user);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulUpdateMessage, nameof(Answer).ToLowerInvariant());
 
         return CustomResponse<AnswerDto>.CreateSuccessfulResponse(updatedAnswerDto, successMessage);
     }
@@ -272,7 +273,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (answer.State == newState)
         {
-            var message = string.Format(MessageConstants.IdenticalNewValue, "State", newState);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.IdenticalNewValue, "State", newState);
 
             return CustomResponse<Answer>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
@@ -282,7 +283,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Answer).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulUpdateMessage, nameof(Answer).ToLowerInvariant());
 
         return CustomResponse<Answer>.CreateSuccessfulResponse(answer, successMessage);
     }
@@ -293,7 +294,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (answer is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByIdMessage, nameof(Answer), answerId);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByIdMessage, nameof(Answer), answerId);
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -302,7 +303,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulDeleteMessage, nameof(Answer).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
@@ -313,7 +314,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (answer is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), answerGuid);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByGuidMessage, nameof(Answer), answerGuid);
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -324,7 +325,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         if (answer.UserId != user!.Id)
         {
-            var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Answer).ToLowerInvariant());
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.ForbiddenActionMessage, "delete", nameof(Answer).ToLowerInvariant());
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
@@ -333,7 +334,7 @@ public class AnswerBusiness : IAnswerBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Answer).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulDeleteMessage, nameof(Answer).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using AutoMapper;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common;
@@ -42,7 +43,7 @@ public class UserBusiness : IUserBusiness
 
         if (!isUsernameUnique)
         {
-            var message = string.Format(
+            var message = string.Format(CultureInfo.InvariantCulture,
                 MessageConstants.PropertyNotUniqueMessage,
                 requestDto.Username,
                 nameof(User.Username).ToLowerInvariant());
@@ -54,7 +55,7 @@ public class UserBusiness : IUserBusiness
 
         if (!isEmailUnique)
         {
-            var message = string.Format(
+            var message = string.Format(CultureInfo.InvariantCulture,
                 MessageConstants.PropertyNotUniqueMessage,
                 requestDto.Email,
                 nameof(User.Email).ToLowerInvariant());
@@ -99,7 +100,7 @@ public class UserBusiness : IUserBusiness
 
         if (!isUsernameUnique)
         {
-            var message = string.Format(
+            var message = string.Format(CultureInfo.InvariantCulture,
                 MessageConstants.PropertyNotUniqueMessage,
                 requestDto.Username,
                 nameof(User.Username).ToLowerInvariant());
@@ -111,7 +112,7 @@ public class UserBusiness : IUserBusiness
 
         if (!isEmailUnique)
         {
-            var message = string.Format(
+            var message = string.Format(CultureInfo.InvariantCulture,
                 MessageConstants.PropertyNotUniqueMessage,
                 requestDto.Email,
                 nameof(User.Email).ToLowerInvariant());
@@ -241,7 +242,7 @@ public class UserBusiness : IUserBusiness
 
         if (string.IsNullOrEmpty(imageFileExtension) || !ApplicationConstants.ValidProfileImageFormats.Contains(imageFileExtension))
         {
-            var message = string.Format(
+            var message = string.Format(CultureInfo.InvariantCulture,
                 MessageConstants.InvalidProfileImageFormatMessage,
                 imageFileExtension,
                 string.Join(", ", ApplicationConstants.ValidProfileImageFormats));
@@ -287,7 +288,7 @@ public class UserBusiness : IUserBusiness
 
         if (user.State == newState)
         {
-            var message = string.Format(MessageConstants.IdenticalNewValue, "State", newState);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.IdenticalNewValue, "State", newState);
 
             return CustomResponse<User>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
@@ -297,7 +298,7 @@ public class UserBusiness : IUserBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse<User>.CreateSuccessfulResponse(user, successMessage);
     }
@@ -328,7 +329,7 @@ public class UserBusiness : IUserBusiness
 
             if (!isUsernameUnique)
             {
-                var message = string.Format(
+                var message = string.Format(CultureInfo.InvariantCulture,
                     MessageConstants.PropertyNotUniqueMessage,
                     requestDto,
                     nameof(User.Username).ToLowerInvariant());
@@ -345,7 +346,7 @@ public class UserBusiness : IUserBusiness
 
             if (!isEmailUnique)
             {
-                var message = string.Format(
+                var message = string.Format(CultureInfo.InvariantCulture,
                     MessageConstants.PropertyNotUniqueMessage,
                     requestDto,
                     nameof(User.Email).ToLowerInvariant());
@@ -366,7 +367,7 @@ public class UserBusiness : IUserBusiness
 
         var updatedUserDto = _mapper.Map<UserWithBioDto>(user);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse<UserWithBioDto>.CreateSuccessfulResponse(updatedUserDto, successMessage);
     }
@@ -381,7 +382,7 @@ public class UserBusiness : IUserBusiness
 
         if (!isPasswordValid)
         {
-            var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.OldPassword));
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.InvalidParametersMessage, nameof(requestDto.OldPassword));
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
@@ -393,7 +394,7 @@ public class UserBusiness : IUserBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulUpdateMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
@@ -413,14 +414,14 @@ public class UserBusiness : IUserBusiness
 
         if (user is null)
         {
-            var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.Username));
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.InvalidParametersMessage, nameof(requestDto.Username));
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
 
         if (!string.Equals(requestDto.Username, user.Username, StringComparison.InvariantCultureIgnoreCase))
         {
-            var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.Username));
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.InvalidParametersMessage, nameof(requestDto.Username));
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
@@ -429,7 +430,7 @@ public class UserBusiness : IUserBusiness
 
         if (!isPasswordValid)
         {
-            var message = string.Format(MessageConstants.InvalidParametersMessage, nameof(requestDto.Password));
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.InvalidParametersMessage, nameof(requestDto.Password));
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
@@ -466,7 +467,7 @@ public class UserBusiness : IUserBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(User).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulDeleteMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
@@ -484,7 +485,7 @@ public class UserBusiness : IUserBusiness
 
         if (user is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByIdMessage, nameof(User), userId);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByIdMessage, nameof(User), userId);
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -498,7 +499,7 @@ public class UserBusiness : IUserBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(User).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulDeleteMessage, nameof(User).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }

@@ -30,6 +30,7 @@ public class InsightFlowDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.ApplyConfiguration(new BaseEntityConfiguration());
         modelBuilder.ApplyConfiguration(new AnswerEntityConfiguration());
         modelBuilder.ApplyConfiguration(new EntityStateInformationEntityConfiguration());
         modelBuilder.ApplyConfiguration(new ProfileEntityConfiguration());

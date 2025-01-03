@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using AutoMapper;
 using InsightFlow.Business.Interfaces;
 using InsightFlow.Common.Constants;
@@ -178,7 +179,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         if (question is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Question), questionGuid);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByGuidMessage, nameof(Question), questionGuid);
 
             return CustomResponse<QuestionDto>.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -189,7 +190,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         if (user!.Id != question.UserId)
         {
-            var message = string.Format(MessageConstants.ForbiddenActionMessage, "update", nameof(Question).ToLowerInvariant());
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.ForbiddenActionMessage, "update", nameof(Question).ToLowerInvariant());
 
             return CustomResponse<QuestionDto>.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
@@ -204,7 +205,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         updatedQuestionDto.User ??= _mapper.Map<UserDto>(user);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Question).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulUpdateMessage, nameof(Question).ToLowerInvariant());
 
         return CustomResponse<QuestionDto>.CreateSuccessfulResponse(updatedQuestionDto, successMessage);
     }
@@ -223,7 +224,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         if (question.State == newState)
         {
-            var message = string.Format(MessageConstants.IdenticalNewValue, "State", newState);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.IdenticalNewValue, "State", newState);
 
             return CustomResponse<Question>.CreateUnsuccessfulResponse(HttpStatusCode.BadRequest, message);
         }
@@ -233,7 +234,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulUpdateMessage, nameof(Question).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulUpdateMessage, nameof(Question).ToLowerInvariant());
 
         return CustomResponse<Question>.CreateSuccessfulResponse(question, successMessage);
     }
@@ -244,7 +245,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         if (question is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByIdMessage, nameof(Question), questionId);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByIdMessage, nameof(Question), questionId);
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -253,7 +254,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Question).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulDeleteMessage, nameof(Question).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }
@@ -264,7 +265,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         if (question is null)
         {
-            var message = string.Format(MessageConstants.EntityNotFoundByGuidMessage, nameof(Question), questionGuid);
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.EntityNotFoundByGuidMessage, nameof(Question), questionGuid);
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.NotFound, message);
         }
@@ -275,7 +276,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         if (question.UserId != user!.Id)
         {
-            var message = string.Format(MessageConstants.ForbiddenActionMessage, "delete", nameof(Question).ToLowerInvariant());
+            var message = string.Format(CultureInfo.InvariantCulture, MessageConstants.ForbiddenActionMessage, "delete", nameof(Question).ToLowerInvariant());
 
             return CustomResponse.CreateUnsuccessfulResponse(HttpStatusCode.Forbidden, message);
         }
@@ -284,7 +285,7 @@ public class QuestionBusiness : IQuestionBusiness
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        var successMessage = string.Format(MessageConstants.SuccessfulDeleteMessage, nameof(Question).ToLowerInvariant());
+        var successMessage = string.Format(CultureInfo.InvariantCulture, MessageConstants.SuccessfulDeleteMessage, nameof(Question).ToLowerInvariant());
 
         return CustomResponse.CreateSuccessfulResponse(successMessage);
     }

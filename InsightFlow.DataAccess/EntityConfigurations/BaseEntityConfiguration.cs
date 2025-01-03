@@ -6,9 +6,10 @@ namespace InsightFlow.DataAccess.EntityConfigurations;
 
 public class BaseEntityConfiguration : IEntityTypeConfiguration<BaseEntity>
 {
-
     public void Configure(EntityTypeBuilder<BaseEntity> builder)
     {
+        builder.UseTpcMappingStrategy();
+
         builder.HasKey(entity => entity.Id);
 
         builder
