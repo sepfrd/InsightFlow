@@ -1,0 +1,6 @@
+@InsightFlow.Api_HostAddress = http://localhost:7000
+
+GET {{InsightFlow.Api_HostAddress}}/ping/
+Accept: application/json
+
+###
