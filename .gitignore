@@ -453,6 +453,8 @@ $RECYCLE.BIN/
 .idea/
 *.sln.iml
 
+.editorconfig
+
 ##
 ## Visual Studio Code
 ##
