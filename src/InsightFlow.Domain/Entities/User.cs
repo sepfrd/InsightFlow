@@ -13,5 +13,4 @@ public class User : DomainEntity
     public ICollection<UserRole> UserRoles { get; set; } = [];
     public ICollection<BlogPost> BlogPosts { get; set; } = [];
     public ICollection<Comment> Comments { get; set; } = [];
-    public ICollection<Reaction> Reactions { get; set; } = [];
 }

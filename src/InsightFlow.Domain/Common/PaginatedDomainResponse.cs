@@ -57,4 +57,10 @@ public record PaginatedDomainResponse<T> : DomainResponse<T> where T : class, IE
     public long? TotalCount { get; set; }
 
     public long? CurrentPageCount { get; set; }
+
+    public new static PaginatedDomainResponse<T> CreateFailure(Error error, string? message = null) =>
+        new(0, 0, 0, null, error, message)
+        {
+            IsSuccess = false
+        };
 }

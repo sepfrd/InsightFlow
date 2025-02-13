@@ -2,7 +2,7 @@ using InsightFlow.Domain.Common;
 
 namespace InsightFlow.Domain.Entities;
 
-public class Comment : DomainEntity, IReactable
+public class Comment : DomainEntity
 {
     public required string Body { get; set; }
     public BlogPost? BlogPost { get; set; }

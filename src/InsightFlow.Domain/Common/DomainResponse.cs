@@ -13,7 +13,7 @@ public record DomainResponse
 
     public Error Error { get; }
 
-    public bool IsSuccess { get; }
+    public bool IsSuccess { get; init; }
 
     public bool IsFailure => !IsSuccess;
 }
@@ -26,4 +26,10 @@ public record DomainResponse<T> : DomainResponse where T : class
     }
 
     public T? Data { get; }
+
+    public static DomainResponse<T> CreateFailure(Error error, string? message = null) =>
+        new(null, error, message)
+        {
+            IsSuccess = false
+        };
 }
