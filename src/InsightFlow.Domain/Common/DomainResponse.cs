@@ -14,8 +14,6 @@ public record DomainResponse
     public Error Error { get; }
 
     public bool IsSuccess { get; init; }
-
-    public bool IsFailure => !IsSuccess;
 }
 
 public record DomainResponse<T> : DomainResponse where T : class

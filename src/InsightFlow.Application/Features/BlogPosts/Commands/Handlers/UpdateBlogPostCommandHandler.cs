@@ -30,8 +30,8 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         }
 
         var blogPost = await _unitOfWork.BlogPostRepository.GetOneAsync(
-                    blogPost => blogPost.Uuid == request.BlogPostUuid,
-                    cancellationToken: cancellationToken);
+            blogPost => blogPost.Uuid == request.BlogPostUuid,
+            cancellationToken: cancellationToken);
 
         if (blogPost is null)
         {

@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace InsightFlow.Domain.Common;
 
 public record PaginatedDomainResponse<T> : DomainResponse<T> where T : class, IEnumerable<object>

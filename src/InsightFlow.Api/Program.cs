@@ -1,20 +1,20 @@
+using InsightFlow.Api.Extensions;
+using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddDependencies();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 app.UseHttpsRedirection();
 
-app.MapGet("/ping", () =>
-{
-    Results.Ok();
-})
-.WithName("Ping");
+app.MapGet("/ping", () => { Results.Ok(); })
+    .WithName("Ping");
 
-app.Run();
+app.MapControllers();
+
+await app.RunAsync();

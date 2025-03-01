@@ -7,7 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
+    <PackageReference Include="MediatR" Version="12.4.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.2"/>
+    <PackageReference Include="Scalar.AspNetCore" Version="2.0.20"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InsightFlow.Domain\InsightFlow.Domain.csproj"/>
+    <ProjectReference Include="..\InsightFlow.Application\InsightFlow.Application.csproj"/>
+    <ProjectReference Include="..\InsightFlow.Infrastructure\InsightFlow.Infrastructure.csproj"/>
   </ItemGroup>
 
 </Project>

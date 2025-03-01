@@ -30,12 +30,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
             return DomainResponse<BlogPostResponseDto>.CreateFailure(DomainErrors.Unauthenticated, DomainErrors.Unauthenticated.Description);
         }
 
-        var blogPost = new BlogPost
-        {
-            Title = request.Title,
-            Body = request.Body,
-            AuthorId = user.Id
-        };
+        var blogPost = _mappingService.Map<CreateBlogPostCommand, BlogPost>(request)!;
 
         await _unitOfWork.BlogPostRepository.CreateAsync(blogPost, cancellationToken);
 
@@ -43,7 +38,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
 
         if (commitResult < 1)
         {
-            return new DomainResponse<BlogPostResponseDto>(null, DomainErrors.InternalServerError, DomainErrors.InternalServerError.Description);
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(DomainErrors.InternalServerError, DomainErrors.InternalServerError.Description);
         }
 
         var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost);

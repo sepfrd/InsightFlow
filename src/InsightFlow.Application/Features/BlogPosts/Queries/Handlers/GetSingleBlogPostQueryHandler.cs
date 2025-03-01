@@ -19,17 +19,17 @@ public class GetSingleBlogPostQueryHandler : IRequestHandler<GetSingleBlogPostQu
 
     public async Task<DomainResponse<BlogPostResponseDto>> Handle(GetSingleBlogPostQuery request, CancellationToken cancellationToken)
     {
-        var blogPostResponse = await _unitOfWork.BlogPostRepository.GetOneAsync(
+        var blogPost = await _unitOfWork.BlogPostRepository.GetOneAsync(
             blogPost => blogPost.Uuid == request.BlogPostUuid,
             disableTracking: true,
             cancellationToken: cancellationToken);
 
-        if (blogPostResponse is null)
+        if (blogPost is null)
         {
             return new DomainResponse<BlogPostResponseDto>(null, DomainErrors.Unauthenticated, DomainErrors.Unauthenticated.Description);
         }
 
-        var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPostResponse);
+        var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost);
 
         return new DomainResponse<BlogPostResponseDto>(blogPostResponseDto);
     }

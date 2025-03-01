@@ -8,6 +8,7 @@ public interface IRepositoryBase<TEntity, in TKey>
     where TKey : IEquatable<TKey>
 {
     Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
+
     Task CreateManyAsync(ICollection<TEntity> entity, CancellationToken cancellationToken = default);
 
     Task<TEntity?> GetOneAsync(
@@ -25,7 +26,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
-            where TSorter : IComparable<TSorter>;
+        where TSorter : IComparable<TSorter>;
 
     Task<TResult?> GetOneAsync<TResult>(
         Expression<Func<TEntity, bool>> filter,
@@ -44,8 +45,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
-            where TSorter : IComparable<TSorter>;
-
+        where TSorter : IComparable<TSorter>;
 
     Task<IEnumerable<TEntity>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
@@ -54,7 +54,6 @@ public interface IRepositoryBase<TEntity, in TKey>
         ICollection<Expression<Func<TEntity, object>>>? includes = null,
         bool disableTracking = false,
         CancellationToken cancellationToken = default);
-
 
     Task<IEnumerable<TEntity>> GetAllAsync(
         bool useSplitQuery = false,
