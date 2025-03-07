@@ -1,3 +1,4 @@
+using Common.Resources;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
@@ -23,7 +24,12 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
 
         if (!isUnique)
         {
-            return DomainResponse<UserResponseDto>.CreateFailure(DomainErrors.BadRequest, DomainErrors.BadRequest.Description);
+            var message = string.Format(
+                ApplicationMessages.PropertyNotUnique,
+                nameof(CreateUserCommand.Username) + " and/or " + nameof(CreateUserCommand.Email),
+                nameof(CreateUserCommand.Username) + " and/or " + nameof(CreateUserCommand.Email));
+
+            return DomainResponse<UserResponseDto>.CreateFailure(DomainErrors.BadRequest, message);
         }
 
         var userEntity = _mappingService.Map<CreateUserCommand, User>(request);

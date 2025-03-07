@@ -34,7 +34,6 @@ public class GetUserBlogPostsQueryHandler : IRequestHandler<GetUserBlogPostsQuer
         var totalCount = user.BlogPosts.Count;
 
         var blogPosts = user.BlogPosts
-            .OrderBy(blogPost => blogPost.Id)
             .Paginate(request.PageNumber, request.PageSize);
 
         var blogPostDtos = _mappingService.Map<IEnumerable<BlogPost>, IEnumerable<BlogPostResponseDto>>(blogPosts);

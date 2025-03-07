@@ -2,13 +2,13 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Common.Resources;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Common.Helpers;
-using InsightFlow.Infrastructure.Common.Resources;
 using InsightFlow.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -36,25 +36,38 @@ public class AuthService : IAuthService
     {
         if (IsSignedIn())
         {
-            return DomainResponse<string>.CreateFailure(DomainErrors.BadRequest, ResponseMessages.AlreadySignedIn);
+            return DomainResponse<string>.CreateFailure(DomainErrors.BadRequest, ApplicationMessages.AlreadySignedIn);
         }
 
         var user = await ValidateAndGetUserByCredentialsAsync(loginDto, cancellationToken);
 
         if (user is null)
         {
-            return DomainResponse<string>.CreateFailure(DomainErrors.BadRequest, ResponseMessages.InvalidCredentials);
+            return DomainResponse<string>.CreateFailure(DomainErrors.BadRequest, ApplicationMessages.InvalidCredentials);
         }
 
-        var jwt = CreateJwt(user);
+        var roles = await _unitOfWork
+            .RoleRepository
+            .GetAllAsync(filter: role => user.UserRoles.Select(userRole => userRole.RoleId).Contains(role.Id),
+                disableTracking: true, cancellationToken: cancellationToken);
+
+        var jwt = CreateJwt(user, roles);
 
         if (jwt is null)
         {
-            return DomainResponse<string>.CreateFailure(DomainErrors.InternalServerError, ResponseMessages.InternalServerError);
+            return DomainResponse<string>.CreateFailure(DomainErrors.InternalServerError, ApplicationMessages.InternalServerError);
         }
 
         return new DomainResponse<string>(jwt);
     }
+
+    public string GetSignedInUserUuid() =>
+        _httpContextAccessor
+            .HttpContext?
+            .User
+            .Claims
+            .First(claim => claim.Type == ApplicationConstants.UuidClaim)
+            .Value!;
 
     private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
@@ -74,7 +87,7 @@ public class AuthService : IAuthService
         return !isPasswordValid ? null : user;
     }
 
-    private string? CreateJwt(User user)
+    private string? CreateJwt(User user, IEnumerable<Role> roles)
     {
         var serverUrl = _configuration
             .GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
@@ -103,14 +116,13 @@ public class AuthService : IAuthService
                 JwtRegisteredClaimNames.Iat,
                 DateTime.Now.ToUniversalTime().ToString(CultureInfo.InvariantCulture)),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ApplicationConstants.UuidClaim, user.Uuid.ToString()),
             new Claim(ApplicationConstants.UsernameClaim, user.Username)
         });
 
-        var roles = user.UserRoles.Select(userRole => userRole.Role).ToList();
-
         foreach (var role in roles)
         {
-            var claim = new Claim(ClaimTypes.Role, role?.Title!);
+            var claim = new Claim(ClaimTypes.Role, role.Title);
 
             claims.AddClaim(claim);
         }

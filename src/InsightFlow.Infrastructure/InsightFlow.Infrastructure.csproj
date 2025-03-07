@@ -13,33 +13,25 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
+    <PackageReference Include="Bogus" Version="35.6.2"/>
     <PackageReference Include="FluentValidation" Version="11.11.0"/>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0"/>
     <PackageReference Include="Mapster" Version="7.4.0"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.2"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.2"/>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2"/>
+    <PackageReference Include="System.Threading.RateLimiting" Version="9.0.2"/>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Common\Resources\ResponseMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResponseMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Common\Resources\ResponseMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ResponseMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+      <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.2\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
       <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.2\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
+
 
 </Project>

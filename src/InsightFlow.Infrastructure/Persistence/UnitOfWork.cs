@@ -10,6 +10,7 @@ public class UnitOfWork : DbContext, IUnitOfWork
 {
     private BlogPostRepository? _blogPostRepository;
     private UserRepository? _userRepository;
+    private RoleRepository? _roleRepository;
     private UserRoleRepository? _userRoleRepository;
 
     public UnitOfWork(DbContextOptions dbContextOptions) : base(dbContextOptions)
@@ -20,11 +21,15 @@ public class UnitOfWork : DbContext, IUnitOfWork
 
     public DbSet<User> Users { get; set; }
 
+    public DbSet<Role> Roles { get; set; }
+
     public DbSet<UserRole> UserRoles { get; set; }
 
     public IBlogPostRepository BlogPostRepository => _blogPostRepository ??= new BlogPostRepository(BlogPosts);
 
     public IUserRepository UserRepository => _userRepository ??= new UserRepository(Users);
+
+    public IRoleRepository RoleRepository => _roleRepository ??= new RoleRepository(Roles);
 
     public IUserRoleRepository UserRoleRepository => _userRoleRepository ??= new UserRoleRepository(UserRoles);
 

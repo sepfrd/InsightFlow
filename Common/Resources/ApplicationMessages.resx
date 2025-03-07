@@ -105,14 +105,9 @@
         <value>Successfully deleted {0} entity.</value>
     </data>
     <data
-        name="Exception"
-        xml:space="preserve">
-        <value>Application encountered an unhandled exception of type: {exceptionType}.</value>
-    </data>
-    <data
         name="ApplicationFatalException"
         xml:space="preserve">
-        <value>Application stopped due to a {exceptionType} exception.</value>
+        <value>Application stopped due to a {ExceptionType} exception.</value>
     </data>
     <data
         name="InternalServerError"

@@ -22,15 +22,15 @@ public abstract class RepositoryBase<TEntity, TKey>
         await _dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task CreateManyAsync(ICollection<TEntity> entity, CancellationToken cancellationToken = default)
+    public async Task CreateManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
     {
         await _dbSet.AddRangeAsync(entity, cancellationToken).ConfigureAwait(false);
     }
 
     public virtual async Task<TEntity?> GetOneAsync(
         Expression<Func<TEntity, bool>> filter,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         bool useSplitQuery = false,
-        ICollection<Expression<Func<TEntity, object?>>>? includes = null,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
     {
@@ -51,9 +51,9 @@ public abstract class RepositoryBase<TEntity, TKey>
     public virtual async Task<TEntity?> GetOneAsync<TSorter>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TSorter>> orderBy,
-        bool useSplitQuery = false,
-        bool ascendingOrder = true,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        bool ascendingOrder = true,
+        bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default) where TSorter : IComparable<TSorter>
     {
@@ -78,8 +78,8 @@ public abstract class RepositoryBase<TEntity, TKey>
     public virtual async Task<TResult?> GetOneAsync<TResult>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
-        bool useSplitQuery = false,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
     {
@@ -103,9 +103,9 @@ public abstract class RepositoryBase<TEntity, TKey>
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        bool useSplitQuery = false,
-        bool ascendingOrder = true,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        bool ascendingOrder = true,
+        bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default
     ) where TSorter : IComparable<TSorter>
@@ -131,9 +131,10 @@ public abstract class RepositoryBase<TEntity, TKey>
     }
 
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        uint page = 1,
+        uint limit = 10,
         bool useSplitQuery = false,
-        uint page = 1, uint limit = 10,
-        ICollection<Expression<Func<TEntity, object>>>? includes = null,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
     {
@@ -155,9 +156,10 @@ public abstract class RepositoryBase<TEntity, TKey>
 
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        uint page = 1,
+        uint limit = 10,
         bool useSplitQuery = false,
-        uint page = 1, uint limit = 10,
-        ICollection<Expression<Func<TEntity, object>>>? includes = null,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
     {
@@ -179,11 +181,11 @@ public abstract class RepositoryBase<TEntity, TKey>
 
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, TSorter>> orderBy,
-        bool useSplitQuery = false,
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
-        ICollection<Expression<Func<TEntity, object>>>? includes = null,
+        bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
     {
@@ -210,10 +212,11 @@ public abstract class RepositoryBase<TEntity, TKey>
     public async Task<IEnumerable<TEntity>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TSorter>> orderBy,
-        bool useSplitQuery = false,
-        uint page = 1, uint limit = 10,
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        uint page = 1,
+        uint limit = 10,
         bool ascendingOrder = true,
-        ICollection<Expression<Func<TEntity, object>>>? includes = null,
+        bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
     {
@@ -240,11 +243,11 @@ public abstract class RepositoryBase<TEntity, TKey>
     public virtual async Task<IEnumerable<TResult>> GetAllAsync<TResult, TSorter>(
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        bool useSplitQuery = false,
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
-        ICollection<Expression<Func<TEntity, object>>>? includes = null,
+        bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
     {
@@ -274,10 +277,11 @@ public abstract class RepositoryBase<TEntity, TKey>
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        bool useSplitQuery = false,
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
-        uint limit = 10, bool ascendingOrder = true,
-        ICollection<Expression<Func<TEntity, object>>>? includes = null,
+        uint limit = 10,
+        bool ascendingOrder = true,
+        bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
     {

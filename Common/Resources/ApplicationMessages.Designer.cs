@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InsightFlow.Infrastructure.Common.Resources {
+namespace Common.Resources {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ResponseMessages {
+    public class ApplicationMessages {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ResponseMessages() {
+        internal ApplicationMessages() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("InsightFlow.Infrastructure.Common.Resources.ResponseMessages", typeof(ResponseMessages).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Common.Resources.ApplicationMessages", typeof(ApplicationMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -36,7 +36,7 @@ namespace InsightFlow.Infrastructure.Common.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -45,91 +45,85 @@ namespace InsightFlow.Infrastructure.Common.Resources {
             }
         }
         
-        internal static string AlreadySignedIn {
+        public static string AlreadySignedIn {
             get {
                 return ResourceManager.GetString("AlreadySignedIn", resourceCulture);
             }
         }
         
-        internal static string PropertyNotUnique {
+        public static string PropertyNotUnique {
             get {
                 return ResourceManager.GetString("PropertyNotUnique", resourceCulture);
             }
         }
         
-        internal static string InvalidCredentials {
+        public static string InvalidCredentials {
             get {
                 return ResourceManager.GetString("InvalidCredentials", resourceCulture);
             }
         }
         
-        internal static string InvalidParameters {
+        public static string InvalidParameters {
             get {
                 return ResourceManager.GetString("InvalidParameters", resourceCulture);
             }
         }
         
-        internal static string IdenticalNewPropertyValues {
+        public static string IdenticalNewPropertyValues {
             get {
                 return ResourceManager.GetString("IdenticalNewPropertyValues", resourceCulture);
             }
         }
         
-        internal static string IdenticalNewValue {
+        public static string IdenticalNewValue {
             get {
                 return ResourceManager.GetString("IdenticalNewValue", resourceCulture);
             }
         }
         
-        internal static string ForbiddenAction {
+        public static string ForbiddenAction {
             get {
                 return ResourceManager.GetString("ForbiddenAction", resourceCulture);
             }
         }
         
-        internal static string EntityNotFoundByUuid {
+        public static string EntityNotFoundByUuid {
             get {
                 return ResourceManager.GetString("EntityNotFoundByUuid", resourceCulture);
             }
         }
         
-        internal static string EntityNotFoundById {
+        public static string EntityNotFoundById {
             get {
                 return ResourceManager.GetString("EntityNotFoundById", resourceCulture);
             }
         }
         
-        internal static string SuccessfulLogin {
+        public static string SuccessfulLogin {
             get {
                 return ResourceManager.GetString("SuccessfulLogin", resourceCulture);
             }
         }
         
-        internal static string SuccessfulUpdate {
+        public static string SuccessfulUpdate {
             get {
                 return ResourceManager.GetString("SuccessfulUpdate", resourceCulture);
             }
         }
         
-        internal static string SuccessfulDelete {
+        public static string SuccessfulDelete {
             get {
                 return ResourceManager.GetString("SuccessfulDelete", resourceCulture);
             }
         }
         
-        internal static string Exception {
-            get {
-                return ResourceManager.GetString("Exception", resourceCulture);
-            }
-        }
-        
-        internal static string ApplicationFatalException {
+        public static string ApplicationFatalException {
             get {
                 return ResourceManager.GetString("ApplicationFatalException", resourceCulture);
             }
         }
         
-        internal static string InternalServerError {
+        public static string InternalServerError {
             get {
                 return ResourceManager.GetString("InternalServerError", resourceCulture);
             }

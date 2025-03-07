@@ -8,7 +8,7 @@ public static class ApplicationConstants
     public const string AdminRoleName = "Admin";
     public const string UserRoleName = "User";
     public const string UsernameClaim = "username";
-    public const string ExternalIdClaim = "external_id";
+    public const string UuidClaim = "uuid";
 
     // ---------------------------- CORS Constants ----------------------------
     public const string AllowAnyOriginCorsPolicy = "AllowAnyOriginCorsPolicy";
@@ -23,10 +23,7 @@ public static class ApplicationConstants
     public const string JwtConfigurationSectionKey = "JwtConfiguration";
     public const string JwtPublicKeyConfigurationKey = "PublicKey";
     public const string JwtPrivateKeyConfigurationKey = "PrivateKey";
-
-    // ---------------------------- Pagination Constants ----------------------------
-    public const int MinimumPageSize = 10;
-    public const int MaximumPageSize = 100;
+    public const string RateLimitersSectionKey = "RateLimitersConfiguration";
 
     // ---------------------------- Rate Limiting Constants ----------------------------
     public const string FixedWindowRateLimiterPolicy = "FixedWindowRateLimiterPolicy";
@@ -37,4 +34,5 @@ public static class ApplicationConstants
     public const string ApplicationContactName = "Sepehr Foroughi Rad";
     public const string ApplicationContactEmail = "sepfrd@outlook.com";
     public const string ApplicationContactUrl = "https://github.com/sepehr-frd";
+    public const long ProfileImageMaximumAllowedBytes = 2097152L;
 }
