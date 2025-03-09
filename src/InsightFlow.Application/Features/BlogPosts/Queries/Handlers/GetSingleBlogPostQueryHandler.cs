@@ -1,8 +1,10 @@
+using Common.Constants;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.BlogPosts.Queries.Handlers;
 
@@ -26,11 +28,18 @@ public class GetSingleBlogPostQueryHandler : IRequestHandler<GetSingleBlogPostQu
 
         if (blogPost is null)
         {
-            return new DomainResponse<BlogPostResponseDto>(null, DomainErrors.Unauthenticated, DomainErrors.Unauthenticated.Description);
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(StringConstants.NotFound, StatusCodes.Status404NotFound);
         }
 
         var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost);
 
-        return new DomainResponse<BlogPostResponseDto>(blogPostResponseDto);
+        if (blogPostResponseDto is null)
+        {
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
+        }
+
+        return DomainResponse<BlogPostResponseDto>.CreateSuccess(null, StatusCodes.Status200OK, blogPostResponseDto);
     }
 }

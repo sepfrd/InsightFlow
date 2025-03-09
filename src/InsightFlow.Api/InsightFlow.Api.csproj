@@ -15,7 +15,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.2"/>
-    <PackageReference Include="Scalar.AspNetCore" Version="2.0.20"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2"/>
+    <PackageReference Include="Scalar.AspNetCore" Version="2.0.26"/>
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0"/>
     <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1"/>
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0"/>
@@ -25,6 +26,12 @@
     <ProjectReference Include="..\InsightFlow.Domain\InsightFlow.Domain.csproj"/>
     <ProjectReference Include="..\InsightFlow.Application\InsightFlow.Application.csproj"/>
     <ProjectReference Include="..\InsightFlow.Infrastructure\InsightFlow.Infrastructure.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250307.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250308.json"/>
+    <_ContentIncludedByDefault Remove="logs\internal\log-20250307.json"/>
   </ItemGroup>
 
 </Project>

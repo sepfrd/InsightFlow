@@ -1,23 +1,22 @@
-using InsightFlow.Application.Features.BlogPosts.Dtos;
+using Common.Constants;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
 
-public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostCommand, DomainResponse<BlogPostResponseDto>>
+public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostCommand, DomainResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMappingService _mappingService;
 
-    public DeleteBlogPostCommandHandler(IUnitOfWork unitOfWork, IMappingService mappingService)
+    public DeleteBlogPostCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _mappingService = mappingService;
     }
 
-    public async Task<DomainResponse<BlogPostResponseDto>> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResponse> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.AuthorUuid,
@@ -26,7 +25,7 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
 
         if (user is null)
         {
-            return DomainResponse<BlogPostResponseDto>.CreateFailure(DomainErrors.Unauthenticated, DomainErrors.Unauthenticated.Description);
+            return DomainResponse.CreateBaseFailure(StringConstants.Unauthenticated, StatusCodes.Status401Unauthorized);
         }
 
         var blogPost = await _unitOfWork.BlogPostRepository.GetOneAsync(
@@ -35,7 +34,9 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
 
         if (blogPost is null)
         {
-            return DomainResponse<BlogPostResponseDto>.CreateFailure(DomainErrors.NotFound, DomainErrors.NotFound.Description);
+            var notFoundMessage = string.Format(StringConstants.EntityNotFoundByUuidTemplate, nameof(BlogPost), request.BlogPostUuid);
+
+            return DomainResponse.CreateBaseFailure(notFoundMessage, StatusCodes.Status404NotFound);
         }
 
         _unitOfWork.BlogPostRepository.Delete(blogPost);
@@ -44,11 +45,13 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
 
         if (commitResult < 1)
         {
-            return new DomainResponse<BlogPostResponseDto>(null, DomainErrors.InternalServerError, DomainErrors.InternalServerError.Description);
+            return DomainResponse.CreateBaseFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
         }
 
-        var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost);
+        var message = string.Format(StringConstants.SuccessfulDeletionTemplate, nameof(BlogPost));
 
-        return new DomainResponse<BlogPostResponseDto>(blogPostResponseDto);
+        return DomainResponse.CreateBaseSuccess(message, StatusCodes.Status200OK);
     }
 }

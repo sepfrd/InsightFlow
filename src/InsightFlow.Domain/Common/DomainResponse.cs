@@ -2,32 +2,38 @@ namespace InsightFlow.Domain.Common;
 
 public record DomainResponse
 {
-    public DomainResponse(Error? error = null, string? message = null)
+    protected DomainResponse(string? message, int statusCode)
     {
-        Error = error ?? Error.None;
         Message = message;
-        IsSuccess = Error == Error.None;
+        StatusCode = statusCode;
+        IsSuccess = statusCode >= 200 && statusCode < 300;
     }
 
-    public string? Message { get; }
+    public string? Message { get; init; }
 
-    public Error Error { get; }
+    public int StatusCode { get; init; }
 
     public bool IsSuccess { get; init; }
+
+    public static DomainResponse CreateBaseSuccess(string? message, int resultCode) =>
+        new(message, resultCode);
+
+    public static DomainResponse CreateBaseFailure(string message, int resultCode) =>
+        new(message, resultCode);
 }
 
 public record DomainResponse<T> : DomainResponse where T : class
 {
-    public DomainResponse(T? data, Error? error = null, string? message = null) : base(error, message)
+    protected DomainResponse(string? message, int statusCode, T? data) : base(message, statusCode)
     {
         Data = data;
     }
 
-    public T? Data { get; }
+    public T? Data { get; init; }
 
-    public static DomainResponse<T> CreateFailure(Error error, string? message = null) =>
-        new(null, error, message)
-        {
-            IsSuccess = false
-        };
+    public static DomainResponse<T> CreateSuccess(string? message, int resultCode, T data) =>
+        new(message, resultCode, data);
+
+    public static DomainResponse<T> CreateFailure(string message, int resultCode) =>
+        new(message, resultCode, null);
 }

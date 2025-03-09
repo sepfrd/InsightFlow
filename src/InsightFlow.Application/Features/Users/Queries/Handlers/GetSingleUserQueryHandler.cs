@@ -1,8 +1,10 @@
+using Common.Constants;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.Users.Queries.Handlers;
 
@@ -26,11 +28,20 @@ public class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, Dom
 
         if (user is null)
         {
-            return new DomainResponse<UserResponseDto>(null, DomainErrors.NotFound, DomainErrors.NotFound.Description);
+            var message = string.Format(StringConstants.EntityNotFoundByUuidTemplate, nameof(User), request.Uuid);
+
+            return DomainResponse<UserResponseDto>.CreateFailure(message, StatusCodes.Status404NotFound);
         }
 
         var userResponseDto = _mappingService.Map<User, UserResponseDto>(user);
 
-        return new DomainResponse<UserResponseDto>(userResponseDto);
+        if (userResponseDto is null)
+        {
+            return DomainResponse<UserResponseDto>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
+        }
+
+        return DomainResponse<UserResponseDto>.CreateSuccess(null, StatusCodes.Status200OK, userResponseDto);
     }
 }

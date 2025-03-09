@@ -1,64 +1,36 @@
 namespace InsightFlow.Domain.Common;
 
-public record PaginatedDomainResponse<T> : DomainResponse<T> where T : class, IEnumerable<object>
+public record PaginatedDomainResponse<T> : DomainResponse where T : class, IEnumerable<object>
 {
-    private int _pageNumber;
-    private int _pageSize;
-
-    public PaginatedDomainResponse(
-        int pageNumber,
-        int pageSize,
-        long? totalCount,
-        T? data,
-        Error? error = null,
-        string? message = null)
-        : base(data, error, message)
+    protected PaginatedDomainResponse(string? message, int statusCode, T? data, uint pageNumber, uint pageSize, uint totalCount)
+        : base(message, statusCode)
     {
+        Data = data;
         PageNumber = pageNumber;
         PageSize = pageSize;
+        CurrentPageCount = data is null ? 0 : (uint)data.Count();
         TotalCount = totalCount;
-        CurrentPageCount = data?.Count();
     }
 
-    public int PageNumber
-    {
-        get => _pageNumber;
-        set
-        {
-            if (value > 0)
-            {
-                _pageNumber = value;
-            }
-            else
-            {
-                throw new InvalidDataException("Page number must be greater than 0.");
-            }
-        }
-    }
+    public uint PageNumber { get; init; }
 
-    public int PageSize
-    {
-        get => _pageSize;
-        set
-        {
-            if (value > 0)
-            {
-                _pageSize = value;
-            }
-            else
-            {
-                throw new InvalidDataException("Page size must be greater than 0.");
-            }
-        }
-    }
+    public uint PageSize { get; init; }
 
-    public long? TotalCount { get; set; }
+    public uint CurrentPageCount { get; init; }
 
-    public long? CurrentPageCount { get; set; }
+    public uint TotalCount { get; init; }
 
-    public new static PaginatedDomainResponse<T> CreateFailure(Error error, string? message = null) =>
-        new(0, 0, 0, null, error, message)
-        {
-            IsSuccess = false
-        };
+    public T? Data { get; init; }
+
+    public static PaginatedDomainResponse<T> CreateSuccess(
+        string? message,
+        int resultCode,
+        T data,
+        uint pageNumber,
+        uint pageSize,
+        uint totalCount) =>
+        new(message, resultCode, data, pageNumber, pageSize, totalCount);
+
+    public static PaginatedDomainResponse<T> CreateFailure(string message, int resultCode) =>
+        new(message, resultCode, null, 0, 0, 0);
 }

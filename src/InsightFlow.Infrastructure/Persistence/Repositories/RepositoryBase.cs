@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using InsightFlow.Application.Interfaces.Repositories;
 using InsightFlow.Domain.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace InsightFlow.Infrastructure.Persistence.Repositories;
@@ -41,9 +42,15 @@ public abstract class RepositoryBase<TEntity, TKey>
             data = includes.Aggregate(data, (current, include) => current.Include(include));
         }
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
 
         return await data.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
     }
@@ -68,9 +75,15 @@ public abstract class RepositoryBase<TEntity, TKey>
             data = includes.Aggregate(data, (current, include) => current.Include(include));
         }
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
 
         return await data.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
     }
@@ -85,14 +98,22 @@ public abstract class RepositoryBase<TEntity, TKey>
     {
         var data = _dbSet.Where(filter);
 
-        if (includes is not null && includes.Any())
+        var includesList = includes?.ToList();
+
+        if (includesList?.Count > 0)
         {
-            data = includes.Aggregate(data, (current, include) => current.Include(include));
+            data = includesList.Aggregate(data, (current, include) => current.Include(include));
         }
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
 
         return await data.Select(subsetSelector)
             .FirstOrDefaultAsync(cancellationToken)
@@ -112,17 +133,25 @@ public abstract class RepositoryBase<TEntity, TKey>
     {
         var data = _dbSet.Where(filter);
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
 
         data = ascendingOrder
             ? data.OrderBy(orderBy)
             : data.OrderByDescending(orderBy);
 
-        if (includes is not null && includes.Any())
+        var includesList = includes?.ToList();
+
+        if (includesList?.Count > 0)
         {
-            data = includes.Aggregate(data, (current, include) => current.Include(include));
+            data = includesList.Aggregate(data, (current, include) => current.Include(include));
         }
 
         return await data.Select(subsetSelector)
@@ -130,7 +159,7 @@ public abstract class RepositoryBase<TEntity, TKey>
             .ConfigureAwait(false);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
+    public virtual async Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync(
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
         uint limit = 10,
@@ -145,16 +174,35 @@ public abstract class RepositoryBase<TEntity, TKey>
             data = includes.Aggregate(data, (current, include) => current.Include(include));
         }
 
-        data = data.Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit)).Take(Convert.ToInt32(limit));
+        var totalCount = await data.CountAsync(cancellationToken).ConfigureAwait(false);
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        data = data
+            .OrderBy(entity => entity.Id)
+            .Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit))
+            .Take(Convert.ToInt32(limit));
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        return await data.ToListAsync(cancellationToken).ConfigureAwait(false);
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
+
+        var response = PaginatedDomainResponse<IEnumerable<TEntity>>.CreateSuccess(
+            null,
+            StatusCodes.Status200OK,
+            data,
+            page,
+            limit,
+            (uint)totalCount);
+
+        return response;
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
+    public virtual async Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
@@ -170,16 +218,35 @@ public abstract class RepositoryBase<TEntity, TKey>
             data = includes.Aggregate(data, (current, include) => current.Include(include));
         }
 
-        data = data.Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit)).Take(Convert.ToInt32(limit));
+        var totalCount = await data.CountAsync(cancellationToken).ConfigureAwait(false);
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        data = data
+            .OrderBy(entity => entity.Id)
+            .Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit))
+            .Take(Convert.ToInt32(limit));
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        return await data.ToListAsync(cancellationToken).ConfigureAwait(false);
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
+
+        var response = PaginatedDomainResponse<IEnumerable<TEntity>>.CreateSuccess(
+            null,
+            StatusCodes.Status200OK,
+            data,
+            page,
+            limit,
+            (uint)totalCount);
+
+        return response;
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync<TSorter>(
+    public virtual async Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, TSorter>> orderBy,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
@@ -200,16 +267,35 @@ public abstract class RepositoryBase<TEntity, TKey>
             ? data.OrderBy(orderBy)
             : data.OrderByDescending(orderBy);
 
-        data = data.Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit)).Take(Convert.ToInt32(limit));
+        var totalCount = await data.CountAsync(cancellationToken).ConfigureAwait(false);
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        data = data
+            .OrderBy(entity => entity.Id)
+            .Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit))
+            .Take(Convert.ToInt32(limit));
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        return await data.ToListAsync(cancellationToken).ConfigureAwait(false);
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
+
+        var response = PaginatedDomainResponse<IEnumerable<TEntity>>.CreateSuccess(
+            null,
+            StatusCodes.Status200OK,
+            data,
+            page,
+            limit,
+            (uint)totalCount);
+
+        return response;
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync<TSorter>(
+    public async Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TSorter>> orderBy,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
@@ -231,13 +317,32 @@ public abstract class RepositoryBase<TEntity, TKey>
             ? data.OrderBy(orderBy)
             : data.OrderByDescending(orderBy);
 
-        data = data.Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit)).Take(Convert.ToInt32(limit));
+        var totalCount = await data.CountAsync(cancellationToken).ConfigureAwait(false);
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        data = data
+            .OrderBy(entity => entity.Id)
+            .Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit))
+            .Take(Convert.ToInt32(limit));
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        return await data.ToListAsync(cancellationToken).ConfigureAwait(false);
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
+
+        var response = PaginatedDomainResponse<IEnumerable<TEntity>>.CreateSuccess(
+            null,
+            StatusCodes.Status200OK,
+            data,
+            page,
+            limit,
+            (uint)totalCount);
+
+        return response;
     }
 
     public virtual async Task<IEnumerable<TResult>> GetAllAsync<TResult, TSorter>(
@@ -262,11 +367,20 @@ public abstract class RepositoryBase<TEntity, TKey>
             ? data.OrderBy(orderBy)
             : data.OrderByDescending(orderBy);
 
-        data = data.Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit)).Take(Convert.ToInt32(limit));
+        data = data
+            .OrderBy(entity => entity.Id)
+            .Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit))
+            .Take(Convert.ToInt32(limit));
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
 
         return await data.Select(subsetSelector)
             .ToListAsync(cancellationToken)
@@ -296,11 +410,20 @@ public abstract class RepositoryBase<TEntity, TKey>
             ? data.OrderBy(orderBy)
             : data.OrderByDescending(orderBy);
 
-        data = data.Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit)).Take(Convert.ToInt32(limit));
+        data = data
+            .OrderBy(entity => entity.Id)
+            .Skip((Convert.ToInt32(page) - 1) * Convert.ToInt32(limit))
+            .Take(Convert.ToInt32(limit));
 
-        if (useSplitQuery) data = data.AsSplitQuery();
+        if (useSplitQuery)
+        {
+            data = data.AsSplitQuery();
+        }
 
-        if (disableTracking) data = data.AsNoTracking();
+        if (disableTracking)
+        {
+            data = data.AsNoTracking();
+        }
 
         return await data.Select(subsetSelector)
             .ToListAsync(cancellationToken)

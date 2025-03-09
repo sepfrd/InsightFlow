@@ -33,7 +33,9 @@ public class UserController : ControllerBase
         if (!dataValidationResult.IsValid)
         {
             return BadRequest(DomainResponse<UserResponseDto>
-                .CreateFailure(DomainErrors.BadRequest, DomainErrors.BadRequest.Description));
+                .CreateFailure(
+                    string.Join(Environment.NewLine, dataValidationResult.ValidationErrors),
+                    StatusCodes.Status400BadRequest));
         }
 
         var command = new CreateUserCommand(
@@ -45,8 +47,6 @@ public class UserController : ControllerBase
 
         var result = await _sender.Send(command, cancellationToken);
 
-        var statusCode = result.IsSuccess ? StatusCodes.Status200OK : result.Error.Code;
-
-        return StatusCode(statusCode, result);
+        return StatusCode(result.StatusCode, result);
     }
 }

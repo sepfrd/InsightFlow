@@ -1,7 +1,6 @@
-using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Domain.Common;
 using MediatR;
 
 namespace InsightFlow.Application.Features.BlogPosts.Commands;
 
-public record DeleteBlogPostCommand(Guid BlogPostUuid, Guid AuthorUuid) : IRequest<DomainResponse<BlogPostResponseDto>>;
+public record DeleteBlogPostCommand(Guid BlogPostUuid, Guid AuthorUuid) : IRequest<DomainResponse>;

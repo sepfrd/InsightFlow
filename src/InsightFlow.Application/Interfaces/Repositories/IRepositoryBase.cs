@@ -47,7 +47,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         CancellationToken cancellationToken = default)
         where TSorter : IComparable<TSorter>;
 
-    Task<IEnumerable<TEntity>> GetAllAsync(
+    Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
@@ -56,7 +56,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         bool disableTracking = false,
         CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<TEntity>> GetAllAsync(
+    Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync(
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
         uint limit = 10,
@@ -64,7 +64,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         bool disableTracking = false,
         CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<TEntity>> GetAllAsync<TSorter>(
+    Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, TSorter>> orderBy,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         uint page = 1,
@@ -74,7 +74,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         bool disableTracking = false,
         CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<TEntity>> GetAllAsync<TSorter>(
+    Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TSorter>> orderBy,
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,

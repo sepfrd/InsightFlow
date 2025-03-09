@@ -2,7 +2,7 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Common.Resources;
+using Common.Constants;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
@@ -36,29 +36,38 @@ public class AuthService : IAuthService
     {
         if (IsSignedIn())
         {
-            return DomainResponse<string>.CreateFailure(DomainErrors.BadRequest, ApplicationMessages.AlreadySignedIn);
+            return DomainResponse<string>.CreateFailure(StringConstants.AlreadySignedIn, StatusCodes.Status400BadRequest);
         }
 
         var user = await ValidateAndGetUserByCredentialsAsync(loginDto, cancellationToken);
 
         if (user is null)
         {
-            return DomainResponse<string>.CreateFailure(DomainErrors.BadRequest, ApplicationMessages.InvalidCredentials);
+            return DomainResponse<string>.CreateFailure(StringConstants.InvalidCredentials, StatusCodes.Status400BadRequest);
         }
 
-        var roles = await _unitOfWork
+        var rolesResponse = await _unitOfWork
             .RoleRepository
             .GetAllAsync(filter: role => user.UserRoles.Select(userRole => userRole.RoleId).Contains(role.Id),
                 disableTracking: true, cancellationToken: cancellationToken);
 
-        var jwt = CreateJwt(user, roles);
+        if (!rolesResponse.IsSuccess || rolesResponse.Data is null)
+        {
+            return DomainResponse<string>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
+        }
+
+        var jwt = CreateJwt(user, rolesResponse.Data);
 
         if (jwt is null)
         {
-            return DomainResponse<string>.CreateFailure(DomainErrors.InternalServerError, ApplicationMessages.InternalServerError);
+            return DomainResponse<string>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
         }
 
-        return new DomainResponse<string>(jwt);
+        return DomainResponse<string>.CreateSuccess(null, StatusCodes.Status200OK, jwt);
     }
 
     public string GetSignedInUserUuid() =>

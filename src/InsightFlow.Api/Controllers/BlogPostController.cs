@@ -23,6 +23,29 @@ public class BlogPostController : ControllerBase
         _authService = authService;
     }
 
+    [HttpPost]
+    [Authorize(ApplicationConstants.UserPolicyName)]
+    public async Task<ActionResult<DomainResponse<BlogPostResponseDto>>> CreateBlogPostAsync([FromBody] CreateBlogPostCommand request, CancellationToken cancellationToken)
+    {
+        var response = await _sender.Send(request, cancellationToken);
+
+        return response;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>> GetAllBlogPostsByFilterAsync(
+        [FromQuery] uint pageNumber,
+        [FromQuery] uint pageSize,
+        [FromQuery] BlogPostFilterDto filterDto,
+        CancellationToken cancellationToken)
+    {
+        var request = new GetAllBlogPostsByFilterQuery(filterDto, pageNumber, pageSize);
+
+        var response = await _sender.Send(request, cancellationToken);
+
+        return StatusCode(response.StatusCode, response);
+    }
+
     [HttpGet]
     [Route("users/blog-posts")]
     [Authorize(ApplicationConstants.UserPolicyName)]
@@ -37,7 +60,7 @@ public class BlogPostController : ControllerBase
 
         var response = await _sender.Send(request, cancellationToken);
 
-        return response;
+        return StatusCode(response.StatusCode, response);
     }
 
     [HttpGet]
@@ -48,15 +71,6 @@ public class BlogPostController : ControllerBase
 
         var response = await _sender.Send(request, cancellationToken);
 
-        return response;
-    }
-
-    [HttpPost]
-    [Authorize(ApplicationConstants.UserPolicyName)]
-    public async Task<ActionResult<DomainResponse<BlogPostResponseDto>>> CreateBlogPostAsync([FromBody] CreateBlogPostCommand request, CancellationToken cancellationToken)
-    {
-        var response = await _sender.Send(request, cancellationToken);
-
-        return response;
+        return StatusCode(response.StatusCode, response);
     }
 }

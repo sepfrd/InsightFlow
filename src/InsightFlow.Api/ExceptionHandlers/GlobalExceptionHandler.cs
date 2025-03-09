@@ -1,5 +1,5 @@
+using Common.Constants;
 using FluentValidation;
-using InsightFlow.Domain.Common;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,15 +25,15 @@ public class GlobalExceptionHandler : IExceptionHandler
         {
             BadHttpRequestException or ValidationException => new ProblemDetails
             {
-                Title = DomainErrors.BadRequest.Description,
+                Title = StringConstants.BadRequest,
                 Status = StatusCodes.Status400BadRequest,
                 Detail = "https://www.rfc-editor.org/rfc/rfc9110.html#name-400-bad-request"
             },
             _ => new ProblemDetails
             {
-                Title = DomainErrors.InternalServerError.Description,
+                Title = StringConstants.InternalServerError,
                 Status = StatusCodes.Status500InternalServerError,
-                Detail = "https://www.rfc-editor.org/rfc/rfc9110.html#name-500-internal-server-error"
+                Detail = "https://www.rfc-editor.org/rfc/rfc9110.html#name-500-internal-server-applicationError"
             }
         };
 

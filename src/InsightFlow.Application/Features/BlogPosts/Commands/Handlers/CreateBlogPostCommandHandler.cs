@@ -1,8 +1,10 @@
+using Common.Constants;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
 
@@ -27,7 +29,9 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
 
         if (user is null)
         {
-            return DomainResponse<BlogPostResponseDto>.CreateFailure(DomainErrors.Unauthenticated, DomainErrors.Unauthenticated.Description);
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
+                StringConstants.Unauthenticated,
+                StatusCodes.Status401Unauthorized);
         }
 
         var blogPost = _mappingService.Map<CreateBlogPostCommand, BlogPost>(request)!;
@@ -38,11 +42,22 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
 
         if (commitResult < 1)
         {
-            return DomainResponse<BlogPostResponseDto>.CreateFailure(DomainErrors.InternalServerError, DomainErrors.InternalServerError.Description);
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
         }
 
         var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost);
 
-        return new DomainResponse<BlogPostResponseDto>(blogPostResponseDto);
+        if (blogPostResponseDto is null)
+        {
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
+        }
+
+        var message = string.Format(StringConstants.SuccessfulCreationTemplate, nameof(BlogPost));
+
+        return DomainResponse<BlogPostResponseDto>.CreateSuccess(message, StatusCodes.Status201Created, blogPostResponseDto);
     }
 }

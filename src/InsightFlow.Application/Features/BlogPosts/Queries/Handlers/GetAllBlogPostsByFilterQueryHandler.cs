@@ -8,37 +8,24 @@ using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.BlogPosts.Queries.Handlers;
 
-public class GetUserBlogPostsQueryHandler : IRequestHandler<GetUserBlogPostsQuery, PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>
+public class GetAllBlogPostsByFilterQueryHandler
+    : IRequestHandler<GetAllBlogPostsByFilterQuery, PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
 
-    public GetUserBlogPostsQueryHandler(IUnitOfWork unitOfWork, IMappingService mappingService)
+    public GetAllBlogPostsByFilterQueryHandler(IUnitOfWork unitOfWork, IMappingService mappingService)
     {
         _unitOfWork = unitOfWork;
         _mappingService = mappingService;
     }
 
-    public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> Handle(GetUserBlogPostsQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> Handle(GetAllBlogPostsByFilterQuery request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.UserRepository.GetOneAsync(
-            user => user.Uuid == request.UserUuid,
-            includes: [user => user.BlogPosts],
-            disableTracking: true,
-            cancellationToken: cancellationToken);
-
-        if (user is null)
-        {
-            return PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>.CreateFailure(
-                StringConstants.Unauthenticated,
-                StatusCodes.Status401Unauthorized);
-        }
-
         var blogPostsResponse = await _unitOfWork.BlogPostRepository.GetAllAsync(
-            filter: blogPost => blogPost.AuthorId == user.Id,
+            filter: request.FilterDto.ToExpression()!,
             page: request.PageNumber,
             limit: request.PageSize,
-            disableTracking: true,
             cancellationToken: cancellationToken);
 
         var blogPostDtos = _mappingService.Map<IEnumerable<BlogPost>, IEnumerable<BlogPostResponseDto>>(blogPostsResponse.Data);

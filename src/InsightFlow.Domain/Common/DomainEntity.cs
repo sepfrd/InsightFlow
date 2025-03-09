@@ -2,7 +2,7 @@ namespace InsightFlow.Domain.Common;
 
 public abstract class DomainEntity
 {
-    public DomainEntity()
+    protected DomainEntity()
     {
         Uuid = Guid.CreateVersion7();
         CreatedAt = UpdatedAt = DateTime.UtcNow;

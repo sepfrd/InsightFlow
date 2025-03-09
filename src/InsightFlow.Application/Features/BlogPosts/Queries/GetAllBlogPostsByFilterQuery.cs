@@ -4,5 +4,5 @@ using MediatR;
 
 namespace InsightFlow.Application.Features.BlogPosts.Queries;
 
-public record GetUserBlogPostsQuery(Guid UserUuid, uint PageNumber = 1, uint PageSize = 10)
+public record GetAllBlogPostsByFilterQuery(BlogPostFilterDto FilterDto, uint PageNumber, uint PageSize)
     : IRequest<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>;

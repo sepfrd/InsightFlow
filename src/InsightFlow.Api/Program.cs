@@ -1,4 +1,4 @@
-using Common.Resources;
+using Common.Constants;
 using InsightFlow.Api.Extensions;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Persistence;
@@ -72,7 +72,7 @@ try
 }
 catch (Exception exception)
 {
-    Log.Fatal(exception, ApplicationMessages.ApplicationFatalException, exception.GetType());
+    Log.Fatal(exception, StringConstants.ApplicationFatalExceptionTemplate, exception.GetType());
 }
 finally
 {
