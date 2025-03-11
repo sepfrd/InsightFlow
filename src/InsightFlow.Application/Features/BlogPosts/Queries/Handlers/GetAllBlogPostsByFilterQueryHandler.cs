@@ -22,8 +22,11 @@ public class GetAllBlogPostsByFilterQueryHandler
 
     public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> Handle(GetAllBlogPostsByFilterQuery request, CancellationToken cancellationToken)
     {
+        var filterExpression = request.FilterDto.ToExpression() ?? (_ => true);
+
         var blogPostsResponse = await _unitOfWork.BlogPostRepository.GetAllAsync(
-            filter: request.FilterDto.ToExpression()!,
+            filter: filterExpression,
+            includes: [blogPost => blogPost.Author],
             page: request.PageNumber,
             limit: request.PageSize,
             cancellationToken: cancellationToken);

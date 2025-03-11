@@ -1,4 +1,6 @@
 using FluentValidation;
+using InsightFlow.Application.Features.BlogPosts.Dtos;
+using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Entities;
 using InsightFlow.Infrastructure.Common.Constants;
@@ -8,6 +10,7 @@ using InsightFlow.Infrastructure.Interfaces;
 using InsightFlow.Infrastructure.Persistence;
 using InsightFlow.Infrastructure.Services;
 using InsightFlow.Infrastructure.Validators;
+using Mapster;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,13 +24,32 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration,
-        IWebHostEnvironment environment) =>
-        services
+        IWebHostEnvironment environment)
+    {
+        ConfigureMapster();
+
+        return services
             .AddSingleton<IMappingService, MappingService>()
             .AddSingleton<IDataValidator<CreateUserRequestDto>, DataValidator<CreateUserRequestDto>>()
             .AddValidatorsFromAssemblyContaining<CreateUserRequestDtoValidator>(ServiceLifetime.Singleton)
             .AddScoped<IAuthService, AuthService>()
             .AddDatabase(configuration, environment);
+    }
+
+    private static void ConfigureMapster()
+    {
+        TypeAdapterConfig<BlogPost, BlogPostResponseDto>
+            .ForType()
+            .Map(
+                dto => dto.AuthorUuid,
+                blogPost => blogPost.Author!.Uuid);
+
+        TypeAdapterConfig<User, UserResponseDto>
+            .ForType()
+            .Map(
+                dto => dto.FullName,
+                user => user.FirstName + ' ' + user.LastName);
+    }
 
     private static IServiceCollection AddDatabase(
         this IServiceCollection services,

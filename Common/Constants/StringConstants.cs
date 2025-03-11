@@ -10,7 +10,7 @@ public static class StringConstants
     public const string AlreadySignedIn = "You are already signed in.";
     public const string ForbiddenActionTemplate = "You do not have permission to {0} this {1}.";
     public const string PropertyNotUniqueTemplate = "{0} is already taken.\nChoose another {1}.";
-    public const string InvalidCredentials = "Username/Email and/or password not correct.";
+    public const string InvalidCredentials = "Username and/or password not correct.";
     public const string InvalidParametersTemplate = "Invalid value for parameter(s) {0}.";
     public const string IdenticalNewPropertyValuesTemplate = "At least one new property value must be different from its current value.";
     public const string IdenticalNewValueTemplate = "{0} value is already {1}";

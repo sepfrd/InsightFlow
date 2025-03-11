@@ -21,7 +21,7 @@ public interface IRepositoryBase<TEntity, in TKey>
     Task<TEntity?> GetOneAsync<TSorter>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         bool ascendingOrder = true,
         bool useSplitQuery = false,
         bool disableTracking = false,
@@ -31,7 +31,7 @@ public interface IRepositoryBase<TEntity, in TKey>
     Task<TResult?> GetOneAsync<TResult>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default);
@@ -40,7 +40,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         bool ascendingOrder = true,
         bool useSplitQuery = false,
         bool disableTracking = false,
@@ -49,7 +49,7 @@ public interface IRepositoryBase<TEntity, in TKey>
 
     Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool useSplitQuery = false,
@@ -57,7 +57,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         CancellationToken cancellationToken = default);
 
     Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync(
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool useSplitQuery = false,
@@ -66,7 +66,7 @@ public interface IRepositoryBase<TEntity, in TKey>
 
     Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
@@ -77,7 +77,7 @@ public interface IRepositoryBase<TEntity, in TKey>
     Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
@@ -88,7 +88,7 @@ public interface IRepositoryBase<TEntity, in TKey>
     Task<IEnumerable<TResult>> GetAllAsync<TResult, TSorter>(
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
@@ -100,7 +100,7 @@ public interface IRepositoryBase<TEntity, in TKey>
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,

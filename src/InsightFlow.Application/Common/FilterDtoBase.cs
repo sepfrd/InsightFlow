@@ -26,7 +26,7 @@ public abstract class FilterDtoBase<T>
 
     public DateTime? UpdatedAtEndDate { get; init; }
 
-    protected Expression ToBaseExpression(ParameterExpression parameterExpression)
+    protected Expression? ToBaseExpression(ParameterExpression parameterExpression)
     {
         var expressions = new List<Expression>();
 
@@ -73,6 +73,6 @@ public abstract class FilterDtoBase<T>
             };
         }
 
-        return baseExpression!;
+        return baseExpression;
     }
 }

@@ -17,10 +17,14 @@ public class BlogPostFilterDto : FilterDtoBase<BlogPost>
     {
         var blogPost = Expression.Parameter(typeof(BlogPost), nameof(BlogPost).Camelize());
 
-        var expressions = new List<Expression>
+        var expressions = new List<Expression>();
+
+        var parentDtoExpression = ToBaseExpression(blogPost);
+
+        if (parentDtoExpression is not null)
         {
-            ToBaseExpression(blogPost)
-        };
+            expressions.Add(parentDtoExpression);
+        }
 
         if (!string.IsNullOrWhiteSpace(Title))
         {

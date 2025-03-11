@@ -22,7 +22,8 @@ public class GetSingleBlogPostQueryHandler : IRequestHandler<GetSingleBlogPostQu
     public async Task<DomainResponse<BlogPostResponseDto>> Handle(GetSingleBlogPostQuery request, CancellationToken cancellationToken)
     {
         var blogPost = await _unitOfWork.BlogPostRepository.GetOneAsync(
-            blogPost => blogPost.Uuid == request.BlogPostUuid,
+            filter: blogPost => blogPost.Uuid == request.BlogPostUuid,
+            includes: [blogPost => blogPost.Author],
             disableTracking: true,
             cancellationToken: cancellationToken);
 

@@ -36,6 +36,7 @@ public class GetUserBlogPostsQueryHandler : IRequestHandler<GetUserBlogPostsQuer
 
         var blogPostsResponse = await _unitOfWork.BlogPostRepository.GetAllAsync(
             filter: blogPost => blogPost.AuthorId == user.Id,
+            includes: [blogPost => blogPost.Author],
             page: request.PageNumber,
             limit: request.PageSize,
             disableTracking: true,

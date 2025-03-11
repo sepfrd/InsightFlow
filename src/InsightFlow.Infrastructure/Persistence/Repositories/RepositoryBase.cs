@@ -58,7 +58,7 @@ public abstract class RepositoryBase<TEntity, TKey>
     public virtual async Task<TEntity?> GetOneAsync<TSorter>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         bool ascendingOrder = true,
         bool useSplitQuery = false,
         bool disableTracking = false,
@@ -91,7 +91,7 @@ public abstract class RepositoryBase<TEntity, TKey>
     public virtual async Task<TResult?> GetOneAsync<TResult>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         bool useSplitQuery = false,
         bool disableTracking = false,
         CancellationToken cancellationToken = default)
@@ -124,7 +124,7 @@ public abstract class RepositoryBase<TEntity, TKey>
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         bool ascendingOrder = true,
         bool useSplitQuery = false,
         bool disableTracking = false,
@@ -160,7 +160,7 @@ public abstract class RepositoryBase<TEntity, TKey>
     }
 
     public virtual async Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync(
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool useSplitQuery = false,
@@ -204,7 +204,7 @@ public abstract class RepositoryBase<TEntity, TKey>
 
     public virtual async Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync(
         Expression<Func<TEntity, bool>> filter,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool useSplitQuery = false,
@@ -248,7 +248,7 @@ public abstract class RepositoryBase<TEntity, TKey>
 
     public virtual async Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
@@ -298,7 +298,7 @@ public abstract class RepositoryBase<TEntity, TKey>
     public async Task<PaginatedDomainResponse<IEnumerable<TEntity>>> GetAllAsync<TSorter>(
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
@@ -348,7 +348,7 @@ public abstract class RepositoryBase<TEntity, TKey>
     public virtual async Task<IEnumerable<TResult>> GetAllAsync<TResult, TSorter>(
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
@@ -391,7 +391,7 @@ public abstract class RepositoryBase<TEntity, TKey>
         Expression<Func<TEntity, bool>> filter,
         Expression<Func<TEntity, TResult>> subsetSelector,
         Expression<Func<TEntity, TSorter>> orderBy,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        IEnumerable<Expression<Func<TEntity, object?>>>? includes = null,
         uint page = 1,
         uint limit = 10,
         bool ascendingOrder = true,
