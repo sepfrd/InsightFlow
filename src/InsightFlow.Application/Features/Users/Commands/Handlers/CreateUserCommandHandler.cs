@@ -5,6 +5,7 @@ using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.Users.Commands.Handlers;
 
@@ -12,11 +13,16 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
+    private readonly ILogger<CreateUserCommandHandler> _logger;
 
-    public CreateUserCommandHandler(IUnitOfWork unitOfWork, IMappingService mappingService)
+    public CreateUserCommandHandler(
+        IUnitOfWork unitOfWork,
+        IMappingService mappingService,
+        ILogger<CreateUserCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mappingService = mappingService;
+        _logger = logger;
     }
 
     public async Task<DomainResponse<UserResponseDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -49,6 +55,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
 
         if (userEntity is null)
         {
+            _logger.LogCritical(StringConstants.MappingErrorLogTemplate, typeof(CreateUserCommand), typeof(User));
+
             return DomainResponse<UserResponseDto>.CreateFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);
@@ -60,6 +68,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
 
         if (commitResult < 1)
         {
+            _logger.LogCritical(StringConstants.DatabasePersistenceErrorLogTemplate, typeof(User), StringConstants.CreateActionName);
+
             return DomainResponse<UserResponseDto>.CreateFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);
@@ -67,14 +77,17 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
 
         var userResponseDto = _mappingService.Map<User, UserResponseDto>(userEntity);
 
-        if (userResponseDto is null)
+        if (userResponseDto is not null)
         {
-            return DomainResponse<UserResponseDto>.CreateFailure(
-                StringConstants.InternalServerError,
-                StatusCodes.Status500InternalServerError);
+            return DomainResponse<UserResponseDto>.CreateSuccess(null, StatusCodes.Status201Created, userResponseDto);
         }
 
-        return DomainResponse<UserResponseDto>.CreateSuccess(null, StatusCodes.Status201Created, userResponseDto);
+        _logger.LogCritical(StringConstants.MappingErrorLogTemplate, typeof(User), typeof(UserResponseDto));
+
+        return DomainResponse<UserResponseDto>.CreateFailure(
+            StringConstants.InternalServerError,
+            StatusCodes.Status500InternalServerError);
+
     }
 
     private async Task<bool> IsEmailUniqueAsync(string email, CancellationToken cancellationToken = default)

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InsightFlow.Api.Controllers;
 
 [ApiController]
-[Route("blog-posts")]
+[Route("api/blog-posts")]
 public class BlogPostController : ControllerBase
 {
     private readonly ISender _sender;

@@ -5,6 +5,7 @@ using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.Users.Queries.Handlers;
 
@@ -12,11 +13,16 @@ public class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, Dom
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
+    private readonly ILogger<GetSingleUserQueryHandler> _logger;
 
-    public GetSingleUserQueryHandler(IUnitOfWork unitOfWork, IMappingService mappingService)
+    public GetSingleUserQueryHandler(
+        IUnitOfWork unitOfWork,
+        IMappingService mappingService,
+        ILogger<GetSingleUserQueryHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mappingService = mappingService;
+        _logger = logger;
     }
 
     public async Task<DomainResponse<UserResponseDto>> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
@@ -35,13 +41,16 @@ public class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, Dom
 
         var userResponseDto = _mappingService.Map<User, UserResponseDto>(user);
 
-        if (userResponseDto is null)
+        if (userResponseDto is not null)
         {
-            return DomainResponse<UserResponseDto>.CreateFailure(
-                StringConstants.InternalServerError,
-                StatusCodes.Status500InternalServerError);
+            return DomainResponse<UserResponseDto>.CreateSuccess(null, StatusCodes.Status200OK, userResponseDto);
         }
 
-        return DomainResponse<UserResponseDto>.CreateSuccess(null, StatusCodes.Status200OK, userResponseDto);
+        _logger.LogCritical(StringConstants.MappingErrorLogTemplate, typeof(User), typeof(UserResponseDto));
+
+        return DomainResponse<UserResponseDto>.CreateFailure(
+            StringConstants.InternalServerError,
+            StatusCodes.Status500InternalServerError);
+
     }
 }

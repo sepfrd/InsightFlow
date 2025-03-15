@@ -5,6 +5,7 @@ using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.BlogPosts.Queries.Handlers;
 
@@ -12,11 +13,16 @@ public class GetSingleBlogPostQueryHandler : IRequestHandler<GetSingleBlogPostQu
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
+    private readonly ILogger<GetSingleBlogPostQueryHandler> _logger;
 
-    public GetSingleBlogPostQueryHandler(IUnitOfWork unitOfWork, IMappingService mappingService)
+    public GetSingleBlogPostQueryHandler(
+        IUnitOfWork unitOfWork,
+        IMappingService mappingService,
+        ILogger<GetSingleBlogPostQueryHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mappingService = mappingService;
+        _logger = logger;
     }
 
     public async Task<DomainResponse<BlogPostResponseDto>> Handle(GetSingleBlogPostQuery request, CancellationToken cancellationToken)
@@ -34,13 +40,16 @@ public class GetSingleBlogPostQueryHandler : IRequestHandler<GetSingleBlogPostQu
 
         var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost);
 
-        if (blogPostResponseDto is null)
+        if (blogPostResponseDto is not null)
         {
-            return DomainResponse<BlogPostResponseDto>.CreateFailure(
-                StringConstants.InternalServerError,
-                StatusCodes.Status500InternalServerError);
+            return DomainResponse<BlogPostResponseDto>.CreateSuccess(null, StatusCodes.Status200OK, blogPostResponseDto);
         }
 
-        return DomainResponse<BlogPostResponseDto>.CreateSuccess(null, StatusCodes.Status200OK, blogPostResponseDto);
+        _logger.LogCritical(StringConstants.MappingErrorLogTemplate, typeof(BlogPost), typeof(BlogPostResponseDto));
+
+        return DomainResponse<BlogPostResponseDto>.CreateFailure(
+            StringConstants.InternalServerError,
+            StatusCodes.Status500InternalServerError);
+
     }
 }

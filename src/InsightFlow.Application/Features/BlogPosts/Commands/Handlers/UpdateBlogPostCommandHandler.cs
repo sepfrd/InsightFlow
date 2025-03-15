@@ -5,6 +5,7 @@ using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
 
@@ -12,11 +13,16 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
+    private readonly ILogger<UpdateBlogPostCommandHandler> _logger;
 
-    public UpdateBlogPostCommandHandler(IUnitOfWork unitOfWork, IMappingService mappingService)
+    public UpdateBlogPostCommandHandler(
+        IUnitOfWork unitOfWork,
+        IMappingService mappingService,
+        ILogger<UpdateBlogPostCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mappingService = mappingService;
+        _logger = logger;
     }
 
     public async Task<DomainResponse> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken)
@@ -50,6 +56,8 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
 
         if (commitResult < 1)
         {
+            _logger.LogCritical(StringConstants.DatabasePersistenceErrorLogTemplate, typeof(BlogPost), StringConstants.UpdateActionName);
+
             return DomainResponse.CreateBaseFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);
@@ -59,6 +67,8 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
 
         if (blogPostResponseDto is null)
         {
+            _logger.LogCritical(StringConstants.MappingErrorLogTemplate, typeof(BlogPost), typeof(BlogPostResponseDto));
+
             return DomainResponse.CreateBaseFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);

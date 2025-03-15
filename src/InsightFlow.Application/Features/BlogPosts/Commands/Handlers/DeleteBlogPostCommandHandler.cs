@@ -4,16 +4,19 @@ using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
 
 public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostCommand, DomainResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<DeleteBlogPostCommandHandler> _logger;
 
-    public DeleteBlogPostCommandHandler(IUnitOfWork unitOfWork)
+    public DeleteBlogPostCommandHandler(IUnitOfWork unitOfWork, ILogger<DeleteBlogPostCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<DomainResponse> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
@@ -45,6 +48,8 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
 
         if (commitResult < 1)
         {
+            _logger.LogCritical(StringConstants.DatabasePersistenceErrorLogTemplate, typeof(BlogPost), StringConstants.DeleteActionName);
+
             return DomainResponse.CreateBaseFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);

@@ -2,7 +2,6 @@ using InsightFlow.Application.Features.Users.Commands;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
-using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Common.Helpers;
 using MediatR;
@@ -12,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InsightFlow.Api.Controllers;
 
 [ApiController]
-[Route("users")]
+[Route("api/users")]
 public class UserController : ControllerBase
 {
     private readonly ISender _sender;
@@ -25,7 +24,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(ApplicationConstants.AdminPolicyName)]
+    [AllowAnonymous]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRequestDto createUserRequestDto, CancellationToken cancellationToken)
     {
         var dataValidationResult = await _dataValidator.ValidateAsync(createUserRequestDto, cancellationToken);

@@ -12,6 +12,7 @@ using InsightFlow.Infrastructure.Common.Helpers;
 using InsightFlow.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace InsightFlow.Infrastructure.Services;
@@ -21,15 +22,18 @@ public class AuthService : IAuthService
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AuthService> _logger;
 
     public AuthService(
         IConfiguration configuration,
         IHttpContextAccessor httpContextAccessor,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AuthService> logger)
     {
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<DomainResponse<string>> AuthenticateAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
@@ -51,8 +55,12 @@ public class AuthService : IAuthService
             .GetAllAsync(filter: role => user.UserRoles.Select(userRole => userRole.RoleId).Contains(role.Id),
                 disableTracking: true, cancellationToken: cancellationToken);
 
-        if (!rolesResponse.IsSuccess || rolesResponse.Data is null)
+        if (!rolesResponse.IsSuccess ||
+            rolesResponse.Data is null ||
+            !rolesResponse.Data.Any())
         {
+            _logger.LogCritical(StringConstants.InvalidPersistedDataErrorLogTemplate, typeof(Role));
+
             return DomainResponse<string>.CreateFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);
@@ -60,14 +68,16 @@ public class AuthService : IAuthService
 
         var jwt = CreateJwt(user, rolesResponse.Data);
 
-        if (jwt is null)
+        if (jwt is not null)
         {
-            return DomainResponse<string>.CreateFailure(
-                StringConstants.InternalServerError,
-                StatusCodes.Status500InternalServerError);
+            return DomainResponse<string>.CreateSuccess(StringConstants.SuccessfulLogin, StatusCodes.Status200OK, jwt);
         }
 
-        return DomainResponse<string>.CreateSuccess(null, StatusCodes.Status200OK, jwt);
+        _logger.LogCritical(StringConstants.JwtCreationErrorLog);
+
+        return DomainResponse<string>.CreateFailure(
+            StringConstants.InternalServerError,
+            StatusCodes.Status500InternalServerError);
     }
 
     public string GetSignedInUserUuid() =>

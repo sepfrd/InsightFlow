@@ -19,7 +19,18 @@ public static class StringConstants
     public const string SuccessfulCreationTemplate = "Successfully updated {0} entity.";
     public const string SuccessfulUpdateTemplate = "Successfully updated {0} entity.";
     public const string SuccessfulDeletionTemplate = "Successfully deleted {0} entity.";
-    public const string ExceptionTemplate = "Application encountered an unhandled exception of type: {exceptionType}";
+    public const string ExceptionTemplate = "Application encountered an unhandled exception of type: {ExceptionType}";
+    public const string ApplicationInternalServerErrorTemplate = "Application encountered an unexpected behavior: {Error}";
     public const string ApplicationFatalExceptionTemplate = "Application stopped due to a {exceptionType} exception";
-    public const string SwaggerAuthorization = "Please enter only the token (without Bearer)";
+
+    // ------------------------------ Internal Server Errors Log ------------------------------
+    public const string DatabasePersistenceErrorLogTemplate = "Could not persist changes of entity of type {EntityType} while trying to {ActionName}";
+    public const string InvalidPersistedDataErrorLogTemplate = "Could not retrieve entity/entities of type {EntityType} or the persisted data was not valid";
+    public const string MappingErrorLogTemplate = "Could not map entity of type {SourceEntityType} to entity of type {DestinationEntityType}";
+    public const string JwtCreationErrorLog = "Could not create a JWT instance while data was valid";
+
+    // ------------------------------ Action Names ------------------------------
+    public const string CreateActionName = "Create";
+    public const string UpdateActionName = "Update";
+    public const string DeleteActionName = "Delete";
 }

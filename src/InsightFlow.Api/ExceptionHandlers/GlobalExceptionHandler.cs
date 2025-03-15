@@ -18,7 +18,7 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         _logger.LogCritical(
             exception,
-            "Application encountered an unhandled exception of type: {ExceptionType}.",
+            StringConstants.ExceptionTemplate,
             exception.GetType());
 
         var problemDetails = exception switch
