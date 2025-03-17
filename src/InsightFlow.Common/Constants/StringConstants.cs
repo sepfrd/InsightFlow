@@ -1,4 +1,4 @@
-namespace Common.Constants;
+namespace InsightFlow.Common.Constants;
 
 public static class StringConstants
 {
@@ -16,7 +16,7 @@ public static class StringConstants
     public const string IdenticalNewValueTemplate = "{0} value is already {1}";
     public const string EntityNotFoundByUuidTemplate = "{0} with UUID of {1} not found.";
     public const string SuccessfulLogin = "Successfully authenticated.";
-    public const string SuccessfulCreationTemplate = "Successfully updated {0} entity.";
+    public const string SuccessfulCreationTemplate = "Successfully created {0} entity.";
     public const string SuccessfulUpdateTemplate = "Successfully updated {0} entity.";
     public const string SuccessfulDeletionTemplate = "Successfully deleted {0} entity.";
     public const string ExceptionTemplate = "Application encountered an unhandled exception of type: {ExceptionType}";
@@ -28,9 +28,14 @@ public static class StringConstants
     public const string InvalidPersistedDataErrorLogTemplate = "Could not retrieve entity/entities of type {EntityType} or the persisted data was not valid";
     public const string MappingErrorLogTemplate = "Could not map entity of type {SourceEntityType} to entity of type {DestinationEntityType}";
     public const string JwtCreationErrorLog = "Could not create a JWT instance while data was valid";
+    public const string RoleServiceInitializationFailureLog = "Could not successfully initialize 'IRoleService' instance after {0} number of retries";
+    public const string UnsuccessfulRoleIdRetrieval = "Failed to retrieve the ID of the role titled '{RoleTitle}'";
+
+    public const string RoleServiceInitializationSuccessLog = "Successfully initialized 'IRoleService' instance.";
 
     // ------------------------------ Action Names ------------------------------
     public const string CreateActionName = "Create";
+    public const string ReadActionName = "Read";
     public const string UpdateActionName = "Update";
     public const string DeleteActionName = "Delete";
 }
