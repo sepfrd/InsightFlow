@@ -15,4 +15,6 @@ public abstract class DomainEntity
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
+
+    public void PrepareForUpdate() => UpdatedAt = DateTime.UtcNow;
 }
