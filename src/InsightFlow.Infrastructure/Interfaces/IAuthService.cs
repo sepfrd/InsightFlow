@@ -8,4 +8,6 @@ public interface IAuthService
     Task<DomainResponse<string>> AuthenticateAsync(LoginDto loginDto, CancellationToken cancellationToken = default);
 
     string GetSignedInUserUuid();
+
+    bool IsSignedIn();
 }

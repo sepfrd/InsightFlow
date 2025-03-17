@@ -1,7 +1,10 @@
 using FluentValidation;
+using InsightFlow.Application.Features.BlogPosts.Commands;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
+using InsightFlow.Application.Features.Users.Commands;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos;
@@ -31,6 +34,7 @@ public static class ServiceCollectionExtensions
         return services
             .AddSingleton<IMappingService, MappingService>()
             .AddSingleton<IDataValidator<CreateUserRequestDto>, DataValidator<CreateUserRequestDto>>()
+            .AddSingleton<IRoleService, RoleService>()
             .AddValidatorsFromAssemblyContaining<CreateUserRequestDtoValidator>(ServiceLifetime.Singleton)
             .AddScoped<IAuthService, AuthService>()
             .AddDatabase(configuration, environment);
@@ -44,11 +48,32 @@ public static class ServiceCollectionExtensions
                 dto => dto.AuthorUuid,
                 blogPost => blogPost.Author!.Uuid);
 
+        TypeAdapterConfig<UpdateBlogPostCommand, BlogPost>
+            .ForType()
+            .Map(
+                blogPost => blogPost.Title,
+                updateCommand => updateCommand.NewTitle)
+            .Map(
+                blogPost => blogPost.Body,
+                updateCommand => updateCommand.NewBody);
+
         TypeAdapterConfig<User, UserResponseDto>
             .ForType()
             .Map(
                 dto => dto.FullName,
                 user => user.FirstName + ' ' + user.LastName);
+
+        TypeAdapterConfig<UpdateUserInformationCommand, User>
+            .ForType()
+            .Map(
+                user => user.FirstName,
+                updateUserCommand => updateUserCommand.NewFirstName)
+            .Map(
+                user => user.LastName,
+                updateUserCommand => updateUserCommand.NewLastName)
+            .Map(
+                user => user.Email,
+                updateUserCommand => updateUserCommand.NewEmail);
     }
 
     private static IServiceCollection AddDatabase(
@@ -85,12 +110,12 @@ public static class ServiceCollectionExtensions
             rolesDbSet.AddRange(
                 new Role
                 {
-                    Title = ApplicationConstants.AdminRoleName,
+                    Title = DomainConstants.AdminRoleTitle,
                     Description = "Administrator of the Application"
                 },
                 new Role
                 {
-                    Title = ApplicationConstants.UserRoleName,
+                    Title = DomainConstants.BasicUserRoleTitle,
                     Description = "Basic User of the Application"
                 });
 

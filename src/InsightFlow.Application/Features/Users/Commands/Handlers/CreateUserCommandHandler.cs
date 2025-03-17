@@ -1,6 +1,7 @@
-using Common.Constants;
+using Humanizer;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
@@ -13,40 +14,43 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
+    private readonly IRoleService _roleService;
     private readonly ILogger<CreateUserCommandHandler> _logger;
 
     public CreateUserCommandHandler(
         IUnitOfWork unitOfWork,
         IMappingService mappingService,
+        IRoleService roleService,
         ILogger<CreateUserCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mappingService = mappingService;
+        _roleService = roleService;
         _logger = logger;
     }
 
     public async Task<DomainResponse<UserResponseDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var isEmailUnique = await IsEmailUniqueAsync(request.Email, cancellationToken);
+        var isEmailUnique = await _unitOfWork.UserRepository.IsEmailUniqueAsync(request.Email, cancellationToken);
 
         if (!isEmailUnique)
         {
             var message = string.Format(
                 StringConstants.PropertyNotUniqueTemplate,
                 request.Email,
-                nameof(CreateUserCommand.Email));
+                nameof(CreateUserCommand.Email).Humanize(LetterCasing.LowerCase));
 
             return DomainResponse<UserResponseDto>.CreateFailure(message, StatusCodes.Status400BadRequest);
         }
 
-        var isUsernameUnique = await IsUsernameUniqueAsync(request.Username, cancellationToken);
+        var isUsernameUnique = await _unitOfWork.UserRepository.IsUsernameUniqueAsync(request.Username, cancellationToken);
 
         if (!isUsernameUnique)
         {
             var message = string.Format(
                 StringConstants.PropertyNotUniqueTemplate,
                 request.Username,
-                nameof(CreateUserCommand.Username));
+                nameof(CreateUserCommand.Username).Humanize(LetterCasing.LowerCase));
 
             return DomainResponse<UserResponseDto>.CreateFailure(message, StatusCodes.Status400BadRequest);
         }
@@ -60,6 +64,46 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
             return DomainResponse<UserResponseDto>.CreateFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);
+        }
+
+        var userRoleId = _roleService.GetRoleIdByRoleTitle(DomainConstants.BasicUserRoleTitle);
+
+        if (!userRoleId.HasValue)
+        {
+            _logger.LogCritical(StringConstants.UnsuccessfulRoleIdRetrieval, DomainConstants.BasicUserRoleTitle);
+
+            return DomainResponse<UserResponseDto>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
+        }
+
+        userEntity.UserRoles.Add(new UserRole
+        {
+            UserId = userEntity.Id,
+            RoleId = userRoleId.Value
+        });
+
+        if (request.AdditionalRoles?.Length > 0)
+        {
+            foreach (var roleTitle in request.AdditionalRoles)
+            {
+                var roleId = _roleService.GetRoleIdByRoleTitle(roleTitle);
+
+                if (!roleId.HasValue)
+                {
+                    var message = string.Format(
+                        StringConstants.InvalidParametersTemplate,
+                        $"{nameof(CreateUserCommand.AdditionalRoles).Humanize(LetterCasing.LowerCase)}({roleTitle})");
+
+                    return DomainResponse<UserResponseDto>.CreateFailure(message, StatusCodes.Status400BadRequest);
+                }
+
+                userEntity.UserRoles.Add(new UserRole
+                {
+                    UserId = userEntity.Id,
+                    RoleId = roleId.Value
+                });
+            }
         }
 
         await _unitOfWork.UserRepository.CreateAsync(userEntity, cancellationToken);
@@ -87,30 +131,5 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
         return DomainResponse<UserResponseDto>.CreateFailure(
             StringConstants.InternalServerError,
             StatusCodes.Status500InternalServerError);
-
-    }
-
-    private async Task<bool> IsEmailUniqueAsync(string email, CancellationToken cancellationToken = default)
-    {
-        var user = await _unitOfWork
-            .UserRepository
-            .GetOneAsync(
-                user => user.Email == email,
-                disableTracking: true,
-                cancellationToken: cancellationToken);
-
-        return user is null;
-    }
-
-    private async Task<bool> IsUsernameUniqueAsync(string username, CancellationToken cancellationToken = default)
-    {
-        var user = await _unitOfWork
-            .UserRepository
-            .GetOneAsync(
-                user => user.Username == username,
-                disableTracking: true,
-                cancellationToken: cancellationToken);
-
-        return user is null;
     }
 }

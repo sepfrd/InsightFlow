@@ -1,8 +1,6 @@
-using Common.Constants;
 using InsightFlow.Api.Extensions;
+using InsightFlow.Common.Constants;
 using InsightFlow.Infrastructure.Common.Constants;
-using InsightFlow.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
@@ -20,7 +18,7 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithMachineName()
     .Enrich.WithThreadId()
-    .CreateLogger();
+    .CreateBootstrapLogger();
 
 try
 {
@@ -32,29 +30,31 @@ try
 
     var app = builder.Build();
 
-    await using var scope = app.Services.CreateAsyncScope();
+    await app.InitializeDatabaseAsync();
 
-    await using var dbContext = scope.ServiceProvider.GetRequiredService<UnitOfWork>();
+    var roleServiceInitializationResult = await app.InitializeRoleServiceAsync(10);
 
-    if (app.Environment.IsEnvironment(ApplicationConstants.TestingEnvironmentName))
+    if (!roleServiceInitializationResult)
     {
-        await dbContext.Database.EnsureDeletedAsync();
-        await dbContext.Database.EnsureCreatedAsync();
+        var message = string.Format(StringConstants.RoleServiceInitializationFailureLog, 10);
+
+        Log.Fatal(StringConstants.ApplicationInternalServerErrorTemplate, message);
+
+        return;
     }
-    else
-    {
-        await dbContext.Database.MigrateAsync();
-    }
+
+    var applicationVersion = app.Configuration.GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey)!;
 
     app.UseExceptionHandler();
 
-    app.MapOpenApi();
+    app.MapOpenApi(applicationVersion);
 
     app.MapScalarApiReference(options =>
     {
         options.DarkMode = true;
         options.Theme = ScalarTheme.BluePlanet;
         options.Title = ApplicationConstants.ApplicationName;
+        options.OpenApiRoutePattern = applicationVersion;
     });
 
     app
@@ -62,7 +62,9 @@ try
         .UseHttpsRedirection()
         .UseRouting()
         .UseRateLimiter()
-        .UseCors(!app.Environment.IsProduction() ? ApplicationConstants.AllowAnyOriginCorsPolicy : ApplicationConstants.RestrictedCorsPolicy)
+        .UseCors(!app.Environment.IsProduction()
+            ? ApplicationConstants.AllowAnyOriginCorsPolicy
+            : ApplicationConstants.RestrictedCorsPolicy)
         .UseAuthentication()
         .UseAuthorization();
 

@@ -1,6 +1,7 @@
-using Common.Constants;
+using Humanizer;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
 
-public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostCommand, DomainResponse>
+public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostCommand, DomainResponse<BlogPostResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
@@ -25,7 +26,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         _logger = logger;
     }
 
-    public async Task<DomainResponse> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<BlogPostResponseDto>> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.AuthorUuid,
@@ -34,7 +35,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
 
         if (user is null)
         {
-            return DomainResponse.CreateBaseFailure(
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
                 StringConstants.Unauthenticated,
                 StatusCodes.Status401Unauthorized);
         }
@@ -45,12 +46,46 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
 
         if (blogPost is null)
         {
-            var notFoundMessage = string.Format(StringConstants.EntityNotFoundByUuidTemplate, nameof(BlogPost), request.BlogPostUuid);
+            var notFoundMessage = string.Format(
+                StringConstants.EntityNotFoundByUuidTemplate,
+                nameof(BlogPost).Humanize(LetterCasing.LowerCase),
+                request.BlogPostUuid);
 
-            return DomainResponse.CreateBaseFailure(notFoundMessage, StatusCodes.Status404NotFound);
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(notFoundMessage, StatusCodes.Status404NotFound);
         }
 
-        _mappingService.Map(request, blogPost);
+        if (blogPost.AuthorId != user.Id)
+        {
+            var forbiddenMessage = string.Format(
+                StringConstants.ForbiddenActionTemplate,
+                StringConstants.UpdateActionName,
+                nameof(BlogPost).Humanize(LetterCasing.LowerCase));
+
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(forbiddenMessage, StatusCodes.Status403Forbidden);
+        }
+
+        if (request.NewTitle == blogPost.Title && request.NewBody == blogPost.Body)
+        {
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
+                StringConstants.IdenticalNewPropertyValuesTemplate,
+                StatusCodes.Status400BadRequest);
+        }
+
+        var updatedBlogPost = _mappingService.Map(request, blogPost);
+
+        if (updatedBlogPost is null)
+        {
+            _logger.LogCritical(
+                StringConstants.MappingErrorLogTemplate,
+                typeof(UpdateBlogPostCommand),
+                typeof(BlogPost));
+
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
+        }
+
+        updatedBlogPost.PrepareForUpdate();
 
         var commitResult = await _unitOfWork.CommitChangesAsync(cancellationToken);
 
@@ -58,24 +93,24 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         {
             _logger.LogCritical(StringConstants.DatabasePersistenceErrorLogTemplate, typeof(BlogPost), StringConstants.UpdateActionName);
 
-            return DomainResponse.CreateBaseFailure(
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);
         }
 
-        var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost);
+        var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(updatedBlogPost);
 
         if (blogPostResponseDto is null)
         {
             _logger.LogCritical(StringConstants.MappingErrorLogTemplate, typeof(BlogPost), typeof(BlogPostResponseDto));
 
-            return DomainResponse.CreateBaseFailure(
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
                 StringConstants.InternalServerError,
                 StatusCodes.Status500InternalServerError);
         }
 
-        var message = string.Format(StringConstants.SuccessfulUpdateTemplate, nameof(BlogPost));
+        var message = string.Format(StringConstants.SuccessfulUpdateTemplate, nameof(BlogPost).Humanize(LetterCasing.LowerCase));
 
-        return DomainResponse.CreateBaseSuccess(message, StatusCodes.Status200OK);
+        return DomainResponse<BlogPostResponseDto>.CreateSuccess(message, StatusCodes.Status200OK, blogPostResponseDto);
     }
 }

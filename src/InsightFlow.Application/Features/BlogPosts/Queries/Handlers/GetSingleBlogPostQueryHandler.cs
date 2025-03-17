@@ -1,6 +1,6 @@
-using Common.Constants;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
@@ -50,6 +50,5 @@ public class GetSingleBlogPostQueryHandler : IRequestHandler<GetSingleBlogPostQu
         return DomainResponse<BlogPostResponseDto>.CreateFailure(
             StringConstants.InternalServerError,
             StatusCodes.Status500InternalServerError);
-
     }
 }

@@ -15,11 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsightFlow.Api", "src\Insi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{60473A72-F4F2-4B16-9357-A0948ADF733D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsightFlow.Common", "src\InsightFlow.Common\InsightFlow.Common.csproj", "{B6FE7F80-7728-4351-87DE-F3AD6BD6A931}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsightFlow.UnitTests", "tests\InsightFlow.UnitTests\InsightFlow.UnitTests.csproj", "{45018301-442C-42D9-AB59-2B5E841965BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsightFlow.IntegrationTests", "tests\InsightFlow.IntegrationTests\InsightFlow.IntegrationTests.csproj", "{3ED39DEB-A0B9-4BBB-AF4A-886B5F9DADD8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{B6FE7F80-7728-4351-87DE-F3AD6BD6A931}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

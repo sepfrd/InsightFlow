@@ -8,13 +8,13 @@ public class CreateUserRequestDtoValidator : AbstractValidator<CreateUserRequest
 {
     public CreateUserRequestDtoValidator()
     {
-        RuleFor(createUserCommand => createUserCommand.Email)
+        RuleFor(createUserRequestDto => createUserRequestDto.Email)
             .Matches(DomainConstants.EmailRegexPattern);
 
-        RuleFor(createUserCommand => createUserCommand.Username)
+        RuleFor(createUserRequestDto => createUserRequestDto.Username)
             .Matches(DomainConstants.UsernameRegexPattern);
 
-        RuleFor(createUserCommand => createUserCommand.Password)
+        RuleFor(createUserRequestDto => createUserRequestDto.Password)
             .Matches(DomainConstants.PasswordRegexPattern);
     }
 }

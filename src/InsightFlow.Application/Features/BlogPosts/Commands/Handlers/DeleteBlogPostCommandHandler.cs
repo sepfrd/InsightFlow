@@ -1,5 +1,6 @@
-using Common.Constants;
+using Humanizer;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
@@ -37,7 +38,10 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
 
         if (blogPost is null)
         {
-            var notFoundMessage = string.Format(StringConstants.EntityNotFoundByUuidTemplate, nameof(BlogPost), request.BlogPostUuid);
+            var notFoundMessage = string.Format(
+                StringConstants.EntityNotFoundByUuidTemplate,
+                nameof(BlogPost).Humanize(LetterCasing.LowerCase),
+                request.BlogPostUuid);
 
             return DomainResponse.CreateBaseFailure(notFoundMessage, StatusCodes.Status404NotFound);
         }
@@ -55,7 +59,7 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
                 StatusCodes.Status500InternalServerError);
         }
 
-        var message = string.Format(StringConstants.SuccessfulDeletionTemplate, nameof(BlogPost));
+        var message = string.Format(StringConstants.SuccessfulDeletionTemplate, nameof(BlogPost).Humanize(LetterCasing.LowerCase));
 
         return DomainResponse.CreateBaseSuccess(message, StatusCodes.Status200OK);
     }

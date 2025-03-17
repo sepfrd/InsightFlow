@@ -5,8 +5,6 @@ public static class ApplicationConstants
     // ---------------------------- Auth Constants ----------------------------
     public const string AdminPolicyName = "OnlyAdminPolicy";
     public const string UserPolicyName = "OnlyUserPolicy";
-    public const string AdminRoleName = "Admin";
-    public const string UserRoleName = "User";
     public const string UsernameClaim = "username";
     public const string UuidClaim = "uuid";
 
@@ -20,9 +18,7 @@ public static class ApplicationConstants
     public const string SqlServerConfigurationKey = "SqlServer";
     public const string ServerUrlConfigurationKey = "ServerUrl";
     public const string ClientUrlConfigurationKey = "ClientUrl";
-    public const string JwtConfigurationSectionKey = "JwtConfiguration";
-    public const string JwtPublicKeyConfigurationKey = "PublicKey";
-    public const string JwtPrivateKeyConfigurationKey = "PrivateKey";
+    public const string JwtConfigurationSectionKey = "JwtOptions";
     public const string RateLimitersSectionKey = "RateLimitersConfiguration";
 
     // ---------------------------- Rate Limiting Constants ----------------------------
@@ -34,5 +30,4 @@ public static class ApplicationConstants
     public const string ApplicationContactName = "Sepehr Foroughi Rad";
     public const string ApplicationContactEmail = "sepfrd@outlook.com";
     public const string ApplicationContactUrl = "https://github.com/sepehr-frd";
-    public const long ProfileImageMaximumAllowedBytes = 2097152L;
 }

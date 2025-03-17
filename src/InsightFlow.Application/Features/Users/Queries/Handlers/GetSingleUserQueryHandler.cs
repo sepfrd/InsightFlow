@@ -1,6 +1,7 @@
-using Common.Constants;
+using Humanizer;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
@@ -34,7 +35,10 @@ public class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, Dom
 
         if (user is null)
         {
-            var message = string.Format(StringConstants.EntityNotFoundByUuidTemplate, nameof(User), request.Uuid);
+            var message = string.Format(
+                StringConstants.EntityNotFoundByUuidTemplate,
+                nameof(User).Humanize(LetterCasing.LowerCase),
+                request.Uuid);
 
             return DomainResponse<UserResponseDto>.CreateFailure(message, StatusCodes.Status404NotFound);
         }
@@ -51,6 +55,5 @@ public class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, Dom
         return DomainResponse<UserResponseDto>.CreateFailure(
             StringConstants.InternalServerError,
             StatusCodes.Status500InternalServerError);
-
     }
 }

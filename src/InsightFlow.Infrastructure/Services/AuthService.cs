@@ -2,17 +2,19 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Common.Constants;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos;
+using InsightFlow.Infrastructure.Common.Dtos.Configurations;
 using InsightFlow.Infrastructure.Common.Helpers;
 using InsightFlow.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace InsightFlow.Infrastructure.Services;
@@ -23,17 +25,20 @@ public class AuthService : IAuthService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AuthService> _logger;
+    private readonly JwtOptions _jwtOptions;
 
     public AuthService(
         IConfiguration configuration,
         IHttpContextAccessor httpContextAccessor,
         IUnitOfWork unitOfWork,
-        ILogger<AuthService> logger)
+        ILogger<AuthService> logger,
+        IOptions<JwtOptions> jwtConfigurationOptions)
     {
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _jwtOptions = jwtConfigurationOptions.Value;
     }
 
     public async Task<DomainResponse<string>> AuthenticateAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
@@ -115,13 +120,9 @@ public class AuthService : IAuthService
         var clientUrl = _configuration.GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
             .GetValue<string>(ApplicationConstants.ClientUrlConfigurationKey)!;
 
-        var privateKey = _configuration
-            .GetSection(ApplicationConstants.JwtConfigurationSectionKey)
-            .GetValue<string>(ApplicationConstants.JwtPrivateKeyConfigurationKey);
-
         var rsa = RSA.Create();
 
-        rsa.ImportFromPem(privateKey);
+        rsa.ImportFromPem(_jwtOptions.PrivateKey);
 
         var securityKey = new RsaSecurityKey(rsa);
 
@@ -149,7 +150,7 @@ public class AuthService : IAuthService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = claims,
-            Expires = DateTime.Now.AddDays(1d),
+            Expires = DateTime.Now.AddMinutes(_jwtOptions.TokenExpirationDurationMinutes),
             SigningCredentials = signingCredentials
         };
 
@@ -162,6 +163,6 @@ public class AuthService : IAuthService
         return jwt;
     }
 
-    private bool IsSignedIn() =>
+    public bool IsSignedIn() =>
         _httpContextAccessor.HttpContext!.User.Identity is not null && _httpContextAccessor.HttpContext!.User.Identity.IsAuthenticated;
 }

@@ -1,3 +1,4 @@
+using InsightFlow.Api.Common.Dtos.Requests;
 using InsightFlow.Application.Features.BlogPosts.Commands;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Features.BlogPosts.Queries;
@@ -25,11 +26,18 @@ public class BlogPostController : ControllerBase
 
     [HttpPost]
     [Authorize(ApplicationConstants.UserPolicyName)]
-    public async Task<ActionResult<DomainResponse<BlogPostResponseDto>>> CreateBlogPostAsync([FromBody] CreateBlogPostCommand request, CancellationToken cancellationToken)
+    public async Task<ActionResult<DomainResponse<BlogPostResponseDto>>> CreateBlogPostAsync([FromBody] CreateBlogPostRequestDto request, CancellationToken cancellationToken)
     {
-        var response = await _sender.Send(request, cancellationToken);
+        var signedInUserUuid = _authService.GetSignedInUserUuid();
 
-        return response;
+        var command = new CreateBlogPostCommand(
+            request.Title,
+            request.Body,
+            Guid.Parse(signedInUserUuid));
+
+        var result = await _sender.Send(command, cancellationToken);
+
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet]
@@ -70,6 +78,23 @@ public class BlogPostController : ControllerBase
         var request = new GetSingleBlogPostQuery(uuid);
 
         var response = await _sender.Send(request, cancellationToken);
+
+        return StatusCode(response.StatusCode, response);
+    }
+
+    [HttpPatch]
+    [Authorize]
+    public async Task<ActionResult<DomainResponse<BlogPostResponseDto>>> UpdateBlogPostAsync([FromBody] UpdateBlogPostRequestDto request, CancellationToken cancellationToken)
+    {
+        var signedInUserUuid = _authService.GetSignedInUserUuid();
+
+        var command = new UpdateBlogPostCommand(
+            Guid.Parse(signedInUserUuid),
+            request.BlogPostUuid,
+            request.NewTitle,
+            request.NewBody);
+
+        var response = await _sender.Send(command, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }

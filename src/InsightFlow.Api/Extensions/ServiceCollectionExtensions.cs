@@ -6,6 +6,7 @@ using System.Threading.RateLimiting;
 using InsightFlow.Api.ExceptionHandlers;
 using InsightFlow.Api.Transformers;
 using InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
+using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos.Configurations;
 using InsightFlow.Infrastructure.Extensions;
@@ -24,6 +25,7 @@ public static class ServiceCollectionExtensions
         services
             .AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>())
             .AddHttpContextAccessor()
+            .Configure<JwtOptions>(configuration.GetSection(ApplicationConstants.JwtConfigurationSectionKey))
             .AddInfrastructure(configuration, environment)
             .AddMediatR(config => config.RegisterServicesFromAssemblyContaining<CreateBlogPostCommandHandler>())
             .AddAuth(configuration)
@@ -59,11 +61,11 @@ public static class ServiceCollectionExtensions
                 var clientUrl = configuration.GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
                     .GetValue<string>(ApplicationConstants.ClientUrlConfigurationKey)!;
 
-                var publicKey = configuration.GetSection(ApplicationConstants.JwtConfigurationSectionKey).GetValue<string>(ApplicationConstants.JwtPublicKeyConfigurationKey);
+                var jwtConfiguration = configuration.GetRequiredSection(ApplicationConstants.JwtConfigurationSectionKey).Get<JwtOptions>()!;
 
                 var rsa = RSA.Create();
 
-                rsa.ImportFromPem(publicKey);
+                rsa.ImportFromPem(jwtConfiguration.PublicKey);
 
                 var securityKey = new RsaSecurityKey(rsa);
 
@@ -85,9 +87,9 @@ public static class ServiceCollectionExtensions
             .AddAuthorization(options =>
             {
                 options.AddPolicy(ApplicationConstants.AdminPolicyName,
-                    policy => policy.RequireRole(ApplicationConstants.AdminRoleName));
+                    policy => policy.RequireRole(DomainConstants.AdminRoleTitle));
                 options.AddPolicy(ApplicationConstants.UserPolicyName,
-                    policy => policy.RequireRole(ApplicationConstants.UserRoleName));
+                    policy => policy.RequireRole(DomainConstants.BasicUserRoleTitle));
             });
 
     public static IServiceCollection AddRateLimiters(this IServiceCollection services, IConfiguration configuration)

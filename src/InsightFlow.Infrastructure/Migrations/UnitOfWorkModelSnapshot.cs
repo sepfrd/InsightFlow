@@ -54,7 +54,7 @@ namespace InsightFlow.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BlogPosts");
+                    b.ToTable("BlogPosts", (string)null);
                 });
 
             modelBuilder.Entity("InsightFlow.Domain.Entities.Role", b =>
@@ -84,7 +84,7 @@ namespace InsightFlow.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("InsightFlow.Domain.Entities.User", b =>
@@ -126,7 +126,7 @@ namespace InsightFlow.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("InsightFlow.Domain.Entities.UserRole", b =>
@@ -158,7 +158,7 @@ namespace InsightFlow.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("InsightFlow.Domain.Entities.BlogPost", b =>

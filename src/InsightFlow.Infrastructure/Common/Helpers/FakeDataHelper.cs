@@ -1,6 +1,6 @@
 using Bogus;
+using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using InsightFlow.Infrastructure.Common.Constants;
 
 namespace InsightFlow.Infrastructure.Common.Helpers;
 
@@ -43,7 +43,7 @@ public static class FakeDataHelper
         var password = PasswordHelper.HashPassword("Correct_p0");
 
         var userFaker = new Faker<User>()
-            .RuleFor(user => user.Username, faker => faker.Internet.UserName().ToLowerInvariant())
+            .RuleFor(user => user.Username, faker => $"sample_username{faker.IndexFaker}")
             .RuleFor(user => user.PasswordHash, _ => password)
             .RuleFor(user => user.Email, faker => faker.Internet.Email().ToLowerInvariant())
             .RuleFor(user => user.FirstName, faker => faker.Name.FirstName())
@@ -71,12 +71,17 @@ public static class FakeDataHelper
             new()
             {
                 User = fakeUsers.First(user => user.Username == FakeAdmin.Username),
-                Role = fakeRoles.First(role => role.Title == ApplicationConstants.AdminRoleName)
+                Role = fakeRoles.First(role => role.Title == DomainConstants.BasicUserRoleTitle)
+            },
+            new()
+            {
+                User = fakeUsers.First(user => user.Username == FakeAdmin.Username),
+                Role = fakeRoles.First(role => role.Title == DomainConstants.AdminRoleTitle)
             },
             new()
             {
                 User = fakeUsers.First(user => user.Username == FakeUser.Username),
-                Role = fakeRoles.First(role => role.Title == ApplicationConstants.UserRoleName)
+                Role = fakeRoles.First(role => role.Title == DomainConstants.BasicUserRoleTitle)
             }
         };
 

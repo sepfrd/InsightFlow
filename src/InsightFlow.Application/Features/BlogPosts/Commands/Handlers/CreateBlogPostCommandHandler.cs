@@ -1,6 +1,7 @@
-using Common.Constants;
+using Humanizer;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using MediatR;
@@ -42,6 +43,8 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
 
         var blogPost = _mappingService.Map<CreateBlogPostCommand, BlogPost>(request)!;
 
+        blogPost.AuthorId = user.Id;
+
         await _unitOfWork.BlogPostRepository.CreateAsync(blogPost, cancellationToken);
 
         var commitResult = await _unitOfWork.CommitChangesAsync(cancellationToken);
@@ -55,6 +58,8 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
                 StatusCodes.Status500InternalServerError);
         }
 
+        blogPost.Author = user;
+
         var blogPostResponseDto = _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost);
 
         if (blogPostResponseDto is null)
@@ -66,7 +71,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
                 StatusCodes.Status500InternalServerError);
         }
 
-        var message = string.Format(StringConstants.SuccessfulCreationTemplate, nameof(BlogPost));
+        var message = string.Format(StringConstants.SuccessfulCreationTemplate, nameof(BlogPost).Humanize(LetterCasing.LowerCase));
 
         return DomainResponse<BlogPostResponseDto>.CreateSuccess(message, StatusCodes.Status201Created, blogPostResponseDto);
     }

@@ -1,3 +1,4 @@
+using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginDto, CancellationToken cancellationToken)
+    public async Task<ActionResult<DomainResponse<string>>> Login([FromBody] LoginDto loginDto, CancellationToken cancellationToken)
     {
         var result = await _authService.AuthenticateAsync(loginDto, cancellationToken);
 
