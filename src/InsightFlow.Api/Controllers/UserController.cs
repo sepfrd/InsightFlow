@@ -1,7 +1,10 @@
 using InsightFlow.Api.Common.Dtos.Requests;
 using InsightFlow.Application.Features.Users.Commands;
+using InsightFlow.Application.Features.Users.Commands.CreateUser;
+using InsightFlow.Application.Features.Users.Commands.UpdateUser;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Features.Users.Queries;
+using InsightFlow.Application.Features.Users.Queries.GetSingleUser;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Constants;
@@ -111,7 +114,7 @@ public class UserController : ControllerBase
     {
         var signedInUserUuid = _authService.GetSignedInUserUuid();
 
-        var command = new UpdateUserInformationCommand(
+        var command = new UpdateUserCommand(
             Guid.Parse(signedInUserUuid),
             request.NewEmail,
             request.NewFirstName,

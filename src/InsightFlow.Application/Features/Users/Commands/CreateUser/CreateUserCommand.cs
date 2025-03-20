@@ -2,7 +2,7 @@ using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Domain.Common;
 using MediatR;
 
-namespace InsightFlow.Application.Features.Users.Commands;
+namespace InsightFlow.Application.Features.Users.Commands.CreateUser;
 
 public record CreateUserCommand(
     string Username,

@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
+namespace InsightFlow.Application.Features.BlogPosts.Commands.CreateBlogPost;
 
 public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostCommand, DomainResponse<BlogPostResponseDto>>
 {

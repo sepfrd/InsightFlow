@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using InsightFlow.Api.ExceptionHandlers;
 using InsightFlow.Api.Transformers;
-using InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
+using InsightFlow.Application.Features.BlogPosts.Commands.CreateBlogPost;
 using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos.Configurations;

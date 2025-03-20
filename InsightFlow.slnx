@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/InsightFlow.Api/InsightFlow.Api.csproj" />
+    <Project Path="src/InsightFlow.Application/InsightFlow.Application.csproj" />
+    <Project Path="src/InsightFlow.Common/InsightFlow.Common.csproj" />
+    <Project Path="src/InsightFlow.Domain/InsightFlow.Domain.csproj" />
+    <Project Path="src/InsightFlow.Infrastructure/InsightFlow.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/UnitTests/">
+    <Project Path="tests\UnitTests\InsightFlow.Application.UnitTests\InsightFlow.Application.UnitTests.csproj" Type="Classic C#" />
+  </Folder>
+</Solution>

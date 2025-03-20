@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace InsightFlow.Application.Features.BlogPosts.Queries.Handlers;
+namespace InsightFlow.Application.Features.BlogPosts.Queries.GetSingleBlogPost;
 
 public class GetSingleBlogPostQueryHandler : IRequestHandler<GetSingleBlogPostQuery, DomainResponse<BlogPostResponseDto>>
 {

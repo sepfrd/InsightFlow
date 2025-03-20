@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace InsightFlow.Application.Features.BlogPosts.Queries.Handlers;
+namespace InsightFlow.Application.Features.BlogPosts.Queries.GetAllBlogPostsByFilter;
 
 public class GetAllBlogPostsByFilterQueryHandler
     : IRequestHandler<GetAllBlogPostsByFilterQuery, PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>

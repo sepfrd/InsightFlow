@@ -1,4 +1,5 @@
 using Humanizer;
+using InsightFlow.Application.Features.Users.Commands.CreateUser;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
@@ -8,25 +9,25 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace InsightFlow.Application.Features.Users.Commands.Handlers;
+namespace InsightFlow.Application.Features.Users.Commands.UpdateUser;
 
-public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand, DomainResponse<UserResponseDto>>
+public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, DomainResponse<UserResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
-    private readonly ILogger<UpdateUserInformationCommandHandler> _logger;
+    private readonly ILogger<UpdateUserCommandHandler> _logger;
 
-    public UpdateUserInformationCommandHandler(
+    public UpdateUserCommandHandler(
         IUnitOfWork unitOfWork,
         IMappingService mappingService,
-        ILogger<UpdateUserInformationCommandHandler> logger)
+        ILogger<UpdateUserCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mappingService = mappingService;
         _logger = logger;
     }
 
-    public async Task<DomainResponse<UserResponseDto>> Handle(UpdateUserInformationCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<UserResponseDto>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.Uuid,
@@ -72,7 +73,7 @@ public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInf
         {
             _logger.LogCritical(
                 StringConstants.MappingErrorLogTemplate,
-                typeof(UpdateUserInformationCommand),
+                typeof(UpdateUserCommand),
                 typeof(User));
 
             return DomainResponse<UserResponseDto>.CreateFailure(

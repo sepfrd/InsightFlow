@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace InsightFlow.Application.Features.Users.Queries.Handlers;
+namespace InsightFlow.Application.Features.Users.Queries.GetSingleUser;
 
 public class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, DomainResponse<UserResponseDto>>
 {

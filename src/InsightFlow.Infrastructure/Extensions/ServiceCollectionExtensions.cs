@@ -1,7 +1,9 @@
 using FluentValidation;
 using InsightFlow.Application.Features.BlogPosts.Commands;
+using InsightFlow.Application.Features.BlogPosts.Commands.UpdateBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Features.Users.Commands;
+using InsightFlow.Application.Features.Users.Commands.UpdateUser;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
@@ -63,7 +65,7 @@ public static class ServiceCollectionExtensions
                 dto => dto.FullName,
                 user => user.FirstName + ' ' + user.LastName);
 
-        TypeAdapterConfig<UpdateUserInformationCommand, User>
+        TypeAdapterConfig<UpdateUserCommand, User>
             .ForType()
             .Map(
                 user => user.FirstName,

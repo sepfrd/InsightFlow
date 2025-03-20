@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace InsightFlow.Application.Features.BlogPosts.Commands.Handlers;
+namespace InsightFlow.Application.Features.BlogPosts.Commands.DeleteBlogPost;
 
 public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostCommand, DomainResponse>
 {

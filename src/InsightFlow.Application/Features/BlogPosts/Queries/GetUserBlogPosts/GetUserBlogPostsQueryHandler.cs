@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace InsightFlow.Application.Features.BlogPosts.Queries.Handlers;
+namespace InsightFlow.Application.Features.BlogPosts.Queries.GetUserBlogPosts;
 
 public class GetUserBlogPostsQueryHandler : IRequestHandler<GetUserBlogPostsQuery, PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>
 {

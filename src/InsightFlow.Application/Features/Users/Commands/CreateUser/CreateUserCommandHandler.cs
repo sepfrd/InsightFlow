@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace InsightFlow.Application.Features.Users.Commands.Handlers;
+namespace InsightFlow.Application.Features.Users.Commands.CreateUser;
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, DomainResponse<UserResponseDto>>
 {
