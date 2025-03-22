@@ -25,7 +25,7 @@ public class GetSingleBlogPostQueryHandler : IRequestHandler<GetSingleBlogPostQu
         _logger = logger;
     }
 
-    public async Task<DomainResponse<BlogPostResponseDto>> Handle(GetSingleBlogPostQuery request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<BlogPostResponseDto>> Handle(GetSingleBlogPostQuery request, CancellationToken cancellationToken = default)
     {
         var blogPost = await _unitOfWork.BlogPostRepository.GetOneAsync(
             filter: blogPost => blogPost.Uuid == request.BlogPostUuid,

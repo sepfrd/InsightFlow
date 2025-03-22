@@ -20,7 +20,7 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
         _logger = logger;
     }
 
-    public async Task<DomainResponse> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResponse> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken = default)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.AuthorUuid,

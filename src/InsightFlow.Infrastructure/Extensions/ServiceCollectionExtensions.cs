@@ -1,8 +1,6 @@
 using FluentValidation;
-using InsightFlow.Application.Features.BlogPosts.Commands;
 using InsightFlow.Application.Features.BlogPosts.Commands.UpdateBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
-using InsightFlow.Application.Features.Users.Commands;
 using InsightFlow.Application.Features.Users.Commands.UpdateUser;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
@@ -16,7 +14,6 @@ using InsightFlow.Infrastructure.Persistence;
 using InsightFlow.Infrastructure.Services;
 using InsightFlow.Infrastructure.Validators;
 using Mapster;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +26,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration,
-        IWebHostEnvironment environment)
+        IHostEnvironment environment)
     {
         ConfigureMapster();
 
@@ -81,7 +78,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddDatabase(
         this IServiceCollection services,
         IConfiguration configuration,
-        IWebHostEnvironment environment)
+        IHostEnvironment environment)
     {
         if (environment.IsEnvironment(ApplicationConstants.TestingEnvironmentName))
         {

@@ -26,7 +26,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
         _logger = logger;
     }
 
-    public async Task<DomainResponse<BlogPostResponseDto>> Handle(CreateBlogPostCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<BlogPostResponseDto>> Handle(CreateBlogPostCommand request, CancellationToken cancellationToken = default)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.AuthorUuid,

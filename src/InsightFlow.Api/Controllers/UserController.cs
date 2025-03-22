@@ -1,9 +1,7 @@
 using InsightFlow.Api.Common.Dtos.Requests;
-using InsightFlow.Application.Features.Users.Commands;
 using InsightFlow.Application.Features.Users.Commands.CreateUser;
 using InsightFlow.Application.Features.Users.Commands.UpdateUser;
 using InsightFlow.Application.Features.Users.Dtos;
-using InsightFlow.Application.Features.Users.Queries;
 using InsightFlow.Application.Features.Users.Queries.GetSingleUser;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;

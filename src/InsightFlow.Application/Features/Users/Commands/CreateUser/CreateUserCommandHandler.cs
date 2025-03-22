@@ -29,7 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
         _logger = logger;
     }
 
-    public async Task<DomainResponse<UserResponseDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<UserResponseDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken = default)
     {
         var isEmailUnique = await _unitOfWork.UserRepository.IsEmailUniqueAsync(request.Email, cancellationToken);
 

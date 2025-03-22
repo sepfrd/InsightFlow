@@ -25,7 +25,7 @@ public class GetUserBlogPostsQueryHandler : IRequestHandler<GetUserBlogPostsQuer
         _logger = logger;
     }
 
-    public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> Handle(GetUserBlogPostsQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> Handle(GetUserBlogPostsQuery request, CancellationToken cancellationToken = default)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.UserUuid,
