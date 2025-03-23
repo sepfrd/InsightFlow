@@ -11,6 +11,7 @@ using InsightFlow.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using Shouldly;
 
 namespace InsightFlow.Application.UnitTests.Features.BlogPosts.Commands.CreateBlogPost;
@@ -76,6 +77,53 @@ public class CreateBlogPostCommandHandlerTests
         _logger.DidNotReceive();
     }
 
+    [Theory]
+    [MemberData(nameof(ValidCreateBlogPostCommands))]
+    public async Task HandleCreateBlogPostCommand_WhenAuthorIsNotFound_ShouldReturnUnauthorizedResponse(CreateBlogPostCommand createBlogPostCommand)
+    {
+        // Arrange
+        var userRole = Constants.UserRole.CreateUserRole();
+        var user = Constants.User.CreateUser(uuid: createBlogPostCommand.AuthorUuid, userRoles: [userRole]);
+
+        userRole.UserId = user.Id;
+
+        var blogPost = Constants.BlogPost.CreateBlogPost(createBlogPostCommand.Title, createBlogPostCommand.Body, user);
+
+        var blogPostResponseDto = blogPost.ToBlogPostResponseDto(user.Uuid);
+
+        _unitOfWork
+            .UserRepository
+            .GetOneAsync(null!)
+            .ReturnsNullForAnyArgs();
+
+        _unitOfWork.CommitChangesAsync().ReturnsForAnyArgs(1);
+
+        _mappingService.Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand).Returns(blogPost);
+        _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost).Returns(blogPostResponseDto);
+
+        _unitOfWork.ClearReceivedCalls();
+        _mappingService.ClearReceivedCalls();
+
+        // Act
+        var result = await _commandHandler.Handle(createBlogPostCommand);
+
+        // Assert
+        result.ShouldBeOfType<DomainResponse<BlogPostResponseDto>>();
+        result.IsSuccess.ShouldBeFalse();
+        result.StatusCode.ShouldBe(StatusCodes.Status401Unauthorized);
+        result.Message.ShouldBe(StringConstants.Unauthorized);
+        result.Data.ShouldBeNull();
+
+        await _unitOfWork.ReceivedWithAnyArgs(1).UserRepository.GetOneAsync(null!);
+        await _unitOfWork.DidNotReceive().BlogPostRepository.CreateAsync(blogPost);
+        await _unitOfWork.DidNotReceive().CommitChangesAsync();
+
+        _mappingService.DidNotReceive().Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand);
+        _mappingService.DidNotReceive().Map<BlogPost, BlogPostResponseDto>(blogPost);
+
+        _logger.DidNotReceive();
+    }
+    
     public static TheoryData<CreateBlogPostCommand> ValidCreateBlogPostCommands() =>
         new()
         {
