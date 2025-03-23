@@ -169,7 +169,52 @@ public class CreateBlogPostCommandHandlerTests
         _logger.ReceivedWithAnyArgs(1).LogCritical("");
     }
 
-    // TODO: HandleCreateBlogPostCommand_WhenUnitOfWorkDoesNotWorkCorrectly_ShouldReturnInternalServerErrorResponse
+    [Theory]
+    [MemberData(nameof(ValidCreateBlogPostCommands))]
+    public async Task HandleCreateBlogPostCommand_WhenUnitOfWorkDoesNotWorkCorrectly_ShouldReturnInternalServerErrorResponse(CreateBlogPostCommand createBlogPostCommand)
+    {
+        // Arrange
+        var userRole = Constants.UserRole.CreateUserRole();
+        var user = Constants.User.CreateUser(uuid: createBlogPostCommand.AuthorUuid, userRoles: [userRole]);
+
+        userRole.UserId = user.Id;
+
+        var blogPost = Constants.BlogPost.CreateBlogPost(createBlogPostCommand.Title, createBlogPostCommand.Body, user);
+
+        var blogPostResponseDto = blogPost.ToBlogPostResponseDto(user.Uuid);
+
+        _unitOfWork
+            .UserRepository
+            .GetOneAsync(null!)
+            .ReturnsForAnyArgs(user);
+
+        _unitOfWork.CommitChangesAsync().ReturnsForAnyArgs(0);
+
+        _mappingService.Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand).Returns(blogPost);
+        _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost).Returns(blogPostResponseDto);
+
+        _unitOfWork.ClearReceivedCalls();
+        _mappingService.ClearReceivedCalls();
+
+        // Act
+        var result = await _commandHandler.Handle(createBlogPostCommand);
+
+        // Assert
+        result.ShouldBeOfType<DomainResponse<BlogPostResponseDto>>();
+        result.IsSuccess.ShouldBeFalse();
+        result.StatusCode.ShouldBe(StatusCodes.Status500InternalServerError);
+        result.Message.ShouldBe(StringConstants.InternalServerError);
+        result.Data.ShouldBeNull();
+
+        await _unitOfWork.ReceivedWithAnyArgs(1).UserRepository.GetOneAsync(null!);
+        await _unitOfWork.Received(1).BlogPostRepository.CreateAsync(blogPost);
+        await _unitOfWork.Received(1).CommitChangesAsync();
+
+        _mappingService.Received(1).Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand);
+        _mappingService.DidNotReceive().Map<BlogPost, BlogPostResponseDto>(blogPost);
+
+        _logger.ReceivedWithAnyArgs(1).LogCritical("");
+    }
 
     public static TheoryData<CreateBlogPostCommand> ValidCreateBlogPostCommands() =>
         new()
