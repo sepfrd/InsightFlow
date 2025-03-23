@@ -51,6 +51,9 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand).Returns(blogPost);
         _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost).Returns(blogPostResponseDto);
 
+        _unitOfWork.ClearReceivedCalls();
+        _mappingService.ClearReceivedCalls();
+
         // Act
         var result = await _commandHandler.Handle(createBlogPostCommand);
 
@@ -62,6 +65,15 @@ public class CreateBlogPostCommandHandlerTests
         result.StatusCode.ShouldBe(StatusCodes.Status201Created);
         result.Message.ShouldBe(responseMessage);
         result.Data.ValidateCreatedFrom(createBlogPostCommand);
+
+        await _unitOfWork.ReceivedWithAnyArgs(1).UserRepository.GetOneAsync(null!);
+        await _unitOfWork.Received(1).BlogPostRepository.CreateAsync(blogPost);
+        await _unitOfWork.ReceivedWithAnyArgs(1).CommitChangesAsync();
+
+        _mappingService.Received(1).Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand);
+        _mappingService.Received(1).Map<BlogPost, BlogPostResponseDto>(blogPost);
+
+        _logger.DidNotReceive();
     }
 
     public static TheoryData<CreateBlogPostCommand> ValidCreateBlogPostCommands() =>
