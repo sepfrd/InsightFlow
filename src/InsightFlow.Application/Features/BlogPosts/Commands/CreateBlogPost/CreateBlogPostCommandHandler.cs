@@ -41,7 +41,16 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
                 StatusCodes.Status401Unauthorized);
         }
 
-        var blogPost = _mappingService.Map<CreateBlogPostCommand, BlogPost>(request)!;
+        var blogPost = _mappingService.Map<CreateBlogPostCommand, BlogPost>(request);
+
+        if (blogPost is null)
+        {
+            _logger.LogCritical(StringConstants.MappingErrorLogTemplate, typeof(CreateBlogPostCommand), typeof(BlogPost));
+
+            return DomainResponse<BlogPostResponseDto>.CreateFailure(
+                StringConstants.InternalServerError,
+                StatusCodes.Status500InternalServerError);
+        }
 
         blogPost.AuthorId = user.Id;
 
