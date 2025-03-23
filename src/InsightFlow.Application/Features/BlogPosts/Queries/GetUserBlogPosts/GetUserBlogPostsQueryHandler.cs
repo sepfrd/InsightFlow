@@ -36,7 +36,7 @@ public class GetUserBlogPostsQueryHandler : IRequestHandler<GetUserBlogPostsQuer
         if (user is null)
         {
             return PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>.CreateFailure(
-                StringConstants.Unauthenticated,
+                StringConstants.Unauthorized,
                 StatusCodes.Status401Unauthorized);
         }
 

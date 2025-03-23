@@ -29,7 +29,7 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
 
         if (user is null)
         {
-            return DomainResponse.CreateBaseFailure(StringConstants.Unauthenticated, StatusCodes.Status401Unauthorized);
+            return DomainResponse.CreateBaseFailure(StringConstants.Unauthorized, StatusCodes.Status401Unauthorized);
         }
 
         var blogPost = await _unitOfWork.BlogPostRepository.GetOneAsync(

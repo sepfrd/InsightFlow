@@ -3,7 +3,7 @@ namespace InsightFlow.Common.Constants;
 public static class StringConstants
 {
     public const string BadRequest = "Bad Request";
-    public const string Unauthenticated = "Unauthenticated";
+    public const string Unauthorized = "Unauthorized";
     public const string Forbidden = "Forbidden";
     public const string NotFound = "Not Found";
     public const string InternalServerError = "Something went wrong in our side, please try again later.";

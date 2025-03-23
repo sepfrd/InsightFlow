@@ -37,7 +37,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
         if (user is null)
         {
             return DomainResponse<BlogPostResponseDto>.CreateFailure(
-                StringConstants.Unauthenticated,
+                StringConstants.Unauthorized,
                 StatusCodes.Status401Unauthorized);
         }
 
