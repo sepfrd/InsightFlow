@@ -2,7 +2,11 @@ using System.Threading.RateLimiting;
 
 namespace InsightFlow.Infrastructure.Common.Dtos.Configurations;
 
-public record CustomRateLimitOptions(
-    CustomFixedWindowRateLimiterOptions FixedWindowRateLimiterOptions,
-    CustomTokenBucketRateLimiterOptions TokenBucketRateLimiterOptions,
-    ConcurrencyLimiterOptions ConcurrencyLimiterOptions);
+public class CustomRateLimitOptions
+{
+    public CustomFixedWindowRateLimiterOptions? FixedWindowRateLimiterOptions { get; set; }
+
+    public CustomTokenBucketRateLimiterOptions? TokenBucketRateLimiterOptions { get; set; }
+
+    public ConcurrencyLimiterOptions? ConcurrencyLimiterOptions { get; set; }
+}

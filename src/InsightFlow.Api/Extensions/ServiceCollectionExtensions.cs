@@ -103,7 +103,7 @@ public static class ServiceCollectionExtensions
                     ApplicationConstants.FixedWindowRateLimiterPolicy,
                     fixedWindowOptions =>
                     {
-                        fixedWindowOptions.PermitLimit = customRateLimitOptions.FixedWindowRateLimiterOptions.PermitLimit;
+                        fixedWindowOptions.PermitLimit = customRateLimitOptions.FixedWindowRateLimiterOptions!.PermitLimit;
                         fixedWindowOptions.Window = TimeSpan.FromSeconds(customRateLimitOptions.FixedWindowRateLimiterOptions.WindowSeconds);
                         fixedWindowOptions.QueueLimit = customRateLimitOptions.FixedWindowRateLimiterOptions.QueueLimit;
                         fixedWindowOptions.QueueProcessingOrder = customRateLimitOptions.FixedWindowRateLimiterOptions.QueueProcessingOrder;
@@ -114,7 +114,7 @@ public static class ServiceCollectionExtensions
                     ApplicationConstants.ConcurrencyRateLimiterPolicy,
                     concurrencyOptions =>
                     {
-                        concurrencyOptions.PermitLimit = customRateLimitOptions.ConcurrencyLimiterOptions.PermitLimit;
+                        concurrencyOptions.PermitLimit = customRateLimitOptions.ConcurrencyLimiterOptions!.PermitLimit;
                         concurrencyOptions.QueueLimit = customRateLimitOptions.ConcurrencyLimiterOptions.QueueLimit;
                         concurrencyOptions.QueueProcessingOrder = customRateLimitOptions.ConcurrencyLimiterOptions.QueueProcessingOrder;
                     });
@@ -132,7 +132,7 @@ public static class ServiceCollectionExtensions
                         remoteIpAddress,
                         _ => new TokenBucketRateLimiterOptions
                         {
-                            AutoReplenishment = customRateLimitOptions.TokenBucketRateLimiterOptions.AutoReplenishment,
+                            AutoReplenishment = customRateLimitOptions.TokenBucketRateLimiterOptions!.AutoReplenishment,
                             QueueLimit = customRateLimitOptions.TokenBucketRateLimiterOptions.QueueLimit,
                             QueueProcessingOrder = customRateLimitOptions.TokenBucketRateLimiterOptions.QueueProcessingOrder,
                             ReplenishmentPeriod = TimeSpan.FromSeconds(customRateLimitOptions.TokenBucketRateLimiterOptions.ReplenishmentPeriodSeconds),

@@ -5,7 +5,7 @@ using InsightFlow.Domain.Entities;
 
 namespace InsightFlow.Application.Features.BlogPosts.Dtos;
 
-public class BlogPostFilterDto : FilterDtoBase<BlogPost>
+public class BlogPostFilterDto : FilterDtoBase
 {
     public string? Title { get; init; }
 

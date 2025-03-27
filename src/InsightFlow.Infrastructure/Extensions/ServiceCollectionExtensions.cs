@@ -83,7 +83,12 @@ public static class ServiceCollectionExtensions
         if (environment.IsEnvironment(ApplicationConstants.TestingEnvironmentName))
         {
             return services.AddDbContext<IUnitOfWork, UnitOfWork>(options =>
-                options.UseInMemoryDatabase(ApplicationConstants.ApplicationName));
+            {
+                options
+                    .UseInMemoryDatabase(ApplicationConstants.ApplicationName)
+                    .UseSeeding((dbContext, _) => dbContext.SeedDatabase())
+                    .UseAsyncSeeding((dbContext, _, _) => Task.FromResult(dbContext.SeedDatabase()));
+            });
         }
 
         return services.AddDbContext<IUnitOfWork, UnitOfWork>(options =>

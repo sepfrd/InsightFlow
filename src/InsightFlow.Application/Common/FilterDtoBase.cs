@@ -3,8 +3,7 @@ using InsightFlow.Domain.Common;
 
 namespace InsightFlow.Application.Common;
 
-public abstract class FilterDtoBase<T>
-    where T : DomainEntity
+public abstract class FilterDtoBase
 {
     protected FilterDtoBase(
         DateTime? createdAtStartDate = null,
