@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -15,11 +16,13 @@ using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Shouldly;
 
 namespace InsightFlow.Api.IntegrationTests.Controllers;
 
+[Collection(Constants.DefaultTestCollectionName)]
 public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
     private readonly CustomWebApplicationFactory<Program> _customWebApplicationFactory;
@@ -45,8 +48,11 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
         loginRequest.Content = JsonContent.Create(loginDto, options: _jsonSerializerOptions);
 
         // Authenticate --- Act
-        var authResponse = await httpClient.SendAsync(loginRequest);
-        var authResponseString = await authResponse.Content.ReadAsStringAsync();
+        var authResponse = await httpClient.SendAsync(
+            loginRequest,
+            TestContext.Current.CancellationToken);
+
+        var authResponseString = await authResponse.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var authResponseJson = JsonNode.Parse(authResponseString)!;
 
         var jwt = authResponseJson[nameof(DomainResponse<string>.Data).Camelize()]?.ToString();
@@ -75,8 +81,11 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
         createBlogPostRequest.Content = JsonContent.Create(createBlogPostDto, options: _jsonSerializerOptions);
 
         // Create a BlogPost --- Act
-        var createBlogPostResponse = await httpClient.SendAsync(createBlogPostRequest);
-        var createBlogPostResponseString = await createBlogPostResponse.Content.ReadAsStringAsync();
+        var createBlogPostResponse = await httpClient.SendAsync(
+            createBlogPostRequest,
+            TestContext.Current.CancellationToken);
+
+        var createBlogPostResponseString = await createBlogPostResponse.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var createBlogPostResponseJson = JsonNode.Parse(createBlogPostResponseString)!;
 
         var blogPostJson = createBlogPostResponseJson[nameof(DomainResponse<BlogPostResponseDto>.Data).Camelize()];
@@ -113,8 +122,16 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
         createBlogPostResponseMessage.ShouldNotBeNull();
         createBlogPostResponseMessage.ShouldBe(createBlogPostResponseExpectedMessage);
 
-        var createdBlogPost = await unitOfWork.BlogPosts.OrderByDescending(blogPost => blogPost.CreatedAt).FirstAsync();
-        var user = await unitOfWork.Users.FirstAsync(user => user.Uuid == userUuid);
+        var createdBlogPost = await unitOfWork
+            .BlogPosts
+            .OrderByDescending(blogPost => blogPost.CreatedAt)
+            .FirstAsync(cancellationToken: TestContext.Current.CancellationToken);
+
+        var user = await unitOfWork
+            .Users
+            .FirstAsync(
+                user => user.Uuid == userUuid,
+                cancellationToken: TestContext.Current.CancellationToken);
 
         createdBlogPost.Title.ShouldBe(createBlogPostDto.Title);
         createdBlogPost.Body.ShouldBe(createBlogPostDto.Body);

@@ -44,10 +44,10 @@ public class CreateBlogPostCommandHandlerTests
 
         _unitOfWork
             .UserRepository
-            .GetOneAsync(null!)
+            .GetOneAsync(null!, cancellationToken: TestContext.Current.CancellationToken)
             .ReturnsForAnyArgs(user);
 
-        _unitOfWork.CommitChangesAsync().ReturnsForAnyArgs(1);
+        _unitOfWork.CommitChangesAsync(TestContext.Current.CancellationToken).ReturnsForAnyArgs(1);
 
         _mappingService.Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand).Returns(blogPost);
         _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost).Returns(blogPostResponseDto);
@@ -56,7 +56,7 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.ClearReceivedCalls();
 
         // Act
-        var result = await _commandHandler.Handle(createBlogPostCommand);
+        var result = await _commandHandler.Handle(createBlogPostCommand, TestContext.Current.CancellationToken);
 
         // Assert
         var responseMessage = string.Format(StringConstants.SuccessfulCreationTemplate, nameof(BlogPost).Humanize(LetterCasing.LowerCase));
@@ -67,9 +67,19 @@ public class CreateBlogPostCommandHandlerTests
         result.Message.ShouldBe(responseMessage);
         result.Data.ValidateCreatedFrom(createBlogPostCommand);
 
-        await _unitOfWork.ReceivedWithAnyArgs(1).UserRepository.GetOneAsync(null!);
-        await _unitOfWork.Received(1).BlogPostRepository.CreateAsync(blogPost);
-        await _unitOfWork.ReceivedWithAnyArgs(1).CommitChangesAsync();
+        await _unitOfWork
+            .ReceivedWithAnyArgs(1)
+            .UserRepository
+            .GetOneAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
+
+        await _unitOfWork
+            .Received(1)
+            .BlogPostRepository
+            .CreateAsync(blogPost, TestContext.Current.CancellationToken);
+
+        await _unitOfWork
+            .ReceivedWithAnyArgs(1)
+            .CommitChangesAsync(TestContext.Current.CancellationToken);
 
         _mappingService.Received(1).Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand);
         _mappingService.Received(1).Map<BlogPost, BlogPostResponseDto>(blogPost);
@@ -93,10 +103,10 @@ public class CreateBlogPostCommandHandlerTests
 
         _unitOfWork
             .UserRepository
-            .GetOneAsync(null!)
+            .GetOneAsync(null!, cancellationToken: TestContext.Current.CancellationToken)
             .ReturnsNullForAnyArgs();
 
-        _unitOfWork.CommitChangesAsync().ReturnsForAnyArgs(1);
+        _unitOfWork.CommitChangesAsync(TestContext.Current.CancellationToken).ReturnsForAnyArgs(1);
 
         _mappingService.Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand).Returns(blogPost);
         _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost).Returns(blogPostResponseDto);
@@ -105,7 +115,7 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.ClearReceivedCalls();
 
         // Act
-        var result = await _commandHandler.Handle(createBlogPostCommand);
+        var result = await _commandHandler.Handle(createBlogPostCommand, TestContext.Current.CancellationToken);
 
         // Assert
         result.ShouldBeOfType<DomainResponse<BlogPostResponseDto>>();
@@ -114,9 +124,19 @@ public class CreateBlogPostCommandHandlerTests
         result.Message.ShouldBe(StringConstants.Unauthorized);
         result.Data.ShouldBeNull();
 
-        await _unitOfWork.ReceivedWithAnyArgs(1).UserRepository.GetOneAsync(null!);
-        await _unitOfWork.DidNotReceive().BlogPostRepository.CreateAsync(blogPost);
-        await _unitOfWork.DidNotReceive().CommitChangesAsync();
+        await _unitOfWork
+            .ReceivedWithAnyArgs(1)
+            .UserRepository
+            .GetOneAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
+
+        await _unitOfWork
+            .DidNotReceive()
+            .BlogPostRepository
+            .CreateAsync(blogPost, TestContext.Current.CancellationToken);
+
+        await _unitOfWork
+            .DidNotReceive()
+            .CommitChangesAsync(TestContext.Current.CancellationToken);
 
         _mappingService.DidNotReceive().Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand);
         _mappingService.DidNotReceive().Map<BlogPost, BlogPostResponseDto>(blogPost);
@@ -138,10 +158,10 @@ public class CreateBlogPostCommandHandlerTests
 
         _unitOfWork
             .UserRepository
-            .GetOneAsync(null!)
+            .GetOneAsync(null!, cancellationToken: TestContext.Current.CancellationToken)
             .ReturnsForAnyArgs(user);
 
-        _unitOfWork.CommitChangesAsync().ReturnsForAnyArgs(1);
+        _unitOfWork.CommitChangesAsync(TestContext.Current.CancellationToken).ReturnsForAnyArgs(1);
 
         _mappingService.Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand).ReturnsNullForAnyArgs();
         _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost).ReturnsNullForAnyArgs();
@@ -150,7 +170,7 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.ClearReceivedCalls();
 
         // Act
-        var result = await _commandHandler.Handle(createBlogPostCommand);
+        var result = await _commandHandler.Handle(createBlogPostCommand, TestContext.Current.CancellationToken);
 
         // Assert
         result.ShouldBeOfType<DomainResponse<BlogPostResponseDto>>();
@@ -159,9 +179,19 @@ public class CreateBlogPostCommandHandlerTests
         result.Message.ShouldBe(StringConstants.InternalServerError);
         result.Data.ShouldBeNull();
 
-        await _unitOfWork.ReceivedWithAnyArgs(1).UserRepository.GetOneAsync(null!);
-        await _unitOfWork.DidNotReceive().BlogPostRepository.CreateAsync(blogPost);
-        await _unitOfWork.DidNotReceive().CommitChangesAsync();
+        await _unitOfWork
+            .ReceivedWithAnyArgs(1)
+            .UserRepository
+            .GetOneAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
+
+        await _unitOfWork
+            .DidNotReceive()
+            .BlogPostRepository
+            .CreateAsync(blogPost, TestContext.Current.CancellationToken);
+
+        await _unitOfWork
+            .DidNotReceive()
+            .CommitChangesAsync(TestContext.Current.CancellationToken);
 
         _mappingService.Received(1).Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand);
         _mappingService.DidNotReceive().Map<BlogPost, BlogPostResponseDto>(blogPost);
@@ -185,10 +215,12 @@ public class CreateBlogPostCommandHandlerTests
 
         _unitOfWork
             .UserRepository
-            .GetOneAsync(null!)
+            .GetOneAsync(null!, cancellationToken: TestContext.Current.CancellationToken)
             .ReturnsForAnyArgs(user);
 
-        _unitOfWork.CommitChangesAsync().ReturnsForAnyArgs(0);
+        _unitOfWork
+            .CommitChangesAsync(TestContext.Current.CancellationToken)
+            .ReturnsForAnyArgs(0);
 
         _mappingService.Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand).Returns(blogPost);
         _mappingService.Map<BlogPost, BlogPostResponseDto>(blogPost).Returns(blogPostResponseDto);
@@ -197,7 +229,7 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.ClearReceivedCalls();
 
         // Act
-        var result = await _commandHandler.Handle(createBlogPostCommand);
+        var result = await _commandHandler.Handle(createBlogPostCommand, TestContext.Current.CancellationToken);
 
         // Assert
         result.ShouldBeOfType<DomainResponse<BlogPostResponseDto>>();
@@ -206,9 +238,19 @@ public class CreateBlogPostCommandHandlerTests
         result.Message.ShouldBe(StringConstants.InternalServerError);
         result.Data.ShouldBeNull();
 
-        await _unitOfWork.ReceivedWithAnyArgs(1).UserRepository.GetOneAsync(null!);
-        await _unitOfWork.Received(1).BlogPostRepository.CreateAsync(blogPost);
-        await _unitOfWork.Received(1).CommitChangesAsync();
+        await _unitOfWork
+            .ReceivedWithAnyArgs(1)
+            .UserRepository
+            .GetOneAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
+
+        await _unitOfWork
+            .Received(1)
+            .BlogPostRepository
+            .CreateAsync(blogPost, TestContext.Current.CancellationToken);
+
+        await _unitOfWork
+            .Received(1)
+            .CommitChangesAsync(TestContext.Current.CancellationToken);
 
         _mappingService.Received(1).Map<CreateBlogPostCommand, BlogPost>(createBlogPostCommand);
         _mappingService.DidNotReceive().Map<BlogPost, BlogPostResponseDto>(blogPost);

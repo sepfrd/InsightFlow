@@ -4,6 +4,7 @@ using Shouldly;
 
 namespace InsightFlow.Api.IntegrationTests;
 
+[Collection(Constants.DefaultTestCollectionName)]
 public class HealthCheckTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
     private readonly CustomWebApplicationFactory<Program> _customWebApplicationFactory;
@@ -21,8 +22,11 @@ public class HealthCheckTests : IClassFixture<CustomWebApplicationFactory<Progra
         var healthCheckRequest = new HttpRequestMessage(HttpMethod.Get, Constants.HealthCheckAddress);
 
         // Act
-        var healthCheckResponse = await httpClient.SendAsync(healthCheckRequest);
-        var healthCheckResponseString = await healthCheckResponse.Content.ReadAsStringAsync();
+        var healthCheckResponse = await httpClient.SendAsync(
+            healthCheckRequest,
+            TestContext.Current.CancellationToken);
+
+        var healthCheckResponseString = await healthCheckResponse.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
         // Assert
         healthCheckResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
