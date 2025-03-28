@@ -67,7 +67,7 @@ public class BlogPostController : ControllerBase
     {
         var stringUuid = _authService.GetSignedInUserUuid();
 
-        var request = new GetUserBlogPostsQuery(Guid.Parse(stringUuid));
+        var request = new GetUserBlogPostsQuery(Guid.Parse(stringUuid),pageNumber, pageSize);
 
         var response = await _sender.Send(request, cancellationToken);
 
