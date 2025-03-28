@@ -23,7 +23,10 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         services
-            .AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>())
+            .AddOpenApi(options =>
+                options
+                    .AddDocumentTransformer<BearerSecuritySchemeTransformer>()
+                    .AddDocumentTransformer<DocumentInfoTransformer>())
             .AddHttpContextAccessor()
             .Configure<JwtOptions>(configuration.GetSection(ApplicationConstants.JwtConfigurationSectionKey))
             .AddInfrastructure(configuration, environment)

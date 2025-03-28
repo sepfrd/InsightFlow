@@ -43,7 +43,13 @@ try
         return;
     }
 
-    var applicationVersion = app.Configuration.GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey)!;
+    var applicationVersion = app
+        .Configuration
+        .GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey)!
+        .Split('.')
+        .First();
+
+    applicationVersion = 'v' + applicationVersion;
 
     app.UseExceptionHandler();
 
