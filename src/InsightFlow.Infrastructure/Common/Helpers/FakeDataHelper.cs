@@ -6,25 +6,9 @@ namespace InsightFlow.Infrastructure.Common.Helpers;
 
 public static class FakeDataHelper
 {
-    public static readonly User FakeAdmin = new()
-    {
-        Uuid = Guid.NewGuid(),
-        Username = "sepehr_frd",
-        PasswordHash = PasswordHelper.HashPassword("Sfr1376."),
-        Email = "sepfrd@outlook.com",
-        FirstName = "Sepehr",
-        LastName = "Foroughi Rad"
-    };
+    private static User? FakeAdmin;
 
-    public static readonly User FakeUser = new()
-    {
-        Uuid = Guid.NewGuid(),
-        Username = "bernard_cool",
-        PasswordHash = PasswordHelper.HashPassword("BernardCool1997."),
-        Email = "bercool@gmail.com",
-        FirstName = "Bernard",
-        LastName = "Cool"
-    };
+    private static User? FakeUser;
 
     public static List<BlogPost> GetFakeBlogPosts(List<User> fakeUsers, int countToGenerate)
     {
@@ -51,6 +35,26 @@ public static class FakeDataHelper
 
         var fakeUsers = new List<User>();
 
+        FakeAdmin = new User
+        {
+            Uuid = Guid.NewGuid(),
+            Username = "sepehr_frd",
+            PasswordHash = PasswordHelper.HashPassword("Sfr1376."),
+            Email = "sepfrd@outlook.com",
+            FirstName = "Sepehr",
+            LastName = "Foroughi Rad"
+        };
+
+        FakeUser = new User
+        {
+            Uuid = Guid.NewGuid(),
+            Username = "bernard_cool",
+            PasswordHash = PasswordHelper.HashPassword("BernardCool1997."),
+            Email = "bercool@gmail.com",
+            FirstName = "Bernard",
+            LastName = "Cool"
+        };
+
         fakeUsers.AddRange(new List<User>
         {
             FakeAdmin,
@@ -70,17 +74,17 @@ public static class FakeDataHelper
         {
             new()
             {
-                User = fakeUsers.First(user => user.Username == FakeAdmin.Username),
+                User = fakeUsers.First(user => user.Username == FakeAdmin!.Username),
                 Role = fakeRoles.First(role => role.Title == DomainConstants.BasicUserRoleTitle)
             },
             new()
             {
-                User = fakeUsers.First(user => user.Username == FakeAdmin.Username),
+                User = fakeUsers.First(user => user.Username == FakeAdmin!.Username),
                 Role = fakeRoles.First(role => role.Title == DomainConstants.AdminRoleTitle)
             },
             new()
             {
-                User = fakeUsers.First(user => user.Username == FakeUser.Username),
+                User = fakeUsers.First(user => user.Username == FakeUser!.Username),
                 Role = fakeRoles.First(role => role.Title == DomainConstants.BasicUserRoleTitle)
             }
         };
