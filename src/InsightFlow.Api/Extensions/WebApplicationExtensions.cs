@@ -27,7 +27,7 @@ public static class WebApplicationExtensions
 
         await using var dbContext = scope.ServiceProvider.GetRequiredService<UnitOfWork>();
 
-        if (webApplication.Environment.IsEnvironment(ApplicationConstants.TestingEnvironmentName))
+        if (webApplication.Environment.IsEnvironment(InfrastructureConstants.TestingEnvironmentName))
         {
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();

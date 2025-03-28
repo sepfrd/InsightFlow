@@ -7,11 +7,11 @@ namespace InsightFlow.Application.Features.BlogPosts.Dtos;
 
 public class BlogPostFilterDto : FilterDtoBase
 {
-    public string? Title { get; init; }
+    public string? Title { get; set; }
 
-    public string? Body { get; init; }
+    public string? Body { get; set; }
 
-    public Guid? AuthorUuid { get; init; }
+    public long? AuthorId { get; set; }
 
     public Expression<Func<BlogPost, bool>>? ToExpression()
     {
@@ -24,6 +24,16 @@ public class BlogPostFilterDto : FilterDtoBase
         if (parentDtoExpression is not null)
         {
             expressions.Add(parentDtoExpression);
+        }
+
+        if (AuthorId is not null)
+        {
+            var authorIdMember = Expression.Property(blogPost, nameof(BlogPost.AuthorId));
+            var authorIdConstant = Expression.Constant(AuthorId);
+
+            var authorIdExpression = Expression.Equal(authorIdMember, authorIdConstant);
+
+            expressions.Add(authorIdExpression);
         }
 
         if (!string.IsNullOrWhiteSpace(Title))

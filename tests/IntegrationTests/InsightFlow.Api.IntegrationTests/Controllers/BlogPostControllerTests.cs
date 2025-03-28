@@ -80,6 +80,8 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
         createBlogPostRequest.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwt);
         createBlogPostRequest.Content = JsonContent.Create(createBlogPostDto, options: _jsonSerializerOptions);
 
+        var createdAtDateTime = DateTime.UtcNow;
+
         // Create a BlogPost --- Act
         var createBlogPostResponse = await httpClient.SendAsync(
             createBlogPostRequest,
@@ -134,6 +136,10 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
                 cancellationToken: TestContext.Current.CancellationToken);
 
         createdBlogPost.Title.ShouldBe(createBlogPostDto.Title);
+        createdBlogPost.CreatedAt.ShouldBeGreaterThanOrEqualTo(createdAtDateTime);
+        createdBlogPost.UpdatedAt.ShouldBeGreaterThanOrEqualTo(createdAtDateTime);
+        createdBlogPost.CreatedAt.ShouldBe(createdBlogPost.UpdatedAt);
+        createdBlogPost.Title.ShouldBe(createBlogPostDto.Title);
         createdBlogPost.Body.ShouldBe(createBlogPostDto.Body);
         createdBlogPost.AuthorId.ShouldBe(user.Id);
     }
@@ -169,7 +175,7 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
             return null;
         }
 
-        var userUuidString = decodedPayloadJson[ApplicationConstants.UuidClaim]?.ToString();
+        var userUuidString = decodedPayloadJson[InfrastructureConstants.UuidClaim]?.ToString();
 
         var isGuid = Guid.TryParse(userUuidString, out var userUuid);
 

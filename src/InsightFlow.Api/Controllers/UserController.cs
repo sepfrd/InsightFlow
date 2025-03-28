@@ -66,7 +66,7 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [Route("admins")]
-    [Authorize(ApplicationConstants.AdminPolicyName)]
+    [Authorize(InfrastructureConstants.AdminPolicyName)]
     public async Task<ActionResult<DomainResponse<UserResponseDto>>> CreateAdminAsync([FromBody] CreateUserRequestDto createUserRequestDto, CancellationToken cancellationToken)
     {
         var dataValidationResult = await _dataValidator.ValidateAsync(createUserRequestDto, cancellationToken);

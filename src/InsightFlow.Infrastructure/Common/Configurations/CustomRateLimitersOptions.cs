@@ -1,8 +1,8 @@
 using System.Threading.RateLimiting;
 
-namespace InsightFlow.Infrastructure.Common.Dtos.Configurations;
+namespace InsightFlow.Infrastructure.Common.Configurations;
 
-public class CustomRateLimitOptions
+public class CustomRateLimitersOptions
 {
     public CustomFixedWindowRateLimiterOptions? FixedWindowRateLimiterOptions { get; set; }
 

@@ -1,3 +1,4 @@
+using Humanizer;
 using InsightFlow.Api.Common.Dtos.Requests;
 using InsightFlow.Application.Features.BlogPosts.Commands.CreateBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Commands.UpdateBlogPost;
@@ -5,8 +6,12 @@ using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Features.BlogPosts.Queries.GetAllBlogPostsByFilter;
 using InsightFlow.Application.Features.BlogPosts.Queries.GetSingleBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Queries.GetUserBlogPosts;
+using InsightFlow.Application.Features.Users.Queries.GetUserIdByUserUuid;
+using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Constants;
+using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,15 +25,20 @@ public class BlogPostController : ControllerBase
 {
     private readonly ISender _sender;
     private readonly IAuthService _authService;
+    private readonly IDataValidator<PaginationDto> _paginationDtoValidator;
 
-    public BlogPostController(ISender sender, IAuthService authService)
+    public BlogPostController(
+        ISender sender,
+        IAuthService authService,
+        IDataValidator<PaginationDto> paginationDtoValidator)
     {
         _sender = sender;
         _authService = authService;
+        _paginationDtoValidator = paginationDtoValidator;
     }
 
     [HttpPost]
-    [Authorize(ApplicationConstants.UserPolicyName)]
+    [Authorize(InfrastructureConstants.UserPolicyName)]
     public async Task<ActionResult<DomainResponse<BlogPostResponseDto>>> CreateBlogPostAsync([FromBody] CreateBlogPostRequestDto request, CancellationToken cancellationToken)
     {
         var signedInUserUuid = _authService.GetSignedInUserUuid();
@@ -45,12 +55,49 @@ public class BlogPostController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>> GetAllBlogPostsByFilterAsync(
-        [FromQuery] uint pageNumber,
-        [FromQuery] uint pageSize,
-        [FromQuery] BlogPostFilterDto filterDto,
+        [FromQuery] PaginationDto pagination,
+        [FromQuery] string? title,
+        [FromQuery] string? body,
+        [FromQuery] Guid? authorUuid,
         CancellationToken cancellationToken)
     {
-        var request = new GetAllBlogPostsByFilterQuery(filterDto, pageNumber, pageSize);
+        var paginationDtoValidationResult = await _paginationDtoValidator.ValidateAsync(pagination, cancellationToken);
+
+        if (!paginationDtoValidationResult.IsValid)
+        {
+            return BadRequest(PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>
+                .CreateFailure(
+                    string.Join(Environment.NewLine, paginationDtoValidationResult.ValidationErrors),
+                    StatusCodes.Status400BadRequest));
+        }
+
+        var filterDto = new BlogPostFilterDto
+        {
+            Title = title,
+            Body = body
+        };
+
+        if (authorUuid.HasValue)
+        {
+            var userRequest = new GetUserIdByUserUuidQuery(authorUuid.Value);
+
+            var userIdResponse = await _sender.Send(userRequest, cancellationToken);
+
+            if (!userIdResponse.IsSuccess)
+            {
+                var message = string.Format(
+                    StringConstants.EntityNotFoundByUuidTemplate,
+                    nameof(User).Humanize(LetterCasing.LowerCase),
+                    authorUuid);
+
+                return BadRequest(PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>
+                    .CreateFailure(message, StatusCodes.Status400BadRequest));
+            }
+
+            filterDto.AuthorId = userIdResponse.Data;
+        }
+
+        var request = new GetAllBlogPostsByFilterQuery(filterDto, pagination.PageNumber, pagination.PageSize);
 
         var response = await _sender.Send(request, cancellationToken);
 
@@ -59,15 +106,24 @@ public class BlogPostController : ControllerBase
 
     [HttpGet]
     [Route("users/blog-posts")]
-    [Authorize(ApplicationConstants.UserPolicyName)]
+    [Authorize(InfrastructureConstants.UserPolicyName)]
     public async Task<ActionResult<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>> GetAllCurrentUserBlogPostsAsync(
-        [FromQuery] uint pageNumber,
-        [FromQuery] uint pageSize,
+        [FromQuery] PaginationDto pagination,
         CancellationToken cancellationToken)
     {
+        var paginationDtoValidationResult = await _paginationDtoValidator.ValidateAsync(pagination, cancellationToken);
+
+        if (!paginationDtoValidationResult.IsValid)
+        {
+            return BadRequest(PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>
+                .CreateFailure(
+                    string.Join(Environment.NewLine, paginationDtoValidationResult.ValidationErrors),
+                    StatusCodes.Status400BadRequest));
+        }
+
         var stringUuid = _authService.GetSignedInUserUuid();
 
-        var request = new GetUserBlogPostsQuery(Guid.Parse(stringUuid), pageNumber, pageSize);
+        var request = new GetUserBlogPostsQuery(Guid.Parse(stringUuid), pagination.PageNumber, pagination.PageSize);
 
         var response = await _sender.Send(request, cancellationToken);
 

@@ -6,6 +6,7 @@ using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
+using InsightFlow.Infrastructure.Common.Configurations;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Common.Helpers;
@@ -15,7 +16,6 @@ using InsightFlow.Infrastructure.Services;
 using InsightFlow.Infrastructure.Validators;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -25,7 +25,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        IConfiguration configuration,
+        AppOptions appOptions,
         IHostEnvironment environment)
     {
         ConfigureMapster();
@@ -33,10 +33,11 @@ public static class ServiceCollectionExtensions
         return services
             .AddSingleton<IMappingService, MappingService>()
             .AddSingleton<IDataValidator<CreateUserRequestDto>, DataValidator<CreateUserRequestDto>>()
+            .AddSingleton<IDataValidator<PaginationDto>, DataValidator<PaginationDto>>()
             .AddSingleton<IRoleService, RoleService>()
             .AddValidatorsFromAssemblyContaining<CreateUserRequestDtoValidator>(ServiceLifetime.Singleton)
             .AddScoped<IAuthService, AuthService>()
-            .AddDatabase(configuration, environment);
+            .AddDatabase(appOptions, environment);
     }
 
     private static void ConfigureMapster()
@@ -77,15 +78,15 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddDatabase(
         this IServiceCollection services,
-        IConfiguration configuration,
+        AppOptions appOptions,
         IHostEnvironment environment)
     {
-        if (environment.IsEnvironment(ApplicationConstants.TestingEnvironmentName))
+        if (environment.IsEnvironment(InfrastructureConstants.TestingEnvironmentName))
         {
             return services.AddDbContext<IUnitOfWork, UnitOfWork>(options =>
             {
                 options
-                    .UseInMemoryDatabase(ApplicationConstants.ApplicationName)
+                    .UseInMemoryDatabase(appOptions.ApplicationInformation!.Name!)
                     .UseSeeding((dbContext, _) => dbContext.SeedDatabase())
                     .UseAsyncSeeding((dbContext, _, _) => Task.FromResult(dbContext.SeedDatabase()));
             });
@@ -94,7 +95,7 @@ public static class ServiceCollectionExtensions
         return services.AddDbContext<IUnitOfWork, UnitOfWork>(options =>
         {
             options
-                .UseSqlServer(configuration.GetConnectionString(ApplicationConstants.SqlServerConfigurationKey))
+                .UseSqlServer(appOptions.SqlServerConnectionString)
                 .UseSeeding((dbContext, _) => dbContext.SeedDatabase())
                 .UseAsyncSeeding((dbContext, _, _) => Task.FromResult(dbContext.SeedDatabase()));
 

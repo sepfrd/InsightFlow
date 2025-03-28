@@ -4,7 +4,6 @@ public static class StringConstants
 {
     public const string BadRequest = "Bad Request";
     public const string Unauthorized = "Unauthorized";
-    public const string Forbidden = "Forbidden";
     public const string NotFound = "Not Found";
     public const string InternalServerError = "Something went wrong in our side, please try again later.";
     public const string AlreadySignedIn = "You are already signed in.";
@@ -13,7 +12,6 @@ public static class StringConstants
     public const string InvalidCredentials = "Username and/or password not correct.";
     public const string InvalidParametersTemplate = "Invalid value for parameter(s) {0}.";
     public const string IdenticalNewPropertyValuesTemplate = "At least one new property value must be different from its current value.";
-    public const string IdenticalNewValueTemplate = "{0} value is already {1}";
     public const string EntityNotFoundByUuidTemplate = "{0} with UUID of {1} not found.";
     public const string SuccessfulLogin = "Successfully authenticated.";
     public const string SuccessfulCreationTemplate = "Successfully created {0} entity.";
@@ -35,7 +33,6 @@ public static class StringConstants
 
     // ------------------------------ Action Names ------------------------------
     public const string CreateActionName = "Create";
-    public const string ReadActionName = "Read";
     public const string UpdateActionName = "Update";
     public const string DeleteActionName = "Delete";
 }

@@ -21,7 +21,7 @@ public class CacheController : ControllerBase
 
     [HttpPost]
     [Route("roles/refresh")]
-    [Authorize(ApplicationConstants.AdminPolicyName)]
+    [Authorize(InfrastructureConstants.AdminPolicyName)]
     public async Task<IActionResult> RefreshRolesCacheAsync(CancellationToken cancellationToken)
     {
         var result = await _roleService.InitializeAsync(cancellationToken);

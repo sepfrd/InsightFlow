@@ -6,5 +6,11 @@ namespace InsightFlow.Application.UnitTests.Features.TestUtilities.BlogPosts.Ext
 public static class BlogPostExtensions
 {
     public static BlogPostResponseDto ToBlogPostResponseDto(this BlogPost blogPost, Guid authorUuid) =>
-        new(blogPost.Uuid, blogPost.Title, blogPost.Body, authorUuid);
+        new(
+            blogPost.Uuid,
+            blogPost.CreatedAt,
+            blogPost.UpdatedAt,
+            blogPost.Title,
+            blogPost.Body,
+            authorUuid);
 }

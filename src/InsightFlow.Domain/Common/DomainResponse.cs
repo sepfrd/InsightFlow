@@ -22,7 +22,7 @@ public record DomainResponse
         new(message, resultCode);
 }
 
-public record DomainResponse<T> : DomainResponse where T : class
+public record DomainResponse<T> : DomainResponse
 {
     protected DomainResponse(string? message, int statusCode, T? data) : base(message, statusCode)
     {
@@ -35,5 +35,5 @@ public record DomainResponse<T> : DomainResponse where T : class
         new(message, resultCode, data);
 
     public static DomainResponse<T> CreateFailure(string message, int resultCode) =>
-        new(message, resultCode, null);
+        new(message, resultCode, default);
 }

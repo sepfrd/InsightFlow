@@ -1,6 +1,8 @@
 using InsightFlow.Api.Extensions;
 using InsightFlow.Common.Constants;
+using InsightFlow.Infrastructure.Common.Configurations;
 using InsightFlow.Infrastructure.Common.Constants;
+using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
@@ -43,11 +45,9 @@ try
         return;
     }
 
-    var applicationVersion = app
-        .Configuration
-        .GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey)!
-        .Split('.')
-        .First();
+    var appOptions = app.Services.GetRequiredService<IOptions<AppOptions>>().Value;
+
+    var applicationVersion = appOptions.ApplicationInformation!.Version!.Split('.').First();
 
     applicationVersion = 'v' + applicationVersion;
 
@@ -59,7 +59,7 @@ try
     {
         options.DarkMode = true;
         options.Theme = ScalarTheme.BluePlanet;
-        options.Title = ApplicationConstants.ApplicationName;
+        options.Title = appOptions.ApplicationInformation.Name!;
         options.OpenApiRoutePattern = applicationVersion;
     });
 
@@ -69,8 +69,8 @@ try
         .UseRouting()
         .UseRateLimiter()
         .UseCors(!app.Environment.IsProduction()
-            ? ApplicationConstants.AllowAnyOriginCorsPolicy
-            : ApplicationConstants.RestrictedCorsPolicy)
+            ? InfrastructureConstants.AllowAnyOriginCorsPolicy
+            : InfrastructureConstants.RestrictedCorsPolicy)
         .UseAuthentication()
         .UseAuthorization();
 

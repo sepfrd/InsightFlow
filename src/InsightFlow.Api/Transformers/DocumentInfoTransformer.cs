@@ -1,32 +1,26 @@
-using InsightFlow.Infrastructure.Common.Constants;
+using InsightFlow.Infrastructure.Common.Configurations;
 using Microsoft.AspNetCore.OpenApi;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace InsightFlow.Api.Transformers;
 
 public class DocumentInfoTransformer : IOpenApiDocumentTransformer
 {
-    private readonly IConfiguration _configuration;
+    private readonly AppOptions _appOptions;
 
-    public DocumentInfoTransformer(IConfiguration configuration)
+    public DocumentInfoTransformer(IOptions<AppOptions> appOptions)
     {
-        _configuration = configuration;
+        _appOptions = appOptions.Value;
     }
 
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
-        var applicationVersion = _configuration.GetValue<string>(ApplicationConstants.ApplicationVersionConfigurationKey)!;
+        document.Info.Contact = _appOptions.ContactInformation;
 
-        document.Info.Contact = new OpenApiContact
-        {
-            Name = ApplicationConstants.ApplicationContactName,
-            Url = new Uri(ApplicationConstants.ApplicationContactUrl),
-            Email = ApplicationConstants.ApplicationContactEmail
-        };
+        document.Info.Version = _appOptions.ApplicationInformation!.Version!;
 
-        document.Info.Version = applicationVersion;
-
-        document.Info.Title = ApplicationConstants.ApplicationName + " | " + "v" + applicationVersion.Split('.').First();
+        document.Info.Title = _appOptions.ApplicationInformation.Name! + " | " + "v" + _appOptions.ApplicationInformation.Version!.Split('.').First();
 
         return Task.CompletedTask;
     }

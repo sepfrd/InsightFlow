@@ -1,4 +1,4 @@
-namespace InsightFlow.Infrastructure.Common.Dtos.Configurations;
+namespace InsightFlow.Infrastructure.Common.Configurations;
 
 public record JwtOptions
 {

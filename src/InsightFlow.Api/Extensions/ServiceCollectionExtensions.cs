@@ -7,11 +7,12 @@ using InsightFlow.Api.ExceptionHandlers;
 using InsightFlow.Api.Transformers;
 using InsightFlow.Application.Features.BlogPosts.Commands.CreateBlogPost;
 using InsightFlow.Domain.Common;
+using InsightFlow.Infrastructure.Common.Configurations;
 using InsightFlow.Infrastructure.Common.Constants;
-using InsightFlow.Infrastructure.Common.Dtos.Configurations;
 using InsightFlow.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Serilog;
@@ -22,18 +23,20 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
+        var appOptions = configuration.Get<AppOptions>()!;
+
         services
             .AddOpenApi(options =>
                 options
                     .AddDocumentTransformer<BearerSecuritySchemeTransformer>()
                     .AddDocumentTransformer<DocumentInfoTransformer>())
             .AddHttpContextAccessor()
-            .Configure<JwtOptions>(configuration.GetSection(ApplicationConstants.JwtConfigurationSectionKey))
-            .AddInfrastructure(configuration, environment)
+            .AddSingleton(Options.Create(appOptions))
+            .AddInfrastructure(appOptions, environment)
             .AddMediatR(config => config.RegisterServicesFromAssemblyContaining<CreateBlogPostCommandHandler>())
-            .AddAuth(configuration)
-            .AddRateLimiters(configuration)
-            .AddCors(configuration)
+            .AddAuth(appOptions)
+            .AddRateLimiters(appOptions)
+            .AddCors(appOptions)
             .AddSerilog(configuration)
             .AddExceptionHandler<GlobalExceptionHandler>()
             .AddProblemDetails()
@@ -50,7 +53,8 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration) =>
+    public static IServiceCollection AddAuth(
+        this IServiceCollection services, AppOptions appOptions) =>
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -59,18 +63,9 @@ public static class ServiceCollectionExtensions
             })
             .AddJwtBearer(options =>
             {
-                var serverUrl = configuration
-                    .GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
-                    .GetValue<string>(ApplicationConstants.ServerUrlConfigurationKey)!;
-
-                var clientUrl = configuration.GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
-                    .GetValue<string>(ApplicationConstants.ClientUrlConfigurationKey)!;
-
-                var jwtConfiguration = configuration.GetRequiredSection(ApplicationConstants.JwtConfigurationSectionKey).Get<JwtOptions>()!;
-
                 var rsa = RSA.Create();
 
-                rsa.ImportFromPem(jwtConfiguration.PublicKey);
+                rsa.ImportFromPem(appOptions.JwtOptions!.PublicKey);
 
                 var securityKey = new RsaSecurityKey(rsa);
 
@@ -84,44 +79,41 @@ public static class ServiceCollectionExtensions
                     ValidateLifetime = true,
                     RequireExpirationTime = true,
                     IssuerSigningKey = securityKey,
-                    ValidIssuer = serverUrl,
-                    ValidAudience = clientUrl
+                    ValidIssuer = appOptions.ApplicationInformation!.ServerUrl!,
+                    ValidAudience = appOptions.ApplicationInformation.ClientUrl!
                 };
             })
             .Services
             .AddAuthorization(options =>
             {
-                options.AddPolicy(ApplicationConstants.AdminPolicyName,
+                options.AddPolicy(InfrastructureConstants.AdminPolicyName,
                     policy => policy.RequireRole(DomainConstants.AdminRoleTitle));
-                options.AddPolicy(ApplicationConstants.UserPolicyName,
+                options.AddPolicy(InfrastructureConstants.UserPolicyName,
                     policy => policy.RequireRole(DomainConstants.BasicUserRoleTitle));
             });
 
-    public static IServiceCollection AddRateLimiters(this IServiceCollection services, IConfiguration configuration)
-    {
-        var customRateLimitOptions = configuration.GetSection(ApplicationConstants.RateLimitersSectionKey).Get<CustomRateLimitOptions>()!;
-
+    public static IServiceCollection AddRateLimiters(this IServiceCollection services, AppOptions appOptions) =>
         services
             .AddRateLimiter(limiterOptions =>
             {
                 limiterOptions.AddFixedWindowLimiter(
-                    ApplicationConstants.FixedWindowRateLimiterPolicy,
+                    InfrastructureConstants.FixedWindowRateLimiterPolicy,
                     fixedWindowOptions =>
                     {
-                        fixedWindowOptions.PermitLimit = customRateLimitOptions.FixedWindowRateLimiterOptions!.PermitLimit;
-                        fixedWindowOptions.Window = TimeSpan.FromSeconds(customRateLimitOptions.FixedWindowRateLimiterOptions.WindowSeconds);
-                        fixedWindowOptions.QueueLimit = customRateLimitOptions.FixedWindowRateLimiterOptions.QueueLimit;
-                        fixedWindowOptions.QueueProcessingOrder = customRateLimitOptions.FixedWindowRateLimiterOptions.QueueProcessingOrder;
-                        fixedWindowOptions.AutoReplenishment = customRateLimitOptions.FixedWindowRateLimiterOptions.AutoReplenishment;
+                        fixedWindowOptions.PermitLimit = appOptions.RateLimitersConfiguration!.FixedWindowRateLimiterOptions!.PermitLimit;
+                        fixedWindowOptions.Window = TimeSpan.FromSeconds(appOptions.RateLimitersConfiguration.FixedWindowRateLimiterOptions.WindowSeconds);
+                        fixedWindowOptions.QueueLimit = appOptions.RateLimitersConfiguration.FixedWindowRateLimiterOptions.QueueLimit;
+                        fixedWindowOptions.QueueProcessingOrder = appOptions.RateLimitersConfiguration.FixedWindowRateLimiterOptions.QueueProcessingOrder;
+                        fixedWindowOptions.AutoReplenishment = appOptions.RateLimitersConfiguration.FixedWindowRateLimiterOptions.AutoReplenishment;
                     });
 
                 limiterOptions.AddConcurrencyLimiter(
-                    ApplicationConstants.ConcurrencyRateLimiterPolicy,
+                    InfrastructureConstants.ConcurrencyRateLimiterPolicy,
                     concurrencyOptions =>
                     {
-                        concurrencyOptions.PermitLimit = customRateLimitOptions.ConcurrencyLimiterOptions!.PermitLimit;
-                        concurrencyOptions.QueueLimit = customRateLimitOptions.ConcurrencyLimiterOptions.QueueLimit;
-                        concurrencyOptions.QueueProcessingOrder = customRateLimitOptions.ConcurrencyLimiterOptions.QueueProcessingOrder;
+                        concurrencyOptions.PermitLimit = appOptions.RateLimitersConfiguration!.ConcurrencyLimiterOptions!.PermitLimit;
+                        concurrencyOptions.QueueLimit = appOptions.RateLimitersConfiguration.ConcurrencyLimiterOptions.QueueLimit;
+                        concurrencyOptions.QueueProcessingOrder = appOptions.RateLimitersConfiguration.ConcurrencyLimiterOptions.QueueProcessingOrder;
                     });
 
                 limiterOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, IPAddress>(context =>
@@ -137,36 +129,26 @@ public static class ServiceCollectionExtensions
                         remoteIpAddress,
                         _ => new TokenBucketRateLimiterOptions
                         {
-                            AutoReplenishment = customRateLimitOptions.TokenBucketRateLimiterOptions!.AutoReplenishment,
-                            QueueLimit = customRateLimitOptions.TokenBucketRateLimiterOptions.QueueLimit,
-                            QueueProcessingOrder = customRateLimitOptions.TokenBucketRateLimiterOptions.QueueProcessingOrder,
-                            ReplenishmentPeriod = TimeSpan.FromSeconds(customRateLimitOptions.TokenBucketRateLimiterOptions.ReplenishmentPeriodSeconds),
-                            TokenLimit = customRateLimitOptions.TokenBucketRateLimiterOptions.TokenLimit,
-                            TokensPerPeriod = customRateLimitOptions.TokenBucketRateLimiterOptions.TokensPerPeriod
+                            AutoReplenishment = appOptions.RateLimitersConfiguration!.TokenBucketRateLimiterOptions!.AutoReplenishment,
+                            QueueLimit = appOptions.RateLimitersConfiguration.TokenBucketRateLimiterOptions.QueueLimit,
+                            QueueProcessingOrder = appOptions.RateLimitersConfiguration.TokenBucketRateLimiterOptions.QueueProcessingOrder,
+                            ReplenishmentPeriod = TimeSpan.FromSeconds(appOptions.RateLimitersConfiguration.TokenBucketRateLimiterOptions.ReplenishmentPeriodSeconds),
+                            TokenLimit = appOptions.RateLimitersConfiguration.TokenBucketRateLimiterOptions.TokenLimit,
+                            TokensPerPeriod = appOptions.RateLimitersConfiguration.TokenBucketRateLimiterOptions.TokensPerPeriod
                         });
                 });
 
                 limiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
             });
 
-        return services;
-    }
-
     public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration) =>
         services.AddSerilog(loggerConfiguration =>
             loggerConfiguration.ReadFrom.Configuration(configuration));
 
-    public static IServiceCollection AddCors(this IServiceCollection services, IConfiguration configuration) =>
+    public static IServiceCollection AddCors(this IServiceCollection services, AppOptions appOptions) =>
         services.AddCors(options =>
         {
-            var serverUrl = configuration
-                .GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
-                .GetValue<string>(ApplicationConstants.ServerUrlConfigurationKey)!;
-
-            var clientUrl = configuration.GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
-                .GetValue<string>(ApplicationConstants.ClientUrlConfigurationKey)!;
-
-            options.AddPolicy(ApplicationConstants.RestrictedCorsPolicy, builder =>
+            options.AddPolicy(InfrastructureConstants.RestrictedCorsPolicy, builder =>
             {
                 builder
                     .WithMethods(HttpMethods.Post, HttpMethods.Get, HttpMethods.Put, HttpMethods.Delete, HttpMethods.Options)
@@ -182,8 +164,8 @@ public static class ServiceCollectionExtensions
                             return false;
                         }
 
-                        if (origin.StartsWith(serverUrl, StringComparison.CurrentCultureIgnoreCase) ||
-                            origin.StartsWith(clientUrl, StringComparison.CurrentCultureIgnoreCase))
+                        if (origin.StartsWith(appOptions.ApplicationInformation!.ServerUrl!, StringComparison.CurrentCultureIgnoreCase) ||
+                            origin.StartsWith(appOptions.ApplicationInformation.ClientUrl!, StringComparison.CurrentCultureIgnoreCase))
                         {
                             return true;
                         }
@@ -192,7 +174,7 @@ public static class ServiceCollectionExtensions
                     });
             });
 
-            options.AddPolicy(ApplicationConstants.AllowAnyOriginCorsPolicy, builder =>
+            options.AddPolicy(InfrastructureConstants.AllowAnyOriginCorsPolicy, builder =>
                 builder
                     .AllowAnyOrigin()
                     .AllowAnyMethod()

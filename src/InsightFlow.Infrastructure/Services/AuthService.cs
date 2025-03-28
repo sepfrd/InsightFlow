@@ -6,13 +6,12 @@ using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
+using InsightFlow.Infrastructure.Common.Configurations;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos;
-using InsightFlow.Infrastructure.Common.Dtos.Configurations;
 using InsightFlow.Infrastructure.Common.Helpers;
 using InsightFlow.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -21,24 +20,21 @@ namespace InsightFlow.Infrastructure.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AuthService> _logger;
-    private readonly JwtOptions _jwtOptions;
+    private readonly AppOptions _appOptions;
 
     public AuthService(
-        IConfiguration configuration,
         IHttpContextAccessor httpContextAccessor,
         IUnitOfWork unitOfWork,
         ILogger<AuthService> logger,
-        IOptions<JwtOptions> jwtConfigurationOptions)
+        IOptions<AppOptions> appOptions)
     {
-        _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _jwtOptions = jwtConfigurationOptions.Value;
+        _appOptions = appOptions.Value;
     }
 
     public async Task<DomainResponse<string>> AuthenticateAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
@@ -90,7 +86,7 @@ public class AuthService : IAuthService
             .HttpContext?
             .User
             .Claims
-            .First(claim => claim.Type == ApplicationConstants.UuidClaim)
+            .First(claim => claim.Type == InfrastructureConstants.UuidClaim)
             .Value!;
 
     private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
@@ -113,16 +109,9 @@ public class AuthService : IAuthService
 
     private string? CreateJwt(User user, IEnumerable<Role> roles)
     {
-        var serverUrl = _configuration
-            .GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
-            .GetValue<string>(ApplicationConstants.ServerUrlConfigurationKey)!;
-
-        var clientUrl = _configuration.GetSection(ApplicationConstants.ApplicationUrlsConfigurationSectionKey)
-            .GetValue<string>(ApplicationConstants.ClientUrlConfigurationKey)!;
-
         var rsa = RSA.Create();
 
-        rsa.ImportFromPem(_jwtOptions.PrivateKey);
+        rsa.ImportFromPem(_appOptions.JwtOptions!.PrivateKey);
 
         var securityKey = new RsaSecurityKey(rsa);
 
@@ -130,14 +119,14 @@ public class AuthService : IAuthService
 
         var claims = new ClaimsIdentity(new[]
         {
-            new Claim(JwtRegisteredClaimNames.Iss, serverUrl),
-            new Claim(JwtRegisteredClaimNames.Aud, clientUrl),
+            new Claim(JwtRegisteredClaimNames.Iss, _appOptions.ApplicationInformation!.ServerUrl!),
+            new Claim(JwtRegisteredClaimNames.Aud, _appOptions.ApplicationInformation.ClientUrl!),
             new Claim(
                 JwtRegisteredClaimNames.Iat,
                 DateTime.Now.ToUniversalTime().ToString(CultureInfo.InvariantCulture)),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ApplicationConstants.UuidClaim, user.Uuid.ToString()),
-            new Claim(ApplicationConstants.UsernameClaim, user.Username)
+            new Claim(InfrastructureConstants.UuidClaim, user.Uuid.ToString()),
+            new Claim(InfrastructureConstants.UsernameClaim, user.Username)
         });
 
         foreach (var role in roles)
@@ -150,7 +139,7 @@ public class AuthService : IAuthService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = claims,
-            Expires = DateTime.Now.AddMinutes(_jwtOptions.TokenExpirationDurationMinutes),
+            Expires = DateTime.Now.AddMinutes(_appOptions.JwtOptions.TokenExpirationDurationMinutes),
             SigningCredentials = signingCredentials
         };
 
