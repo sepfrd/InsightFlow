@@ -150,6 +150,10 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
             {
                 new LoginDto("sepehr_frd", "Sfr1376."),
                 new CreateBlogPostRequestDto("Some Title", "This is a test body for the blog post.")
+            },
+            {
+                new LoginDto("sepfrd@outlook.com", "Sfr1376."),
+                new CreateBlogPostRequestDto("Some Other Title", "This is another test body for the blog post.")
             }
         };
 
