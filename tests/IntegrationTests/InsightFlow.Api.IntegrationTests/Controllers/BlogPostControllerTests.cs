@@ -8,6 +8,7 @@ using Humanizer;
 using InsightFlow.Api.Common.Dtos.Requests;
 using InsightFlow.Api.IntegrationTests.TestUtilities;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
+using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
@@ -110,7 +111,14 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
 
         var blogPostTitle = blogPostJson[nameof(BlogPostResponseDto.Title).Camelize()]?.ToString();
         var blogPostBody = blogPostJson[nameof(BlogPostResponseDto.Body).Camelize()]?.ToString();
-        var blogPostAuthorUuidString = blogPostJson[nameof(BlogPostResponseDto.AuthorUuid).Camelize()]?.ToString();
+        var blogPostAuthorJson = blogPostJson[nameof(BlogPostResponseDto.Author).Camelize()];
+
+        blogPostAuthorJson.ShouldNotBeNull();
+
+        var authorUuidString = blogPostAuthorJson[nameof(UserResponseDto.Uuid).Camelize()]?.ToString();
+        var authorUsernameString = blogPostAuthorJson[nameof(UserResponseDto.Username).Camelize()]?.ToString();
+        var authorEmailString = blogPostAuthorJson[nameof(UserResponseDto.Email).Camelize()]?.ToString();
+        var authorFullNameString = blogPostAuthorJson[nameof(UserResponseDto.FullName).Camelize()]?.ToString();
 
         blogPostTitle.ShouldNotBeNull();
         blogPostTitle.ShouldBe(createBlogPostDto.Title);
@@ -118,8 +126,9 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
         blogPostBody.ShouldNotBeNull();
         blogPostBody.ShouldBe(createBlogPostDto.Body);
 
-        blogPostAuthorUuidString.ShouldNotBeNull();
-        blogPostAuthorUuidString.ShouldBe(userUuid.ToString());
+        authorUuidString.ShouldNotBeNull().ShouldBe(userUuid.ToString());
+
+        loginDto.UsernameOrEmail.ShouldNotBeNull().ShouldBeOneOf(authorUsernameString, authorEmailString);
 
         createBlogPostResponseMessage.ShouldNotBeNull();
         createBlogPostResponseMessage.ShouldBe(createBlogPostResponseExpectedMessage);
@@ -142,6 +151,11 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
         createdBlogPost.Title.ShouldBe(createBlogPostDto.Title);
         createdBlogPost.Body.ShouldBe(createBlogPostDto.Body);
         createdBlogPost.AuthorId.ShouldBe(user.Id);
+
+        authorUuidString.ShouldBe(user.Uuid.ToString());
+        authorUsernameString.ShouldBe(user.Username);
+        authorEmailString.ShouldBe(user.Email);
+        authorFullNameString.ShouldBe(user.FirstName + ' ' + user.LastName);
     }
 
     public static TheoryData<LoginDto, CreateBlogPostRequestDto> ValidAuthenticateAndThenCreateBlogPostRequests() =>

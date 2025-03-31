@@ -40,7 +40,7 @@ public class CreateBlogPostCommandHandlerTests
 
         var blogPost = Constants.BlogPost.CreateBlogPost(createBlogPostCommand.Title, createBlogPostCommand.Body, user);
 
-        var blogPostResponseDto = blogPost.ToBlogPostResponseDto(user.Uuid);
+        var blogPostResponseDto = blogPost.ToBlogPostResponseDto();
 
         _unitOfWork
             .UserRepository
@@ -99,7 +99,7 @@ public class CreateBlogPostCommandHandlerTests
 
         var blogPost = Constants.BlogPost.CreateBlogPost(createBlogPostCommand.Title, createBlogPostCommand.Body, user);
 
-        var blogPostResponseDto = blogPost.ToBlogPostResponseDto(user.Uuid);
+        var blogPostResponseDto = blogPost.ToBlogPostResponseDto();
 
         _unitOfWork
             .UserRepository
@@ -211,7 +211,7 @@ public class CreateBlogPostCommandHandlerTests
 
         var blogPost = Constants.BlogPost.CreateBlogPost(createBlogPostCommand.Title, createBlogPostCommand.Body, user);
 
-        var blogPostResponseDto = blogPost.ToBlogPostResponseDto(user.Uuid);
+        var blogPostResponseDto = blogPost.ToBlogPostResponseDto();
 
         _unitOfWork
             .UserRepository

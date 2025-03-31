@@ -55,8 +55,8 @@ public static class ServiceCollectionExtensions
         TypeAdapterConfig<BlogPost, BlogPostResponseDto>
             .ForType()
             .Map(
-                dto => dto.AuthorUuid,
-                blogPost => blogPost.Author!.Uuid);
+                dto => dto.Author,
+                blogPost => blogPost.Author);
 
         TypeAdapterConfig<UpdateBlogPostCommand, BlogPost>
             .ForType()

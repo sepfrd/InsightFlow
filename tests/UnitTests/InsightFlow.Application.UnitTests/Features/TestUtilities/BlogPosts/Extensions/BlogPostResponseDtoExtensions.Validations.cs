@@ -11,6 +11,6 @@ public static class BlogPostResponseDtoExtensions
         blogPostResponseDto.ShouldNotBeNull();
         blogPostResponseDto.Title.ShouldBe(createBlogPostCommand.Title);
         blogPostResponseDto.Body.ShouldBe(createBlogPostCommand.Body);
-        blogPostResponseDto.AuthorUuid.ShouldBe(createBlogPostCommand.AuthorUuid);
+        blogPostResponseDto.Author.Uuid.ShouldBe(createBlogPostCommand.AuthorUuid);
     }
 }
