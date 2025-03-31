@@ -4,6 +4,7 @@ using InsightFlow.Application.Features.BlogPosts.Commands.CreateBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Commands.UpdateBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Features.BlogPosts.Queries.GetAllBlogPostsByFilter;
+using InsightFlow.Application.Features.BlogPosts.Queries.GetAllBlogPostsCount;
 using InsightFlow.Application.Features.BlogPosts.Queries.GetSingleBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Queries.GetUserBlogPosts;
 using InsightFlow.Application.Features.Users.Queries.GetUserIdByUserUuid;
@@ -51,6 +52,17 @@ public class BlogPostController : ControllerBase
         var result = await _sender.Send(command, cancellationToken);
 
         return StatusCode(result.StatusCode, result);
+    }
+
+    [Route("count")]
+    [HttpGet]
+    public async Task<ActionResult<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>> GetAllBlogPostsCountAsync(CancellationToken cancellationToken)
+    {
+        var request = new GetAllBlogPostsCountQuery();
+
+        var response = await _sender.Send(request, cancellationToken);
+
+        return StatusCode(response.StatusCode, response);
     }
 
     [HttpGet]

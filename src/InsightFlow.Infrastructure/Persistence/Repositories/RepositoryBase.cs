@@ -1,6 +1,10 @@
 using System.Linq.Expressions;
+using Dapper;
+using Humanizer;
 using InsightFlow.Application.Interfaces.Repositories;
 using InsightFlow.Domain.Common;
+using InsightFlow.Infrastructure.Common.Constants;
+using InsightFlow.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +15,15 @@ public abstract class RepositoryBase<TEntity, TKey>
     where TEntity : DomainEntity
     where TKey : IEquatable<TKey>
 {
+    private readonly string _tableName;
     protected readonly DbSet<TEntity> _dbSet;
+    private readonly IDbConnectionPool _dbConnectionPool;
 
-    protected RepositoryBase(DbSet<TEntity> dbSet)
+    protected RepositoryBase(DbSet<TEntity> dbSet, IDbConnectionPool dbConnectionPool)
     {
         _dbSet = dbSet;
+        _dbConnectionPool = dbConnectionPool;
+        _tableName = _dbSet.EntityType.ShortName().Pluralize();
     }
 
     public virtual async Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -430,21 +438,15 @@ public abstract class RepositoryBase<TEntity, TKey>
             .ConfigureAwait(false);
     }
 
-    public virtual async Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null, CancellationToken cancellationToken = default)
+    public virtual async Task<long> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null, CancellationToken cancellationToken = default)
     {
-        int count;
+        var connection = _dbConnectionPool.GetConnection();
 
-        if (filter is not null)
-        {
-            count = await _dbSet
-                .CountAsync(filter, cancellationToken)
-                .ConfigureAwait(false);
-        }
+        var sqlQuery = string.Format(SqlQueryConstants.GetAllCountQuery, _tableName);
 
-        else
-        {
-            count = await _dbSet.CountAsync(cancellationToken).ConfigureAwait(false);
-        }
+        var count = await connection.ExecuteScalarAsync<long>(sqlQuery);
+
+        _dbConnectionPool.ReturnConnection(connection);
 
         return count;
     }

@@ -112,7 +112,7 @@ public interface IRepositoryBase<TEntity, in TKey>
 
     void Delete(TEntity entityToDelete);
 
-    Task<int> GetCountAsync(
+    Task<long> GetCountAsync(
         Expression<Func<TEntity, bool>>? filter = null,
         CancellationToken cancellationToken = default);
 }

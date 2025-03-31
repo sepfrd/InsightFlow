@@ -37,20 +37,20 @@
     <_ContentIncludedByDefault Remove="logs\development\log-20250307.json"/>
     <_ContentIncludedByDefault Remove="logs\development\log-20250308.json"/>
     <_ContentIncludedByDefault Remove="logs\internal\log-20250307.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250309.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250310.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250311.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250315.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250316.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250317.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250320.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250322.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250323.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250327.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250328.json" />
-    <_ContentIncludedByDefault Remove="logs\development\log-20250329.json" />
-    <_ContentIncludedByDefault Remove="logs\internal\log-20250316.json" />
-    <_ContentIncludedByDefault Remove="logs\internal\log-20250327.json" />
+    <_ContentIncludedByDefault Remove="logs\development\log-20250309.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250310.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250311.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250315.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250316.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250317.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250320.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250322.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250323.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250327.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250328.json"/>
+    <_ContentIncludedByDefault Remove="logs\development\log-20250329.json"/>
+    <_ContentIncludedByDefault Remove="logs\internal\log-20250316.json"/>
+    <_ContentIncludedByDefault Remove="logs\internal\log-20250327.json"/>
   </ItemGroup>
 
   <ItemGroup>

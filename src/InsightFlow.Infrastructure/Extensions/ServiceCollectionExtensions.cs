@@ -18,6 +18,7 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace InsightFlow.Infrastructure.Extensions;
 
@@ -35,6 +36,14 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IDataValidator<CreateUserRequestDto>, DataValidator<CreateUserRequestDto>>()
             .AddSingleton<IDataValidator<PaginationDto>, DataValidator<PaginationDto>>()
             .AddSingleton<IRoleService, RoleService>()
+            .AddSingleton<IDbConnectionPool, DbConnectionPool>(serviceProvider =>
+            {
+                var options = serviceProvider.GetRequiredService<IOptions<AppOptions>>().Value;
+
+                DbConnectionPool.Initialize(options.SqlServerConnectionString!);
+
+                return DbConnectionPool.Instance;
+            })
             .AddValidatorsFromAssemblyContaining<CreateUserRequestDtoValidator>(ServiceLifetime.Singleton)
             .AddScoped<IAuthService, AuthService>()
             .AddDatabase(appOptions, environment);
