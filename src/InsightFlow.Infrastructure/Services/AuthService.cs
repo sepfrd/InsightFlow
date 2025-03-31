@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using InsightFlow.Application.Interfaces;
@@ -91,8 +92,19 @@ public class AuthService : IAuthService
 
     private async Task<User?> ValidateAndGetUserByCredentialsAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
+        Expression<Func<User, bool>>? userPredicate;
+
+        if (RegexValidator.UsernameRegex().IsMatch(loginDto.UsernameOrEmail))
+        {
+            userPredicate = userEntity => userEntity.Username == loginDto.UsernameOrEmail;
+        }
+        else
+        {
+            userPredicate = userEntity => userEntity.Email == loginDto.UsernameOrEmail;
+        }
+
         var user = await _unitOfWork.UserRepository.GetOneAsync(
-            user => user.Username == loginDto.Username,
+            userPredicate,
             includes: [user => user.UserRoles],
             disableTracking: true,
             cancellationToken: cancellationToken);

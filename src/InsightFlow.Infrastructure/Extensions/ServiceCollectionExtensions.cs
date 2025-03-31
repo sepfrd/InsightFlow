@@ -35,6 +35,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IMappingService, MappingService>()
             .AddSingleton<IDataValidator<CreateUserRequestDto>, DataValidator<CreateUserRequestDto>>()
             .AddSingleton<IDataValidator<PaginationDto>, DataValidator<PaginationDto>>()
+            .AddSingleton<IDataValidator<LoginDto>, DataValidator<LoginDto>>()
             .AddSingleton<IRoleService, RoleService>()
             .AddSingleton<IDbConnectionPool, DbConnectionPool>(serviceProvider =>
             {

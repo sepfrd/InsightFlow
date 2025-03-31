@@ -1,3 +1,3 @@
 namespace InsightFlow.Infrastructure.Common.Dtos;
 
-public record LoginDto(string Username, string Password);
+public record LoginDto(string UsernameOrEmail, string Password);
