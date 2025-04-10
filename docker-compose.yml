@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: ./src/InsightFlow.Api/Dockerfile
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Development
       SqlServerConnectionString: "Server=sqlserver,1433;Database=InsightFlow;User Id=sa;Password=${MSSQL_SA_PASSWORD};Trust Server Certificate=True;Encrypt=False;Connect Timeout=120"
       ApplicationInformation__Name: "InsightFlow"
       ApplicationInformation__Version: "2.0.0"

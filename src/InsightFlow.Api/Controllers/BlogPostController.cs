@@ -17,6 +17,7 @@ using InsightFlow.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace InsightFlow.Api.Controllers;
 
@@ -168,5 +169,15 @@ public class BlogPostController : ControllerBase
         var response = await _sender.Send(command, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
+    }
+
+    [HttpOptions]
+    public IActionResult BlogPostsOption()
+    {
+        Response
+            .Headers
+            .Add(new KeyValuePair<string, StringValues>("Allow", $"{HttpMethods.Post},{HttpMethods.Get},{HttpMethods.Patch},{HttpMethods.Put},{HttpMethods.Delete}"));
+
+        return Ok();
     }
 }

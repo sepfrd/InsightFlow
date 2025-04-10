@@ -3,6 +3,7 @@ using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace InsightFlow.Api.Controllers;
 
@@ -36,5 +37,15 @@ public class AuthController : ControllerBase
         var result = await _authService.AuthenticateAsync(loginDto, cancellationToken);
 
         return StatusCode(result.StatusCode, result);
+    }
+
+    [HttpOptions]
+    public IActionResult AuthOptions()
+    {
+        Response
+            .Headers
+            .Add(new KeyValuePair<string, StringValues>("Allow", HttpMethods.Post));
+
+        return Ok();
     }
 }

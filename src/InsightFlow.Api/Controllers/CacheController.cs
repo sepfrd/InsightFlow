@@ -3,6 +3,7 @@ using InsightFlow.Common.Constants;
 using InsightFlow.Infrastructure.Common.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace InsightFlow.Api.Controllers;
 
@@ -36,5 +37,15 @@ public class CacheController : ControllerBase
         _logger.LogCritical(StringConstants.ApplicationInternalServerErrorTemplate, message);
 
         return StatusCode(StatusCodes.Status500InternalServerError, message);
+    }
+
+    [HttpOptions]
+    public IActionResult CacheOption()
+    {
+        Response
+            .Headers
+            .Add(new KeyValuePair<string, StringValues>("Allow", $"{HttpMethods.Post}"));
+
+        return Ok();
     }
 }

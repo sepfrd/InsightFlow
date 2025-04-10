@@ -63,14 +63,19 @@ try
         options.OpenApiRoutePattern = applicationVersion;
     });
 
+    if (app.Environment.IsProduction())
+    {
+        app
+            .UseHsts()
+            .UseHttpsRedirection();
+    }
+
     app
-        .UseHsts()
-        .UseHttpsRedirection()
         .UseRouting()
         .UseRateLimiter()
-        .UseCors(!app.Environment.IsProduction()
-            ? InfrastructureConstants.AllowAnyOriginCorsPolicy
-            : InfrastructureConstants.RestrictedCorsPolicy)
+        .UseCors(app.Environment.IsProduction()
+            ? InfrastructureConstants.RestrictedCorsPolicy
+            : InfrastructureConstants.AllowAnyOriginCorsPolicy)
         .UseAuthentication()
         .UseAuthorization();
 
