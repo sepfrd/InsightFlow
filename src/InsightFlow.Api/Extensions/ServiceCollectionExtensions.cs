@@ -151,7 +151,7 @@ public static class ServiceCollectionExtensions
             options.AddPolicy(InfrastructureConstants.RestrictedCorsPolicy, builder =>
             {
                 builder
-                    .WithMethods(HttpMethods.Post, HttpMethods.Get, HttpMethods.Put, HttpMethods.Delete, HttpMethods.Options)
+                    .AllowAnyMethod()
                     .WithHeaders(
                         HeaderNames.Accept,
                         HeaderNames.ContentType,
