@@ -58,7 +58,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         {
             var forbiddenMessage = string.Format(
                 StringConstants.ForbiddenActionTemplate,
-                StringConstants.UpdateActionName,
+                StringConstants.UpdateActionName.Humanize(LetterCasing.LowerCase),
                 nameof(BlogPost).Humanize(LetterCasing.LowerCase));
 
             return DomainResponse<BlogPostResponseDto>.CreateFailure(forbiddenMessage, StatusCodes.Status403Forbidden);

@@ -46,6 +46,16 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
             return DomainResponse.CreateBaseFailure(notFoundMessage, StatusCodes.Status404NotFound);
         }
 
+        if (blogPost.AuthorId != user.Id)
+        {
+            var forbiddenMessage = string.Format(
+                StringConstants.ForbiddenActionTemplate,
+                StringConstants.DeleteActionName.Humanize(LetterCasing.LowerCase),
+                nameof(BlogPost).Humanize(LetterCasing.LowerCase));
+
+            return DomainResponse.CreateBaseFailure(forbiddenMessage, StatusCodes.Status403Forbidden);
+        }
+
         _unitOfWork.BlogPostRepository.Delete(blogPost);
 
         var commitResult = await _unitOfWork.CommitChangesAsync(cancellationToken);

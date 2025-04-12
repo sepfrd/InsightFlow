@@ -1,6 +1,7 @@
 using Humanizer;
 using InsightFlow.Api.Common.Dtos.Requests;
 using InsightFlow.Application.Features.BlogPosts.Commands.CreateBlogPost;
+using InsightFlow.Application.Features.BlogPosts.Commands.DeleteBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Commands.UpdateBlogPost;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Features.BlogPosts.Queries.GetAllBlogPostsByFilter;
@@ -170,6 +171,24 @@ public class BlogPostController : ControllerBase
 
         return StatusCode(response.StatusCode, response);
     }
+
+    [HttpDelete]
+    [Authorize]
+    [Route("{uuid:guid}")]
+    public async Task<ActionResult<DomainResponse<BlogPostResponseDto>>> DeleteBlogPostByUuidAsync([FromRoute] Guid uuid, CancellationToken cancellationToken)
+    {
+        var signedInUserUuid = _authService.GetSignedInUserUuid();
+
+        var command = new DeleteBlogPostCommand(
+            uuid,
+            Guid.Parse(signedInUserUuid));
+
+        var response = await _sender.Send(command, cancellationToken);
+
+        return StatusCode(response.StatusCode, response);
+    }
+
+
 
     [HttpOptions]
     public IActionResult BlogPostsOption()
