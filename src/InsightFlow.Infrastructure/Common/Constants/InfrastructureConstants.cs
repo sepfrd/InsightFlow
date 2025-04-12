@@ -7,6 +7,7 @@ public static class InfrastructureConstants
     public const string UserPolicyName = "OnlyUserPolicy";
     public const string UsernameClaim = "username";
     public const string UuidClaim = "uuid";
+    public const string RolesClaim = "roles";
 
     // ---------------------------- CORS Constants ----------------------------
     public const string AllowAnyOriginCorsPolicy = "AllowAnyOriginCorsPolicy";

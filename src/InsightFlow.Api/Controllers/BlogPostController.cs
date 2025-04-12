@@ -188,8 +188,6 @@ public class BlogPostController : ControllerBase
         return StatusCode(response.StatusCode, response);
     }
 
-
-
     [HttpOptions]
     public IActionResult BlogPostsOption()
     {

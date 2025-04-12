@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
+using Humanizer;
 using InsightFlow.Api.ExceptionHandlers;
 using InsightFlow.Api.Transformers;
 using InsightFlow.Application.Features.BlogPosts.Commands.CreateBlogPost;
@@ -87,9 +88,11 @@ public static class ServiceCollectionExtensions
             .AddAuthorization(options =>
             {
                 options.AddPolicy(InfrastructureConstants.AdminPolicyName,
-                    policy => policy.RequireRole(DomainConstants.AdminRoleTitle));
+                    policy =>
+                        policy.RequireRole(DomainConstants.AdminRoleTitle.ToLowerInvariant().Underscore()));
                 options.AddPolicy(InfrastructureConstants.UserPolicyName,
-                    policy => policy.RequireRole(DomainConstants.BasicUserRoleTitle));
+                    policy =>
+                        policy.RequireRole(DomainConstants.BasicUserRoleTitle.ToLowerInvariant().Underscore()));
             });
 
     public static IServiceCollection AddRateLimiters(this IServiceCollection services, AppOptions appOptions) =>

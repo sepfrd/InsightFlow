@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Humanizer;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
@@ -143,7 +144,7 @@ public class AuthService : IAuthService
 
         foreach (var role in roles)
         {
-            var claim = new Claim(ClaimTypes.Role, role.Title);
+            var claim = new Claim(InfrastructureConstants.RolesClaim, role.Title.ToLowerInvariant().Underscore());
 
             claims.AddClaim(claim);
         }
