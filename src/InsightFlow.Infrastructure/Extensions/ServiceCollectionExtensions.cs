@@ -56,7 +56,11 @@ public static class ServiceCollectionExtensions
             .ForType()
             .Map(
                 dto => dto.Author,
-                blogPost => blogPost.Author);
+                blogPost => blogPost.Author)
+            .Map(dto => dto.CreatedAt,
+                blogPost => DateTime.SpecifyKind(blogPost.CreatedAt, DateTimeKind.Utc))
+            .Map(dto => dto.UpdatedAt,
+                blogPost => DateTime.SpecifyKind(blogPost.UpdatedAt, DateTimeKind.Utc));
 
         TypeAdapterConfig<UpdateBlogPostCommand, BlogPost>
             .ForType()
