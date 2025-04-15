@@ -12,6 +12,8 @@ public interface IUnitOfWork
 
     IUserRoleRepository UserRoleRepository { get; }
 
+    IProfileImageRepository ProfileImageRepository { get; }
+
     int CommitChanges();
 
     Task<int> CommitChangesAsync(CancellationToken cancellationToken = default);

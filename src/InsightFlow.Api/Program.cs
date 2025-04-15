@@ -1,4 +1,5 @@
 using InsightFlow.Api.Extensions;
+using InsightFlow.Api.Middlewares;
 using InsightFlow.Common.Constants;
 using InsightFlow.Infrastructure.Common.Configurations;
 using InsightFlow.Infrastructure.Common.Constants;
@@ -72,6 +73,7 @@ try
 
     app
         .UseRouting()
+        .UseMiddleware<RequestSizeLimitMiddleware>()
         .UseRateLimiter()
         .UseCors(app.Environment.IsProduction()
             ? InfrastructureConstants.RestrictedCorsPolicy

@@ -11,12 +11,15 @@ public static class StringConstants
     public const string PropertyNotUniqueTemplate = "{0} is already taken.\nChoose another {1}.";
     public const string InvalidCredentials = "Username and/or password not correct.";
     public const string InvalidParametersTemplate = "Invalid value for parameter(s) {0}.";
+    public const string InvalidProfileImageFormatMessage = "{0} is not a valid image format for profile image.\nValid formats: {1}";
     public const string IdenticalNewPropertyValuesTemplate = "At least one new property value must be different from its current value.";
     public const string EntityNotFoundByUuidTemplate = "{0} with UUID of {1} not found.";
     public const string SuccessfulLogin = "Successfully authenticated.";
     public const string SuccessfulCreationTemplate = "Successfully created {0} entity.";
     public const string SuccessfulUpdateTemplate = "Successfully updated {0} entity.";
     public const string SuccessfulDeletionTemplate = "Successfully deleted {0} entity.";
+    public const string SuccessfulProfileImageUploadMessage = "Successfully uploaded profile image.";
+    public const string NoProfileImageUploadedYetMessage = "You have not uploaded a profile image yet.";
     public const string ExceptionTemplate = "Application encountered an unhandled exception of type: {ExceptionType}";
     public const string ApplicationInternalServerErrorTemplate = "Application encountered an unexpected behavior: {Error}";
     public const string ApplicationFatalExceptionTemplate = "Application stopped due to a {exceptionType} exception";

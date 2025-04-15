@@ -15,4 +15,6 @@ public class AppOptions
     public ApplicationInformation? ApplicationInformation { get; set; }
 
     public string? SqlServerConnectionString { get; set; }
+
+    public long ProfileImageMaximumAllowedBytes { get; set; }
 }

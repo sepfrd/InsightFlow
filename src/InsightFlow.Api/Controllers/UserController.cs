@@ -1,8 +1,12 @@
+using System.Net.Mime;
 using InsightFlow.Api.Common.Dtos.Requests;
+using InsightFlow.Application.Common;
 using InsightFlow.Application.Features.Users.Commands.CreateUser;
+using InsightFlow.Application.Features.Users.Commands.UpdateProfileImage;
 using InsightFlow.Application.Features.Users.Commands.UpdateUser;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Features.Users.Queries.GetSingleUser;
+using InsightFlow.Application.Features.Users.Queries.GetSingleUserProfileImage;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Constants;
@@ -107,6 +111,42 @@ public class UserController : ControllerBase
         return StatusCode(response.StatusCode, response);
     }
 
+    [HttpGet]
+    [Authorize]
+    [Route("my-profile-image")]
+    public async Task<IActionResult> GetCurrentUserProfileImageAsync(CancellationToken cancellationToken)
+    {
+        var signedInUserUuid = _authService.GetSignedInUserUuid();
+
+        var request = new GetSingleUserProfileImageQuery(Guid.Parse(signedInUserUuid));
+
+        var response = await _sender.Send(request, cancellationToken);
+
+        if (!response.IsSuccess)
+        {
+            return StatusCode(response.StatusCode, response);
+        }
+
+        var profileImage = response.Data!;
+
+        var imageName = signedInUserUuid + '-' + "profile-picture";
+
+        var contentType = profileImage.ImageFormat switch
+        {
+            ApplicationConstants.Jpeg or ApplicationConstants.Jpg => MediaTypeNames.Image.Jpeg,
+            ApplicationConstants.Png => MediaTypeNames.Image.Png,
+            _ => MediaTypeNames.Application.Octet
+        };
+
+        var profileImageFile = new FileContentResult(profileImage.ImageBytes, contentType)
+        {
+            FileDownloadName = imageName,
+            LastModified = profileImage.UpdatedAt
+        };
+
+        return profileImageFile;
+    }
+
     [HttpPatch]
     [Authorize]
     public async Task<ActionResult<UserResponseDto>> UpdateUserAsync([FromBody] UpdateUserInformationRequestDto request, CancellationToken cancellationToken)
@@ -118,6 +158,20 @@ public class UserController : ControllerBase
             request.NewEmail,
             request.NewFirstName,
             request.NewLastName);
+
+        var response = await _sender.Send(command, cancellationToken);
+
+        return StatusCode(response.StatusCode, response);
+    }
+
+    [HttpPut]
+    [Authorize]
+    [Route("profile-image")]
+    public async Task<ActionResult<UserResponseDto>> UpdateUserProfileImageAsync(IFormFile imageFile, CancellationToken cancellationToken)
+    {
+        var signedInUserUuid = _authService.GetSignedInUserUuid();
+
+        var command = new UpdateProfileImageCommand(Guid.Parse(signedInUserUuid), imageFile);
 
         var response = await _sender.Send(command, cancellationToken);
 

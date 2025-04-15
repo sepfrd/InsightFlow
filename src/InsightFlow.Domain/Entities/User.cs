@@ -14,6 +14,8 @@ public class User : DomainEntity
 
     public required string LastName { get; set; }
 
+    public ProfileImage? ProfileImage { get; set; }
+
     public ICollection<UserRole> UserRoles { get; set; } = [];
 
     public ICollection<BlogPost> BlogPosts { get; set; } = [];

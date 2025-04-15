@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using Humanizer;
 using InsightFlow.Api.ExceptionHandlers;
+using InsightFlow.Api.Middlewares;
 using InsightFlow.Api.Transformers;
 using InsightFlow.Application.Features.BlogPosts.Commands.CreateBlogPost;
 using InsightFlow.Domain.Common;
@@ -33,6 +34,7 @@ public static class ServiceCollectionExtensions
                     .AddDocumentTransformer<DocumentInfoTransformer>())
             .AddHttpContextAccessor()
             .AddSingleton(Options.Create(appOptions))
+            .AddScoped<RequestSizeLimitMiddleware>()
             .AddInfrastructure(appOptions, environment)
             .AddMediatR(config => config.RegisterServicesFromAssemblyContaining<CreateBlogPostCommandHandler>())
             .AddAuth(appOptions)
