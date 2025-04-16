@@ -99,7 +99,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    [Route("my-information")]
+    [Route("information")]
     public async Task<ActionResult<UserResponseDto>> GetCurrentUserInformationAsync(CancellationToken cancellationToken)
     {
         var signedInUserUuid = _authService.GetSignedInUserUuid();
@@ -113,7 +113,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    [Route("my-profile-image")]
+    [Route("profile-image")]
     public async Task<IActionResult> GetCurrentUserProfileImageAsync(CancellationToken cancellationToken)
     {
         var signedInUserUuid = _authService.GetSignedInUserUuid();
