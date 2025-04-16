@@ -38,7 +38,7 @@ services:
       JwtOptions__TokenExpirationDurationMinutes: 1440
       PaginationOptions__MinimumAllowedPageSize: 1
       PaginationOptions__MaximumAllowedPageSize: 100
-      ProfileImageMaximumAllowedBytes: 2097152;
+      ProfileImageMaximumAllowedBytes: 2097152
       RateLimitersConfiguration__FixedWindowRateLimiterOptions__PermitLimit: 5
       RateLimitersConfiguration__FixedWindowRateLimiterOptions__WindowSeconds: 120
       RateLimitersConfiguration__FixedWindowRateLimiterOptions__QueueLimit: 0
