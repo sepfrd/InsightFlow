@@ -26,6 +26,7 @@ public class AuthService : IAuthService
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AuthService> _logger;
     private readonly AppOptions _appOptions;
+    private static SigningCredentials? _signingCredentials;
 
     public AuthService(
         IHttpContextAccessor httpContextAccessor,
@@ -37,6 +38,19 @@ public class AuthService : IAuthService
         _unitOfWork = unitOfWork;
         _logger = logger;
         _appOptions = appOptions.Value;
+
+        if (_signingCredentials is not null)
+        {
+            return;
+        }
+
+        var rsa = RSA.Create();
+
+        rsa.ImportFromPem(_appOptions.JwtOptions!.PrivateKey);
+
+        var securityKey = new RsaSecurityKey(rsa);
+
+        _signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.RsaSha512Signature);
     }
 
     public async Task<DomainResponse<string>> AuthenticateAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
@@ -122,14 +136,6 @@ public class AuthService : IAuthService
 
     private string? CreateJwt(User user, IEnumerable<Role> roles)
     {
-        var rsa = RSA.Create();
-
-        rsa.ImportFromPem(_appOptions.JwtOptions!.PrivateKey);
-
-        var securityKey = new RsaSecurityKey(rsa);
-
-        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.RsaSha512Signature);
-
         var claims = new ClaimsIdentity(new[]
         {
             new Claim(JwtRegisteredClaimNames.Iss, _appOptions.ApplicationInformation!.ServerUrl!),
@@ -152,8 +158,8 @@ public class AuthService : IAuthService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = claims,
-            Expires = DateTime.Now.AddMinutes(_appOptions.JwtOptions.TokenExpirationDurationMinutes),
-            SigningCredentials = signingCredentials
+            Expires = DateTime.Now.AddMinutes(_appOptions.JwtOptions!.TokenExpirationDurationMinutes),
+            SigningCredentials = _signingCredentials
         };
 
         var jwtHandler = new JwtSecurityTokenHandler();
