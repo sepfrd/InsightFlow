@@ -54,7 +54,7 @@ services:
       RateLimitersConfiguration__ConcurrencyLimiterOptions__QueueProcessingOrder: 0
       RateLimitersConfiguration__ConcurrencyLimiterOptions__QueueLimit: 0
     ports:
-      - "8000:8080"
+      - "5000:8080"
     depends_on:
       sqlserver:
         condition: service_healthy
