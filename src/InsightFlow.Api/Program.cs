@@ -64,12 +64,12 @@ try
         options.OpenApiRoutePattern = applicationVersion;
     });
 
-    // if (app.Environment.IsProduction())
-    // {
-    //     app
-    //         .UseHsts()
-    //         .UseHttpsRedirection();
-    // }
+    if (app.Environment.IsProduction())
+    {
+        app
+            .UseHsts()
+            .UseHttpsRedirection();
+    }
 
     app
         .UseRouting()
