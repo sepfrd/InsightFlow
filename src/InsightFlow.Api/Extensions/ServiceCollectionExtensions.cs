@@ -56,8 +56,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddAuth(
-        this IServiceCollection services, AppOptions appOptions) =>
+    public static IServiceCollection AddAuth(this IServiceCollection services, AppOptions appOptions) =>
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
