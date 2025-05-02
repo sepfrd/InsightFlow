@@ -34,8 +34,14 @@ public static class StringConstants
 
     public const string RoleServiceInitializationSuccessLog = "Successfully initialized 'IRoleService' instance.";
 
+    public const string InvalidDatabaseProviderException = "{0} is not a valid database provider. Use either {1} or {2}.";
+
     // ------------------------------ Action Names ------------------------------
     public const string CreateActionName = "Create";
     public const string UpdateActionName = "Update";
     public const string DeleteActionName = "Delete";
+
+    // ------------------------------ Database Provider Names ------------------------------
+    public const string SqlServer = nameof(SqlServer);
+    public const string Sqlite = nameof(Sqlite);
 }

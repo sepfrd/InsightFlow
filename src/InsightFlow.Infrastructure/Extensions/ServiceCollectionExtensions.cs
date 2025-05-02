@@ -4,6 +4,7 @@ using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Features.Users.Commands.UpdateUser;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
 using InsightFlow.Infrastructure.Common.Configurations;
@@ -32,6 +33,7 @@ public static class ServiceCollectionExtensions
         ConfigureMapster();
 
         return services
+            .AddDatabase(appOptions, environment)
             .AddSingleton<IMappingService, MappingService>()
             .AddSingleton<IDataValidator<CreateUserRequestDto>, DataValidator<CreateUserRequestDto>>()
             .AddSingleton<IDataValidator<PaginationDto>, DataValidator<PaginationDto>>()
@@ -41,13 +43,16 @@ public static class ServiceCollectionExtensions
             {
                 var options = serviceProvider.GetRequiredService<IOptions<AppOptions>>().Value;
 
-                DbConnectionPool.Initialize(options.SqlServerConnectionString!);
+                var connectionString = options.DatabaseProvider == StringConstants.Sqlite
+                    ? options.SqliteConnectionString!
+                    : options.SqlServerConnectionString!;
+
+                DbConnectionPool.Initialize(connectionString);
 
                 return DbConnectionPool.Instance;
             })
             .AddValidatorsFromAssemblyContaining<CreateUserRequestDtoValidator>(ServiceLifetime.Singleton)
-            .AddScoped<IAuthService, AuthService>()
-            .AddDatabase(appOptions, environment);
+            .AddScoped<IAuthService, AuthService>();
     }
 
     private static void ConfigureMapster()
@@ -95,6 +100,29 @@ public static class ServiceCollectionExtensions
         AppOptions appOptions,
         IHostEnvironment environment)
     {
+        if (appOptions.DatabaseProvider == StringConstants.SqlServer)
+        {
+            return services.AddSqlServer(appOptions, environment);
+        }
+        if (appOptions.DatabaseProvider == StringConstants.Sqlite)
+        {
+            return services.AddSqlite(appOptions, environment);
+        }
+
+        var message = string.Format(
+            StringConstants.InvalidDatabaseProviderException,
+            appOptions.DatabaseProvider,
+            StringConstants.SqlServer,
+            StringConstants.Sqlite);
+
+        throw new InvalidDataException(message);
+    }
+
+    private static IServiceCollection AddSqlServer(
+        this IServiceCollection services,
+        AppOptions appOptions,
+        IHostEnvironment environment)
+    {
         if (environment.IsEnvironment(InfrastructureConstants.TestingEnvironmentName))
         {
             return services.AddDbContext<IUnitOfWork, UnitOfWork>(options =>
@@ -119,6 +147,23 @@ public static class ServiceCollectionExtensions
             }
         });
     }
+
+    private static IServiceCollection AddSqlite(
+        this IServiceCollection services,
+        AppOptions appOptions,
+        IHostEnvironment environment) =>
+        services.AddDbContext<IUnitOfWork, SqliteUnitOfWork>(options =>
+        {
+            options
+                .UseSqlite(appOptions.SqliteConnectionString)
+                .UseSeeding((dbContext, _) => dbContext.SeedDatabase())
+                .UseAsyncSeeding((dbContext, _, _) => Task.FromResult(dbContext.SeedDatabase()));
+
+            if (!environment.IsProduction())
+            {
+                options.EnableSensitiveDataLogging();
+            }
+        });
 
     private static DbContext SeedDatabase(this DbContext dbContext)
     {

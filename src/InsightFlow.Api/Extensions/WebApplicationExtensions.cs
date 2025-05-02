@@ -25,7 +25,9 @@ public static class WebApplicationExtensions
     {
         await using var scope = webApplication.Services.CreateAsyncScope();
 
-        await using var dbContext = scope.ServiceProvider.GetRequiredService<UnitOfWork>();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        await using var dbContext = (DbContext)unitOfWork;
 
         if (webApplication.Environment.IsEnvironment(InfrastructureConstants.TestingEnvironmentName))
         {

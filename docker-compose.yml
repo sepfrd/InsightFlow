@@ -26,6 +26,8 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       SqlServerConnectionString: "Server=sqlserver,1433;Database=InsightFlow;User Id=sa;Password=${MSSQL_SA_PASSWORD};Trust Server Certificate=True;Encrypt=False;Connect Timeout=120"
+      SqliteConnectionString: "./insight_flow.db"
+      DatabaseProvider: "SqlServer"
       ApplicationInformation__Name: "InsightFlow"
       ApplicationInformation__Version: "2.0.0"
       ApplicationInformation__ServerUrl: "http://localhost"

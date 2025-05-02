@@ -16,5 +16,9 @@ public class AppOptions
 
     public string? SqlServerConnectionString { get; set; }
 
+    public string? SqliteConnectionString { get; set; }
+
+    public string? DatabaseProvider { get; set; }
+
     public long ProfileImageMaximumAllowedBytes { get; set; }
 }
