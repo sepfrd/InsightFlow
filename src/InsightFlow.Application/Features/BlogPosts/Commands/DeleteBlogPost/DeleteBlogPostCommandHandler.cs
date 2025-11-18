@@ -1,15 +1,15 @@
 using Humanizer;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Commands;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.BlogPosts.Commands.DeleteBlogPost;
 
-public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostCommand, DomainResponse>
+public class DeleteBlogPostCommandHandler : ICommandHandler<DeleteBlogPostCommand, DomainResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeleteBlogPostCommandHandler> _logger;
@@ -20,7 +20,7 @@ public class DeleteBlogPostCommandHandler : IRequestHandler<DeleteBlogPostComman
         _logger = logger;
     }
 
-    public async Task<DomainResponse> Handle(DeleteBlogPostCommand request, CancellationToken cancellationToken = default)
+    public async Task<DomainResponse> HandleAsync(DeleteBlogPostCommand request, CancellationToken cancellationToken = default)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.AuthorUuid,

@@ -1,16 +1,16 @@
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Queries;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.BlogPosts.Queries.GetAllBlogPostsByFilter;
 
 public class GetAllBlogPostsByFilterQueryHandler
-    : IRequestHandler<GetAllBlogPostsByFilterQuery, PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>
+    : IQueryHandler<GetAllBlogPostsByFilterQuery, PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
@@ -26,7 +26,7 @@ public class GetAllBlogPostsByFilterQueryHandler
         _logger = logger;
     }
 
-    public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> Handle(GetAllBlogPostsByFilterQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> HandleAsync(GetAllBlogPostsByFilterQuery request, CancellationToken cancellationToken)
     {
         var filterExpression = request.FilterDto.ToExpression() ?? (_ => true);
 

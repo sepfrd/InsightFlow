@@ -467,3 +467,8 @@ $RECYCLE.BIN/
 .gitignore
 .vscode/tasks.json
 .vscode/settings.json
+
+
+src/InsightFlow.Api/insight_flow.db
+src/InsightFlow.Api/insight_flow.db-shm
+src/InsightFlow.Api/insight_flow.db-wal

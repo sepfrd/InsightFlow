@@ -8,12 +8,12 @@ using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Features.Users.Queries.GetSingleUser;
 using InsightFlow.Application.Features.Users.Queries.GetSingleUserProfileImage;
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Cqrs;
 using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Common.Helpers;
 using InsightFlow.Infrastructure.Interfaces;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -24,16 +24,16 @@ namespace InsightFlow.Api.Controllers;
 [Route("api/users")]
 public class UserController : ControllerBase
 {
-    private readonly ISender _sender;
+    private readonly IMediator _mediator;
     private readonly IDataValidator<CreateUserRequestDto> _dataValidator;
     private readonly IAuthService _authService;
 
     public UserController(
-        ISender sender,
+        IMediator mediator,
         IDataValidator<CreateUserRequestDto> dataValidator,
         IAuthService authService)
     {
-        _sender = sender;
+        _mediator = mediator;
         _dataValidator = dataValidator;
         _authService = authService;
     }
@@ -64,7 +64,7 @@ public class UserController : ControllerBase
             createUserRequestDto.FirstName,
             createUserRequestDto.LastName);
 
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await _mediator.SendAsync(command, cancellationToken);
 
         return StatusCode(result.StatusCode, result);
     }
@@ -92,7 +92,7 @@ public class UserController : ControllerBase
             createUserRequestDto.LastName,
             [DomainConstants.AdminRoleTitle]);
 
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await _mediator.SendAsync(command, cancellationToken);
 
         return StatusCode(result.StatusCode, result);
     }
@@ -106,7 +106,7 @@ public class UserController : ControllerBase
 
         var request = new GetSingleUserQuery(Guid.Parse(signedInUserUuid));
 
-        var response = await _sender.Send(request, cancellationToken);
+        var response = await _mediator.SendAsync(request, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }
@@ -120,7 +120,7 @@ public class UserController : ControllerBase
 
         var request = new GetSingleUserProfileImageQuery(Guid.Parse(signedInUserUuid));
 
-        var response = await _sender.Send(request, cancellationToken);
+        var response = await _mediator.SendAsync(request, cancellationToken);
 
         if (!response.IsSuccess)
         {
@@ -159,7 +159,7 @@ public class UserController : ControllerBase
             request.NewFirstName,
             request.NewLastName);
 
-        var response = await _sender.Send(command, cancellationToken);
+        var response = await _mediator.SendAsync(command, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }
@@ -173,7 +173,7 @@ public class UserController : ControllerBase
 
         var command = new UpdateProfileImageCommand(Guid.Parse(signedInUserUuid), imageFile);
 
-        var response = await _sender.Send(command, cancellationToken);
+        var response = await _mediator.SendAsync(command, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }

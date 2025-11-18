@@ -3,15 +3,15 @@ using InsightFlow.Application.Features.Users.Commands.CreateUser;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Commands;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.Users.Commands.UpdateUser;
 
-public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, DomainResponse<UserResponseDto>>
+public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, DomainResponse<UserResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
@@ -27,7 +27,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Domai
         _logger = logger;
     }
 
-    public async Task<DomainResponse<UserResponseDto>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<UserResponseDto>> HandleAsync(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.Uuid,

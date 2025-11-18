@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InsightFlow.Infrastructure.Migrations.Sqlite
 {
@@ -23,10 +22,7 @@ namespace InsightFlow.Infrastructure.Migrations.Sqlite
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Roles", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Users",
@@ -43,10 +39,7 @@ namespace InsightFlow.Infrastructure.Migrations.Sqlite
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "BlogPosts",

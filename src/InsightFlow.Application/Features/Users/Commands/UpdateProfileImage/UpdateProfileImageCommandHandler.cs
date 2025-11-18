@@ -2,14 +2,14 @@ using Humanizer;
 using InsightFlow.Application.Common;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Commands;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.Users.Commands.UpdateProfileImage;
 
-public class UpdateProfileImageCommandHandler : IRequestHandler<UpdateProfileImageCommand, DomainResponse>
+public class UpdateProfileImageCommandHandler : ICommandHandler<UpdateProfileImageCommand, DomainResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public class UpdateProfileImageCommandHandler : IRequestHandler<UpdateProfileIma
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<DomainResponse> Handle(UpdateProfileImageCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResponse> HandleAsync(UpdateProfileImageCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.Uuid,

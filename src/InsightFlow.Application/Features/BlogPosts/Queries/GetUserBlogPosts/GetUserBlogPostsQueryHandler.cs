@@ -1,15 +1,15 @@
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Queries;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.BlogPosts.Queries.GetUserBlogPosts;
 
-public class GetUserBlogPostsQueryHandler : IRequestHandler<GetUserBlogPostsQuery, PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>
+public class GetUserBlogPostsQueryHandler : IQueryHandler<GetUserBlogPostsQuery, PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
@@ -25,7 +25,7 @@ public class GetUserBlogPostsQueryHandler : IRequestHandler<GetUserBlogPostsQuer
         _logger = logger;
     }
 
-    public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> Handle(GetUserBlogPostsQuery request, CancellationToken cancellationToken = default)
+    public async Task<PaginatedDomainResponse<IEnumerable<BlogPostResponseDto>>> HandleAsync(GetUserBlogPostsQuery request, CancellationToken cancellationToken = default)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.UserUuid,

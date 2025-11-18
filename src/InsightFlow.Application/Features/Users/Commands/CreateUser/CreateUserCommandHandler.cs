@@ -2,15 +2,15 @@ using Humanizer;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Commands;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.Users.Commands.CreateUser;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, DomainResponse<UserResponseDto>>
+public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, DomainResponse<UserResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
@@ -29,7 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domai
         _logger = logger;
     }
 
-    public async Task<DomainResponse<UserResponseDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken = default)
+    public async Task<DomainResponse<UserResponseDto>> HandleAsync(CreateUserCommand request, CancellationToken cancellationToken = default)
     {
         var isEmailUnique = await _unitOfWork.UserRepository.IsEmailUniqueAsync(request.Email, cancellationToken);
 

@@ -1,11 +1,11 @@
 using InsightFlow.Application.Interfaces;
+using InsightFlow.Common.Cqrs.Queries;
 using InsightFlow.Domain.Common;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.BlogPosts.Queries.GetAllBlogPostsCount;
 
-public class GetAllBlogPostsCountQueryHandler : IRequestHandler<GetAllBlogPostsCountQuery, DomainResponse<long>>
+public class GetAllBlogPostsCountQueryHandler : IQueryHandler<GetAllBlogPostsCountQuery, DomainResponse<long>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -14,7 +14,7 @@ public class GetAllBlogPostsCountQueryHandler : IRequestHandler<GetAllBlogPostsC
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<DomainResponse<long>> Handle(GetAllBlogPostsCountQuery request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<long>> HandleAsync(GetAllBlogPostsCountQuery request, CancellationToken cancellationToken)
     {
         var count = await _unitOfWork.BlogPostRepository.GetCountAsync(null, cancellationToken);
 

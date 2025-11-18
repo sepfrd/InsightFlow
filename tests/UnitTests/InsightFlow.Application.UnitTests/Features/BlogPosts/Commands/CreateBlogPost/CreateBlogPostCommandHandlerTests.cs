@@ -56,7 +56,7 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.ClearReceivedCalls();
 
         // Act
-        var result = await _commandHandler.Handle(createBlogPostCommand, TestContext.Current.CancellationToken);
+        var result = await _commandHandler.HandleAsync(createBlogPostCommand, TestContext.Current.CancellationToken);
 
         // Assert
         var responseMessage = string.Format(StringConstants.SuccessfulCreationTemplate, nameof(BlogPost).Humanize(LetterCasing.LowerCase));
@@ -115,7 +115,7 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.ClearReceivedCalls();
 
         // Act
-        var result = await _commandHandler.Handle(createBlogPostCommand, TestContext.Current.CancellationToken);
+        var result = await _commandHandler.HandleAsync(createBlogPostCommand, TestContext.Current.CancellationToken);
 
         // Assert
         result.ShouldBeOfType<DomainResponse<BlogPostResponseDto>>();
@@ -170,7 +170,7 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.ClearReceivedCalls();
 
         // Act
-        var result = await _commandHandler.Handle(createBlogPostCommand, TestContext.Current.CancellationToken);
+        var result = await _commandHandler.HandleAsync(createBlogPostCommand, TestContext.Current.CancellationToken);
 
         // Assert
         result.ShouldBeOfType<DomainResponse<BlogPostResponseDto>>();
@@ -229,7 +229,7 @@ public class CreateBlogPostCommandHandlerTests
         _mappingService.ClearReceivedCalls();
 
         // Act
-        var result = await _commandHandler.Handle(createBlogPostCommand, TestContext.Current.CancellationToken);
+        var result = await _commandHandler.HandleAsync(createBlogPostCommand, TestContext.Current.CancellationToken);
 
         // Assert
         result.ShouldBeOfType<DomainResponse<BlogPostResponseDto>>();

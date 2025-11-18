@@ -1,14 +1,14 @@
 using Humanizer;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Queries;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.Users.Queries.GetUserIdByUserUuid;
 
-public class GetUserIdByUserUuidQueryHandler : IRequestHandler<GetUserIdByUserUuidQuery, DomainResponse<long?>>
+public class GetUserIdByUserUuidQueryHandler : IQueryHandler<GetUserIdByUserUuidQuery, DomainResponse<long?>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -17,7 +17,7 @@ public class GetUserIdByUserUuidQueryHandler : IRequestHandler<GetUserIdByUserUu
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<DomainResponse<long?>> Handle(GetUserIdByUserUuidQuery request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<long?>> HandleAsync(GetUserIdByUserUuidQuery request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.Uuid,

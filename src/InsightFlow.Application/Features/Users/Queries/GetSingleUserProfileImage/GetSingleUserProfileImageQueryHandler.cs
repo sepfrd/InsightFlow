@@ -2,14 +2,14 @@ using Humanizer;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Queries;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace InsightFlow.Application.Features.Users.Queries.GetSingleUserProfileImage;
 
-public class GetSingleUserProfileImageQueryHandler : IRequestHandler<GetSingleUserProfileImageQuery, DomainResponse<ProfileImageResponseDto>>
+public class GetSingleUserProfileImageQueryHandler : IQueryHandler<GetSingleUserProfileImageQuery, DomainResponse<ProfileImageResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public class GetSingleUserProfileImageQueryHandler : IRequestHandler<GetSingleUs
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<DomainResponse<ProfileImageResponseDto>> Handle(GetSingleUserProfileImageQuery request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<ProfileImageResponseDto>> HandleAsync(GetSingleUserProfileImageQuery request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.UserUuid,

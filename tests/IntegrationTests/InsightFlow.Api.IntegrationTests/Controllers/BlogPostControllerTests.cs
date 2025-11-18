@@ -56,10 +56,10 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
         var authResponseString = await authResponse.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var authResponseJson = JsonNode.Parse(authResponseString)!;
 
-        var jwt = authResponseJson[nameof(DomainResponse<string>.Data).Camelize()]?.ToString();
+        var jwt = authResponseJson[nameof(DomainResponse<>.Data).Camelize()]?.ToString();
         var userUuid = GetUserUuidFromJwt(jwt);
-        var authResponseMessage = authResponseJson[nameof(DomainResponse<string>.Message).Camelize()]?.ToString();
-        var authResponseIsSuccess = authResponseJson[nameof(DomainResponse<string>.IsSuccess).Camelize()];
+        var authResponseMessage = authResponseJson[nameof(DomainResponse<>.Message).Camelize()]?.ToString();
+        var authResponseIsSuccess = authResponseJson[nameof(DomainResponse<>.IsSuccess).Camelize()];
 
         // Authenticate --- Assert
         authResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -91,9 +91,9 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
         var createBlogPostResponseString = await createBlogPostResponse.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var createBlogPostResponseJson = JsonNode.Parse(createBlogPostResponseString)!;
 
-        var blogPostJson = createBlogPostResponseJson[nameof(DomainResponse<BlogPostResponseDto>.Data).Camelize()];
-        var createBlogPostResponseMessage = createBlogPostResponseJson[nameof(DomainResponse<BlogPostResponseDto>.Message).Camelize()]?.ToString();
-        var createBlogPostResponseIsSuccess = createBlogPostResponseJson[nameof(DomainResponse<BlogPostResponseDto>.IsSuccess).Camelize()];
+        var blogPostJson = createBlogPostResponseJson[nameof(DomainResponse<>.Data).Camelize()];
+        var createBlogPostResponseMessage = createBlogPostResponseJson[nameof(DomainResponse<>.Message).Camelize()]?.ToString();
+        var createBlogPostResponseIsSuccess = createBlogPostResponseJson[nameof(DomainResponse<>.IsSuccess).Camelize()];
 
         // Create a BlogPost --- Assert
         using var scope = _customWebApplicationFactory.Services.CreateScope();

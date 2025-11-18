@@ -1,0 +1,54 @@
+services:
+  backend:
+    image: insightflow-backend:latest
+    build:
+      context: ~/Projects/InsightFlow/
+      dockerfile: ./src/InsightFlow.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      SqlServerConnectionString: "Server=sqlserver,1433;Database=InsightFlow;User Id=sa;Password=${MSSQL_SA_PASSWORD};Trust Server Certificate=True;Encrypt=False;Connect Timeout=120"
+      SqliteConnectionString: "Data Source=./insight_flow.db"
+      DatabaseProvider: "Sqlite"
+      ApplicationInformation__Name: "InsightFlow"
+      ApplicationInformation__Version: "2.0.0"
+      ApplicationInformation__ServerUrl: "https://sepfrd.com"
+      ApplicationInformation__ClientUrl: "https://sepfrd.com"
+      ApplicationInformation__DeveloperName: "Sepehr Foroughi Rad"
+      ApplicationInformation__DeveloperUrl: "https://github.com/sepehr-frd"
+      ApplicationInformation__DeveloperEmail: "sepfrd@outlook.com"
+      JwtOptions__PrivateKey: "-----BEGIN PRIVATE KEY-----\n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\n-----END PRIVATE KEY-----"
+      JwtOptions__PublicKey: "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtsLdjrSz8QtVkQ1LKixJ2IP7Zx1VO63fT6P11kJFX17czXKxdOoAsHuaAwI668Wjk0ck++V0E046nWWyaDInupT0g36u+r6hH0NDaXOOtdiFGxDfJ/hJ/j5/A8re6nNNFFmiaGAhBiDIDDuiF8k3k9H90z0xkFnaPYueBs75S7NkxtgiomEcyH06HQmr52xnNiWd1SZFdqzeud25ZJZNgxlj7W4/XcWwCYhr5/HB72PFnwqy93bp4t3Mik+v28CWngNS05ohyjGxN5BGN7ESloXDBZ4effPEfuVF6crzk/HACq66K9Fzr/xBfba1BR+Mk0FhMonJXub3vGgrQA32JWw4KY5/uzRpsGcmrtN2w5jk33nLZPhUwOisyu4KaxI9bXC/J3/qfcq4dZJrZV6b8V5Gr6+TlZy7Ya/r3+lKXkJ5kMSEJ/89NiXDGTJlSakOUkxKmF3YXwoqXKj8sUzAAMYG0TNum3/oQTX9rOIXDLebRC8lADnTlEtoxWd4YVmhzDlpGIFuDgIruGnmiYIa4y7blhlryQrBbAE6wRWXYYulh0M/1gIGYoIae6a9Elt8WYy9Rh/ELob2Yi4WuVr6a1P4kcfFK28uOWH30o1gN7qWUs9A2KkBz/vpv3WliF6c+wjzXKt6RyiVYNKlpHntIOlFmLvtLD/wKzDst8fMNyMCAwEAAQ==\n-----END PUBLIC KEY-----"
+      JwtOptions__TokenExpirationDurationMinutes: 1440
+      PaginationOptions__MinimumAllowedPageSize: 1
+      PaginationOptions__MaximumAllowedPageSize: 100
+      ProfileImageMaximumAllowedBytes: 2097152
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__PermitLimit: 5
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__WindowSeconds: 120
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__QueueLimit: 0
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__QueueProcessingOrder: 0
+      RateLimitersConfiguration__FixedWindowRateLimiterOptions__AutoReplenishment: true
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__ReplenishmentPeriodSeconds: 10
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__TokensPerPeriod: 10
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__AutoReplenishment: true
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__TokenLimit: 100
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__QueueProcessingOrder: 0
+      RateLimitersConfiguration__TokenBucketRateLimiterOptions__QueueLimit: 0
+      RateLimitersConfiguration__ConcurrencyLimiterOptions__PermitLimit: 100
+      RateLimitersConfiguration__ConcurrencyLimiterOptions__QueueProcessingOrder: 0
+      RateLimitersConfiguration__ConcurrencyLimiterOptions__QueueLimit: 0
+    ports:
+      - "8000:8080"
+    restart: on-failure
+  frontend:
+    image: insightflow-frontend:latest
+    build:
+      context: ~/Projects/frontend-development/insight-flow/
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: "https://sepfrd.com/insight-flow/api"
+    environment:
+      NODE_ENV: production
+    ports:
+      - "3000:80"
+    depends_on:
+    - backend

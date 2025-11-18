@@ -11,11 +11,11 @@ using InsightFlow.Application.Features.BlogPosts.Queries.GetUserBlogPosts;
 using InsightFlow.Application.Features.Users.Queries.GetUserIdByUserUuid;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs;
 using InsightFlow.Domain.Common;
 using InsightFlow.Infrastructure.Common.Constants;
 using InsightFlow.Infrastructure.Common.Dtos;
 using InsightFlow.Infrastructure.Interfaces;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -26,16 +26,16 @@ namespace InsightFlow.Api.Controllers;
 [Route("api/blog-posts")]
 public class BlogPostController : ControllerBase
 {
-    private readonly ISender _sender;
+    private readonly IMediator _mediator;
     private readonly IAuthService _authService;
     private readonly IDataValidator<PaginationDto> _paginationDtoValidator;
 
     public BlogPostController(
-        ISender sender,
+        IMediator mediator,
         IAuthService authService,
         IDataValidator<PaginationDto> paginationDtoValidator)
     {
-        _sender = sender;
+        _mediator = mediator;
         _authService = authService;
         _paginationDtoValidator = paginationDtoValidator;
     }
@@ -51,7 +51,7 @@ public class BlogPostController : ControllerBase
             request.Body,
             Guid.Parse(signedInUserUuid));
 
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await _mediator.SendAsync(command, cancellationToken);
 
         return StatusCode(result.StatusCode, result);
     }
@@ -62,7 +62,7 @@ public class BlogPostController : ControllerBase
     {
         var request = new GetAllBlogPostsCountQuery();
 
-        var response = await _sender.Send(request, cancellationToken);
+        var response = await _mediator.SendAsync(request, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }
@@ -95,7 +95,7 @@ public class BlogPostController : ControllerBase
         {
             var userRequest = new GetUserIdByUserUuidQuery(authorUuid.Value);
 
-            var userIdResponse = await _sender.Send(userRequest, cancellationToken);
+            var userIdResponse = await _mediator.SendAsync(userRequest, cancellationToken);
 
             if (!userIdResponse.IsSuccess)
             {
@@ -113,7 +113,7 @@ public class BlogPostController : ControllerBase
 
         var request = new GetAllBlogPostsByFilterQuery(filterDto, pagination.PageNumber, pagination.PageSize);
 
-        var response = await _sender.Send(request, cancellationToken);
+        var response = await _mediator.SendAsync(request, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }
@@ -139,7 +139,7 @@ public class BlogPostController : ControllerBase
 
         var request = new GetUserBlogPostsQuery(Guid.Parse(stringUuid), pagination.PageNumber, pagination.PageSize);
 
-        var response = await _sender.Send(request, cancellationToken);
+        var response = await _mediator.SendAsync(request, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }
@@ -150,7 +150,7 @@ public class BlogPostController : ControllerBase
     {
         var request = new GetSingleBlogPostQuery(uuid);
 
-        var response = await _sender.Send(request, cancellationToken);
+        var response = await _mediator.SendAsync(request, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }
@@ -167,7 +167,7 @@ public class BlogPostController : ControllerBase
             request.NewTitle,
             request.NewBody);
 
-        var response = await _sender.Send(command, cancellationToken);
+        var response = await _mediator.SendAsync(command, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }
@@ -183,7 +183,7 @@ public class BlogPostController : ControllerBase
             uuid,
             Guid.Parse(signedInUserUuid));
 
-        var response = await _sender.Send(command, cancellationToken);
+        var response = await _mediator.SendAsync(command, cancellationToken);
 
         return StatusCode(response.StatusCode, response);
     }

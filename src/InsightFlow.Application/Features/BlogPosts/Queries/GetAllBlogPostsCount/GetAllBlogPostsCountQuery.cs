@@ -1,6 +1,6 @@
+using InsightFlow.Common.Cqrs.Queries;
 using InsightFlow.Domain.Common;
-using MediatR;
 
 namespace InsightFlow.Application.Features.BlogPosts.Queries.GetAllBlogPostsCount;
 
-public record GetAllBlogPostsCountQuery : IRequest<DomainResponse<long>>;
+public record GetAllBlogPostsCountQuery : IQuery<DomainResponse<long>>;

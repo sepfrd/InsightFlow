@@ -9,4 +9,10 @@ public class ApplicationInformation
     public string? ServerUrl { get; set; }
 
     public string? ClientUrl { get; set; }
+
+    public string? DeveloperName { get; set; }
+
+    public string? DeveloperUrl { get; set; }
+
+    public string? DeveloperEmail { get; set; }
 }

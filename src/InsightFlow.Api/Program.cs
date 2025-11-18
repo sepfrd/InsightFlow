@@ -1,4 +1,4 @@
-using InsightFlow.Api.Extensions;
+using InsightFlow.Api.Common;
 using InsightFlow.Api.Middlewares;
 using InsightFlow.Common.Constants;
 using InsightFlow.Infrastructure.Common.Configurations;
@@ -94,5 +94,3 @@ finally
 {
     await Log.CloseAndFlushAsync();
 }
-
-public partial class Program;

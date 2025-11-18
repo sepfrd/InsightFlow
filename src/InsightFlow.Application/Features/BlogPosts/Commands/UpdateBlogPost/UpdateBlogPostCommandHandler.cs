@@ -2,15 +2,15 @@ using Humanizer;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Commands;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.BlogPosts.Commands.UpdateBlogPost;
 
-public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostCommand, DomainResponse<BlogPostResponseDto>>
+public class UpdateBlogPostCommandHandler : ICommandHandler<UpdateBlogPostCommand, DomainResponse<BlogPostResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
@@ -26,7 +26,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         _logger = logger;
     }
 
-    public async Task<DomainResponse<BlogPostResponseDto>> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken = default)
+    public async Task<DomainResponse<BlogPostResponseDto>> HandleAsync(UpdateBlogPostCommand request, CancellationToken cancellationToken = default)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.AuthorUuid,

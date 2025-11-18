@@ -1,5 +1,3 @@
-using Microsoft.OpenApi.Models;
-
 namespace InsightFlow.Infrastructure.Common.Configurations;
 
 public class AppOptions
@@ -9,8 +7,6 @@ public class AppOptions
     public PaginationOptions? PaginationOptions { get; set; }
 
     public CustomRateLimitersOptions? RateLimitersConfiguration { get; set; }
-
-    public OpenApiContact? ContactInformation { get; set; }
 
     public ApplicationInformation? ApplicationInformation { get; set; }
 

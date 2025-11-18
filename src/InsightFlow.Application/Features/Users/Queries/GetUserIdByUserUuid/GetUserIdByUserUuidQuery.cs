@@ -1,6 +1,6 @@
+using InsightFlow.Common.Cqrs.Queries;
 using InsightFlow.Domain.Common;
-using MediatR;
 
 namespace InsightFlow.Application.Features.Users.Queries.GetUserIdByUserUuid;
 
-public record GetUserIdByUserUuidQuery(Guid Uuid) : IRequest<DomainResponse<long?>>;
+public record GetUserIdByUserUuidQuery(Guid Uuid) : IQuery<DomainResponse<long?>>;

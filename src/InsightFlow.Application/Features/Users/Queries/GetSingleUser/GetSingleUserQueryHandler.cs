@@ -2,15 +2,15 @@ using Humanizer;
 using InsightFlow.Application.Features.Users.Dtos;
 using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
+using InsightFlow.Common.Cqrs.Queries;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace InsightFlow.Application.Features.Users.Queries.GetSingleUser;
 
-public class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, DomainResponse<UserResponseDto>>
+public class GetSingleUserQueryHandler : IQueryHandler<GetSingleUserQuery, DomainResponse<UserResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMappingService _mappingService;
@@ -26,7 +26,7 @@ public class GetSingleUserQueryHandler : IRequestHandler<GetSingleUserQuery, Dom
         _logger = logger;
     }
 
-    public async Task<DomainResponse<UserResponseDto>> Handle(GetSingleUserQuery request, CancellationToken cancellationToken)
+    public async Task<DomainResponse<UserResponseDto>> HandleAsync(GetSingleUserQuery request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetOneAsync(
             user => user.Uuid == request.Uuid,
