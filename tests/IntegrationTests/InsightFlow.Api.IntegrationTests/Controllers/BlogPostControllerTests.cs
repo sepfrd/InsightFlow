@@ -9,6 +9,7 @@ using InsightFlow.Api.Common.Dtos.Requests;
 using InsightFlow.Api.IntegrationTests.TestUtilities;
 using InsightFlow.Application.Features.BlogPosts.Dtos;
 using InsightFlow.Application.Features.Users.Dtos;
+using InsightFlow.Application.Interfaces;
 using InsightFlow.Common.Constants;
 using InsightFlow.Domain.Common;
 using InsightFlow.Domain.Entities;
@@ -97,7 +98,11 @@ public class BlogPostsControllerTests : IClassFixture<CustomWebApplicationFactor
 
         // Create a BlogPost --- Assert
         using var scope = _customWebApplicationFactory.Services.CreateScope();
-        var unitOfWork = scope.ServiceProvider.GetRequiredService<UnitOfWork>();
+        var injectedUnitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        injectedUnitOfWork.ShouldBeAssignableTo<UnitOfWork>();
+
+        var unitOfWork = (UnitOfWork)injectedUnitOfWork;
 
         var createBlogPostResponseExpectedMessage = string.Format(
             StringConstants.SuccessfulCreationTemplate,

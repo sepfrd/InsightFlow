@@ -16,6 +16,7 @@ using InsightFlow.Infrastructure.Persistence;
 using InsightFlow.Infrastructure.Services;
 using InsightFlow.Infrastructure.Validators;
 using Mapster;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,8 +32,6 @@ public static class Extensions
             AppOptions appOptions,
             IHostEnvironment environment)
         {
-            ConfigureMapster();
-
             return services
                 .AddDatabase(appOptions, environment)
                 .AddSingleton<IMappingService, MappingService>()
@@ -53,13 +52,21 @@ public static class Extensions
                     return DbConnectionPool.Instance;
                 })
                 .AddValidatorsFromAssemblyContaining<CreateUserRequestDtoValidator>(ServiceLifetime.Singleton)
-                .AddScoped<IAuthService, AuthService>();
+                .AddScoped<IAuthService, AuthService>()
+                .AddSingleton(_ =>
+                {
+                    var config = new TypeAdapterConfig();
+                    ConfigureMapster(config);
+                    return config;
+                })
+                .AddSingleton<IMapper>(serviceProvider =>
+                    new Mapper(serviceProvider.GetRequiredService<TypeAdapterConfig>()));
         }
 
-        private static void ConfigureMapster()
+        private static void ConfigureMapster(TypeAdapterConfig config)
         {
-            TypeAdapterConfig<BlogPost, BlogPostResponseDto>
-                .ForType()
+            config
+                .NewConfig<BlogPost, BlogPostResponseDto>()
                 .Map(
                     dto => dto.Author,
                     blogPost => blogPost.Author)
@@ -68,8 +75,8 @@ public static class Extensions
                 .Map(dto => dto.UpdatedAt,
                     blogPost => DateTime.SpecifyKind(blogPost.UpdatedAt, DateTimeKind.Utc));
 
-            TypeAdapterConfig<UpdateBlogPostCommand, BlogPost>
-                .ForType()
+            config
+                .NewConfig<UpdateBlogPostCommand, BlogPost>()
                 .Map(
                     blogPost => blogPost.Title,
                     updateCommand => updateCommand.NewTitle)
@@ -77,14 +84,12 @@ public static class Extensions
                     blogPost => blogPost.Body,
                     updateCommand => updateCommand.NewBody);
 
-            TypeAdapterConfig<User, UserResponseDto>
-                .ForType()
+            config.NewConfig<User, UserResponseDto>()
                 .Map(
                     dto => dto.FullName,
                     user => user.FirstName + ' ' + user.LastName);
 
-            TypeAdapterConfig<UpdateUserCommand, User>
-                .ForType()
+            config.NewConfig<UpdateUserCommand, User>()
                 .Map(
                     user => user.FirstName,
                     updateUserCommand => updateUserCommand.NewFirstName)

@@ -17,39 +17,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.10.3" />
-    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0"/>
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1"/>
-    <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0"/>
-    <PackageReference Include="Serilog.Exceptions" Version="8.4.0"/>
+    <PackageReference Include="Scalar.AspNetCore" Version="2.11.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InsightFlow.Domain\InsightFlow.Domain.csproj"/>
-    <ProjectReference Include="..\InsightFlow.Application\InsightFlow.Application.csproj"/>
-    <ProjectReference Include="..\InsightFlow.Infrastructure\InsightFlow.Infrastructure.csproj"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250307.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250308.json"/>
-    <_ContentIncludedByDefault Remove="logs\internal\log-20250307.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250309.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250310.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250311.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250315.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250316.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250317.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250320.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250322.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250323.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250327.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250328.json"/>
-    <_ContentIncludedByDefault Remove="logs\development\log-20250329.json"/>
-    <_ContentIncludedByDefault Remove="logs\internal\log-20250316.json"/>
-    <_ContentIncludedByDefault Remove="logs\internal\log-20250327.json"/>
+    <ProjectReference Include="..\InsightFlow.Domain\InsightFlow.Domain.csproj" />
+    <ProjectReference Include="..\InsightFlow.Application\InsightFlow.Application.csproj" />
+    <ProjectReference Include="..\InsightFlow.Infrastructure\InsightFlow.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
